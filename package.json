@@ -1,0 +1,14 @@
+{
+  "name": "granmal",
+  "version": "0.0.1",
+  "description": "Application Log",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Hyland",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.13.3"
+  }
+}
