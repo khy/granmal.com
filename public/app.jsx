@@ -2,6 +2,8 @@ var React = require('react')
 var ReactDom = require('react-dom')
 var model = require('./model.js')
 
+require("./stylesheets/h1.scss")
+
 class H1Manager extends React.Component {
 
   constructor() {
