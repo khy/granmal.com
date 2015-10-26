@@ -7,22 +7,31 @@ app.use(express.static('./public'))
 
 var data = {
   apps: [
-    {name: 'Budget'},
-    {name: 'Haikunst'},
-    {name: 'Book Club'}
+    {
+      name: 'Budget',
+      description: 'Personal finances for obsessive compulsives.',
+      path: '/budget'
+    },
+    {
+      name: 'Haikunst',
+      description: 'Like Twitter, but with haikus.',
+      path: '/haikunst'
+    }
   ]
 }
 
 var Router = FalcorRouter.createClass([
   {
-    route: 'apps[{integers:appIndexes}]["name"]',
+    route: 'apps[{integers:appIndexes}][{keys:appKeys}]',
     get: (pathSet) => {
-      var results = [];
-      pathSet.appIndexes.forEach(appIndex => {
+      var results = []
+      pathSet.appIndexes.forEach ( appIndex => {
         if (data.apps.length > appIndex) {
-          results.push({
-            path: ['apps', appIndex, 'name'],
-            value: data.apps[appIndex].name
+          pathSet.appKeys.forEach ( appKey => {
+            results.push({
+              path: ['apps', appIndex, appKey],
+              value: data.apps[appIndex][appKey]
+            })
           })
         }
       })

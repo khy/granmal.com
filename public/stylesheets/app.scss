@@ -1,0 +1,11 @@
+@import "bootstrap/bootstrap-flex";
+
+.navbar { margin-bottom: 1em; }
+
+.card-app-link {
+  @extend .card;
+
+  .card-title { color: $gray-dark; }
+  a:hover { text-decoration: none; }
+  &:hover { background-color: $gray-lightest; }
+}
