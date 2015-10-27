@@ -1,11 +1,13 @@
 var express = require('express')
 var FalcorServer = require('falcor-express')
 
+var BudgetRouter = require('./src/budget/server/app')
 var RootRouter = require('./src/root/server/app')
 
 var app = express()
 
 app.use(express.static('./public'))
+app.use('/budget.json', FalcorServer.dataSourceRoute(() => new BudgetRouter()))
 app.use('/root.json', FalcorServer.dataSourceRoute(() => new RootRouter()))
 
 app.listen(3000, err => {

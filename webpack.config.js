@@ -1,5 +1,6 @@
 module.exports = {
   entry: {
+    budget: './src/budget/client/app.jsx',
     root: './src/root/client/app.jsx'
   },
   output: {
