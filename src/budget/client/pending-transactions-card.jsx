@@ -1,5 +1,8 @@
 var React = require('react')
 var ReactDom = require('react-dom')
+
+var _map = require('lodash/collection/map')
+
 var model = require('./model.js')
 
 require("./app.scss")
@@ -18,14 +21,13 @@ class PendingTransactionsCard extends React.Component {
   }
 
   render() {
-    console.log(this.state.pendingTransactions)
-    var rows = Object.keys(this.state.pendingTransactions).map ( index => {
+    var rows = _map(this.state.pendingTransactions, (value, key) => {
       return (
-        <tr key={index}>
-          <td>{this.state.pendingTransactions[index].date}</td>
-          <td>{this.state.pendingTransactions[index].amount}</td>
-          <td>{this.state.pendingTransactions[index].type}</td>
-          <td>{this.state.pendingTransactions[index].account}</td>
+        <tr key={value.guid}>
+          <td>{value.date}</td>
+          <td>{value.minAmount}</td>
+          <td>{value.transactionType.name}</td>
+          <td>{value.account.name}</td>
           <td><a href="#">Confirm</a></td>
         </tr>
       )
@@ -55,8 +57,13 @@ class PendingTransactionsCard extends React.Component {
   }
 
   update() {
-    model.get(['pendingTransactions', {from: 0, to: 5}, ['guid', 'date', 'amount', 'type', 'account']])
-      .then(response => this.setState({pendingTransactions: response.json.pendingTransactions}))
+    model.get(
+      ['pendingTransactions', {from: 0, to: 5}, ['guid', 'date', 'minAmount']],
+      ['pendingTransactions', {from: 0, to: 5}, 'transactionType', 'name'],
+      ['pendingTransactions', {from: 0, to: 5}, 'account', 'name']
+    ).then(
+      response => this.setState({pendingTransactions: response.json.pendingTransactions})
+    )
   }
 
 }

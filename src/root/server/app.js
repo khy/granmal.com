@@ -5,12 +5,12 @@ var data = {
     {
       name: 'Budget',
       description: 'Personal finances for obsessive compulsives.',
-      path: '/budget'
+      path: '/budget.html'
     },
     {
       name: 'Haikunst',
       description: 'Like Twitter, but with haikus.',
-      path: '/haikunst'
+      path: '/haikunst.html'
     }
   ]
 }
