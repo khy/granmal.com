@@ -3,7 +3,8 @@ var ReactDom = require('react-dom')
 
 var model = require('./model.js')
 
-var PlannedTransactionsCard = require('./planned-transactions-card.jsx');
+var PlannedTransactionsCard = require('./planned-transactions-card.jsx')
+var RecentTransactionsCard = require('./recent-transactions-card.jsx')
 
 require("./app.scss")
 
@@ -29,6 +30,7 @@ class App extends React.Component {
 
         <div className="container">
           <PlannedTransactionsCard/>
+          <RecentTransactionsCard/>
         </div>
       </div>
     )

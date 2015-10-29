@@ -74,7 +74,6 @@ var Router = FalcorRouter.createClass([
         plannedTransactions => {
           var results = []
           var _plannedTransactions = plannedTransactions.filter ( plannedTransaction => {
-            console.log(plannedTransaction)
             return (typeof plannedTransaction.transactionGuid === 'undefined')
           })
 
@@ -93,6 +92,39 @@ var Router = FalcorRouter.createClass([
 
                 results.push({
                   path: ['plannedTransactions', index, attribute],
+                  value: value
+                })
+              })
+            }
+          })
+
+          return results
+        }
+      )
+    }
+  },
+  {
+    route: 'transactions[{integers:indices}][{keys:attributes}]',
+    get: (pathSet) => {
+      return httpGet('/transactions').then(
+        transactions => {
+          var results = []
+
+          pathSet.indices.forEach ( index => {
+            if (transactions[index]) {
+              pathSet.attributes.forEach ( attribute => {
+                var value
+
+                if (attribute === 'transactionType') {
+                  value = $ref(['transactionTypesByGuid', transactions[index]['transactionTypeGuid']])
+                } else if (attribute === 'account') {
+                  value = $ref(['accountsByGuid', transactions[index]['accountGuid']])
+                } else {
+                  value = transactions[index][attribute]
+                }
+
+                results.push({
+                  path: ['transactions', index, attribute],
                   value: value
                 })
               })
