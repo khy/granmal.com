@@ -1,6 +1,7 @@
 var React = require('react')
 var ReactDom = require('react-dom')
 
+var moment = require('moment')
 var _map = require('lodash/collection/map')
 
 var model = require('./model.js')
@@ -11,7 +12,10 @@ class ProjectionsCard extends React.Component {
 
   constructor() {
     super()
-    this.state = { projections: [] }
+    this.state = {
+      date: moment().add(1, 'month').startOf('month'),
+      projections: []
+    }
   }
 
   componentWillMount() {
@@ -36,6 +40,16 @@ class ProjectionsCard extends React.Component {
           Projections
         </div>
 
+        <div className="card-block">
+          <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
+            <div className="form-group">
+              <input ref="dateInput" defaultValue={this.state.date.format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
+            </div>
+
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
         <table className="table table-hover">
           <thead>
             <tr>
@@ -53,12 +67,20 @@ class ProjectionsCard extends React.Component {
     )
   }
 
+  handleSubmit(event) {
+    event.preventDefault()
+    const date = moment(this.refs.dateInput.value, ["MM|DD|YY"])
+    this.setState({ date: date }, () => { this.update() })
+  }
+
   update() {
+    const date = this.state.date.format('YYYY-MM-DD')
+
     model.get(
-      ['projectionsByDate', '2015-11-01', {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', '2015-11-01', {from: 0, to: 9}, 'account', ['name', 'balance']]
+      ['projectionsByDate', date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
+      ['projectionsByDate', date, {from: 0, to: 9}, 'account', ['name', 'balance']]
     ).then(
-      response => this.setState({projections: response.json.projectionsByDate['2015-11-01']})
+      response => this.setState({projections: response.json.projectionsByDate[date]})
     )
   }
 
