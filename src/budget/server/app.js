@@ -68,6 +68,39 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'projectionsByDate[{keys:dates}][{integers:indices}][{keys:attributes}]',
+    get: (pathSet) => {
+      const date = pathSet.dates[0]
+
+      return httpGet('/projections?date=' + date).then(
+        projections => {
+          var results = []
+
+          pathSet.indices.forEach ( index => {
+            if (projections[index]) {
+              pathSet.attributes.forEach ( attribute => {
+                var value
+
+                if (attribute === 'account') {
+                  value = $ref(['accountsByGuid', projections[index].account.guid])
+                } else {
+                  value = projections[index][attribute]
+                }
+
+                results.push({
+                  path: ['projectionsByDate', date, index, attribute],
+                  value: value
+                })
+              })
+            }
+          })
+
+          return results
+        }
+      )
+    }
+  },
+  {
     route: 'plannedTransactions[{integers:indices}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/plannedTransactions').then(
