@@ -8,7 +8,7 @@ var httpGet = (path) => {
   return request({
     uri: 'http://localhost:8999/budget' + path ,
     headers: {
-      'Authorization': 'ACCESS-TOKEN'
+      'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda'
     },
     json: true
   })
@@ -68,7 +68,7 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
-    route: 'pendingTransactions[{integers:indices}][{keys:attributes}]',
+    route: 'plannedTransactions[{integers:indices}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/plannedTransactions').then(
         plannedTransactions => {
@@ -79,22 +79,24 @@ var Router = FalcorRouter.createClass([
           })
 
           pathSet.indices.forEach ( index => {
-            pathSet.attributes.forEach ( attribute => {
-              var value
+            if (_plannedTransactions[index]) {
+              pathSet.attributes.forEach ( attribute => {
+                var value
 
-              if (attribute === 'transactionType') {
-                value = $ref(['transactionTypesByGuid', _plannedTransactions[index]['transactionTypeGuid']])
-              } else if (attribute === 'account') {
-                value = $ref(['accountsByGuid', _plannedTransactions[index]['accountGuid']])
-              } else {
-                value = _plannedTransactions[index][attribute]
-              }
+                if (attribute === 'transactionType') {
+                  value = $ref(['transactionTypesByGuid', _plannedTransactions[index]['transactionTypeGuid']])
+                } else if (attribute === 'account') {
+                  value = $ref(['accountsByGuid', _plannedTransactions[index]['accountGuid']])
+                } else {
+                  value = _plannedTransactions[index][attribute]
+                }
 
-              results.push({
-                path: ['pendingTransactions', index, attribute],
-                value: value
+                results.push({
+                  path: ['plannedTransactions', index, attribute],
+                  value: value
+                })
               })
-            })
+            }
           })
 
           return results
