@@ -49,6 +49,9 @@ class PlannedTransactionsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Planned Transactions
+          <a className="pull-right" href="#" onClick={this.handleNew.bind(this)}>
+            New Planned Transaction
+          </a>
         </div>
         <table className="table table-hover">
           <thead>
@@ -66,6 +69,11 @@ class PlannedTransactionsCard extends React.Component {
         </table>
       </div>
     )
+  }
+
+  handleNew(event) {
+    event.preventDefault()
+    this.props.onNew()
   }
 
   update() {
