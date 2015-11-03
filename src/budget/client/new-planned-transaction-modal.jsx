@@ -24,7 +24,10 @@ class NewPlannedTransactionsModal extends React.Component {
 
   add(event) {
     event.preventDefault()
-    console.log("Add Planned Transaction")
+
+    model.call('plannedTransactions.add').then(
+      response => console.log(response)
+    )
   }
 
   render() {

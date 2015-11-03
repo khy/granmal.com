@@ -143,6 +143,12 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'plannedTransactions.add',
+    call: (pathSet) => {
+      console.log(pathSet)
+    }
+  },
+  {
     route: 'plannedTransactions[{integers:indices}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/plannedTransactions').then(
