@@ -16,6 +16,27 @@ var httpGet = (path) => {
 
 var Router = FalcorRouter.createClass([
   {
+    route: 'accounts[{integers:indices}]',
+    get: (pathSet) => {
+      return httpGet('/accounts').then(
+        accounts => {
+          var results = []
+
+          pathSet.indices.forEach ( index => {
+            if (accounts[index]) {
+              results.push({
+                path: ['accounts', index],
+                value: $ref(['accountsByGuid', accounts[index].guid])
+              })
+            }
+          })
+
+          return results
+        }
+      )
+    }
+  },
+  {
     route: 'accountsByGuid[{keys:guids}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/accounts').then(
@@ -32,6 +53,27 @@ var Router = FalcorRouter.createClass([
                   value: account[attribute]
                 })
               )
+            }
+          })
+
+          return results
+        }
+      )
+    }
+  },
+  {
+    route: 'transactionTypes[{integers:indices}]',
+    get: (pathSet) => {
+      return httpGet('/transactionTypes').then(
+        transactionTypes => {
+          var results = []
+
+          pathSet.indices.forEach ( index => {
+            if (transactionTypes[index]) {
+              results.push({
+                path: ['transactionTypes', index],
+                value: $ref(['transactionTypesByGuid', transactionTypes[index].guid])
+              })
             }
           })
 

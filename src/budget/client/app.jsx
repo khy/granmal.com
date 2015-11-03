@@ -7,6 +7,8 @@ var ProjectionsCard = require('./projections-card.jsx')
 var PlannedTransactionsCard = require('./planned-transactions-card.jsx')
 var RecentTransactionsCard = require('./recent-transactions-card.jsx')
 
+var NewPlannedTransactionsModal = require('./new-planned-transaction-modal.jsx')
+
 require("./app.scss")
 
 class App extends React.Component {
@@ -26,30 +28,11 @@ class App extends React.Component {
     let modal
 
     if (this.state.plannedTransactionModalActive) {
-      modal = (
-        <div>
-          <div className="modal-backdrop in" onClick={this.hideModal.bind(this)}></div>
-          <div className="modal" style={{display: 'block', paddingLeft: '0px'}}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <button className="close" type="button" onClick={this.hideModal.bind(this)}>
-                    <span>&times;</span>
-                  </button>
-                  <h4 className="modal-title">New Planned Transaction</h4>
-                </div>
-                <div className="modal-body">
-                  <p>New Planned Transaction</p>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={this.hideModal.bind(this)}>Close</button>
-                  <button type="button" className="btn btn-primary">Add</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+      modal = <NewPlannedTransactionsModal
+        transactionTypes={this.state.transactionTypes}
+        accounts={this.state.accounts}
+        onClose={this.hideModal.bind(this)}
+      />
     }
 
     return (
@@ -83,7 +66,17 @@ class App extends React.Component {
     })
   }
 
-  update() {}
+  update() {
+    model.get(
+      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
+    ).then(
+      response => this.setState({
+        transactionTypes: response.json.transactionTypes,
+        accounts: response.json.accounts
+      })
+    )
+  }
 
 }
 
