@@ -25,8 +25,17 @@ class NewPlannedTransactionsModal extends React.Component {
   add(event) {
     event.preventDefault()
 
-    model.call('plannedTransactions.add').then(
-      response => console.log(response)
+    const plannedTransaction = {
+      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+      accountGuid: this.refs.accountGuidSelect.value,
+      minAmount: parseInt(this.refs.minAmountInput.value),
+      maxAmount: parseInt(this.refs.maxAmountInput.value),
+      minTimestamp: moment(this.refs.minTimestampInput.value, ["MM|DD|YY"]).format(),
+      maxTimestamp: moment(this.refs.maxTimestampInput.value, ["MM|DD|YY"]).format()
+    }
+
+    model.call('plannedTransactionsByGuid.add', [plannedTransaction]).then(
+      response => console.log(model.getCache())
     )
   }
 
@@ -60,14 +69,14 @@ class NewPlannedTransactionsModal extends React.Component {
                 <form>
                   <fieldset className="form-group">
                     <label>Transaction Type</label>
-                    <select className="form-control">
+                    <select ref="transactionTypeGuidSelect" className="form-control">
                       {transactionTypeOptions}
                     </select>
                   </fieldset>
 
                   <fieldset className="form-group">
                     <label>Account</label>
-                    <select className="form-control">
+                    <select ref="accountGuidSelect" className="form-control">
                       {accountOptions}
                     </select>
                   </fieldset>
@@ -76,13 +85,13 @@ class NewPlannedTransactionsModal extends React.Component {
                     <div className="col-md-6">
                       <fieldset className="form-group">
                         <label>Min Amount</label>
-                        <input className="form-control" type="text" />
+                        <input ref="minAmountInput" className="form-control" type="text" />
                       </fieldset>
                     </div>
                     <div className="col-md-6">
                       <fieldset className="form-group">
                         <label>Max Amount</label>
-                        <input className="form-control" type="text" />
+                        <input ref="maxAmountInput" className="form-control" type="text" />
                       </fieldset>
                     </div>
                   </div>
@@ -91,13 +100,13 @@ class NewPlannedTransactionsModal extends React.Component {
                     <div className="col-md-6">
                       <fieldset className="form-group">
                         <label>Min Date</label>
-                        <input className="form-control" type="text" />
+                        <input ref="minTimestampInput" className="form-control" type="text" />
                       </fieldset>
                     </div>
                     <div className="col-md-6">
                       <fieldset className="form-group">
                         <label>Max Date</label>
-                        <input className="form-control" type="text" />
+                        <input ref="maxTimestampInput" className="form-control" type="text" />
                       </fieldset>
                     </div>
                   </div>

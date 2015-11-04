@@ -14,6 +14,19 @@ var httpGet = (path) => {
   })
 }
 
+var httpPost = (path, body) => {
+  return request({
+    method: 'POST',
+    uri: 'http://localhost:8999/budget' + path ,
+    headers: {
+      'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda',
+      'Content-Type': 'application/json'
+    },
+    body: body,
+    json: true
+  })
+}
+
 var Router = FalcorRouter.createClass([
   {
     route: 'accounts[{integers:indices}]',
@@ -143,9 +156,44 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
-    route: 'plannedTransactions.add',
-    call: (pathSet) => {
-      console.log(pathSet)
+    route: 'plannedTransactionsByGuid.add',
+    call: (pathSet, args) => {
+      return httpPost('/plannedTransactions', args[0]).then ( plannedTransaction => {
+        console.log(plannedTransaction)
+        return [
+          {
+            path: ['plannedTransactionsByGuid', plannedTransaction.guid],
+            value: plannedTransaction
+          }
+        ]
+      })
+    }
+  },
+  {
+    route: 'plannedTransactionsByGuid[{keys:guids}][{keys:attributes}]',
+    get: (pathSet) => {
+      return httpGet('/plannedTransactions').then(
+        plannedTransactions => {
+          var results = []
+
+          pathSet.guids.forEach ( guid => {
+            var plannedTransaction = plannedTransactions.find ( plannedTransaction => {
+              return (plannedTransaction.guid === guid)
+            })
+
+            if (plannedTransaction) {
+              pathSet.attributes.forEach ( attribute =>
+                results.push({
+                  path: ['plannedTransactionsByGuid', guid, attribute],
+                  value: plannedTransaction[attribute]
+                })
+              )
+            }
+          })
+
+          return results
+        }
+      )
     }
   },
   {
