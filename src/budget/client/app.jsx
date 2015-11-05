@@ -32,6 +32,7 @@ class App extends React.Component {
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
         onClose={this.hideModal.bind(this)}
+        onAdd={this.handleNewPlannedTransaction.bind(this)}
       />
     }
 
@@ -57,6 +58,12 @@ class App extends React.Component {
   showNewPlannedTransactionModal() {
     this.setState({
       plannedTransactionModalActive: true
+    })
+  }
+
+  handleNewPlannedTransaction() {
+    this.setState({
+      plannedTransactionModalActive: false
     })
   }
 

@@ -156,14 +156,13 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
-    route: 'plannedTransactionsByGuid.add',
+    route: 'plannedTransactions.add',
     call: (pathSet, args) => {
       return httpPost('/plannedTransactions', args[0]).then ( plannedTransaction => {
-        console.log(plannedTransaction)
         return [
           {
-            path: ['plannedTransactionsByGuid', plannedTransaction.guid],
-            value: plannedTransaction
+            path: ['plannedTransactions', 'latest'],
+            value: $ref(['plannedTransactionsByGuid', plannedTransaction.guid])
           }
         ]
       })
@@ -182,12 +181,22 @@ var Router = FalcorRouter.createClass([
             })
 
             if (plannedTransaction) {
-              pathSet.attributes.forEach ( attribute =>
+              pathSet.attributes.forEach ( attribute => {
+                var value
+
+                if (attribute === 'transactionType') {
+                  value = $ref(['transactionTypesByGuid', plannedTransaction.transactionTypeGuid])
+                } else if (attribute === 'account') {
+                  value = $ref(['accountsByGuid', plannedTransaction.accountGuid])
+                } else {
+                  value = plannedTransaction[attribute]
+                }
+
                 results.push({
                   path: ['plannedTransactionsByGuid', guid, attribute],
-                  value: plannedTransaction[attribute]
+                  value: value
                 })
-              )
+              })
             }
           })
 

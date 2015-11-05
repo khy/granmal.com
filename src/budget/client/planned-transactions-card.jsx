@@ -53,6 +53,11 @@ class PlannedTransactionsCard extends React.Component {
             New Planned Transaction
           </a>
         </div>
+        <div className="card-block">
+          <p className="card-text text-success">
+            <strong>Well done!</strong> You successfully read this important alert message.
+          </p>
+        </div>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -77,6 +82,7 @@ class PlannedTransactionsCard extends React.Component {
   }
 
   update() {
+    model.invalidate(['plannedTransactions'])
     model.get(
       ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
       ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
