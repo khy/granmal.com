@@ -24,6 +24,36 @@ class App extends React.Component {
     this.update()
   }
 
+  showNewPlannedTransactionModal() {
+    this.setState({
+      plannedTransactionModalActive: true
+    })
+  }
+
+  handleNewPlannedTransaction() {
+    this.setState({
+      plannedTransactionModalActive: false
+    })
+  }
+
+  hideModal() {
+    this.setState({
+      plannedTransactionModalActive: false
+    })
+  }
+
+  update() {
+    model.get(
+      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
+    ).then(
+      response => this.setState({
+        transactionTypes: response.json.transactionTypes,
+        accounts: response.json.accounts
+      })
+    )
+  }
+
   render() {
     let modal
 
@@ -52,36 +82,6 @@ class App extends React.Component {
 
         {modal}
       </div>
-    )
-  }
-
-  showNewPlannedTransactionModal() {
-    this.setState({
-      plannedTransactionModalActive: true
-    })
-  }
-
-  handleNewPlannedTransaction() {
-    this.setState({
-      plannedTransactionModalActive: false
-    })
-  }
-
-  hideModal() {
-    this.setState({
-      plannedTransactionModalActive: false
-    })
-  }
-
-  update() {
-    model.get(
-      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
-      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
-    ).then(
-      response => this.setState({
-        transactionTypes: response.json.transactionTypes,
-        accounts: response.json.accounts
-      })
     )
   }
 
