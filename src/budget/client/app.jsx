@@ -34,6 +34,7 @@ class App extends React.Component {
     this.setState({
       plannedTransactionModalActive: false
     })
+    this.refreshPlannedTransactions()
   }
 
   hideModal() {
@@ -42,14 +43,23 @@ class App extends React.Component {
     })
   }
 
+  refreshPlannedTransactions() {
+    model.invalidate(['plannedTransactions'])
+    this.update()
+  }
+
   update() {
     model.get(
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
-      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']],
+      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
+      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
+      ['plannedTransactions', {from: 0, to: 9}, 'account', 'name']
     ).then(
       response => this.setState({
         transactionTypes: response.json.transactionTypes,
-        accounts: response.json.accounts
+        accounts: response.json.accounts,
+        plannedTransactions: response.json.plannedTransactions
       })
     )
   }
@@ -76,7 +86,10 @@ class App extends React.Component {
 
         <div className="container">
           <ProjectionsCard />
-          <PlannedTransactionsCard onNew={this.showNewPlannedTransactionModal.bind(this)} />
+          <PlannedTransactionsCard
+            plannedTransactions={this.state.plannedTransactions}
+            onNew={this.showNewPlannedTransactionModal.bind(this)}
+          />
           <RecentTransactionsCard />
         </div>
 

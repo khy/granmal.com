@@ -10,19 +10,8 @@ require("./app.scss")
 
 class PlannedTransactionsCard extends React.Component {
 
-  constructor() {
-    super()
-    this.state = {
-      plannedTransactions: []
-    }
-  }
-
-  componentWillMount() {
-    this.update()
-  }
-
   render() {
-    var rows = _map(this.state.plannedTransactions, (value, key) => {
+    var rows = _map(this.props.plannedTransactions, (value, key) => {
       const minDate = moment(value.minTimestamp).format('MM/DD/YY')
       const maxDate = moment(value.maxTimestamp).format('MM/DD/YY')
       const date = (minDate === maxDate) ?
@@ -79,17 +68,6 @@ class PlannedTransactionsCard extends React.Component {
   handleNew(event) {
     event.preventDefault()
     this.props.onNew()
-  }
-
-  update() {
-    model.invalidate(['plannedTransactions'])
-    model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', 'name']
-    ).then(
-      response => this.setState({plannedTransactions: response.json.plannedTransactions})
-    )
   }
 
 }
