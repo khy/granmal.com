@@ -6,14 +6,12 @@ var _map = require('lodash/collection/map')
 
 var model = require('./model.js')
 
-class NewPlannedTransactionModal extends React.Component {
+class NewTransactionModal extends React.Component {
 
   constructor() {
     super()
     this.state = {}
   }
-
-  componentWillMount() {}
 
   close(event) {
     event.preventDefault()
@@ -23,17 +21,15 @@ class NewPlannedTransactionModal extends React.Component {
   add(event) {
     event.preventDefault()
 
-    const plannedTransaction = {
+    const transaction = {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
-      minAmount: parseInt(this.refs.minAmountInput.value),
-      maxAmount: parseInt(this.refs.maxAmountInput.value),
-      minTimestamp: moment(this.refs.minTimestampInput.value, ["MM|DD|YY"]).format(),
-      maxTimestamp: moment(this.refs.maxTimestampInput.value, ["MM|DD|YY"]).format()
+      amount: parseInt(this.refs.amountInput.value),
+      timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
     }
 
-    model.call('plannedTransactions.add', [plannedTransaction], [['guid']]).then(
-      response => this.props.onAdd(response.json.plannedTransactions.latest.guid)
+    model.call('transactions.add', [transaction], [['guid']]).then(
+      response => this.props.onAdd(response.json.transactions.latest.guid)
     )
   }
 
@@ -61,7 +57,7 @@ class NewPlannedTransactionModal extends React.Component {
                 <button className="close" type="button" onClick={this.close.bind(this)}>
                   <span>&times;</span>
                 </button>
-                <h4 className="modal-title">New Planned Transaction</h4>
+                <h4 className="modal-title">New Transaction</h4>
               </div>
               <div className="modal-body">
                 <form>
@@ -79,35 +75,15 @@ class NewPlannedTransactionModal extends React.Component {
                     </select>
                   </fieldset>
 
-                  <div className="row">
-                    <div className="col-md-6">
-                      <fieldset className="form-group">
-                        <label>Min Amount</label>
-                        <input ref="minAmountInput" className="form-control" type="text" />
-                      </fieldset>
-                    </div>
-                    <div className="col-md-6">
-                      <fieldset className="form-group">
-                        <label>Max Amount</label>
-                        <input ref="maxAmountInput" className="form-control" type="text" />
-                      </fieldset>
-                    </div>
-                  </div>
+                  <fieldset className="form-group">
+                    <label>Amount</label>
+                    <input ref="amountInput" className="form-control" type="text" />
+                  </fieldset>
 
-                  <div className="row">
-                    <div className="col-md-6">
-                      <fieldset className="form-group">
-                        <label>Min Date</label>
-                        <input ref="minTimestampInput" className="form-control" type="text" />
-                      </fieldset>
-                    </div>
-                    <div className="col-md-6">
-                      <fieldset className="form-group">
-                        <label>Max Date</label>
-                        <input ref="maxTimestampInput" className="form-control" type="text" />
-                      </fieldset>
-                    </div>
-                  </div>
+                  <fieldset className="form-group">
+                    <label>Date</label>
+                    <input ref="timestampInput" className="form-control" type="text" />
+                  </fieldset>
                 </form>
               </div>
               <div className="modal-footer">
@@ -123,4 +99,4 @@ class NewPlannedTransactionModal extends React.Component {
 
 }
 
-module.exports = NewPlannedTransactionModal
+module.exports = NewTransactionModal

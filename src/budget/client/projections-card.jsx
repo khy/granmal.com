@@ -23,7 +23,10 @@ class ProjectionsCard extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) {
+    if (
+      (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) ||
+      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid)
+    ) {
       this.reload()
     }
   }

@@ -18,8 +18,35 @@ class RecentTransactionsCard extends React.Component {
   }
 
   componentWillMount() {
-    this.update()
+    this.load()
   }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.latestTransactionGuid) {
+      this.reload()
+    }
+  }
+
+  load() {
+    model.get(
+      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
+      ['transactions', {from: 0, to: 9}, 'transactionType', 'name'],
+      ['transactions', {from: 0, to: 9}, 'account', 'name']
+    ).then(
+      response => this.setState({transactions: response.json.transactions})
+    )
+  }
+
+  reload() {
+    model.invalidate(['transactions'])
+    this.load()
+  }
+
+  handleNew(event) {
+    event.preventDefault()
+    this.props.onNew()
+  }
+
 
   render() {
     var rows = _map(this.state.transactions, (value, key) => {
@@ -34,11 +61,27 @@ class RecentTransactionsCard extends React.Component {
       )
     })
 
+    let message
+
+    if (this.props.latestTransactionGuid) {
+      message = (
+        <div className="card-block">
+          <p className="card-text text-success">
+            Successfully added transaction {this.props.latestTransactionGuid}.
+          </p>
+        </div>
+      )
+    }
+
     return (
       <div className="card">
         <div className="card-header">
           Recent Transactions
+          <a className="pull-right" href="#" onClick={this.handleNew.bind(this)}>
+            New Transaction
+          </a>
         </div>
+        {message}
         <table className="table table-hover">
           <thead>
             <tr>
@@ -54,16 +97,6 @@ class RecentTransactionsCard extends React.Component {
           </tbody>
         </table>
       </div>
-    )
-  }
-
-  update() {
-    model.get(
-      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
-      ['transactions', {from: 0, to: 9}, 'transactionType', 'name'],
-      ['transactions', {from: 0, to: 9}, 'account', 'name']
-    ).then(
-      response => this.setState({transactions: response.json.transactions})
     )
   }
 

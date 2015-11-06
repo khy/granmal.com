@@ -242,6 +242,56 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'transactions.add',
+    call: (pathSet, args) => {
+      return httpPost('/transactions', args[0]).then ( transaction => {
+        return [
+          {
+            path: ['transactions', 'latest'],
+            value: $ref(['transactionsByGuid', transaction.guid])
+          }
+        ]
+      })
+    }
+  },
+  {
+    route: 'transactionsByGuid[{keys:guids}][{keys:attributes}]',
+    get: (pathSet) => {
+      return httpGet('/transactions').then(
+        transactions => {
+          var results = []
+
+          pathSet.guids.forEach ( guid => {
+            var transaction = transactions.find ( transaction => {
+              return (transaction.guid === guid)
+            })
+
+            if (transaction) {
+              pathSet.attributes.forEach ( attribute => {
+                var value
+
+                if (attribute === 'transactionType') {
+                  value = $ref(['transactionTypesByGuid', transaction.transactionTypeGuid])
+                } else if (attribute === 'account') {
+                  value = $ref(['accountsByGuid', transaction.accountGuid])
+                } else {
+                  value = transaction[attribute]
+                }
+
+                results.push({
+                  path: ['transactionsByGuid', guid, attribute],
+                  value: value
+                })
+              })
+            }
+          })
+
+          return results
+        }
+      )
+    }
+  },
+  {
     route: 'transactions[{integers:indices}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/transactions').then(
