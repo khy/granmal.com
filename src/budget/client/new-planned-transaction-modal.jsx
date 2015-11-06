@@ -34,15 +34,8 @@ class NewPlannedTransactionsModal extends React.Component {
       maxTimestamp: moment(this.refs.maxTimestampInput.value, ["MM|DD|YY"]).format()
     }
 
-    model.call(
-      'plannedTransactions.add',
-      [plannedTransaction],
-      [['guid'], ['account', 'name']]
-    ).then(
-      response => {
-        console.log(response)
-        this.props.onAdd()
-      }
+    model.call('plannedTransactions.add', [plannedTransaction], [['guid']]).then(
+      response => this.props.onAdd(response.json.plannedTransactions.latest.guid)
     )
   }
 

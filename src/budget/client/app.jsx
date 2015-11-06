@@ -30,11 +30,11 @@ class App extends React.Component {
     })
   }
 
-  handleNewPlannedTransaction() {
+  handleNewPlannedTransaction(guid) {
     this.setState({
-      plannedTransactionModalActive: false
+      plannedTransactionModalActive: false,
+      latestPlannedTransactionGuid: guid
     })
-    this.refreshPlannedTransactions()
   }
 
   hideModal() {
@@ -43,23 +43,14 @@ class App extends React.Component {
     })
   }
 
-  refreshPlannedTransactions() {
-    model.invalidate(['plannedTransactions'])
-    this.update()
-  }
-
   update() {
     model.get(
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
-      ['accounts', {from: 0, to: 9}, ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', 'name']
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
     ).then(
       response => this.setState({
         transactionTypes: response.json.transactionTypes,
-        accounts: response.json.accounts,
-        plannedTransactions: response.json.plannedTransactions
+        accounts: response.json.accounts
       })
     )
   }
@@ -85,10 +76,12 @@ class App extends React.Component {
         </nav>
 
         <div className="container">
-          <ProjectionsCard />
+          <ProjectionsCard
+            latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
+          />
           <PlannedTransactionsCard
-            plannedTransactions={this.state.plannedTransactions}
             onNew={this.showNewPlannedTransactionModal.bind(this)}
+            latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
           />
           <RecentTransactionsCard />
         </div>

@@ -19,7 +19,37 @@ class ProjectionsCard extends React.Component {
   }
 
   componentWillMount() {
-    this.update()
+    this.load()
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) {
+      this.reload()
+    }
+  }
+
+  load() {
+    const date = this.dateFormattedForModel()
+
+    model.get(
+      ['projectionsByDate', date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
+      ['projectionsByDate', date, {from: 0, to: 9}, 'account', ['name', 'balance']]
+    ).then(
+      response => this.setState({projections: response.json.projectionsByDate[date]})
+    )
+  }
+
+  reload() {
+    model.invalidate(['projectionsByDate', this.dateFormattedForModel()])
+    this.load()
+  }
+
+  dateFormattedForModel() { return this.state.date.format('YYYY-MM-DD') }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const date = moment(this.refs.dateInput.value, ["MM|DD|YY"])
+    this.setState({ date: date }, () => { this.load() })
   }
 
   render() {
@@ -64,23 +94,6 @@ class ProjectionsCard extends React.Component {
           </tbody>
         </table>
       </div>
-    )
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    const date = moment(this.refs.dateInput.value, ["MM|DD|YY"])
-    this.setState({ date: date }, () => { this.update() })
-  }
-
-  update() {
-    const date = this.state.date.format('YYYY-MM-DD')
-
-    model.get(
-      ['projectionsByDate', date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', date, {from: 0, to: 9}, 'account', ['name', 'balance']]
-    ).then(
-      response => this.setState({projections: response.json.projectionsByDate[date]})
     )
   }
 

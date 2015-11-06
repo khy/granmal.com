@@ -10,8 +10,47 @@ require("./app.scss")
 
 class PlannedTransactionsCard extends React.Component {
 
+  constructor() {
+    super()
+    this.state = {
+      plannedTransactions: []
+    }
+  }
+
+  componentWillMount() {
+    this.load()
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.latestPlannedTransactionGuid) {
+      this.reload()
+    }
+  }
+
+  load() {
+    model.get(
+      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
+      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
+      ['plannedTransactions', {from: 0, to: 9}, 'account', 'name']
+    ).then(
+      response => this.setState({
+        plannedTransactions: response.json.plannedTransactions
+      })
+    )
+  }
+
+  reload() {
+    model.invalidate(['plannedTransactions'])
+    this.load()
+  }
+
+  handleNew(event) {
+    event.preventDefault()
+    this.props.onNew()
+  }
+
   render() {
-    var rows = _map(this.props.plannedTransactions, (value, key) => {
+    var rows = _map(this.state.plannedTransactions, (value, key) => {
       const minDate = moment(value.minTimestamp).format('MM/DD/YY')
       const maxDate = moment(value.maxTimestamp).format('MM/DD/YY')
       const date = (minDate === maxDate) ?
@@ -34,6 +73,18 @@ class PlannedTransactionsCard extends React.Component {
       )
     })
 
+    let message
+
+    if (this.props.latestPlannedTransactionGuid) {
+      message = (
+        <div className="card-block">
+          <p className="card-text text-success">
+            Successfully added planned transaction {this.props.latestPlannedTransactionGuid}.
+          </p>
+        </div>
+      )
+    }
+
     return (
       <div className="card">
         <div className="card-header">
@@ -42,11 +93,7 @@ class PlannedTransactionsCard extends React.Component {
             New Planned Transaction
           </a>
         </div>
-        <div className="card-block">
-          <p className="card-text text-success">
-            <strong>Well done!</strong> You successfully read this important alert message.
-          </p>
-        </div>
+        {message}
         <table className="table table-hover">
           <thead>
             <tr>
@@ -63,11 +110,6 @@ class PlannedTransactionsCard extends React.Component {
         </table>
       </div>
     )
-  }
-
-  handleNew(event) {
-    event.preventDefault()
-    this.props.onNew()
   }
 
 }
