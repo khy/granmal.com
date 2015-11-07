@@ -22,8 +22,8 @@ class Overview extends React.Component {
     this.load()
   }
 
-  addPlannedTxn(plannedTxn) {
-    model.call('plannedTransactions.add', [plannedTxn], [['guid']]).then(
+  addPlannedTxn(newPlannedTxn) {
+    model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
       response => {
         this.setState({
           addPlannedTxnModalActive: false,
@@ -47,18 +47,28 @@ class Overview extends React.Component {
     })
   }
 
-  onConfirmPlannedTxn(guid) {
-    this.setState({
-      resolvePlannedTransactionModalActive: false,
-      latestTransactionGuid: guid
-    })
+  onConfirmPlannedTxn(newTransaction) {
+    model.call('transactions.add', [newTransaction], [['guid']]).then(
+      response => {
+        this.setState({
+          resolvePlannedTxnModalActive: false,
+          newTxnGuid: response.json.transactions.latest.guid
+        })
+        this.loadPlannedTxns(true)
+      }
+    )
   }
 
   onDeletePlannedTxn(guid) {
-    this.setState({
-      resolvePlannedTransactionModalActive: false,
-      latestDeletedPlannedTxnGuid: guid
-    })
+    model.call('plannedTransactions.delete', [guid]).then(
+      response => {
+        this.setState({
+          resolvePlannedTransactionModalActive: false,
+          latestDeletedPlannedTxnGuid: guid
+        })
+        this.loadPlannedTxns(true)
+      }
+    )
   }
 
   showNewTransactionModal() {

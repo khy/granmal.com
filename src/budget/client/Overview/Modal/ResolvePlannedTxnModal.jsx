@@ -1,14 +1,8 @@
 var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-var model = require('client/model')
 
 class ResolvePlannedTxnModal extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {}
-  }
 
   close(event) {
     event.preventDefault()
@@ -26,17 +20,12 @@ class ResolvePlannedTxnModal extends React.Component {
       plannedTransactionGuid: this.props.plannedTxn.guid
     }
 
-    model.call('transactions.add', [transaction], [['guid']]).then(
-      response => this.props.onConfirm(response.json.transactions.latest.guid)
-    )
+    this.props.onConfirm(transaction)
   }
 
   delete(event) {
     event.preventDefault()
-
-    model.call('plannedTransactions.delete', [this.props.plannedTxn.guid]).then(
-      response => this.props.onDelete(this.props.plannedTxn.guid)
-    )
+    this.props.onDelete(this.props.plannedTxn.guid)
   }
 
   render() {
