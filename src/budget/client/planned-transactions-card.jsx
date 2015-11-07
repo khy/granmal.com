@@ -3,6 +3,7 @@ var ReactDom = require('react-dom')
 
 var moment = require('moment')
 var _map = require('lodash/collection/map')
+var _find = require('lodash/collection/find')
 
 var model = require('./model.js')
 
@@ -22,7 +23,10 @@ class PlannedTransactionsCard extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.latestPlannedTransactionGuid) {
+    if (
+      (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) ||
+      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid)
+    ) {
       this.reload()
     }
   }
@@ -30,8 +34,8 @@ class PlannedTransactionsCard extends React.Component {
   load() {
     model.get(
       ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', 'name'],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', 'name']
+      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
+      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => this.setState({
         plannedTransactions: response.json.plannedTransactions
@@ -47,6 +51,14 @@ class PlannedTransactionsCard extends React.Component {
   handleNew(event) {
     event.preventDefault()
     this.props.onNew()
+  }
+
+  onResolve(event) {
+    event.preventDefault()
+    var plannedTxn = _find(this.state.plannedTransactions, (plannedTxn) => {
+      return plannedTxn.guid === event.target.dataset.guid
+    })
+    this.props.onResolve(plannedTxn)
   }
 
   render() {
@@ -68,7 +80,7 @@ class PlannedTransactionsCard extends React.Component {
           <td>{amount}</td>
           <td>{value.transactionType.name}</td>
           <td>{value.account.name}</td>
-          <td><a href="#">Resolve</a></td>
+          <td><a onClick={this.onResolve.bind(this)} data-guid={value.guid} href="#">Resolve</a></td>
         </tr>
       )
     })
@@ -89,7 +101,7 @@ class PlannedTransactionsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Planned Transactions
-          <a className="pull-right" href="#" onClick={this.handleNew.bind(this)}>
+          <a className="pull-right" onClick={this.handleNew.bind(this)} href="#">
             New Planned Transaction
           </a>
         </div>

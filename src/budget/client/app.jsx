@@ -8,6 +8,7 @@ var PlannedTransactionsCard = require('./planned-transactions-card.jsx')
 var RecentTransactionsCard = require('./recent-transactions-card.jsx')
 
 var NewPlannedTransactionModal = require('./new-planned-transaction-modal.jsx')
+var ResolvePlannedTransactionModal = require('./ResolvePlannedTransactionModal.jsx')
 var NewTransactionModal = require('./new-transaction-modal.jsx')
 
 require("./app.scss")
@@ -26,10 +27,7 @@ class App extends React.Component {
   }
 
   showNewPlannedTransactionModal() {
-    this.setState({
-      plannedTransactionModalActive: true,
-      transactionModalActive: false
-    })
+    this.setState({plannedTransactionModalActive: true})
   }
 
   handleNewPlannedTransaction(guid) {
@@ -39,11 +37,22 @@ class App extends React.Component {
     })
   }
 
-  showNewTransactionModal() {
+  showResolvePlannedTransactionModal(plannedTxn) {
     this.setState({
-      plannedTransactionModalActive: false,
-      transactionModalActive: true
+      resolvePlannedTransactionModalActive: true,
+      plannedTxnToResolve: plannedTxn
     })
+  }
+
+  onConfirmPlannedTxn(guid) {
+    this.setState({
+      resolvePlannedTransactionModalActive: false,
+      latestTransactionGuid: guid
+    })
+  }
+
+  showNewTransactionModal() {
+    this.setState({transactionModalActive: true})
   }
 
   handleNewTransaction(guid) {
@@ -56,6 +65,7 @@ class App extends React.Component {
   hideModal() {
     this.setState({
       plannedTransactionModalActive: false,
+      resolvePlannedTransactionModalActive: false,
       transactionModalActive: false
     })
   }
@@ -82,6 +92,14 @@ class App extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.handleNewPlannedTransaction.bind(this)}
       />
+    } else if (this.state.resolvePlannedTransactionModalActive) {
+      modal = <ResolvePlannedTransactionModal
+        transactionTypes={this.state.transactionTypes}
+        accounts={this.state.accounts}
+        plannedTxn={this.state.plannedTxnToResolve}
+        onClose={this.hideModal.bind(this)}
+        onConfirm={this.onConfirmPlannedTxn.bind(this)}
+      />
     } else if (this.state.transactionModalActive) {
       modal = <NewTransactionModal
         transactionTypes={this.state.transactionTypes}
@@ -106,7 +124,9 @@ class App extends React.Component {
           />
           <PlannedTransactionsCard
             onNew={this.showNewPlannedTransactionModal.bind(this)}
+            onResolve={this.showResolvePlannedTransactionModal.bind(this)}
             latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
+            latestTransactionGuid={this.state.latestTransactionGuid}
           />
           <RecentTransactionsCard
             onNew={this.showNewTransactionModal.bind(this)}
