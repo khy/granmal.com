@@ -27,6 +27,16 @@ var httpPost = (path, body) => {
   })
 }
 
+var httpDelete = (path) => {
+  return request({
+    method: 'DELETE',
+    uri: 'http://localhost:8999/budget' + path ,
+    headers: {
+      'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda'
+    }
+  })
+}
+
 var Router = FalcorRouter.createClass([
   {
     route: 'accounts[{integers:indices}]',
@@ -163,6 +173,19 @@ var Router = FalcorRouter.createClass([
           {
             path: ['plannedTransactions', 'latest'],
             value: $ref(['plannedTransactionsByGuid', plannedTransaction.guid])
+          }
+        ]
+      })
+    }
+  },
+  {
+    route: 'plannedTransactions.delete',
+    call: (pathSet, args) => {
+      return httpDelete('/plannedTransactions/' + args[0]).then ( plannedTransaction => {
+        return [
+          {
+            path: ['plannedTransactions', 'lastDeleted'],
+            value: $ref(['plannedTransactionsByGuid', args[0]])
           }
         ]
       })

@@ -33,6 +33,14 @@ class ResolvePlannedTransactionModal extends React.Component {
     )
   }
 
+  delete(event) {
+    event.preventDefault()
+
+    model.call('plannedTransactions.delete', [this.props.plannedTxn.guid]).then(
+      response => this.props.onDelete(this.props.plannedTxn.guid)
+    )
+  }
+
   render() {
 
     const transactionTypeOptions = (
@@ -108,6 +116,7 @@ class ResolvePlannedTransactionModal extends React.Component {
                 </form>
               </div>
               <div className="modal-footer">
+                <button type="button" className="btn btn-danger-outline pull-left" onClick={this.delete.bind(this)}>Delete</button>
                 <button type="button" className="btn btn-secondary" onClick={this.close.bind(this)}>Close</button>
                 <button type="button" className="btn btn-primary" onClick={this.confirm.bind(this)}>Confirm</button>
               </div>

@@ -25,7 +25,8 @@ class PlannedTransactionsCard extends React.Component {
   componentWillReceiveProps(newProps) {
     if (
       (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) ||
-      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid)
+      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid) ||
+      (newProps.latestDeletedPlannedTxnGuid !== this.props.latestDeletedPlannedTxnGuid)
     ) {
       this.reload()
     }
@@ -37,9 +38,13 @@ class PlannedTransactionsCard extends React.Component {
       ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
       ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
-      response => this.setState({
-        plannedTransactions: response.json.plannedTransactions
-      })
+      response => {
+        if (response) {
+          this.setState({
+            plannedTransactions: response.json.plannedTransactions
+          })
+        }
+      }
     )
   }
 

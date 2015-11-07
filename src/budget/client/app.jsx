@@ -51,6 +51,13 @@ class App extends React.Component {
     })
   }
 
+  onDeletePlannedTxn(guid) {
+    this.setState({
+      resolvePlannedTransactionModalActive: false,
+      latestDeletedPlannedTxnGuid: guid
+    })
+  }
+
   showNewTransactionModal() {
     this.setState({transactionModalActive: true})
   }
@@ -99,6 +106,7 @@ class App extends React.Component {
         plannedTxn={this.state.plannedTxnToResolve}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
+        onDelete={this.onDeletePlannedTxn.bind(this)}
       />
     } else if (this.state.transactionModalActive) {
       modal = <NewTransactionModal
@@ -121,12 +129,14 @@ class App extends React.Component {
           <ProjectionsCard
             latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
             latestTransactionGuid={this.state.latestTransactionGuid}
+            latestDeletedPlannedTxnGuid={this.state.latestDeletedPlannedTxnGuid}
           />
           <PlannedTransactionsCard
             onNew={this.showNewPlannedTransactionModal.bind(this)}
             onResolve={this.showResolvePlannedTransactionModal.bind(this)}
             latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
             latestTransactionGuid={this.state.latestTransactionGuid}
+            latestDeletedPlannedTxnGuid={this.state.latestDeletedPlannedTxnGuid}
           />
           <RecentTransactionsCard
             onNew={this.showNewTransactionModal.bind(this)}
