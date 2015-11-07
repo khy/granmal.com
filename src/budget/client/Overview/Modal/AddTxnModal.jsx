@@ -1,14 +1,8 @@
 var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-var model = require('client/model')
 
-class NewTxnModal extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {}
-  }
+class AddTxnModal extends React.Component {
 
   close(event) {
     event.preventDefault()
@@ -18,16 +12,14 @@ class NewTxnModal extends React.Component {
   add(event) {
     event.preventDefault()
 
-    const transaction = {
+    const newTransaction = {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseInt(this.refs.amountInput.value),
       timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
     }
 
-    model.call('transactions.add', [transaction], [['guid']]).then(
-      response => this.props.onAdd(response.json.transactions.latest.guid)
-    )
+    this.props.onAdd(newTransaction)
   }
 
   render() {
@@ -96,4 +88,4 @@ class NewTxnModal extends React.Component {
 
 }
 
-module.exports = NewTxnModal
+module.exports = AddTxnModal

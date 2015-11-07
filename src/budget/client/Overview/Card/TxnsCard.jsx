@@ -2,60 +2,24 @@ var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
-var model = require('client/model')
 
 class TxnsCard extends React.Component {
 
-  constructor() {
-    super()
-    this.state = {
-      transactions: []
-    }
-  }
-
-  componentWillMount() {
-    this.load()
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (
-      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid) ||
-      (newProps.latestDeletedTxnGuid !== this.props.latestDeletedPlannedTxnGuid)
-    ) {
-      this.reload()
-    }
-  }
-
-  load() {
-    model.get(
-      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
-      ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => this.setState({transactions: response.json.transactions})
-    )
-  }
-
-  reload() {
-    model.invalidate(['transactions'])
-    this.load()
-  }
-
-  handleNew(event) {
+  onNew(event) {
     event.preventDefault()
     this.props.onNew()
   }
 
   onAdjust(event) {
     event.preventDefault()
-    var txn = _find(this.state.transactions, (txn) => {
+    var txn = _find(this.props.txns, (txn) => {
       return txn.guid === event.target.dataset.guid
     })
     this.props.onAdjust(txn)
   }
 
   render() {
-    var rows = _map(this.state.transactions, (value, key) => {
+    var rows = _map(this.props.txns, (value, key) => {
       return (
         <tr key={value.guid}>
           <td>{moment(value.timestamp).format('MM/DD/YY')}</td>
@@ -83,7 +47,7 @@ class TxnsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Transactions
-          <a className="pull-right" href="#" onClick={this.handleNew.bind(this)}>
+          <a className="pull-right" href="#" onClick={this.onNew.bind(this)}>
             New Transaction
           </a>
         </div>

@@ -5,7 +5,7 @@ var _find = require('lodash/collection/find')
 
 class PlannedTxnsCard extends React.Component {
 
-  handleNew(event) {
+  onNew(event) {
     event.preventDefault()
     this.props.onNew()
   }
@@ -60,7 +60,7 @@ class PlannedTxnsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Planned Transactions
-          <a className="pull-right" onClick={this.handleNew.bind(this)} href="#">
+          <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
             New Planned Transaction
           </a>
         </div>

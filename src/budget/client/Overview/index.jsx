@@ -8,7 +8,7 @@ var TxnsCard = require('./Card/TxnsCard')
 
 var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
-var NewTxnModal = require('./Modal/NewTxnModal')
+var AddTxnModal = require('./Modal/AddTxnModal')
 var AdjustTxnModal = require('./Modal/AdjustTxnModal')
 
 class Overview extends React.Component {
@@ -71,8 +71,20 @@ class Overview extends React.Component {
     )
   }
 
-  showNewTransactionModal() {
-    this.setState({transactionModalActive: true})
+  showAddTxnModal() {
+    this.setState({addTxnModalActive: true})
+  }
+
+  addTxn(txn) {
+    model.call('transactions.add', [txn], [['guid']]).then(
+      response => {
+        this.setState({
+          addTxnModalActive: false,
+          latestTransactionGuid: response.json.transactions.latest.guid
+        })
+        this.loadTxns(true)
+      }
+    )
   }
 
   showAdjustTxnModal(txn) {
@@ -96,18 +108,11 @@ class Overview extends React.Component {
     })
   }
 
-  handleNewTransaction(guid) {
-    this.setState({
-      transactionModalActive: false,
-      latestTransactionGuid: guid
-    })
-  }
-
   hideModal() {
     this.setState({
       addPlannedTxnModalActive: false,
       resolvePlannedTxnModalActive: false,
-      transactionModalActive: false,
+      addTxnModalActive: false,
       adjustTxnModalActive: false
     })
   }
@@ -124,6 +129,7 @@ class Overview extends React.Component {
     )
 
     this.loadPlannedTxns()
+    this.loadTxns()
   }
 
   loadPlannedTxns(force = false) {
@@ -137,6 +143,23 @@ class Overview extends React.Component {
       response => {
         this.setState({
           plannedTxns: response ? response.json.plannedTransactions : []
+        })
+      }
+    )
+  }
+
+  loadTxns(force = false) {
+    if (force) { model.invalidate(['transactions']) }
+
+    model.get(
+      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
+      ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
+      ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
+    ).then(
+      response => {
+        console.log(response)
+        this.setState({
+          txns: response ? response.json.transactions : []
         })
       }
     )
@@ -161,12 +184,12 @@ class Overview extends React.Component {
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
-    } else if (this.state.transactionModalActive) {
-      modal = <NewTxnModal
+    } else if (this.state.addTxnModalActive) {
+      modal = <AddTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
         onClose={this.hideModal.bind(this)}
-        onAdd={this.handleNewTransaction.bind(this)}
+        onAdd={this.addTxn.bind(this)}
       />
     } else if (this.state.adjustTxnModalActive) {
       modal = <AdjustTxnModal
@@ -199,10 +222,9 @@ class Overview extends React.Component {
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard
-            onNew={this.showNewTransactionModal.bind(this)}
+            txns={this.state.txns}
+            onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
-            latestTransactionGuid={this.state.latestTransactionGuid}
-            latestDeletedTxnGuid={this.state.latestDeletedTxnGuid}
           />
         </div>
 
