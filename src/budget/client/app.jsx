@@ -10,6 +10,7 @@ var RecentTransactionsCard = require('./recent-transactions-card.jsx')
 var NewPlannedTransactionModal = require('./new-planned-transaction-modal.jsx')
 var ResolvePlannedTransactionModal = require('./ResolvePlannedTransactionModal.jsx')
 var NewTransactionModal = require('./new-transaction-modal.jsx')
+var AdjustTxnModal = require('./AdjustTxnModal.jsx')
 
 require("./app.scss")
 
@@ -62,6 +63,27 @@ class App extends React.Component {
     this.setState({transactionModalActive: true})
   }
 
+  showAdjustTxnModal(txn) {
+    this.setState({
+      adjustTxnModalActive: true,
+      txnToAdjust: txn
+    })
+  }
+
+  onAdjustTxn(guid) {
+    this.setState({
+      adjustTxnModalActive: false,
+      lastCreatedTxn: guid
+    })
+  }
+
+  onDeleteTxn(guid) {
+    this.setState({
+      adjustTxnModalActive: false,
+      lastDeleatedTxn: guid
+    })
+  }
+
   handleNewTransaction(guid) {
     this.setState({
       transactionModalActive: false,
@@ -73,7 +95,8 @@ class App extends React.Component {
     this.setState({
       plannedTransactionModalActive: false,
       resolvePlannedTransactionModalActive: false,
-      transactionModalActive: false
+      transactionModalActive: false,
+      adjustTxnModalActive: false
     })
   }
 
@@ -115,6 +138,15 @@ class App extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.handleNewTransaction.bind(this)}
       />
+    } else if (this.state.adjustTxnModalActive) {
+      modal = <AdjustTxnModal
+        transactionTypes={this.state.transactionTypes}
+        accounts={this.state.accounts}
+        txn={this.state.txnToAdjust}
+        onClose={this.hideModal.bind(this)}
+        onAdjust={this.onAdjustTxn.bind(this)}
+        onDelete={this.onDeleteTxn.bind(this)}
+      />
     }
 
     return (
@@ -140,6 +172,7 @@ class App extends React.Component {
           />
           <RecentTransactionsCard
             onNew={this.showNewTransactionModal.bind(this)}
+            onAdjust={this.showAdjustTxnModal.bind(this)}
             latestTransactionGuid={this.state.latestTransactionGuid}
           />
         </div>

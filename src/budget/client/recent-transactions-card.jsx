@@ -3,6 +3,7 @@ var ReactDom = require('react-dom')
 
 var moment = require('moment')
 var _map = require('lodash/collection/map')
+var _find = require('lodash/collection/find')
 
 var model = require('./model.js')
 
@@ -30,8 +31,8 @@ class RecentTransactionsCard extends React.Component {
   load() {
     model.get(
       ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
-      ['transactions', {from: 0, to: 9}, 'transactionType', 'name'],
-      ['transactions', {from: 0, to: 9}, 'account', 'name']
+      ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
+      ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => this.setState({transactions: response.json.transactions})
     )
@@ -47,6 +48,13 @@ class RecentTransactionsCard extends React.Component {
     this.props.onNew()
   }
 
+  onAdjust(event) {
+    event.preventDefault()
+    var txn = _find(this.state.transactions, (txn) => {
+      return txn.guid === event.target.dataset.guid
+    })
+    this.props.onAdjust(txn)
+  }
 
   render() {
     var rows = _map(this.state.transactions, (value, key) => {
@@ -56,7 +64,7 @@ class RecentTransactionsCard extends React.Component {
           <td>{value.amount}</td>
           <td>{value.transactionType.name}</td>
           <td>{value.account.name}</td>
-          <td><a href="#">Adjust</a></td>
+          <td><a onClick={this.onAdjust.bind(this)} data-guid={value.guid} href="#">Adjust</a></td>
         </tr>
       )
     })
