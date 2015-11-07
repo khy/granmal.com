@@ -2,51 +2,8 @@ var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
-var model = require('client/model')
 
 class PlannedTxnsCard extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {
-      plannedTransactions: []
-    }
-  }
-
-  componentWillMount() {
-    this.load()
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (
-      (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) ||
-      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid) ||
-      (newProps.latestDeletedPlannedTxnGuid !== this.props.latestDeletedPlannedTxnGuid)
-    ) {
-      this.reload()
-    }
-  }
-
-  load() {
-    model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        if (response) {
-          this.setState({
-            plannedTransactions: response.json.plannedTransactions
-          })
-        }
-      }
-    )
-  }
-
-  reload() {
-    model.invalidate(['plannedTransactions'])
-    this.load()
-  }
 
   handleNew(event) {
     event.preventDefault()
@@ -55,14 +12,16 @@ class PlannedTxnsCard extends React.Component {
 
   onResolve(event) {
     event.preventDefault()
-    var plannedTxn = _find(this.state.plannedTransactions, (plannedTxn) => {
+
+    var plannedTxn = _find(this.props.plannedTxns, (plannedTxn) => {
       return plannedTxn.guid === event.target.dataset.guid
     })
+
     this.props.onResolve(plannedTxn)
   }
 
   render() {
-    var rows = _map(this.state.plannedTransactions, (value, key) => {
+    var rows = _map(this.props.plannedTxns, (value, key) => {
       const minDate = moment(value.minTimestamp).format('MM/DD/YY')
       const maxDate = moment(value.maxTimestamp).format('MM/DD/YY')
       const date = (minDate === maxDate) ?

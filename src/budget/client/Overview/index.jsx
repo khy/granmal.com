@@ -6,7 +6,7 @@ var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 var TxnsCard = require('./Card/TxnsCard')
 
-var NewPlannedTxnModal = require('./Modal/NewPlannedTxnModal')
+var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
 var NewTxnModal = require('./Modal/NewTxnModal')
 var AdjustTxnModal = require('./Modal/AdjustTxnModal')
@@ -15,29 +15,34 @@ class Overview extends React.Component {
 
   constructor() {
     super()
-    this.state = {
-      plannedTransactionModalActive: false
-    }
+    this.state = {}
   }
 
   componentWillMount() {
     this.load()
   }
 
-  showNewPlannedTransactionModal() {
-    this.setState({plannedTransactionModalActive: true})
+  addPlannedTxn(plannedTxn) {
+    model.call('plannedTransactions.add', [plannedTxn], [['guid']]).then(
+      response => {
+        this.setState({
+          addPlannedTxnModalActive: false,
+          newPlannedTxnGuid: response.json.plannedTransactions.latest.guid
+        })
+        this.loadPlannedTxns(true)
+      }
+    )
   }
 
-  handleNewPlannedTransaction(guid) {
+  showAddPlannedTxnModal() {
     this.setState({
-      plannedTransactionModalActive: false,
-      latestPlannedTransactionGuid: guid
+      addPlannedTxnModalActive: true
     })
   }
 
-  showResolvePlannedTransactionModal(plannedTxn) {
+  showResolvePlannedTxnModal(plannedTxn) {
     this.setState({
-      resolvePlannedTransactionModalActive: true,
+      resolvePlannedTxnModalActive: true,
       plannedTxnToResolve: plannedTxn
     })
   }
@@ -90,8 +95,8 @@ class Overview extends React.Component {
 
   hideModal() {
     this.setState({
-      plannedTransactionModalActive: false,
-      resolvePlannedTransactionModalActive: false,
+      addPlannedTxnModalActive: false,
+      resolvePlannedTxnModalActive: false,
       transactionModalActive: false,
       adjustTxnModalActive: false
     })
@@ -107,19 +112,37 @@ class Overview extends React.Component {
         accounts: response.json.accounts
       })
     )
+
+    this.loadPlannedTxns()
+  }
+
+  loadPlannedTxns(force = false) {
+    if (force) { model.invalidate(['plannedTransactions']) }
+
+    model.get(
+      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
+      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
+      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
+    ).then(
+      response => {
+        this.setState({
+          plannedTxns: response ? response.json.plannedTransactions : []
+        })
+      }
+    )
   }
 
   render() {
     let modal
 
-    if (this.state.plannedTransactionModalActive) {
-      modal = <NewPlannedTxnModal
+    if (this.state.addPlannedTxnModalActive) {
+      modal = <AddPlannedTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
         onClose={this.hideModal.bind(this)}
-        onAdd={this.handleNewPlannedTransaction.bind(this)}
+        onAdd={this.addPlannedTxn.bind(this)}
       />
-    } else if (this.state.resolvePlannedTransactionModalActive) {
+    } else if (this.state.resolvePlannedTxnModalActive) {
       modal = <ResolvePlannedTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
@@ -160,12 +183,10 @@ class Overview extends React.Component {
             latestTransactionGuid={this.state.latestTransactionGuid}
             latestDeletedPlannedTxnGuid={this.state.latestDeletedPlannedTxnGuid}
           />
-        <PlannedTxnsCard
-            onNew={this.showNewPlannedTransactionModal.bind(this)}
-            onResolve={this.showResolvePlannedTransactionModal.bind(this)}
-            latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
-            latestTransactionGuid={this.state.latestTransactionGuid}
-            latestDeletedPlannedTxnGuid={this.state.latestDeletedPlannedTxnGuid}
+          <PlannedTxnsCard
+            plannedTxns={this.state.plannedTxns}
+            onNew={this.showAddPlannedTxnModal.bind(this)}
+            onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard
             onNew={this.showNewTransactionModal.bind(this)}

@@ -1,17 +1,8 @@
 var React = require('react')
-var ReactDom = require('react-dom')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-var model = require('client/model')
 
-class NewPlannedTxnModal extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {}
-  }
-
-  componentWillMount() {}
+class AddPlannedTxnModal extends React.Component {
 
   close(event) {
     event.preventDefault()
@@ -30,9 +21,7 @@ class NewPlannedTxnModal extends React.Component {
       maxTimestamp: moment(this.refs.maxTimestampInput.value, ["MM|DD|YY"]).format()
     }
 
-    model.call('plannedTransactions.add', [plannedTransaction], [['guid']]).then(
-      response => this.props.onAdd(response.json.plannedTransactions.latest.guid)
-    )
+    this.props.onAdd(plannedTransaction)
   }
 
   render() {
@@ -121,4 +110,4 @@ class NewPlannedTxnModal extends React.Component {
 
 }
 
-module.exports = NewPlannedTxnModal
+module.exports = AddPlannedTxnModal
