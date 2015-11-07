@@ -278,6 +278,32 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'transactions.adjust',
+    call: (pathSet, args) => {
+      return httpPost('/transactions/' + args[0] + '/adjustments', args[1]).then ( transaction => {
+        return [
+          {
+            path: ['transactions', 'latest'],
+            value: $ref(['transactionsByGuid', transaction.guid])
+          }
+        ]
+      })
+    }
+  },
+  {
+    route: 'transactions.delete',
+    call: (pathSet, args) => {
+      return httpDelete('/transactions/' + args[0]).then ( result => {
+        return [
+          {
+            path: ['transactions', 'lastDeleted'],
+            value: $ref(['transactionsByGuid', args[0]])
+          }
+        ]
+      })
+    }
+  },
+  {
     route: 'transactionsByGuid[{keys:guids}][{keys:attributes}]',
     get: (pathSet) => {
       return httpGet('/transactions').then(

@@ -23,7 +23,10 @@ class RecentTransactionsCard extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.latestTransactionGuid) {
+    if (
+      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid) ||
+      (newProps.latestDeletedTxnGuid !== this.props.latestDeletedPlannedTxnGuid)
+    ) {
       this.reload()
     }
   }

@@ -73,14 +73,14 @@ class App extends React.Component {
   onAdjustTxn(guid) {
     this.setState({
       adjustTxnModalActive: false,
-      lastCreatedTxn: guid
+      latestTransactionGuid: guid
     })
   }
 
   onDeleteTxn(guid) {
     this.setState({
       adjustTxnModalActive: false,
-      lastDeleatedTxn: guid
+      latestDeletedTxnGuid: guid
     })
   }
 
@@ -174,6 +174,7 @@ class App extends React.Component {
             onNew={this.showNewTransactionModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
             latestTransactionGuid={this.state.latestTransactionGuid}
+            latestDeletedTxnGuid={this.state.latestDeletedTxnGuid}
           />
         </div>
 

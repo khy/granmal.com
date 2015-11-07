@@ -19,12 +19,25 @@ class AdjustTxnModal extends React.Component {
 
   adjust(event) {
     event.preventDefault()
-    console.log("adjust")
+
+    const transaction = {
+      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+      accountGuid: this.refs.accountGuidSelect.value,
+      amount: parseInt(this.refs.amountInput.value),
+      timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
+    }
+
+    model.call('transactions.adjust', [this.props.txn.guid, transaction], [['guid']]).then(
+      response => this.props.onAdjust(response.json.transactions.latest.guid)
+    )
   }
 
   delete(event) {
     event.preventDefault()
-    console.log("delete")
+
+    model.call('transactions.delete', [this.props.txn.guid]).then(
+      response => this.props.onDelete(this.props.txn.guid)
+    )
   }
 
   render() {
@@ -42,7 +55,6 @@ class AdjustTxnModal extends React.Component {
     )
 
     var txn = this.props.txn
-    console.log(txn)
     var defaultDate = moment(txn.timestamp).format('MM/DD/YYYY')
 
     return (
