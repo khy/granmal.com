@@ -1,12 +1,7 @@
 var React = require('react')
-var ReactDom = require('react-dom')
-
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-
-var model = require('./model.js')
-
-require("./app.scss")
+var model = require('client/model')
 
 class ProjectionsCard extends React.Component {
 

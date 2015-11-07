@@ -1,15 +1,10 @@
 var React = require('react')
-var ReactDom = require('react-dom')
-
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
+var model = require('client/model')
 
-var model = require('./model.js')
-
-require("./app.scss")
-
-class RecentTransactionsCard extends React.Component {
+class TxnsCard extends React.Component {
 
   constructor() {
     super()
@@ -87,7 +82,7 @@ class RecentTransactionsCard extends React.Component {
     return (
       <div className="card">
         <div className="card-header">
-          Recent Transactions
+          Transactions
           <a className="pull-right" href="#" onClick={this.handleNew.bind(this)}>
             New Transaction
           </a>
@@ -113,4 +108,4 @@ class RecentTransactionsCard extends React.Component {
 
 }
 
-module.exports = RecentTransactionsCard
+module.exports = TxnsCard

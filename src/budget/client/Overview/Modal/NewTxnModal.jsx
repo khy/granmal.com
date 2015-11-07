@@ -1,11 +1,9 @@
 var React = require('react')
-
 var moment = require('moment')
 var _map = require('lodash/collection/map')
+var model = require('client/model')
 
-var model = require('./model.js')
-
-class AdjustTxnModal extends React.Component {
+class NewTxnModal extends React.Component {
 
   constructor() {
     super()
@@ -17,7 +15,7 @@ class AdjustTxnModal extends React.Component {
     this.props.onClose()
   }
 
-  adjust(event) {
+  add(event) {
     event.preventDefault()
 
     const transaction = {
@@ -27,16 +25,8 @@ class AdjustTxnModal extends React.Component {
       timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
     }
 
-    model.call('transactions.adjust', [this.props.txn.guid, transaction], [['guid']]).then(
-      response => this.props.onAdjust(response.json.transactions.latest.guid)
-    )
-  }
-
-  delete(event) {
-    event.preventDefault()
-
-    model.call('transactions.delete', [this.props.txn.guid]).then(
-      response => this.props.onDelete(this.props.txn.guid)
+    model.call('transactions.add', [transaction], [['guid']]).then(
+      response => this.props.onAdd(response.json.transactions.latest.guid)
     )
   }
 
@@ -54,9 +44,6 @@ class AdjustTxnModal extends React.Component {
       })
     )
 
-    var txn = this.props.txn
-    var defaultDate = moment(txn.timestamp).format('MM/DD/YYYY')
-
     return (
       <div>
         <div className="modal-backdrop in" onClick={this.close.bind(this)}></div>
@@ -67,57 +54,38 @@ class AdjustTxnModal extends React.Component {
                 <button className="close" type="button" onClick={this.close.bind(this)}>
                   <span>&times;</span>
                 </button>
-                <h4 className="modal-title">Adjust Transaction</h4>
+                <h4 className="modal-title">New Transaction</h4>
               </div>
               <div className="modal-body">
                 <form>
                   <fieldset className="form-group">
                     <label>Transaction Type</label>
-                    <select
-                      className="form-control"
-                      ref="transactionTypeGuidSelect"
-                      defaultValue={txn.transactionType.guid}
-                    >
+                    <select ref="transactionTypeGuidSelect" className="form-control">
                       {transactionTypeOptions}
                     </select>
                   </fieldset>
 
                   <fieldset className="form-group">
                     <label>Account</label>
-                    <select
-                      className="form-control"
-                      ref="accountGuidSelect"
-                      defaultValue={txn.account.guid}
-                    >
+                    <select ref="accountGuidSelect" className="form-control">
                       {accountOptions}
                     </select>
                   </fieldset>
 
                   <fieldset className="form-group">
                     <label>Amount</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref="amountInput"
-                      defaultValue={txn.amount}
-                    />
+                    <input ref="amountInput" className="form-control" type="text" />
                   </fieldset>
 
                   <fieldset className="form-group">
                     <label>Date</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref="timestampInput"
-                      defaultValue={defaultDate}
-                    />
+                    <input ref="timestampInput" className="form-control" type="text" />
                   </fieldset>
                 </form>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-danger-outline pull-left" onClick={this.delete.bind(this)}>Delete</button>
                 <button type="button" className="btn btn-secondary" onClick={this.close.bind(this)}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={this.adjust.bind(this)}>Adjust</button>
+                <button type="button" className="btn btn-primary" onClick={this.add.bind(this)}>Add</button>
               </div>
             </div>
           </div>
@@ -128,4 +96,4 @@ class AdjustTxnModal extends React.Component {
 
 }
 
-module.exports = AdjustTxnModal
+module.exports = NewTxnModal

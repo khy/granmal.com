@@ -1,15 +1,10 @@
 var React = require('react')
-var ReactDom = require('react-dom')
-
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
+var model = require('client/model')
 
-var model = require('./model.js')
-
-require("./app.scss")
-
-class PlannedTransactionsCard extends React.Component {
+class PlannedTxnsCard extends React.Component {
 
   constructor() {
     super()
@@ -131,4 +126,4 @@ class PlannedTransactionsCard extends React.Component {
 
 }
 
-module.exports = PlannedTransactionsCard
+module.exports = PlannedTxnsCard

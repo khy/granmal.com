@@ -1,11 +1,9 @@
 var React = require('react')
-
 var moment = require('moment')
 var _map = require('lodash/collection/map')
+var model = require('client/model')
 
-var model = require('./model.js')
-
-class ResolvePlannedTransactionModal extends React.Component {
+class ResolvePlannedTxnModal extends React.Component {
 
   constructor() {
     super()
@@ -129,4 +127,4 @@ class ResolvePlannedTransactionModal extends React.Component {
 
 }
 
-module.exports = ResolvePlannedTransactionModal
+module.exports = ResolvePlannedTxnModal
