@@ -1,4 +1,5 @@
 var React = require('react')
+var moment = require('moment')
 
 var model = require('client/model')
 
@@ -15,11 +16,20 @@ class Overview extends React.Component {
 
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      projectionDate: moment().add(1, 'month').startOf('month')
+    }
   }
 
   componentWillMount() {
     this.load()
+  }
+
+  changeProjectionDate(date) {
+    this.setState(
+      { projectionDate: date },
+      () => { this.loadProjections() }
+    )
   }
 
   addPlannedTxn(newPlannedTxn) {
@@ -29,6 +39,7 @@ class Overview extends React.Component {
           addPlannedTxnModalActive: false,
           newPlannedTxnGuid: response.json.plannedTransactions.latest.guid
         })
+        this.loadProjections(true)
         this.loadPlannedTxns(true)
       }
     )
@@ -54,7 +65,9 @@ class Overview extends React.Component {
           resolvePlannedTxnModalActive: false,
           newTxnGuid: response.json.transactions.latest.guid
         })
+        this.loadProjections(true)
         this.loadPlannedTxns(true)
+        this.loadTxns(true)
       }
     )
   }
@@ -66,6 +79,7 @@ class Overview extends React.Component {
           resolvePlannedTransactionModalActive: false,
           latestDeletedPlannedTxnGuid: guid
         })
+        this.loadProjections(true)
         this.loadPlannedTxns(true)
       }
     )
@@ -82,6 +96,7 @@ class Overview extends React.Component {
           addTxnModalActive: false,
           latestTransactionGuid: response.json.transactions.latest.guid
         })
+        this.loadProjections(true)
         this.loadTxns(true)
       }
     )
@@ -101,6 +116,7 @@ class Overview extends React.Component {
           adjustTxnModalActive: false,
           latestTransactionGuid: response.json.transactions.latest.guid
         })
+        this.loadProjections(true)
         this.loadTxns(true)
       }
     )
@@ -113,6 +129,7 @@ class Overview extends React.Component {
           adjustTxnModalActive: false,
           latestDeletedTxnGuid: guid
         })
+        this.loadProjections(true)
         this.loadTxns(true)
       }
     )
@@ -138,8 +155,22 @@ class Overview extends React.Component {
       })
     )
 
+    this.loadProjections()
     this.loadPlannedTxns()
     this.loadTxns()
+  }
+
+  loadProjections(force = false) {
+    const _date = this.state.projectionDate.format('YYYY-MM-DD')
+
+    if (force) { model.invalidate(['projectionsByDate', _date]) }
+
+    model.get(
+      ['projectionsByDate', _date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
+      ['projectionsByDate', _date, {from: 0, to: 9}, 'account', ['name', 'balance']]
+    ).then(
+      response => this.setState({projections: response.json.projectionsByDate[_date]})
+    )
   }
 
   loadPlannedTxns(force = false) {
@@ -221,9 +252,9 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard
-            latestPlannedTransactionGuid={this.state.latestPlannedTransactionGuid}
-            latestTransactionGuid={this.state.latestTransactionGuid}
-            latestDeletedPlannedTxnGuid={this.state.latestDeletedPlannedTxnGuid}
+            date={this.state.projectionDate}
+            projections={this.state.projections}
+            onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
             plannedTxns={this.state.plannedTxns}

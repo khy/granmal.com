@@ -1,58 +1,17 @@
 var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-var model = require('client/model')
 
 class ProjectionsCard extends React.Component {
 
-  constructor() {
-    super()
-    this.state = {
-      date: moment().add(1, 'month').startOf('month'),
-      projections: []
-    }
-  }
-
-  componentWillMount() {
-    this.load()
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (
-      (newProps.latestPlannedTransactionGuid !== this.props.latestPlannedTransactionGuid) ||
-      (newProps.latestTransactionGuid !== this.props.latestTransactionGuid) ||
-      (newProps.latestDeletedPlannedTxnGuid !== this.props.latestDeletedPlannedTxnGuid)
-    ) {
-      this.reload()
-    }
-  }
-
-  load() {
-    const date = this.dateFormattedForModel()
-
-    model.get(
-      ['projectionsByDate', date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', date, {from: 0, to: 9}, 'account', ['name', 'balance']]
-    ).then(
-      response => this.setState({projections: response.json.projectionsByDate[date]})
-    )
-  }
-
-  reload() {
-    model.invalidate(['projectionsByDate', this.dateFormattedForModel()])
-    this.load()
-  }
-
-  dateFormattedForModel() { return this.state.date.format('YYYY-MM-DD') }
-
-  handleSubmit(event) {
+  onSubmit(event) {
     event.preventDefault()
     const date = moment(this.refs.dateInput.value, ["MM|DD|YY"])
-    this.setState({ date: date }, () => { this.load() })
+    this.props.onDateChange(date)
   }
 
   render() {
-    var rows = _map(this.state.projections, (value, key) => {
+    var rows = _map(this.props.projections, (value, key) => {
       return (
         <tr key={value.account.name}>
           <td>{value.account.name}</td>
@@ -70,9 +29,9 @@ class ProjectionsCard extends React.Component {
         </div>
 
         <div className="card-block">
-          <form className="form-inline" onSubmit={this.handleSubmit.bind(this)}>
+          <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
-              <input ref="dateInput" defaultValue={this.state.date.format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
+              <input ref="dateInput" defaultValue={this.props.date.format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
             </div>
 
             <button type="submit" className="btn btn-primary">Submit</button>
