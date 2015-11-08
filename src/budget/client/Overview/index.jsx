@@ -94,18 +94,28 @@ class Overview extends React.Component {
     })
   }
 
-  onAdjustTxn(guid) {
-    this.setState({
-      adjustTxnModalActive: false,
-      latestTransactionGuid: guid
-    })
+  adjustTxn(guid, newTransaction) {
+    model.call('transactions.adjust', [guid, newTransaction], [['guid']]).then(
+      response => {
+        this.setState({
+          adjustTxnModalActive: false,
+          latestTransactionGuid: response.json.transactions.latest.guid
+        })
+        this.loadTxns(true)
+      }
+    )
   }
 
-  onDeleteTxn(guid) {
-    this.setState({
-      adjustTxnModalActive: false,
-      latestDeletedTxnGuid: guid
-    })
+  deleteTxn(guid) {
+    model.call('transactions.delete', [guid]).then(
+      response => {
+        this.setState({
+          adjustTxnModalActive: false,
+          latestDeletedTxnGuid: guid
+        })
+        this.loadTxns(true)
+      }
+    )
   }
 
   hideModal() {
@@ -157,7 +167,6 @@ class Overview extends React.Component {
       ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        console.log(response)
         this.setState({
           txns: response ? response.json.transactions : []
         })
@@ -197,8 +206,8 @@ class Overview extends React.Component {
         accounts={this.state.accounts}
         txn={this.state.txnToAdjust}
         onClose={this.hideModal.bind(this)}
-        onAdjust={this.onAdjustTxn.bind(this)}
-        onDelete={this.onDeleteTxn.bind(this)}
+        onAdjust={this.adjustTxn.bind(this)}
+        onDelete={this.deleteTxn.bind(this)}
       />
     }
 

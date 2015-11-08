@@ -1,14 +1,8 @@
 var React = require('react')
 var moment = require('moment')
 var _map = require('lodash/collection/map')
-var model = require('client/model')
 
 class AdjustTxnModal extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {}
-  }
 
   close(event) {
     event.preventDefault()
@@ -18,24 +12,19 @@ class AdjustTxnModal extends React.Component {
   adjust(event) {
     event.preventDefault()
 
-    const transaction = {
+    const newTransaction = {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
       timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
     }
 
-    model.call('transactions.adjust', [this.props.txn.guid, transaction], [['guid']]).then(
-      response => this.props.onAdjust(response.json.transactions.latest.guid)
-    )
+    this.props.onAdjust(this.props.txn.guid, newTransaction)
   }
 
   delete(event) {
     event.preventDefault()
-
-    model.call('transactions.delete', [this.props.txn.guid]).then(
-      response => this.props.onDelete(this.props.txn.guid)
-    )
+    this.props.onDelete(this.props.txn.guid)
   }
 
   render() {
