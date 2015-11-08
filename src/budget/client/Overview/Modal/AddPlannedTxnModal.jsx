@@ -15,8 +15,8 @@ class AddPlannedTxnModal extends React.Component {
     const plannedTransaction = {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
-      minAmount: parseInt(this.refs.minAmountInput.value),
-      maxAmount: parseInt(this.refs.maxAmountInput.value),
+      minAmount: parseFloat(this.refs.minAmountInput.value),
+      maxAmount: parseFloat(this.refs.maxAmountInput.value),
       minTimestamp: moment(this.refs.minTimestampInput.value, ["MM|DD|YY"]).format(),
       maxTimestamp: moment(this.refs.maxTimestampInput.value, ["MM|DD|YY"]).format()
     }

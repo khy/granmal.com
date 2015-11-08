@@ -15,7 +15,7 @@ class AddTxnModal extends React.Component {
     const newTransaction = {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
-      amount: parseInt(this.refs.amountInput.value),
+      amount: parseFloat(this.refs.amountInput.value),
       timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
     }
 
