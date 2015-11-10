@@ -3,7 +3,7 @@ var moment = require('moment')
 import { connect } from 'react-redux'
 
 var model = require('client/model')
-import { fetchProjections } from 'client/actions'
+import { fetchProjectionsCard, fetchPlannedTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -26,7 +26,7 @@ class Overview extends React.Component {
   }
 
   changeProjectionDate(date) {
-    this.props.dispatch(fetchProjections(date))
+    loadProjections(date)
   }
 
   addPlannedTxn(newPlannedTxn) {
@@ -152,25 +152,17 @@ class Overview extends React.Component {
       })
     )
 
-    this.props.dispatch(fetchProjections(moment().add(1, 'month').startOf('month')))
+    this.loadProjections(moment().add(1, 'month').startOf('month'))
     this.loadPlannedTxns()
     this.loadTxns()
   }
 
-  loadPlannedTxns(force = false) {
-    if (force) { model.invalidate(['plannedTransactions']) }
+  loadProjections(date, force = false) {
+    this.props.dispatch(fetchProjectionsCard(date))
+  }
 
-    model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        this.setState({
-          plannedTxns: response ? response.json.plannedTransactions : []
-        })
-      }
-    )
+  loadPlannedTxns(force = false) {
+    this.props.dispatch(fetchPlannedTxnsCard())
   }
 
   loadTxns(force = false) {
@@ -240,7 +232,7 @@ class Overview extends React.Component {
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
-            plannedTxns={this.state.plannedTxns}
+            data={this.props.plannedTxnsCard}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
@@ -258,6 +250,6 @@ class Overview extends React.Component {
 
 }
 
-function select(state) { console.log(state); return state }
+function select(state) { return state }
 
 export default connect(select)(Overview)
