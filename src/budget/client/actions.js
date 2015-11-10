@@ -1,22 +1,22 @@
 var model = require('./model')
 
-export const REQUEST_PROJECTIONS = 'REQUEST_PROJECTIONS'
-export const RECEIVE_PROJECTIONS = 'RECEIVE_PROJECTIONS'
+export const ActionTypes = {
+  RequestProjections: 'REQUEST_PROJECTIONS',
+  ReceiveProjections: 'RECEIVE_PROJECTIONS'
+}
 
 export function requestProjections(date) {
   return {
-    type: REQUEST_PROJECTIONS,
-    date: date,
-    isFetching: true
+    type: ActionTypes.RequestProjections,
+    date: date
   }
 }
 
 export function receiveProjections(date, projections) {
   return {
-    type: RECEIVE_PROJECTIONS,
+    type: ActionTypes.ReceiveProjections,
     date,
-    projections,
-    isFetching: false
+    projections
   }
 }
 

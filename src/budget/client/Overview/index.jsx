@@ -236,8 +236,7 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard
-            date={this.props.projectionsDate}
-            projections={this.props.projections}
+            data={this.props.projectionsCard}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
@@ -259,6 +258,6 @@ class Overview extends React.Component {
 
 }
 
-function select(state) { return state }
+function select(state) { console.log(state); return state }
 
 export default connect(select)(Overview)

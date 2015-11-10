@@ -1,22 +1,31 @@
 import moment from 'moment'
 
-import { REQUEST_PROJECTIONS, RECEIVE_PROJECTIONS } from './actions'
+import { ActionTypes } from './actions'
 
 const initialState = {
-  projectionsDate: moment().add(1, 'month').startOf('month'),
-  projections: [],
+  projectionsCard: {
+    date: moment().add(1, 'month').startOf('month'),
+    projection: [],
+    isFetching: false
+  }
 }
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_PROJECTIONS:
+    case ActionTypes.RequestProjections:
       return Object.assign({}, state, {
-        projectionsDate: action.date
+        projectionsCard: Object.assign({}, state.projectionsCard, {
+          date: action.date,
+          isFetching: true
+        })
       })
-    case RECEIVE_PROJECTIONS:
+    case ActionTypes.ReceiveProjections:
       return Object.assign({}, state, {
-        projectionsDate: action.date,
-        projections: action.projections
+        projectionsCard: Object.assign({}, state.projectionsCard, {
+          date: action.date,
+          projections: action.projections,
+          isFetching: false
+        })
       })
     default:
       return state
