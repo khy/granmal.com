@@ -1,7 +1,9 @@
 var React = require('react')
 var moment = require('moment')
+import { connect } from 'react-redux'
 
 var model = require('client/model')
+import { fetchProjections } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -16,9 +18,7 @@ class Overview extends React.Component {
 
   constructor() {
     super()
-    this.state = {
-      projectionDate: moment().add(1, 'month').startOf('month')
-    }
+    this.state = {}
   }
 
   componentWillMount() {
@@ -26,10 +26,7 @@ class Overview extends React.Component {
   }
 
   changeProjectionDate(date) {
-    this.setState(
-      { projectionDate: date },
-      () => { this.loadProjections() }
-    )
+    this.props.dispatch(fetchProjections(date))
   }
 
   addPlannedTxn(newPlannedTxn) {
@@ -155,22 +152,9 @@ class Overview extends React.Component {
       })
     )
 
-    this.loadProjections()
+    this.props.dispatch(fetchProjections(moment().add(1, 'month').startOf('month')))
     this.loadPlannedTxns()
     this.loadTxns()
-  }
-
-  loadProjections(force = false) {
-    const _date = this.state.projectionDate.format('YYYY-MM-DD')
-
-    if (force) { model.invalidate(['projectionsByDate', _date]) }
-
-    model.get(
-      ['projectionsByDate', _date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', _date, {from: 0, to: 9}, 'account', ['name', 'balance']]
-    ).then(
-      response => this.setState({projections: response.json.projectionsByDate[_date]})
-    )
   }
 
   loadPlannedTxns(force = false) {
@@ -252,8 +236,8 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard
-            date={this.state.projectionDate}
-            projections={this.state.projections}
+            date={this.props.projectionsDate}
+            projections={this.props.projections}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
@@ -275,4 +259,6 @@ class Overview extends React.Component {
 
 }
 
-module.exports = Overview
+function select(state) { return state }
+
+export default connect(select)(Overview)

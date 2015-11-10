@@ -1,17 +1,22 @@
 import moment from 'moment'
 
-import {SET_PROJECTIONS_DATE} from './actions'
+import { REQUEST_PROJECTIONS, RECEIVE_PROJECTIONS } from './actions'
 
 const initialState = {
   projectionsDate: moment().add(1, 'month').startOf('month'),
-  projections: []
+  projections: [],
 }
 
-export default function budget(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case SET_PROJECTIONS_DATE:
+    case REQUEST_PROJECTIONS:
       return Object.assign({}, state, {
         projectionsDate: action.date
+      })
+    case RECEIVE_PROJECTIONS:
+      return Object.assign({}, state, {
+        projectionsDate: action.date,
+        projections: action.projections
       })
     default:
       return state

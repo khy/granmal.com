@@ -1,22 +1,19 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-import {createStore} from 'redux'
+import React from 'react'
+import { render } from 'react-dom'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { Provider } from 'react-redux'
 
-import budget from './reducer'
-var Overview = require('./Overview')
+import reducer from './reducer'
+import Overview from './Overview'
 
 require("./app.scss")
 
-const store = createStore(budget)
+const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
 
-console.log(store.getState())
-
-class App extends React.Component {
-
-  render() {
-    return (<Overview />)
-  }
-
-}
-
-ReactDom.render(<App/>, document.querySelector('#app'))
+render(
+  <Provider store={store}>
+    <Overview />
+  </Provider>,
+  document.querySelector('#app')
+)
