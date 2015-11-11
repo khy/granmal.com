@@ -1,12 +1,35 @@
 var model = require('./model')
 
 export const ActionTypes = {
-  RequestProjectionsCard: 'RequestProjectionsCard',
-  ReceiveProjectionsCard: 'ReceiveProjectionsCard',
-  RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
+  ReceiveProjectionsCard: 'ReceiveProjectionsCard',
+  ReceiveTxnsCard: 'ReceiveTxnsCard',
+  RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
+  RequestProjectionsCard: 'RequestProjectionsCard',
   RequestTxnsCard: 'RequestTxnsCard',
-  ReceiveTxnsCard: 'ReceiveTxnsCard'
+}
+
+export function fetchPlannedTxnsCard() {
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.RequestPlannedTxnsCard
+    })
+
+    model.get(
+      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
+      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
+      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
+    ).then(
+      response => {
+        const plannedTxns = response.json.plannedTransactions
+
+        dispatch({
+          type: ActionTypes.ReceivePlannedTxnsCard,
+          plannedTxns
+        })
+      }
+    )
+  }
 }
 
 export function fetchProjectionsCard(date) {
@@ -29,29 +52,6 @@ export function fetchProjectionsCard(date) {
           type: ActionTypes.ReceiveProjectionsCard,
           date,
           projections
-        })
-      }
-    )
-  }
-}
-
-export function fetchPlannedTxnsCard() {
-  return function (dispatch) {
-    dispatch({
-      type: ActionTypes.RequestPlannedTxnsCard
-    })
-
-    model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        const plannedTxns = response.json.plannedTransactions
-
-        dispatch({
-          type: ActionTypes.ReceivePlannedTxnsCard,
-          plannedTxns
         })
       }
     )

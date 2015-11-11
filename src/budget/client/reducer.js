@@ -4,29 +4,29 @@ import u from 'updeep'
 import { ActionTypes } from './actions'
 
 const initialState = {
+  plannedTxnsCard: {
+    plannedTxns: [],
+    isFetching: false
+  },
   projectionsCard: {
     date: moment().add(1, 'month').startOf('month').format(),
     projections: [],
     isFetching: false
   },
-  plannedTxnsCard: {
-    plannedTxns: [],
-    isFetching: false
-  },
   txnsCard: {
     txns: [],
     isFetching: false
-  }
+  },
 }
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case ActionTypes.RequestProjectionsCard:
+    case ActionTypes.ReceivePlannedTxnsCard:
       return u({
-        projectionsCard: {
-          date: action.date.format(),
-          isFetching: true
+        plannedTxnsCard: {
+          plannedTxns: action.plannedTxns,
+          isFetching: false
         }
       }, state)
 
@@ -39,6 +39,14 @@ export default function reducer(state = initialState, action) {
         }
       }, state)
 
+    case ActionTypes.ReceiveTxnsCard:
+      return u({
+        txnsCard: {
+          txns: action.txns,
+          isFetching: false
+        }
+      }, state)
+
     case ActionTypes.RequestPlannedTxnsCard:
       return u({
         plannedTxnsCard: {
@@ -46,11 +54,11 @@ export default function reducer(state = initialState, action) {
         }
       }, state)
 
-    case ActionTypes.ReceivePlannedTxnsCard:
+    case ActionTypes.RequestProjectionsCard:
       return u({
-        plannedTxnsCard: {
-          plannedTxns: action.plannedTxns,
-          isFetching: false
+        projectionsCard: {
+          date: action.date.format(),
+          isFetching: true
         }
       }, state)
 
@@ -58,14 +66,6 @@ export default function reducer(state = initialState, action) {
       return u({
         txnsCard: {
           isFetching: true
-        }
-      }, state)
-
-    case ActionTypes.ReceiveTxnsCard:
-      return u({
-        txnsCard: {
-          txns: action.txns,
-          isFetching: false
         }
       }, state)
 
