@@ -2,12 +2,33 @@ import moment from 'moment'
 import model from './model'
 
 export const ActionTypes = {
+  CommitNewPlannedTxn: 'CommitNewPlannedTxn',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
   RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
   RequestProjectionsCard: 'RequestProjectionsCard',
   RequestTxnsCard: 'RequestTxnsCard',
+  SubmitNewPlannedTxn: 'SubmitNewPlannedTxn',
+}
+
+export function addPlannedTxn(newPlannedTxn) {
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.SubmitNewPlannedTxn
+    })
+
+    model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
+      response => {
+        dispatch(fetchProjectionsCard(null, true))
+        dispatch(fetchPlannedTxnsCard(true))
+        dispatch({
+          type: ActionTypes.CommitNewPlannedTxn,
+          guid: response.json.plannedTransactions.latest.guid
+        })
+      }
+    )
+  }
 }
 
 export function fetchPlannedTxnsCard(force = false) {

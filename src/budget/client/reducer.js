@@ -4,6 +4,7 @@ import u from 'updeep'
 import { ActionTypes } from './actions'
 
 const initialState = {
+  isAddingPlannedTxn: false,
   plannedTxnsCard: {
     plannedTxns: [],
     isFetching: false
@@ -21,6 +22,12 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+
+    case ActionType.CommitNewPlannedTxn:
+      return u({
+        isAddingPlannedTxn: false,
+        lastAddedPlannedTxn: action.guid
+      }, state)
 
     case ActionTypes.ReceivePlannedTxnsCard:
       return u({
@@ -67,6 +74,11 @@ export default function reducer(state = initialState, action) {
         txnsCard: {
           isFetching: true
         }
+      }, state)
+
+    case ActionTypes.SubmitNewPlannedTxn:
+      return u({
+        isAddingPlannedTxn: true
       }, state)
 
     default:

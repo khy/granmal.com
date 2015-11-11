@@ -3,7 +3,7 @@ var moment = require('moment')
 import { connect } from 'react-redux'
 
 var model = require('client/model')
-import { fetchProjectionsCard, fetchPlannedTxnsCard, fetchTxnsCard } from 'client/actions'
+import { addPlannedTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -30,22 +30,11 @@ class Overview extends React.Component {
   }
 
   addPlannedTxn(newPlannedTxn) {
-    model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
-      response => {
-        this.setState({
-          addPlannedTxnModalActive: false,
-          newPlannedTxnGuid: response.json.plannedTransactions.latest.guid
-        })
-        this.loadProjections(null, true)
-        this.loadPlannedTxns(true)
-      }
-    )
+    this.props.dispatch(addPlannedTxn(newPlannedTxn))
   }
 
   showAddPlannedTxnModal() {
-    this.setState({
-      addPlannedTxnModalActive: true
-    })
+    this.props.dispatch(showOverviewModal(OverviewModals.PlannedTxn))
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
