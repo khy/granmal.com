@@ -26,7 +26,7 @@ class Overview extends React.Component {
   }
 
   changeProjectionDate(date) {
-    loadProjections(date)
+    this.loadProjections(date)
   }
 
   addPlannedTxn(newPlannedTxn) {

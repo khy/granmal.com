@@ -7,24 +7,12 @@ export const ActionTypes = {
   ReceivePlannedTxnsCard: 'RECEIVE_PLANNED_TXNS_CARD'
 }
 
-function requestProjections(date) {
-  return {
-    type: ActionTypes.RequestProjectionsCard,
-    date: date
-  }
-}
-
-function receiveProjections(date, projections) {
-  return {
-    type: ActionTypes.ReceiveProjectionsCard,
-    date,
-    projections
-  }
-}
-
 export function fetchProjectionsCard(date) {
   return function (dispatch) {
-    dispatch(requestProjections(date))
+    dispatch({
+      type: ActionTypes.RequestProjectionsCard,
+      date: date
+    })
 
     const _date = date.format('YYYY-MM-DD')
 
@@ -34,28 +22,22 @@ export function fetchProjectionsCard(date) {
     ).then(
       response => {
         const projections = response.json.projectionsByDate[_date]
-        dispatch(receiveProjections(date, projections))
+
+        dispatch({
+          type: ActionTypes.ReceiveProjectionsCard,
+          date,
+          projections
+        })
       }
     )
   }
 }
 
-function requestPlannedTxnsCard() {
-  return {
-    type: ActionTypes.RequestPlannedTxnsCard,
-  }
-}
-
-function receivePlannedTxnsCard(plannedTxns) {
-  return {
-    type: ActionTypes.ReceivePlannedTxnsCard,
-    plannedTxns
-  }
-}
-
 export function fetchPlannedTxnsCard(date) {
   return function (dispatch) {
-    dispatch(requestPlannedTxnsCard())
+    dispatch({
+      type: ActionTypes.RequestPlannedTxnsCard,
+    })
 
     model.get(
       ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
@@ -64,7 +46,11 @@ export function fetchPlannedTxnsCard(date) {
     ).then(
       response => {
         const plannedTxns = response.json.plannedTransactions
-        dispatch(receivePlannedTxnsCard(plannedTxns))
+
+        dispatch({
+          type: ActionTypes.ReceivePlannedTxnsCard,
+          plannedTxns
+        })
       }
     )
   }

@@ -31,7 +31,7 @@ class ProjectionsCard extends React.Component {
         <div className="card-block">
           <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
-              <input ref="dateInput" defaultValue={this.props.data.date.format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
+              <input ref="dateInput" defaultValue={moment(this.props.data.date).format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
             </div>
 
             <button type="submit" className="btn btn-primary">Submit</button>
