@@ -12,6 +12,10 @@ const initialState = {
   plannedTxnsCard: {
     plannedTxns: [],
     isFetching: false
+  },
+  txnsCard: {
+    txns: [],
+    isFetching: false
   }
 }
 
@@ -46,6 +50,21 @@ export default function reducer(state = initialState, action) {
       return u({
         plannedTxnsCard: {
           plannedTxns: action.plannedTxns,
+          isFetching: false
+        }
+      }, state)
+
+    case ActionTypes.RequestTxnsCard:
+      return u({
+        txnsCard: {
+          isFetching: true
+        }
+      }, state)
+
+    case ActionTypes.ReceiveTxnsCard:
+      return u({
+        txnsCard: {
+          txns: action.txns,
           isFetching: false
         }
       }, state)

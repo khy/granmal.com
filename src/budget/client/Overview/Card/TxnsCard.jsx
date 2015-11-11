@@ -19,7 +19,7 @@ class TxnsCard extends React.Component {
   }
 
   render() {
-    var rows = _map(this.props.txns, (value, key) => {
+    var rows = _map(this.props.data.txns, (value, key) => {
       return (
         <tr key={value.guid}>
           <td>{moment(value.timestamp).format('MM/DD/YY')}</td>

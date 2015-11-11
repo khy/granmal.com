@@ -3,7 +3,7 @@ var moment = require('moment')
 import { connect } from 'react-redux'
 
 var model = require('client/model')
-import { fetchProjectionsCard, fetchPlannedTxnsCard } from 'client/actions'
+import { fetchProjectionsCard, fetchPlannedTxnsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -166,19 +166,7 @@ class Overview extends React.Component {
   }
 
   loadTxns(force = false) {
-    if (force) { model.invalidate(['transactions']) }
-
-    model.get(
-      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
-      ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        this.setState({
-          txns: response ? response.json.transactions : []
-        })
-      }
-    )
+    this.props.dispatch(fetchTxnsCard(force))
   }
 
   render() {
@@ -237,7 +225,7 @@ class Overview extends React.Component {
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard
-            txns={this.state.txns}
+            data={this.props.txnsCard}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
           />
