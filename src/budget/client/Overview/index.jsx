@@ -36,7 +36,7 @@ class Overview extends React.Component {
           addPlannedTxnModalActive: false,
           newPlannedTxnGuid: response.json.plannedTransactions.latest.guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadPlannedTxns(true)
       }
     )
@@ -62,7 +62,7 @@ class Overview extends React.Component {
           resolvePlannedTxnModalActive: false,
           newTxnGuid: response.json.transactions.latest.guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadPlannedTxns(true)
         this.loadTxns(true)
       }
@@ -76,7 +76,7 @@ class Overview extends React.Component {
           resolvePlannedTransactionModalActive: false,
           latestDeletedPlannedTxnGuid: guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadPlannedTxns(true)
       }
     )
@@ -93,7 +93,7 @@ class Overview extends React.Component {
           addTxnModalActive: false,
           latestTransactionGuid: response.json.transactions.latest.guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadTxns(true)
       }
     )
@@ -113,7 +113,7 @@ class Overview extends React.Component {
           adjustTxnModalActive: false,
           latestTransactionGuid: response.json.transactions.latest.guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadTxns(true)
       }
     )
@@ -126,7 +126,7 @@ class Overview extends React.Component {
           adjustTxnModalActive: false,
           latestDeletedTxnGuid: guid
         })
-        this.loadProjections(true)
+        this.loadProjections(null, true)
         this.loadTxns(true)
       }
     )
@@ -152,17 +152,17 @@ class Overview extends React.Component {
       })
     )
 
-    this.loadProjections(moment().add(1, 'month').startOf('month'))
+    this.loadProjections()
     this.loadPlannedTxns()
     this.loadTxns()
   }
 
   loadProjections(date, force = false) {
-    this.props.dispatch(fetchProjectionsCard(date))
+    this.props.dispatch(fetchProjectionsCard(date, force))
   }
 
   loadPlannedTxns(force = false) {
-    this.props.dispatch(fetchPlannedTxnsCard())
+    this.props.dispatch(fetchPlannedTxnsCard(force))
   }
 
   loadTxns(force = false) {

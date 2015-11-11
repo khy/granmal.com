@@ -1,4 +1,5 @@
-var model = require('./model')
+import moment from 'moment'
+import model from './model'
 
 export const ActionTypes = {
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
@@ -9,11 +10,13 @@ export const ActionTypes = {
   RequestTxnsCard: 'RequestTxnsCard',
 }
 
-export function fetchPlannedTxnsCard() {
+export function fetchPlannedTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
       type: ActionTypes.RequestPlannedTxnsCard
     })
+
+    if (force) { model.invalidate(['plannedTransactions']) }
 
     model.get(
       ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
@@ -32,25 +35,29 @@ export function fetchPlannedTxnsCard() {
   }
 }
 
-export function fetchProjectionsCard(date) {
-  return function (dispatch) {
+export function fetchProjectionsCard(date, force = false) {
+  return function (dispatch, getState) {
+    const _date = moment(date || getState().projectionsCard.date)
+
     dispatch({
       type: ActionTypes.RequestProjectionsCard,
-      date: date
+      date: _date
     })
 
-    const _date = date.format('YYYY-MM-DD')
+    const formattedDate = _date.format('YYYY-MM-DD')
+
+    if (force) { model.invalidate(['projectionsByDate', formattedDate]) }
 
     model.get(
-      ['projectionsByDate', _date, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', _date, {from: 0, to: 9}, 'account', ['name', 'balance']]
+      ['projectionsByDate', formattedDate, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
+      ['projectionsByDate', formattedDate, {from: 0, to: 9}, 'account', ['name', 'balance']]
     ).then(
       response => {
-        const projections = response.json.projectionsByDate[_date]
+        const projections = response.json.projectionsByDate[formattedDate]
 
         dispatch({
           type: ActionTypes.ReceiveProjectionsCard,
-          date,
+          date: _date,
           projections
         })
       }
@@ -73,8 +80,6 @@ export function fetchTxnsCard(force = false) {
     ).then(
       response => {
         const txns = response.json.transactions
-
-        console.log(txns)
 
         dispatch({
           type: ActionTypes.ReceiveTxnsCard,
