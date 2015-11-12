@@ -3,15 +3,15 @@ import model from './model'
 
 export const ActionTypes = {
   HideModal: 'HideModal',
-  ReceiveConfirmedPlannedTxn: 'ReceiveConfirmedPlannedTxn',
+  ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
+  ReceiveConfirmPlannedTxn: 'ReceiveConfirmPlannedTxn',
   ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
-  ReceiveNewPlannedTxn: 'ReceiveNewPlannedTxn',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
-  RequestConfirmedPlannedTxn: 'RequestConfirmedPlannedTxn',
+  RequestAddPlannedTxn: 'RequestAddPlannedTxn',
+  RequestConfirmPlannedTxn: 'RequestConfirmPlannedTxn',
   RequestDeletePlannedTxn: 'RequestDeletePlannedTxn',
-  RequestNewPlannedTxn: 'RequestNewPlannedTxn',
   RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
   RequestProjectionsCard: 'RequestProjectionsCard',
   RequestTxnsCard: 'RequestTxnsCard',
@@ -22,7 +22,7 @@ export const ActionTypes = {
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestNewPlannedTxn
+      type: ActionTypes.RequestAddPlannedTxn
     })
 
     model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
@@ -30,7 +30,7 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveNewPlannedTxn,
+          type: ActionTypes.ReceiveAddPlannedTxn,
           guid: response.json.plannedTransactions.latest.guid
         })
       }
@@ -41,7 +41,7 @@ export function addPlannedTxn(newPlannedTxn) {
 export function confirmPlannedTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestConfirmedPlannedTxn
+      type: ActionTypes.RequestConfirmPlannedTxn
     })
 
     model.call('transactions.add', [newTxn], [['guid']]).then(
@@ -50,7 +50,7 @@ export function confirmPlannedTxn(newTxn) {
         dispatch(fetchPlannedTxnsCard(true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveConfirmedPlannedTxn,
+          type: ActionTypes.ReceiveConfirmPlannedTxn,
           guid: response.json.transactions.latest.guid
         })
       }

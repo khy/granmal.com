@@ -45,7 +45,16 @@ export default function reducer(state = initialState, action) {
         activeModal: null
       })
 
-    case ActionTypes.ReceiveConfirmedPlannedTxn:
+    case ActionTypes.ReceiveAddPlannedTxn:
+      return update({
+        activeModal: null,
+        lastAddedPlannedTxnGuid: action.guid,
+        addPlannedTxnModal: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.ReceiveConfirmPlannedTxn:
       return update({
         activeModal: null,
         lastConfirmedPlannedTxnGuid: action.guid,
@@ -61,15 +70,6 @@ export default function reducer(state = initialState, action) {
         lastDeletedPlannedTxnGuid: action.guid,
         resolvePlannedTxnModal: {
           plannedTxn: null,
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveNewPlannedTxn:
-      return update({
-        activeModal: null,
-        lastAddedPlannedTxnGuid: action.guid,
-        addPlannedTxnModal: {
           isFetching: false
         }
       })
@@ -99,7 +99,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.RequestConfirmedPlannedTxn:
+    case ActionTypes.RequestAddPlannedTxn:
+      return update({
+        addPlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.RequestConfirmPlannedTxn:
       return update({
         resolvePlannedTxnModal: {
           isFetching: true
@@ -109,13 +116,6 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.RequestDeletePlannedTxn:
       return update({
         resolvePlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestNewPlannedTxn:
-      return update({
-        addPlannedTxnModal: {
           isFetching: true
         }
       })
