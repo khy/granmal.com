@@ -12,7 +12,7 @@ class TxnsCard extends React.Component {
 
   onAdjust(event) {
     event.preventDefault()
-    var txn = _find(this.props.txns, (txn) => {
+    var txn = _find(this.props.data.txns, (txn) => {
       return txn.guid === event.target.dataset.guid
     })
     this.props.onAdjust(txn)

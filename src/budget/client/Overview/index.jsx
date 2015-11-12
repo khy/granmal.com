@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 var model = require('client/model')
-import { ActionTypes, addPlannedTxn, addTxn, confirmPlannedTxn, deletePlannedTxn,
-  fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
+import { ActionTypes, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn, deletePlannedTxn,
+  deleteTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -62,36 +62,18 @@ class Overview extends React.Component {
   }
 
   showAdjustTxnModal(txn) {
-    this.setState({
-      adjustTxnModalActive: true,
-      txnToAdjust: txn
+    this.props.dispatch({
+      type: ActionTypes.ShowAdjustTxnModal,
+      txn
     })
   }
 
-  adjustTxn(guid, newTransaction) {
-    model.call('transactions.adjust', [guid, newTransaction], [['guid']]).then(
-      response => {
-        this.setState({
-          adjustTxnModalActive: false,
-          latestTransactionGuid: response.json.transactions.latest.guid
-        })
-        this.loadProjections(null, true)
-        this.loadTxns(true)
-      }
-    )
+  adjustTxn(guid, newTxn) {
+    this.props.dispatch(adjustTxn(guid, newTxn))
   }
 
   deleteTxn(guid) {
-    model.call('transactions.delete', [guid]).then(
-      response => {
-        this.setState({
-          adjustTxnModalActive: false,
-          latestDeletedTxnGuid: guid
-        })
-        this.loadProjections(null, true)
-        this.loadTxns(true)
-      }
-    )
+    this.props.dispatch(deleteTxn(guid))
   }
 
   hideModal() {
@@ -156,7 +138,7 @@ class Overview extends React.Component {
       modal = <AdjustTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
-        txn={this.state.txnToAdjust}
+        txn={this.props.adjustTxnModal.txn}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}

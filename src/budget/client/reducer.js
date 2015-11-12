@@ -8,12 +8,18 @@ const initialState = {
     activeModal: null,
     lastAddedPlannedTxnGuid: null,
     lastAddedTxnGuid: null,
+    lastAdjustedTxnGuid: null,
     lastConfirmedPlannedTxnGuid: null,
     lastDeletedPlannedTxnGuid: null,
+    lastDeletedTxnGuid: null,
     addPlannedTxnModal: {
       isFetching: false,
     },
     addTxnModal: {
+      isFetching: false,
+    },
+    adjustTxnModal: {
+      txn: null,
       isFetching: false,
     },
     plannedTxnsCard: {
@@ -67,6 +73,15 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.ReceiveAdjustTxn:
+      return update({
+        activeModal: null,
+        lastAdjustedTxnGuid: action.guid,
+        adjustTxnModal: {
+          isFetching: false
+        }
+      })
+
     case ActionTypes.ReceiveConfirmPlannedTxn:
       return update({
         activeModal: null,
@@ -83,6 +98,16 @@ export default function reducer(state = initialState, action) {
         lastDeletedPlannedTxnGuid: action.guid,
         resolvePlannedTxnModal: {
           plannedTxn: null,
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.ReceiveDeleteTxn:
+      return update({
+        activeModal: null,
+        lastDeletedTxnGuid: action.guid,
+        adjustTxnModal: {
+          txn: null,
           isFetching: false
         }
       })
@@ -126,6 +151,13 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.RequestAdjustTxn:
+      return update({
+        adjustTxnModal: {
+          isFetching: true
+        }
+      })
+
     case ActionTypes.RequestConfirmPlannedTxn:
       return update({
         resolvePlannedTxnModal: {
@@ -136,6 +168,13 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.RequestDeletePlannedTxn:
       return update({
         resolvePlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.RequestDeleteTxn:
+      return update({
+        adjustTxnModal: {
           isFetching: true
         }
       })
@@ -178,6 +217,14 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ShowAddTxnModal:
       return update({
         activeModal: 'addTxnModal'
+      })
+
+    case ActionTypes.ShowAdjustTxnModal:
+      return update({
+        activeModal: 'adjustTxnModal',
+        adjustTxnModal: {
+          txn: action.txn
+        }
       })
 
     default:
