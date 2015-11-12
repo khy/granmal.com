@@ -2,20 +2,22 @@ import moment from 'moment'
 import model from './model'
 
 export const ActionTypes = {
-  CommitNewPlannedTxn: 'CommitNewPlannedTxn',
+  HideModal: 'HideModal',
+  ReceiveNewPlannedTxn: 'ReceiveNewPlannedTxn',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
+  RequestNewPlannedTxn: 'RequestNewPlannedTxn',
   RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
   RequestProjectionsCard: 'RequestProjectionsCard',
   RequestTxnsCard: 'RequestTxnsCard',
-  SubmitNewPlannedTxn: 'SubmitNewPlannedTxn',
+  ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
 }
 
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.SubmitNewPlannedTxn
+      type: ActionTypes.RequestNewPlannedTxn
     })
 
     model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
@@ -23,7 +25,7 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.CommitNewPlannedTxn,
+          type: ActionTypes.ReceiveNewPlannedTxn,
           guid: response.json.plannedTransactions.latest.guid
         })
       }
@@ -58,7 +60,7 @@ export function fetchPlannedTxnsCard(force = false) {
 
 export function fetchProjectionsCard(date, force = false) {
   return function (dispatch, getState) {
-    const _date = moment(date || getState().projectionsCard.date)
+    const _date = moment(date || getState().overview.projectionsCard.date)
 
     dispatch({
       type: ActionTypes.RequestProjectionsCard,
