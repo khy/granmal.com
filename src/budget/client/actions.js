@@ -4,11 +4,13 @@ import model from './model'
 export const ActionTypes = {
   HideModal: 'HideModal',
   ReceiveConfirmedPlannedTxn: 'ReceiveConfirmedPlannedTxn',
+  ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
   ReceiveNewPlannedTxn: 'ReceiveNewPlannedTxn',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
   RequestConfirmedPlannedTxn: 'RequestConfirmedPlannedTxn',
+  RequestDeletePlannedTxn: 'RequestDeletePlannedTxn',
   RequestNewPlannedTxn: 'RequestNewPlannedTxn',
   RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
   RequestProjectionsCard: 'RequestProjectionsCard',
@@ -50,6 +52,25 @@ export function confirmPlannedTxn(newTxn) {
         dispatch({
           type: ActionTypes.ReceiveConfirmedPlannedTxn,
           guid: response.json.transactions.latest.guid
+        })
+      }
+    )
+  }
+}
+
+export function deletePlannedTxn(guid) {
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.RequestDeletePlannedTxn
+    })
+
+    model.call('plannedTransactions.delete', [guid]).then(
+      response => {
+        dispatch(fetchProjectionsCard(null, true))
+        dispatch(fetchPlannedTxnsCard(true))
+        dispatch({
+          type: ActionTypes.ReceiveDeletePlannedTxn,
+          guid: guid
         })
       }
     )

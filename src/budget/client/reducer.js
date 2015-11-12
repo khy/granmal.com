@@ -8,6 +8,7 @@ const initialState = {
     activeModal: null,
     lastAddedPlannedTxnGuid: null,
     lastConfirmedPlannedTxnGuid: null,
+    lastDeletedPlannedTxnGuid: null,
     addPlannedTxnModal: {
       isFetching: false,
     },
@@ -54,6 +55,16 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.ReceiveDeletePlannedTxn:
+      return update({
+        activeModal: null,
+        lastDeletedPlannedTxnGuid: action.guid,
+        resolvePlannedTxnModal: {
+          plannedTxn: null,
+          isFetching: false
+        }
+      })
+
     case ActionTypes.ReceiveNewPlannedTxn:
       return update({
         activeModal: null,
@@ -89,6 +100,13 @@ export default function reducer(state = initialState, action) {
       })
 
     case ActionTypes.RequestConfirmedPlannedTxn:
+      return update({
+        resolvePlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.RequestDeletePlannedTxn:
       return update({
         resolvePlannedTxnModal: {
           isFetching: true

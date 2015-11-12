@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 var model = require('client/model')
-import { ActionTypes, addPlannedTxn, confirmPlannedTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
+import { ActionTypes, addPlannedTxn, confirmPlannedTxn, deletePlannedTxn,
+  fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -49,16 +50,7 @@ class Overview extends React.Component {
   }
 
   onDeletePlannedTxn(guid) {
-    model.call('plannedTransactions.delete', [guid]).then(
-      response => {
-        this.setState({
-          resolvePlannedTransactionModalActive: false,
-          latestDeletedPlannedTxnGuid: guid
-        })
-        this.loadProjections(null, true)
-        this.loadPlannedTxns(true)
-      }
-    )
+    this.props.dispatch(deletePlannedTxn(guid))
   }
 
   showAddTxnModal() {

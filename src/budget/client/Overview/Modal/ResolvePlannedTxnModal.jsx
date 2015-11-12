@@ -25,7 +25,7 @@ class ResolvePlannedTxnModal extends React.Component {
 
   delete(event) {
     event.preventDefault()
-    this.props.onDelete(this.props.plannedTxn.guid)
+    this.props.onDelete(this.props.data.plannedTxn.guid)
   }
 
   render() {
