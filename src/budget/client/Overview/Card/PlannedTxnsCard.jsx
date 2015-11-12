@@ -13,7 +13,7 @@ class PlannedTxnsCard extends React.Component {
   onResolve(event) {
     event.preventDefault()
 
-    var plannedTxn = _find(this.props.data.plannedTxns, (plannedTxn) => {
+    var plannedTxn = _find(this.props.plannedTxns, (plannedTxn) => {
       return plannedTxn.guid === event.target.dataset.guid
     })
 
@@ -21,7 +21,7 @@ class PlannedTxnsCard extends React.Component {
   }
 
   render() {
-    var rows = _map(this.props.data.plannedTxns, (value, key) => {
+    var rows = _map(this.props.plannedTxns, (value, key) => {
       const minDate = moment(value.minTimestamp).format('MM/DD/YY')
       const maxDate = moment(value.maxTimestamp).format('MM/DD/YY')
       const date = (minDate === maxDate) ?
@@ -46,11 +46,19 @@ class PlannedTxnsCard extends React.Component {
 
     let message
 
-    if (this.props.latestPlannedTransactionGuid) {
+    if (this.props.lastAddedPlannedTxnGuid) {
       message = (
         <div className="card-block">
           <p className="card-text text-success">
-            Successfully added planned transaction {this.props.latestPlannedTransactionGuid}.
+            Successfully added planned transaction {this.props.lastAddedPlannedTxnGuid}.
+          </p>
+        </div>
+      )
+    } else if (this.props.lastDeletedPlannedTxnGuid) {
+      message = (
+        <div className="card-block">
+          <p className="card-text text-success">
+            Successfully deleted planned transaction {this.props.lastDeletedPlannedTxnGuid}.
           </p>
         </div>
       )

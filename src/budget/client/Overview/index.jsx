@@ -149,7 +149,7 @@ class Overview extends React.Component {
       modal = <ResolvePlannedTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
-        data={this.props.resolvePlannedTxnModal}
+        plannedTxn={this.props.resolvePlannedTxnModal.plannedTxn}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
@@ -186,7 +186,9 @@ class Overview extends React.Component {
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
-            data={this.props.plannedTxnsCard}
+            plannedTxns={this.props.plannedTxnsCard.plannedTxns}
+            lastAddedPlannedTxnGuid={this.props.lastAddedPlannedTxnGuid}
+            lastDeletedPlannedTxnGuid={this.props.lastDeletedPlannedTxnGuid}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
