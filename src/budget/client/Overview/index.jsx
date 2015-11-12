@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 var model = require('client/model')
-import { ActionTypes, addPlannedTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
+import { ActionTypes, addPlannedTxn, confirmPlannedTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -38,24 +38,14 @@ class Overview extends React.Component {
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
-    this.setState({
-      resolvePlannedTxnModalActive: true,
-      plannedTxnToResolve: plannedTxn
+    this.props.dispatch({
+      type: ActionTypes.ShowResolvePlannedTxnModal,
+      plannedTxn
     })
   }
 
-  onConfirmPlannedTxn(newTransaction) {
-    model.call('transactions.add', [newTransaction], [['guid']]).then(
-      response => {
-        this.setState({
-          resolvePlannedTxnModalActive: false,
-          newTxnGuid: response.json.transactions.latest.guid
-        })
-        this.loadProjections(null, true)
-        this.loadPlannedTxns(true)
-        this.loadTxns(true)
-      }
-    )
+  onConfirmPlannedTxn(newTxn) {
+    this.props.dispatch(confirmPlannedTxn(newTxn))
   }
 
   onDeletePlannedTxn(guid) {
@@ -167,7 +157,7 @@ class Overview extends React.Component {
       modal = <ResolvePlannedTxnModal
         transactionTypes={this.state.transactionTypes}
         accounts={this.state.accounts}
-        plannedTxn={this.state.plannedTxnToResolve}
+        data={this.props.resolvePlannedTxnModal}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}

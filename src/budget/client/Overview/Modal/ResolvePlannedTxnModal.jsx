@@ -17,7 +17,7 @@ class ResolvePlannedTxnModal extends React.Component {
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
       timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format(),
-      plannedTransactionGuid: this.props.plannedTxn.guid
+      plannedTransactionGuid: this.props.data.plannedTxn.guid
     }
 
     this.props.onConfirm(transaction)
@@ -42,7 +42,7 @@ class ResolvePlannedTxnModal extends React.Component {
       })
     )
 
-    var plannedTxn = this.props.plannedTxn
+    var plannedTxn = this.props.data.plannedTxn
     var defaultDate = moment(plannedTxn.minTimestamp).format('MM/DD/YYYY')
 
     return (

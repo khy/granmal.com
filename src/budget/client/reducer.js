@@ -7,21 +7,26 @@ const initialState = {
   overview: {
     activeModal: null,
     lastAddedPlannedTxnGuid: null,
+    lastConfirmedPlannedTxnGuid: null,
     addPlannedTxnModal: {
-      isFetching: false
+      isFetching: false,
     },
     plannedTxnsCard: {
       plannedTxns: [],
-      isFetching: false
+      isFetching: false,
     },
     projectionsCard: {
       date: moment().add(1, 'month').startOf('month').format(),
       projections: [],
-      isFetching: false
+      isFetching: false,
+    },
+    resolvePlannedTxnModal: {
+      plannedTxn: null,
+      isFetching: false,
     },
     txnsCard: {
       txns: [],
-      isFetching: false
+      isFetching: false,
     },
   }
 }
@@ -37,6 +42,16 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.HideModal:
       return update({
         activeModal: null
+      })
+
+    case ActionTypes.ReceiveConfirmedPlannedTxn:
+      return update({
+        activeModal: null,
+        lastConfirmedPlannedTxnGuid: action.guid,
+        resolvePlannedTxnModal: {
+          plannedTxn: null,
+          isFetching: false
+        }
       })
 
     case ActionTypes.ReceiveNewPlannedTxn:
@@ -73,10 +88,17 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.RequestConfirmedPlannedTxn:
+      return update({
+        resolvePlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
     case ActionTypes.RequestNewPlannedTxn:
       return update({
         addPlannedTxnModal: {
-          isSubmitting: true
+          isFetching: true
         }
       })
 
@@ -105,6 +127,14 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ShowAddPlannedTxnModal:
       return update({
         activeModal: 'addPlannedTxnModal'
+      })
+
+    case ActionTypes.ShowResolvePlannedTxnModal:
+      return update({
+        activeModal: 'resolvePlannedTxnModal',
+        resolvePlannedTxnModal: {
+          plannedTxn: action.plannedTxn
+        }
       })
 
     default:
