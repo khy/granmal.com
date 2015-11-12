@@ -2,9 +2,8 @@ var React = require('react')
 import { connect } from 'react-redux'
 var moment = require('moment')
 
-var model = require('client/model')
 import { ActionTypes, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn, deletePlannedTxn,
-  deleteTxn, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
+  deleteTxn, fetchAccounts, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
@@ -17,17 +16,16 @@ var AdjustTxnModal = require('./Modal/AdjustTxnModal')
 
 class Overview extends React.Component {
 
-  constructor() {
-    super()
-    this.state = {}
-  }
-
   componentWillMount() {
-    this.load()
+    this.props.dispatch(fetchAccounts())
+    this.props.dispatch(fetchTxnTypes())
+    this.props.dispatch(fetchProjectionsCard())
+    this.props.dispatch(fetchPlannedTxnsCard())
+    this.props.dispatch(fetchTxnsCard())
   }
 
   changeProjectionDate(date) {
-    this.loadProjections(date)
+    this.props.dispatch(fetchProjectionsCard(date))
   }
 
   addPlannedTxn(newPlannedTxn) {
@@ -80,48 +78,20 @@ class Overview extends React.Component {
     this.props.dispatch({ type: ActionTypes.HideModal })
   }
 
-  load() {
-    model.get(
-      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']],
-      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
-    ).then(
-      response => this.setState({
-        transactionTypes: response.json.transactionTypes,
-        accounts: response.json.accounts
-      })
-    )
-
-    this.loadProjections()
-    this.loadPlannedTxns()
-    this.loadTxns()
-  }
-
-  loadProjections(date, force = false) {
-    this.props.dispatch(fetchProjectionsCard(date, force))
-  }
-
-  loadPlannedTxns(force = false) {
-    this.props.dispatch(fetchPlannedTxnsCard(force))
-  }
-
-  loadTxns(force = false) {
-    this.props.dispatch(fetchTxnsCard(force))
-  }
-
   render() {
     let modal
 
     if (this.props.activeModal === 'addPlannedTxnModal') {
       modal = <AddPlannedTxnModal
-        transactionTypes={this.state.transactionTypes}
-        accounts={this.state.accounts}
+        transactionTypes={this.props.txnTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
       />
     } else if (this.props.activeModal === 'resolvePlannedTxnModal') {
       modal = <ResolvePlannedTxnModal
-        transactionTypes={this.state.transactionTypes}
-        accounts={this.state.accounts}
+        transactionTypes={this.props.txnTypes}
+        accounts={this.props.accounts}
         plannedTxn={this.props.resolvePlannedTxnModal.plannedTxn}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
@@ -129,15 +99,15 @@ class Overview extends React.Component {
       />
     } else if (this.props.activeModal === 'addTxnModal') {
       modal = <AddTxnModal
-        transactionTypes={this.state.transactionTypes}
-        accounts={this.state.accounts}
+        transactionTypes={this.props.txnTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
     } else if (this.props.activeModal === 'adjustTxnModal') {
       modal = <AdjustTxnModal
-        transactionTypes={this.state.transactionTypes}
-        accounts={this.state.accounts}
+        transactionTypes={this.props.txnTypes}
+        accounts={this.props.accounts}
         txn={this.props.adjustTxnModal.txn}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}

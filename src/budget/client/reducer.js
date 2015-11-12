@@ -5,6 +5,8 @@ import { ActionTypes } from './actions'
 
 const initialState = {
   overview: {
+    account: [],
+    txnTypes: [],
     activeModal: null,
     lastAddedPlannedTxnGuid: null,
     lastAddedTxnGuid: null,
@@ -53,6 +55,11 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.HideModal:
       return update({
         activeModal: null
+      })
+
+    case ActionTypes.ReceiveAccounts:
+      return update({
+        accounts: action.accounts
       })
 
     case ActionTypes.ReceiveAddPlannedTxn:
@@ -135,6 +142,11 @@ export default function reducer(state = initialState, action) {
           txns: action.txns,
           isFetching: false
         }
+      })
+
+    case ActionTypes.ReceiveTxnTypes:
+      return update({
+        txnTypes: action.txnTypes
       })
 
     case ActionTypes.RequestAddPlannedTxn:

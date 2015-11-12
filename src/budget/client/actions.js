@@ -3,6 +3,7 @@ import model from './model'
 
 export const ActionTypes = {
   HideModal: 'HideModal',
+  ReceiveAccounts: 'ReceiveAccounts',
   ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
   ReceiveAddTxn: 'ReceiveAddTxn',
   ReceiveAdjustTxn: 'ReceiveAdjustTxn',
@@ -12,6 +13,7 @@ export const ActionTypes = {
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
+  ReceiveTxnTypes: 'ReceiveTxnTypes',
   RequestAddPlannedTxn: 'RequestAddPlannedTxn',
   RequestAddTxn: 'RequestAddTxn',
   RequestAdjustTxn: 'RequestAdjustTxn',
@@ -142,6 +144,21 @@ export function deleteTxn(guid) {
   }
 }
 
+export function fetchAccounts() {
+  return function (dispatch) {
+    model.get(
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']]
+    ).then(
+      response => {
+        dispatch({
+          type: ActionTypes.ReceiveAccounts,
+          accounts: response.json.accounts
+        })
+      }
+    )
+  }
+}
+
 export function fetchPlannedTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
@@ -216,6 +233,21 @@ export function fetchTxnsCard(force = false) {
         dispatch({
           type: ActionTypes.ReceiveTxnsCard,
           txns
+        })
+      }
+    )
+  }
+}
+
+export function fetchTxnTypes() {
+  return function (dispatch) {
+    model.get(
+      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
+    ).then(
+      response => {
+        dispatch({
+          type: ActionTypes.ReceiveTxnTypes,
+          txnTypes: response.json.transactionTypes
         })
       }
     )
