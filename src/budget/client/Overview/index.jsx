@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 var model = require('client/model')
-import { ActionTypes, addPlannedTxn, confirmPlannedTxn, deletePlannedTxn,
+import { ActionTypes, addPlannedTxn, addTxn, confirmPlannedTxn, deletePlannedTxn,
   fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard } from 'client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
@@ -54,20 +54,11 @@ class Overview extends React.Component {
   }
 
   showAddTxnModal() {
-    this.setState({addTxnModalActive: true})
+    this.props.dispatch({ type: ActionTypes.ShowAddTxnModal })
   }
 
   addTxn(txn) {
-    model.call('transactions.add', [txn], [['guid']]).then(
-      response => {
-        this.setState({
-          addTxnModalActive: false,
-          latestTransactionGuid: response.json.transactions.latest.guid
-        })
-        this.loadProjections(null, true)
-        this.loadTxns(true)
-      }
-    )
+    this.props.dispatch(addTxn(txn))
   }
 
   showAdjustTxnModal(txn) {

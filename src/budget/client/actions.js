@@ -4,12 +4,14 @@ import model from './model'
 export const ActionTypes = {
   HideModal: 'HideModal',
   ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
+  ReceiveAddTxn: 'ReceiveAddTxn',
   ReceiveConfirmPlannedTxn: 'ReceiveConfirmPlannedTxn',
   ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
   RequestAddPlannedTxn: 'RequestAddPlannedTxn',
+  RequestAddTxn: 'RequestAddTxn',
   RequestConfirmPlannedTxn: 'RequestConfirmPlannedTxn',
   RequestDeletePlannedTxn: 'RequestDeletePlannedTxn',
   RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
@@ -17,6 +19,7 @@ export const ActionTypes = {
   RequestTxnsCard: 'RequestTxnsCard',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
+  ShowAddTxnModal: 'ShowAddTxnModal',
 }
 
 export function addPlannedTxn(newPlannedTxn) {
@@ -32,6 +35,25 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch({
           type: ActionTypes.ReceiveAddPlannedTxn,
           guid: response.json.plannedTransactions.latest.guid
+        })
+      }
+    )
+  }
+}
+
+export function addTxn(txn) {
+  return function (dispatch) {
+    dispatch({
+      type: ActionTypes.RequestAddTxn
+    })
+
+    model.call('transactions.add', [txn], [['guid']]).then(
+      response => {
+        dispatch(fetchProjectionsCard(null, true))
+        dispatch(fetchTxnsCard(true))
+        dispatch({
+          type: ActionTypes.ReceiveAddTxn,
+          guid: response.json.transactions.latest.guid
         })
       }
     )

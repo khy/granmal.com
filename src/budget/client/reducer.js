@@ -7,9 +7,13 @@ const initialState = {
   overview: {
     activeModal: null,
     lastAddedPlannedTxnGuid: null,
+    lastAddedTxnGuid: null,
     lastConfirmedPlannedTxnGuid: null,
     lastDeletedPlannedTxnGuid: null,
     addPlannedTxnModal: {
+      isFetching: false,
+    },
+    addTxnModal: {
       isFetching: false,
     },
     plannedTxnsCard: {
@@ -50,6 +54,15 @@ export default function reducer(state = initialState, action) {
         activeModal: null,
         lastAddedPlannedTxnGuid: action.guid,
         addPlannedTxnModal: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.ReceiveAddTxn:
+      return update({
+        activeModal: null,
+        lastAddedTxnGuid: action.guid,
+        addTxnModal: {
           isFetching: false
         }
       })
@@ -106,6 +119,13 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.RequestAddTxn:
+      return update({
+        addTxnModal: {
+          isFetching: true
+        }
+      })
+
     case ActionTypes.RequestConfirmPlannedTxn:
       return update({
         resolvePlannedTxnModal: {
@@ -153,6 +173,11 @@ export default function reducer(state = initialState, action) {
         resolvePlannedTxnModal: {
           plannedTxn: action.plannedTxn
         }
+      })
+
+    case ActionTypes.ShowAddTxnModal:
+      return update({
+        activeModal: 'addTxnModal'
       })
 
     default:
