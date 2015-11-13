@@ -54,7 +54,7 @@ export default function reducer(state = initialState, action) {
 
     case ActionTypes.ReceiveAccounts:
       return update({
-        accounts: action.accounts
+        accounts: u.constant(action.accounts)
       })
 
     case ActionTypes.ReceiveAddPlannedTxn:
@@ -137,7 +137,7 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceivePlannedTxnsCard:
       return update({
         plannedTxnsCard: {
-          plannedTxns: action.plannedTxns,
+          plannedTxns: u.constant(action.plannedTxns),
           isFetching: false
         }
       })
@@ -146,7 +146,7 @@ export default function reducer(state = initialState, action) {
       return update({
         projectionsCard: {
           date: action.date.format(),
-          projections: action.projections,
+          projections: u.constant(action.projections),
           isFetching: false
         }
       })
@@ -154,14 +154,14 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveTxnsCard:
       return update({
         txnsCard: {
-          txns: action.txns,
+          txns: u.constant(action.txns),
           isFetching: false
         }
       })
 
     case ActionTypes.ReceiveTxnTypes:
       return update({
-        txnTypes: action.txnTypes
+        txnTypes: u.constant(action.txnTypes)
       })
 
     case ActionTypes.RequestAddPlannedTxn:
