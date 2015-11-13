@@ -11,7 +11,7 @@ class ProjectionsCard extends React.Component {
   }
 
   render() {
-    const rows = _map(this.props.data.projections, (value, key) => {
+    const rows = _map(this.props.projections, (value, key) => {
       return (
         <tr key={value.account.name}>
           <td>{value.account.name}</td>
@@ -22,6 +22,8 @@ class ProjectionsCard extends React.Component {
       )
     })
 
+    const disabled = this.props.isFetching ? 'disabled' : false
+
     return (
       <div className="card">
         <div className="card-header">
@@ -30,11 +32,13 @@ class ProjectionsCard extends React.Component {
 
         <div className="card-block">
           <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
-            <div className="form-group">
-              <input ref="dateInput" defaultValue={moment(this.props.data.date).format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
-            </div>
+            <fieldset disabled={disabled}>
+              <div className="form-group">
+                <input ref="dateInput" defaultValue={moment(this.props.date).format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
+              </div>
 
-            <button type="submit" className="btn btn-primary">Submit</button>
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </fieldset>
           </form>
         </div>
 

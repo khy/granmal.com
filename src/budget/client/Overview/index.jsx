@@ -124,8 +124,7 @@ class Overview extends React.Component {
         </nav>
 
         <div className="container">
-          <ProjectionsCard
-            data={this.props.projectionsCard}
+          <ProjectionsCard {...this.props.projectionsCard}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard
