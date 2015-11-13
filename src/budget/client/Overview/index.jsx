@@ -2,8 +2,11 @@ var React = require('react')
 import { connect } from 'react-redux'
 var moment = require('moment')
 
-import { ActionTypes, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn, deletePlannedTxn,
-  deleteTxn, fetchAccounts, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes } from 'client/actions'
+import {
+  ActionTypes, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn,
+  deletePlannedTxn, deleteTxn, fetchAccounts, fetchPlannedTxnsCard,
+  fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes
+} from 'budget/client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
