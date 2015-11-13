@@ -1,12 +1,13 @@
 var React = require('react')
-var moment = require('moment')
 var _map = require('lodash/collection/map')
+
+import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 
 class ProjectionsCard extends React.Component {
 
   onSubmit(event) {
     event.preventDefault()
-    const date = moment(this.refs.dateInput.value, ["MM|DD|YY"])
+    const date = normalizeDateInput(this.refs.dateInput.value)
     this.props.onDateChange(date)
   }
 
@@ -32,7 +33,7 @@ class ProjectionsCard extends React.Component {
           <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
             <fieldset disabled={this.props.isFetching}>
               <div className="form-group">
-                <input ref="dateInput" defaultValue={moment(this.props.date).format('MM/DD/YY')} className="form-control" type="text" placeholder="Date" />
+                <input ref="dateInput" defaultValue={formatDate(this.props.date)} className="form-control" type="text" placeholder="Date" />
               </div>
 
               <button type="submit" className="btn btn-primary">Submit</button>

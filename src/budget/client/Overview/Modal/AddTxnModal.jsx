@@ -1,6 +1,7 @@
 var React = require('react')
-var moment = require('moment')
 var _map = require('lodash/collection/map')
+
+import { normalizeDateInput } from 'budget/client/lib/date'
 
 class AddTxnModal extends React.Component {
 
@@ -16,7 +17,7 @@ class AddTxnModal extends React.Component {
       transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
-      timestamp: moment(this.refs.timestampInput.value, ['MM|DD|YY']).format()
+      timestamp: normalizeDateInput(this.refs.timestampInput.value)
     }
 
     this.props.onAdd(newTransaction)

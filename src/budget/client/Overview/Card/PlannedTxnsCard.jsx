@@ -4,6 +4,7 @@ var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
 import { UserActionTypes } from 'budget/client/actions'
+import { formatDate } from 'budget/client/lib/date'
 
 class PlannedTxnsCard extends React.Component {
 
@@ -24,8 +25,8 @@ class PlannedTxnsCard extends React.Component {
 
   render() {
     var rows = _map(this.props.plannedTxns, (value, key) => {
-      const minDate = moment(value.minTimestamp).format('MM/DD/YY')
-      const maxDate = moment(value.maxTimestamp).format('MM/DD/YY')
+      const minDate = formatDate(value.minTimestamp)
+      const maxDate = formatDate(value.maxTimestamp)
       const date = (minDate === maxDate) ?
         minDate : minDate + " / " + maxDate
 

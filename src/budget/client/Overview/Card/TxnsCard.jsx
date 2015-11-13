@@ -4,6 +4,7 @@ var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
 import { UserActionTypes } from 'budget/client/actions'
+import { formatDate } from 'budget/client/lib/date'
 
 class TxnsCard extends React.Component {
 
@@ -25,6 +26,7 @@ class TxnsCard extends React.Component {
       return (
         <tr key={value.guid}>
           <td>{moment(value.timestamp).format('MM/DD/YY')}</td>
+          <td>{formatDate(value.timestamp)}</td>
           <td>{value.amount}</td>
           <td>{value.transactionType.name}</td>
           <td>{value.account.name}</td>
