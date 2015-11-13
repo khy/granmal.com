@@ -1,10 +1,10 @@
 var React = require('react')
-var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
 import { UserActionTypes } from 'budget/client/actions'
 import { formatDate } from 'budget/client/lib/date'
+import { shortenGuid } from 'budget/client/lib/guid'
 
 class TxnsCard extends React.Component {
 
@@ -25,7 +25,7 @@ class TxnsCard extends React.Component {
     var rows = _map(this.props.txns, (value, key) => {
       return (
         <tr key={value.guid}>
-          <td>{moment(value.timestamp).format('MM/DD/YY')}</td>
+          <td>{shortenGuid(value.guid)}</td>
           <td>{formatDate(value.timestamp)}</td>
           <td>{value.amount}</td>
           <td>{value.transactionType.name}</td>
@@ -42,7 +42,7 @@ class TxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
-              Added transaction {this.props.lastUserAction.guid}.
+              Added transaction <strong>{shortenGuid(this.props.lastUserAction.guid)}</strong>.
             </p>
           </div>
         )
@@ -50,7 +50,7 @@ class TxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
-              Added transaction {this.props.lastUserAction.txnGuid}.
+              Added transaction <strong>{shortenGuid(this.props.lastUserAction.txnGuid)}</strong>.
             </p>
           </div>
         )
@@ -58,8 +58,8 @@ class TxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
-              Adjusted transaction {this.props.lastUserAction.oldGuid},
-              adding transaction {this.props.lastUserAction.newGuid}.
+              Adjusted transaction <strong>{shortenGuid(this.props.lastUserAction.oldGuid)}</strong>,
+              adding transaction <strong>{shortenGuid(this.props.lastUserAction.newGuid)}</strong>.
             </p>
           </div>
         )
@@ -67,7 +67,7 @@ class TxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-danger">
-              Deleted transaction {this.props.lastUserAction.guid}.
+              Deleted transaction <strong>{shortenGuid(this.props.lastUserAction.guid)}</strong>.
             </p>
           </div>
         )
@@ -86,6 +86,7 @@ class TxnsCard extends React.Component {
         <table className="table table-hover">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Date</th>
               <th>Amount</th>
               <th>Type</th>

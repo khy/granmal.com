@@ -5,6 +5,7 @@ var _find = require('lodash/collection/find')
 
 import { UserActionTypes } from 'budget/client/actions'
 import { formatDate } from 'budget/client/lib/date'
+import { shortenGuid } from 'budget/client/lib/guid'
 
 class PlannedTxnsCard extends React.Component {
 
@@ -38,6 +39,7 @@ class PlannedTxnsCard extends React.Component {
 
       return (
         <tr key={value.guid} className={rowClass}>
+          <td>{shortenGuid(value.guid)}</td>
           <td>{date}</td>
           <td>{amount}</td>
           <td>{value.transactionType.name}</td>
@@ -54,7 +56,7 @@ class PlannedTxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
-              Added planned transaction {this.props.lastUserAction.guid}.
+              Added planned transaction <strong>{shortenGuid(this.props.lastUserAction.guid)}</strong>.
             </p>
           </div>
         )
@@ -62,7 +64,7 @@ class PlannedTxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
-              Confirm planned transaction {this.props.lastUserAction.plannedTxnGuid}.
+              Confirm planned transaction <strong>{shortenGuid(this.props.lastUserAction.plannedTxnGuid)}</strong>.
             </p>
           </div>
         )
@@ -70,7 +72,7 @@ class PlannedTxnsCard extends React.Component {
         message = (
           <div className="card-block">
             <p className="card-text text-danger">
-              Deleted planned transaction {this.props.lastUserAction.guid}.
+              Deleted planned transaction <strong>{shortenGuid(this.props.lastUserAction.guid)}</strong>.
             </p>
           </div>
         )
@@ -89,6 +91,7 @@ class PlannedTxnsCard extends React.Component {
         <table className="table table-hover">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Date</th>
               <th>Amount</th>
               <th>Type</th>
