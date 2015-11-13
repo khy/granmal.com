@@ -8,12 +8,7 @@ const initialState = {
     account: [],
     txnTypes: [],
     activeModal: null,
-    lastAddedPlannedTxnGuid: null,
-    lastAddedTxnGuid: null,
-    lastAdjustedTxnGuid: null,
-    lastConfirmedPlannedTxnGuid: null,
-    lastDeletedPlannedTxnGuid: null,
-    lastDeletedTxnGuid: null,
+    lastUserAction: null,
     addPlannedTxnModal: {
       isFetching: false,
     },
@@ -65,7 +60,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveAddPlannedTxn:
       return update({
         activeModal: null,
-        lastAddedPlannedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'addPlannedTxn',
+          guid: action.guid,
+        },
         addPlannedTxnModal: {
           isFetching: false
         }
@@ -74,7 +72,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveAddTxn:
       return update({
         activeModal: null,
-        lastAddedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'addTxn',
+          guid: action.guid,
+        },
         addTxnModal: {
           isFetching: false
         }
@@ -83,7 +84,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveAdjustTxn:
       return update({
         activeModal: null,
-        lastAdjustedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'adjustTxn',
+          guid: action.guid,
+        },
         adjustTxnModal: {
           isFetching: false
         }
@@ -92,7 +96,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveConfirmPlannedTxn:
       return update({
         activeModal: null,
-        lastConfirmedPlannedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'confirmPlannedTxn',
+          guid: action.guid,
+        },
         resolvePlannedTxnModal: {
           plannedTxn: null,
           isFetching: false
@@ -102,7 +109,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveDeletePlannedTxn:
       return update({
         activeModal: null,
-        lastDeletedPlannedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'deletePlannedTxn',
+          guid: action.guid,
+        },
         resolvePlannedTxnModal: {
           plannedTxn: null,
           isFetching: false
@@ -112,7 +122,10 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.ReceiveDeleteTxn:
       return update({
         activeModal: null,
-        lastDeletedTxnGuid: action.guid,
+        lastUserAction: {
+          type: 'deleteTxn',
+          guid: action.guid,
+        },
         adjustTxnModal: {
           txn: null,
           isFetching: false

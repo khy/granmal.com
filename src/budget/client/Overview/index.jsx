@@ -126,12 +126,12 @@ class Overview extends React.Component {
             onDateChange={this.changeProjectionDate.bind(this)}
           />
         <PlannedTxnsCard {...this.props.plannedTxnsCard}
-            lastAddedPlannedTxnGuid={this.props.lastAddedPlannedTxnGuid}
-            lastDeletedPlannedTxnGuid={this.props.lastDeletedPlannedTxnGuid}
+            lastUserAction={this.props.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
         <TxnsCard {...this.props.txnsCard}
+            lastUserAction={this.props.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
           />

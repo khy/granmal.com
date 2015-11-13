@@ -46,22 +46,24 @@ class PlannedTxnsCard extends React.Component {
 
     let message
 
-    if (this.props.lastAddedPlannedTxnGuid) {
-      message = (
-        <div className="card-block">
-          <p className="card-text text-success">
-            Successfully added planned transaction {this.props.lastAddedPlannedTxnGuid}.
-          </p>
-        </div>
-      )
-    } else if (this.props.lastDeletedPlannedTxnGuid) {
-      message = (
-        <div className="card-block">
-          <p className="card-text text-success">
-            Successfully deleted planned transaction {this.props.lastDeletedPlannedTxnGuid}.
-          </p>
-        </div>
-      )
+    if (this.props.lastUserAction) {
+      if (this.props.lastUserAction.type === 'addPlannedTxn') {
+        message = (
+          <div className="card-block">
+            <p className="card-text text-success">
+              Added planned transaction {this.props.lastUserAction.guid}.
+            </p>
+          </div>
+        )
+      } else if (this.props.lastUserAction.type === 'deletePlannedTxn') {
+        message = (
+          <div className="card-block">
+            <p className="card-text text-danger">
+              Deleted planned transaction {this.props.lastUserAction.guid}.
+            </p>
+          </div>
+        )
+      }
     }
 
     return (

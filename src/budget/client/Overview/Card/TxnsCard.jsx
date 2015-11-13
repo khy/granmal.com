@@ -33,14 +33,24 @@ class TxnsCard extends React.Component {
 
     let message
 
-    if (this.props.latestTransactionGuid) {
-      message = (
-        <div className="card-block">
-          <p className="card-text text-success">
-            Successfully added transaction {this.props.latestTransactionGuid}.
-          </p>
-        </div>
-      )
+    if (this.props.lastUserAction) {
+      if (this.props.lastUserAction.type === 'addTxn') {
+        message = (
+          <div className="card-block">
+            <p className="card-text text-success">
+              Added transaction {this.props.lastUserAction.guid}.
+            </p>
+          </div>
+        )
+      } else if (this.props.lastUserAction.type === 'deleteTxn') {
+        message = (
+          <div className="card-block">
+            <p className="card-text text-danger">
+              Deleted transaction {this.props.lastUserAction.guid}.
+            </p>
+          </div>
+        )
+      }
     }
 
     return (
