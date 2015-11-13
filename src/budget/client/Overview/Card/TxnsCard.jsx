@@ -1,5 +1,4 @@
 var React = require('react')
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
@@ -39,7 +38,7 @@ class TxnsCard extends React.Component {
     if (this.props.lastUserAction) {
       if (this.props.lastUserAction.type === UserActionTypes.AddTxn) {
         message = (
-          <div className="card-block" key={UserActionTypes.AddTxn}>
+          <div className="card-block">
             <p className="card-text text-success">
               Added transaction {this.props.lastUserAction.guid}.
             </p>
@@ -47,7 +46,7 @@ class TxnsCard extends React.Component {
         )
       } else if (this.props.lastUserAction.type === UserActionTypes.ConfirmPlannedTxn) {
         message = (
-          <div className="card-block" key={UserActionTypes.ConfirmPlannedTxn}>
+          <div className="card-block">
             <p className="card-text text-success">
               Added transaction {this.props.lastUserAction.txnGuid}.
             </p>
@@ -55,7 +54,7 @@ class TxnsCard extends React.Component {
         )
       } else if (this.props.lastUserAction.type === UserActionTypes.AdjustTxn) {
         message = (
-          <div className="card-block" key={UserActionTypes.AdjustTxn}>
+          <div className="card-block">
             <p className="card-text text-success">
               Adjusted transaction {this.props.lastUserAction.oldGuid},
               adding transaction {this.props.lastUserAction.newGuid}.
@@ -64,7 +63,7 @@ class TxnsCard extends React.Component {
         )
       } else if (this.props.lastUserAction.type === UserActionTypes.DeleteTxn) {
         message = (
-          <div className="card-block" key={UserActionTypes.DeleteTxn}>
+          <div className="card-block">
             <p className="card-text text-danger">
               Deleted transaction {this.props.lastUserAction.guid}.
             </p>
@@ -81,13 +80,7 @@ class TxnsCard extends React.Component {
             New Transaction
           </a>
         </div>
-        <ReactCSSTransitionGroup
-          transitionName="card-message"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={10}
-        >
-          {message}
-        </ReactCSSTransitionGroup>
+        {message}
         <table className="table table-hover">
           <thead>
             <tr>
