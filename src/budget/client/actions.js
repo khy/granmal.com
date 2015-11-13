@@ -161,9 +161,11 @@ export function fetchAccounts() {
       ['accounts', {from: 0, to: 9}, ['guid', 'name']]
     ).then(
       response => {
+        const accounts = response ? response.json.accounts : []
+
         dispatch({
           type: ActionTypes.ReceiveAccounts,
-          accounts: response.json.accounts
+          accounts
         })
       }
     )
@@ -184,7 +186,7 @@ export function fetchPlannedTxnsCard(force = false) {
       ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        const plannedTxns = response.json.plannedTransactions
+        const plannedTxns = response ? response.json.plannedTransactions : []
 
         dispatch({
           type: ActionTypes.ReceivePlannedTxnsCard,
@@ -213,7 +215,7 @@ export function fetchProjectionsCard(date, force = false) {
       ['projectionsByDate', formattedDate, {from: 0, to: 9}, 'account', ['name', 'balance']]
     ).then(
       response => {
-        const projections = response.json.projectionsByDate[formattedDate]
+        const projections = response ? response.json.projectionsByDate[formattedDate] : []
 
         dispatch({
           type: ActionTypes.ReceiveProjectionsCard,
@@ -239,7 +241,7 @@ export function fetchTxnsCard(force = false) {
       ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        const txns = response.json.transactions
+        const txns = response ? response.json.transactions : []
 
         dispatch({
           type: ActionTypes.ReceiveTxnsCard,
@@ -256,9 +258,11 @@ export function fetchTxnTypes() {
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
     ).then(
       response => {
+        const txnTypes = response ? response.json.transactionTypes : []
+
         dispatch({
           type: ActionTypes.ReceiveTxnTypes,
-          txnTypes: response.json.transactionTypes
+          txnTypes
         })
       }
     )
