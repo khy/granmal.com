@@ -1,4 +1,5 @@
 var React = require('react')
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
@@ -51,7 +52,7 @@ class PlannedTxnsCard extends React.Component {
     if (this.props.lastUserAction) {
       if (this.props.lastUserAction.type === UserActionTypes.AddPlannedTxn) {
         message = (
-          <div className="card-block">
+          <div className="card-block" key={UserActionTypes.AddPlannedTxn}>
             <p className="card-text text-success">
               Added planned transaction {this.props.lastUserAction.guid}.
             </p>
@@ -59,7 +60,7 @@ class PlannedTxnsCard extends React.Component {
         )
       } else if (this.props.lastUserAction.type === UserActionTypes.ConfirmPlannedTxn) {
         message = (
-          <div className="card-block">
+          <div className="card-block" key={UserActionTypes.ConfirmPlannedTxn}>
             <p className="card-text text-success">
               Confirm planned transaction {this.props.lastUserAction.plannedTxnGuid}.
             </p>
@@ -67,7 +68,7 @@ class PlannedTxnsCard extends React.Component {
         )
       } else if (this.props.lastUserAction.type === UserActionTypes.DeletePlannedTxn) {
         message = (
-          <div className="card-block">
+          <div className="card-block" key={UserActionTypes.DeletePlannedTxn}>
             <p className="card-text text-danger">
               Deleted planned transaction {this.props.lastUserAction.guid}.
             </p>
@@ -84,7 +85,13 @@ class PlannedTxnsCard extends React.Component {
             New Planned Transaction
           </a>
         </div>
-        {message}
+        <ReactCSSTransitionGroup
+          transitionName="card-message"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={10}
+        >
+          {message}
+        </ReactCSSTransitionGroup>
         <table className="table table-hover">
           <thead>
             <tr>
