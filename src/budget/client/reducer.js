@@ -1,7 +1,7 @@
 import moment from 'moment'
 import u from 'updeep'
 
-import { ActionTypes } from './actions'
+import { ActionTypes, UserActionTypes } from './actions'
 
 const initialState = {
   overview: {
@@ -61,7 +61,7 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'addPlannedTxn',
+          type: UserActionTypes.AddPlannedTxn,
           guid: action.guid,
         },
         addPlannedTxnModal: {
@@ -73,7 +73,7 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'addTxn',
+          type: UserActionTypes.AddTxn,
           guid: action.guid,
         },
         addTxnModal: {
@@ -85,8 +85,9 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'adjustTxn',
-          guid: action.guid,
+          type: UserActionTypes.AdjustTxn,
+          oldGuid: action.oldGuid,
+          newGuid: action.newGuid,
         },
         adjustTxnModal: {
           isFetching: false
@@ -97,8 +98,9 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'confirmPlannedTxn',
-          guid: action.guid,
+          type: UserActionTypes.ConfirmPlannedTxn,
+          plannedTxnGuid: action.plannedTxnGuid,
+          txnGuid: action.txnGuid,
         },
         resolvePlannedTxnModal: {
           plannedTxn: null,
@@ -110,7 +112,7 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'deletePlannedTxn',
+          type: UserActionTypes.DeletePlannedTxn,
           guid: action.guid,
         },
         resolvePlannedTxnModal: {
@@ -123,7 +125,7 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null,
         lastUserAction: {
-          type: 'deleteTxn',
+          type: UserActionTypes.DeleteTxn,
           guid: action.guid,
         },
         adjustTxnModal: {

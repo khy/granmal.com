@@ -29,6 +29,15 @@ export const ActionTypes = {
   ShowAdjustTxnModal: 'ShowAdjustTxnModal',
 }
 
+export const UserActionTypes = {
+  AddPlannedTxn: 'AddPlannedTxn',
+  AddTxn: 'AddTxn',
+  AdjustTxn: 'AdjustTxn',
+  ConfirmPlannedTxn: 'ConfirmPlannedTxn',
+  DeletePlannedTxn: 'DeletePlannedTxn',
+  DeleteTxn: 'DeleteTxn'
+}
+
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch) {
     dispatch({
@@ -79,7 +88,8 @@ export function adjustTxn(guid, newTxn) {
         dispatch(fetchTxnsCard(true))
         dispatch({
           type: ActionTypes.ReceiveAdjustTxn,
-          guid: response.json.transactions.latest.guid
+          oldGuid: guid,
+          newGuid: response.json.transactions.latest.guid,
         })
       }
     )
@@ -99,7 +109,8 @@ export function confirmPlannedTxn(newTxn) {
         dispatch(fetchTxnsCard(true))
         dispatch({
           type: ActionTypes.ReceiveConfirmPlannedTxn,
-          guid: response.json.transactions.latest.guid
+          plannedTxnGuid: newTxn.plannedTransactionGuid,
+          txnGuid: response.json.transactions.latest.guid
         })
       }
     )

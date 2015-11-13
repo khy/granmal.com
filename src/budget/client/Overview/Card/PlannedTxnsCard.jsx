@@ -3,6 +3,8 @@ var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
+import { UserActionTypes } from 'client/actions'
+
 class PlannedTxnsCard extends React.Component {
 
   onNew(event) {
@@ -47,7 +49,7 @@ class PlannedTxnsCard extends React.Component {
     let message
 
     if (this.props.lastUserAction) {
-      if (this.props.lastUserAction.type === 'addPlannedTxn') {
+      if (this.props.lastUserAction.type === UserActionTypes.AddPlannedTxn) {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
@@ -55,7 +57,15 @@ class PlannedTxnsCard extends React.Component {
             </p>
           </div>
         )
-      } else if (this.props.lastUserAction.type === 'deletePlannedTxn') {
+      } else if (this.props.lastUserAction.type === UserActionTypes.ConfirmPlannedTxn) {
+        message = (
+          <div className="card-block">
+            <p className="card-text text-success">
+              Confirm planned transaction {this.props.lastUserAction.plannedTxnGuid}.
+            </p>
+          </div>
+        )
+      } else if (this.props.lastUserAction.type === UserActionTypes.DeletePlannedTxn) {
         message = (
           <div className="card-block">
             <p className="card-text text-danger">
