@@ -82,33 +82,31 @@ class Overview extends React.Component {
     let modal
 
     if (this.props.activeModal === 'addPlannedTxnModal') {
-      modal = <AddPlannedTxnModal
+      modal = <AddPlannedTxnModal {...this.props.addPlannedTxnModal}
         transactionTypes={this.props.txnTypes}
         accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
       />
     } else if (this.props.activeModal === 'resolvePlannedTxnModal') {
-      modal = <ResolvePlannedTxnModal
+      modal = <ResolvePlannedTxnModal {...this.props.resolvePlannedTxnModal}
         transactionTypes={this.props.txnTypes}
         accounts={this.props.accounts}
-        plannedTxn={this.props.resolvePlannedTxnModal.plannedTxn}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
     } else if (this.props.activeModal === 'addTxnModal') {
-      modal = <AddTxnModal
+      modal = <AddTxnModal {...this.props.addTxnModal}
         transactionTypes={this.props.txnTypes}
         accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
     } else if (this.props.activeModal === 'adjustTxnModal') {
-      modal = <AdjustTxnModal
+      modal = <AdjustTxnModal {...this.props.adjustTxnModal}
         transactionTypes={this.props.txnTypes}
         accounts={this.props.accounts}
-        txn={this.props.adjustTxnModal.txn}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}
@@ -127,15 +125,13 @@ class Overview extends React.Component {
           <ProjectionsCard {...this.props.projectionsCard}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
-          <PlannedTxnsCard
-            plannedTxns={this.props.plannedTxnsCard.plannedTxns}
+        <PlannedTxnsCard {...this.props.plannedTxnsCard}
             lastAddedPlannedTxnGuid={this.props.lastAddedPlannedTxnGuid}
             lastDeletedPlannedTxnGuid={this.props.lastDeletedPlannedTxnGuid}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
-          <TxnsCard
-            data={this.props.txnsCard}
+        <TxnsCard {...this.props.txnsCard}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
           />

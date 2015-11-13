@@ -58,53 +58,76 @@ class AdjustTxnModal extends React.Component {
               </div>
               <div className="modal-body">
                 <form>
-                  <fieldset className="form-group">
-                    <label>Transaction Type</label>
-                    <select
-                      className="form-control"
-                      ref="transactionTypeGuidSelect"
-                      defaultValue={txn.transactionType.guid}
-                    >
-                      {transactionTypeOptions}
-                    </select>
-                  </fieldset>
+                  <fieldset disabled={this.props.isFetching}>
+                    <fieldset className="form-group">
+                      <label>Transaction Type</label>
+                      <select
+                        className="form-control"
+                        ref="transactionTypeGuidSelect"
+                        defaultValue={txn.transactionType.guid}
+                      >
+                        {transactionTypeOptions}
+                      </select>
+                    </fieldset>
 
-                  <fieldset className="form-group">
-                    <label>Account</label>
-                    <select
-                      className="form-control"
-                      ref="accountGuidSelect"
-                      defaultValue={txn.account.guid}
-                    >
-                      {accountOptions}
-                    </select>
-                  </fieldset>
+                    <fieldset className="form-group">
+                      <label>Account</label>
+                      <select
+                        className="form-control"
+                        ref="accountGuidSelect"
+                        defaultValue={txn.account.guid}
+                      >
+                        {accountOptions}
+                      </select>
+                    </fieldset>
 
-                  <fieldset className="form-group">
-                    <label>Amount</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref="amountInput"
-                      defaultValue={txn.amount}
-                    />
-                  </fieldset>
+                    <fieldset className="form-group">
+                      <label>Amount</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        ref="amountInput"
+                        defaultValue={txn.amount}
+                      />
+                    </fieldset>
 
-                  <fieldset className="form-group">
-                    <label>Date</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref="timestampInput"
-                      defaultValue={defaultDate}
-                    />
+                    <fieldset className="form-group">
+                      <label>Date</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        ref="timestampInput"
+                        defaultValue={defaultDate}
+                      />
+                    </fieldset>
                   </fieldset>
                 </form>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-danger-outline pull-left" onClick={this.delete.bind(this)}>Delete</button>
-                <button type="button" className="btn btn-secondary" onClick={this.close.bind(this)}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={this.adjust.bind(this)}>Adjust</button>
+                <button
+                  type="button"
+                  className="btn btn-danger-outline pull-left"
+                  onClick={this.delete.bind(this)}
+                  disabled={this.props.isFetching}
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={this.close.bind(this)}
+                  disabled={this.props.isFetching}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={this.adjust.bind(this)}
+                  disabled={this.props.isFetching}
+                >
+                  Adjust
+                </button>
               </div>
             </div>
           </div>

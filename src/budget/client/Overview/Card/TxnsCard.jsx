@@ -12,14 +12,14 @@ class TxnsCard extends React.Component {
 
   onAdjust(event) {
     event.preventDefault()
-    var txn = _find(this.props.data.txns, (txn) => {
+    var txn = _find(this.props.txns, (txn) => {
       return txn.guid === event.target.dataset.guid
     })
     this.props.onAdjust(txn)
   }
 
   render() {
-    var rows = _map(this.props.data.txns, (value, key) => {
+    var rows = _map(this.props.txns, (value, key) => {
       return (
         <tr key={value.guid}>
           <td>{moment(value.timestamp).format('MM/DD/YY')}</td>
