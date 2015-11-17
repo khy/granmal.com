@@ -6,8 +6,6 @@ import { ActionTypes, UserActionTypes } from './actions'
 const initialState = {
   model: {},
   overview: {
-    account: [],
-    txnTypes: [],
     activeModal: null,
     lastUserAction: null,
     addPlannedTxnModal: {
@@ -52,11 +50,6 @@ export default function reducer(state = initialState, action) {
       return update({
         activeModal: null
       })
-
-    case ActionTypes.ReceiveAccounts:
-      return u({
-        model: action.model
-      }, state)
 
     case ActionTypes.ReceiveAddPlannedTxn:
       return update({
@@ -135,6 +128,11 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case ActionTypes.ReceiveModel:
+      return u({
+        model: action.model
+      }, state)
+
     case ActionTypes.ReceivePlannedTxnsCard:
       return update({
         plannedTxnsCard: {
@@ -159,11 +157,6 @@ export default function reducer(state = initialState, action) {
           isFetching: false
         }
       })
-
-    case ActionTypes.ReceiveTxnTypes:
-      return u({
-        model: action.model
-      }, state)
 
     case ActionTypes.RequestAddPlannedTxn:
       return update({

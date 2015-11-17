@@ -3,17 +3,16 @@ import model from './model'
 
 export const ActionTypes = {
   HideModal: 'HideModal',
-  ReceiveAccounts: 'ReceiveAccounts',
   ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
   ReceiveAddTxn: 'ReceiveAddTxn',
   ReceiveAdjustTxn: 'ReceiveAdjustTxn',
   ReceiveConfirmPlannedTxn: 'ReceiveConfirmPlannedTxn',
   ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
   ReceiveDeleteTxn: 'ReceiveDeleteTxn',
+  ReceiveModel: 'ReceiveModel',
   ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
   ReceiveProjectionsCard: 'ReceiveProjectionsCard',
   ReceiveTxnsCard: 'ReceiveTxnsCard',
-  ReceiveTxnTypes: 'ReceiveTxnTypes',
   RequestAddPlannedTxn: 'RequestAddPlannedTxn',
   RequestAddTxn: 'RequestAddTxn',
   RequestAdjustTxn: 'RequestAdjustTxn',
@@ -162,7 +161,7 @@ export function fetchAccounts() {
     ).then(
       response => {
         dispatch({
-          type: ActionTypes.ReceiveAccounts,
+          type: ActionTypes.ReceiveModel,
           model: response.json,
         })
       }
@@ -257,7 +256,7 @@ export function fetchTxnTypes() {
     ).then(
       response => {
         dispatch({
-          type: ActionTypes.ReceiveTxnTypes,
+          type: ActionTypes.ReceiveModel,
           model: response.json
         })
       }
