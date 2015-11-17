@@ -4,6 +4,7 @@ import u from 'updeep'
 import { ActionTypes, UserActionTypes } from './actions'
 
 const initialState = {
+  model: {},
   overview: {
     account: [],
     txnTypes: [],
@@ -53,9 +54,9 @@ export default function reducer(state = initialState, action) {
       })
 
     case ActionTypes.ReceiveAccounts:
-      return update({
-        accounts: u.constant(action.accounts)
-      })
+      return u({
+        model: action.model
+      }, state)
 
     case ActionTypes.ReceiveAddPlannedTxn:
       return update({
@@ -160,9 +161,9 @@ export default function reducer(state = initialState, action) {
       })
 
     case ActionTypes.ReceiveTxnTypes:
-      return update({
-        txnTypes: u.constant(action.txnTypes)
-      })
+      return u({
+        model: action.model
+      }, state)
 
     case ActionTypes.RequestAddPlannedTxn:
       return update({

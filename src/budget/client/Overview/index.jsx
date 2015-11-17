@@ -84,32 +84,32 @@ class Overview extends React.Component {
   render() {
     let modal
 
-    if (this.props.activeModal === 'addPlannedTxnModal') {
-      modal = <AddPlannedTxnModal {...this.props.addPlannedTxnModal}
-        transactionTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+    if (this.props.overview.activeModal === 'addPlannedTxnModal') {
+      modal = <AddPlannedTxnModal {...this.props.overview.addPlannedTxnModal}
+        transactionTypes={this.props.model.transactionTypes}
+        accounts={this.props.model.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
       />
-    } else if (this.props.activeModal === 'resolvePlannedTxnModal') {
-      modal = <ResolvePlannedTxnModal {...this.props.resolvePlannedTxnModal}
-        transactionTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+    } else if (this.props.overview.activeModal === 'resolvePlannedTxnModal') {
+      modal = <ResolvePlannedTxnModal {...this.props.overview.resolvePlannedTxnModal}
+        transactionTypes={this.props.model.transactionTypes}
+        accounts={this.props.model.accounts}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
-    } else if (this.props.activeModal === 'addTxnModal') {
-      modal = <AddTxnModal {...this.props.addTxnModal}
-        transactionTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+    } else if (this.props.overview.activeModal === 'addTxnModal') {
+      modal = <AddTxnModal {...this.props.overview.addTxnModal}
+        transactionTypes={this.props.model.transactionTypes}
+        accounts={this.props.model.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
-    } else if (this.props.activeModal === 'adjustTxnModal') {
-      modal = <AdjustTxnModal {...this.props.adjustTxnModal}
-        transactionTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+    } else if (this.props.overview.activeModal === 'adjustTxnModal') {
+      modal = <AdjustTxnModal {...this.props.overview.adjustTxnModal}
+        transactionTypes={this.props.model.transactionTypes}
+        accounts={this.props.model.accounts}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}
@@ -125,16 +125,16 @@ class Overview extends React.Component {
         </nav>
 
         <div className="container">
-          <ProjectionsCard {...this.props.projectionsCard}
+          <ProjectionsCard {...this.props.overview.projectionsCard}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
-        <PlannedTxnsCard {...this.props.plannedTxnsCard}
-            lastUserAction={this.props.lastUserAction}
+        <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
+            lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
-        <TxnsCard {...this.props.txnsCard}
-            lastUserAction={this.props.lastUserAction}
+        <TxnsCard {...this.props.overview.txnsCard}
+            lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
           />
@@ -147,6 +147,6 @@ class Overview extends React.Component {
 
 }
 
-function select(state) { return state.overview }
+function select(state) { return state }
 
 export default connect(select)(Overview)

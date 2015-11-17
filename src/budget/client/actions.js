@@ -161,11 +161,9 @@ export function fetchAccounts() {
       ['accounts', {from: 0, to: 9}, ['guid', 'name']]
     ).then(
       response => {
-        const accounts = response ? response.json.accounts : []
-
         dispatch({
           type: ActionTypes.ReceiveAccounts,
-          accounts
+          model: response.json,
         })
       }
     )
@@ -258,11 +256,9 @@ export function fetchTxnTypes() {
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
     ).then(
       response => {
-        const txnTypes = response ? response.json.transactionTypes : []
-
         dispatch({
           type: ActionTypes.ReceiveTxnTypes,
-          txnTypes
+          model: response.json
         })
       }
     )

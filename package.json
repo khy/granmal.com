@@ -21,6 +21,7 @@
     "react": "0.14.0",
     "react-dom": "0.14.0",
     "redux": "3.0.4",
+    "redux-logger": "2.0.4",
     "request-promise": "1.0.2",
     "updeep": "0.10.1"
   },
