@@ -19,12 +19,10 @@ const initialState = {
       isFetching: false,
     },
     plannedTxnsCard: {
-      plannedTxns: [],
       isFetching: false,
     },
     projectionsCard: {
       date: moment().add(1, 'month').startOf('month').format(),
-      projections: [],
       isFetching: false,
     },
     resolvePlannedTxnModal: {
@@ -32,7 +30,6 @@ const initialState = {
       isFetching: false,
     },
     txnsCard: {
-      txns: [],
       isFetching: false,
     },
   }
@@ -49,6 +46,35 @@ export default function reducer(state = initialState, action) {
     case ActionTypes.HideModal:
       return update({
         activeModal: null
+      })
+
+    case ActionTypes.PlannedTxnsCardReceive:
+      return update({
+        plannedTxnsCard: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.PlannedTxnsCardRequest:
+      return update({
+        plannedTxnsCard: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.ProjectionsCardReceive:
+      return update({
+        projectionsCard: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.ProjectionsCardRequest:
+      return update({
+        projectionsCard: {
+          date: action.date,
+          isFetching: true
+        }
       })
 
     case ActionTypes.ReceiveAddPlannedTxn:
@@ -133,31 +159,6 @@ export default function reducer(state = initialState, action) {
         model: action.model
       }, state)
 
-    case ActionTypes.ReceivePlannedTxnsCard:
-      return update({
-        plannedTxnsCard: {
-          plannedTxns: u.constant(action.plannedTxns),
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveProjectionsCard:
-      return update({
-        projectionsCard: {
-          date: action.date.format(),
-          projections: u.constant(action.projections),
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveTxnsCard:
-      return update({
-        txnsCard: {
-          txns: u.constant(action.txns),
-          isFetching: false
-        }
-      })
-
     case ActionTypes.RequestAddPlannedTxn:
       return update({
         addPlannedTxnModal: {
@@ -200,28 +201,6 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.RequestPlannedTxnsCard:
-      return update({
-        plannedTxnsCard: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestProjectionsCard:
-      return update({
-        projectionsCard: {
-          date: action.date.format(),
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestTxnsCard:
-      return update({
-        txnsCard: {
-          isFetching: true
-        }
-      })
-
     case ActionTypes.ShowAddPlannedTxnModal:
       return update({
         activeModal: 'addPlannedTxnModal'
@@ -245,6 +224,20 @@ export default function reducer(state = initialState, action) {
         activeModal: 'adjustTxnModal',
         adjustTxnModal: {
           txn: action.txn
+        }
+      })
+
+    case ActionTypes.TxnsCardReceive:
+      return update({
+        txnsCard: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.TxnsCardRequest:
+      return update({
+        txnsCard: {
+          isFetching: true
         }
       })
 

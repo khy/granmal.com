@@ -126,14 +126,17 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard {...this.props.overview.projectionsCard}
+            projectionsByDate={this.props.model.projectionsByDate}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
-        <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
+          <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
+            plannedTxns={this.props.model.plannedTransactions}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
-        <TxnsCard {...this.props.overview.txnsCard}
+          <TxnsCard {...this.props.overview.txnsCard}
+            transactions={this.props.model.transactions}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}

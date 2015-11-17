@@ -1,8 +1,14 @@
 import moment from 'moment'
 import model from './model'
 
+import { formatDateForModel } from 'budget/client/lib/date'
+
 export const ActionTypes = {
   HideModal: 'HideModal',
+  PlannedTxnsCardReceive: 'PlannedTxnsCardReceive',
+  PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
+  ProjectionsCardReceive: 'ProjectionsCardReceive',
+  ProjectionsCardRequest: 'ProjectionsCardRequest',
   ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
   ReceiveAddTxn: 'ReceiveAddTxn',
   ReceiveAdjustTxn: 'ReceiveAdjustTxn',
@@ -10,22 +16,18 @@ export const ActionTypes = {
   ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
   ReceiveDeleteTxn: 'ReceiveDeleteTxn',
   ReceiveModel: 'ReceiveModel',
-  ReceivePlannedTxnsCard: 'ReceivePlannedTxnsCard',
-  ReceiveProjectionsCard: 'ReceiveProjectionsCard',
-  ReceiveTxnsCard: 'ReceiveTxnsCard',
   RequestAddPlannedTxn: 'RequestAddPlannedTxn',
   RequestAddTxn: 'RequestAddTxn',
   RequestAdjustTxn: 'RequestAdjustTxn',
   RequestConfirmPlannedTxn: 'RequestConfirmPlannedTxn',
   RequestDeletePlannedTxn: 'RequestDeletePlannedTxn',
   RequestDeleteTxn: 'RequestDeleteTxn',
-  RequestPlannedTxnsCard: 'RequestPlannedTxnsCard',
-  RequestProjectionsCard: 'RequestProjectionsCard',
-  RequestTxnsCard: 'RequestTxnsCard',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
   ShowAdjustTxnModal: 'ShowAdjustTxnModal',
+  TxnsCardReceive: 'TxnsCardReceive',
+  TxnsCardRequest: 'TxnsCardRequest',
 }
 
 export const UserActionTypes = {
@@ -172,7 +174,7 @@ export function fetchAccounts() {
 export function fetchPlannedTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestPlannedTxnsCard
+      type: ActionTypes.PlannedTxnsCardRequest
     })
 
     if (force) { model.invalidate(['plannedTransactions']) }
@@ -183,12 +185,8 @@ export function fetchPlannedTxnsCard(force = false) {
       ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        const plannedTxns = response ? response.json.plannedTransactions : []
-
-        dispatch({
-          type: ActionTypes.ReceivePlannedTxnsCard,
-          plannedTxns
-        })
+        dispatch(receiveModel(response.json))
+        dispatch({ type: ActionTypes.PlannedTxnsCardReceive })
       }
     )
   }
@@ -199,11 +197,11 @@ export function fetchProjectionsCard(date, force = false) {
     const _date = moment(date || getState().overview.projectionsCard.date)
 
     dispatch({
-      type: ActionTypes.RequestProjectionsCard,
-      date: _date
+      type: ActionTypes.ProjectionsCardRequest,
+      date: _date.format()
     })
 
-    const formattedDate = _date.format('YYYY-MM-DD')
+    const formattedDate = formatDateForModel(_date)
 
     if (force) { model.invalidate(['projectionsByDate', formattedDate]) }
 
@@ -212,13 +210,8 @@ export function fetchProjectionsCard(date, force = false) {
       ['projectionsByDate', formattedDate, {from: 0, to: 9}, 'account', ['name', 'balance']]
     ).then(
       response => {
-        const projections = response ? response.json.projectionsByDate[formattedDate] : []
-
-        dispatch({
-          type: ActionTypes.ReceiveProjectionsCard,
-          date: _date,
-          projections
-        })
+        dispatch(receiveModel(response.json))
+        dispatch({ type: ActionTypes.ProjectionsCardReceive })
       }
     )
   }
@@ -227,7 +220,7 @@ export function fetchProjectionsCard(date, force = false) {
 export function fetchTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestTxnsCard
+      type: ActionTypes.TxnsCardRequest
     })
 
     if (force) { model.invalidate(['transactions']) }
@@ -238,12 +231,8 @@ export function fetchTxnsCard(force = false) {
       ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        const txns = response ? response.json.transactions : []
-
-        dispatch({
-          type: ActionTypes.ReceiveTxnsCard,
-          txns
-        })
+        dispatch(receiveModel(response.json))
+        dispatch({ type: ActionTypes.TxnsCardReceive })
       }
     )
   }
@@ -261,5 +250,12 @@ export function fetchTxnTypes() {
         })
       }
     )
+  }
+}
+
+export function receiveModel(model) {
+  return {
+    type: ActionTypes.ReceiveModel,
+    model: model,
   }
 }

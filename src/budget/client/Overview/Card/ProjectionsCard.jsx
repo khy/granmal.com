@@ -1,7 +1,7 @@
 var React = require('react')
 var _map = require('lodash/collection/map')
 
-import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
+import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 
 class ProjectionsCard extends React.Component {
 
@@ -12,7 +12,16 @@ class ProjectionsCard extends React.Component {
   }
 
   render() {
-    const rows = _map(this.props.projections, (value, key) => {
+    const projectionDateForModel = formatDateForModel(this.props.date)
+    let projections
+
+    if (this.props.projectionsByDate && this.props.projectionsByDate[projectionDateForModel]) {
+      projections = this.props.projectionsByDate[projectionDateForModel]
+    } else {
+      projections = []
+    }
+
+    const rows = _map(projections, (value, key) => {
       return (
         <tr key={value.account.name}>
           <td>{value.account.name}</td>
