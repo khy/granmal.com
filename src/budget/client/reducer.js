@@ -198,10 +198,16 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    // TODO: this should merge more intelligently. Currently it completely
+    // replaces top-level value, which is not ideal for, e.g., projectionsByDate
     case AT.ReceiveModel:
-      return u({
-        model: action.model
-      }, state)
+      let _state = state
+
+      Object.keys(action.model).map ( (key) => {
+        _state = u.updateIn('model.' + key, u.constant(action.model[key]), _state)
+      })
+
+      return _state
 
     case AT.ShowAddPlannedTxnModal:
       return update({
