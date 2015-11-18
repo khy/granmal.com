@@ -30,6 +30,8 @@ export const ActionTypes = {
   TxnsCardRequest: 'TxnsCardRequest',
 }
 
+const AT = ActionTypes
+
 export const UserActionTypes = {
   AddPlannedTxn: 'AddPlannedTxn',
   AddTxn: 'AddTxn',
@@ -42,7 +44,7 @@ export const UserActionTypes = {
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.AddPlannedTxnRequest
+      type: AT.AddPlannedTxnRequest
     })
 
     model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
@@ -50,7 +52,7 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.AddPlannedTxnReceive,
+          type: AT.AddPlannedTxnReceive,
           guid: response.json.plannedTransactions.latest.guid
         })
       }
@@ -61,7 +63,7 @@ export function addPlannedTxn(newPlannedTxn) {
 export function addTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.AddTxnRequest
+      type: AT.AddTxnRequest
     })
 
     model.call('transactions.add', [newTxn], [['guid']]).then(
@@ -69,7 +71,7 @@ export function addTxn(newTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.AddTxnReceive,
+          type: AT.AddTxnReceive,
           guid: response.json.transactions.latest.guid
         })
       }
@@ -80,7 +82,7 @@ export function addTxn(newTxn) {
 export function adjustTxn(guid, newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.AdjustTxnRequest
+      type: AT.AdjustTxnRequest
     })
 
     model.call('transactions.adjust', [guid, newTxn], [['guid']]).then(
@@ -88,7 +90,7 @@ export function adjustTxn(guid, newTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.AdjustTxnReceive,
+          type: AT.AdjustTxnReceive,
           oldGuid: guid,
           newGuid: response.json.transactions.latest.guid,
         })
@@ -100,7 +102,7 @@ export function adjustTxn(guid, newTxn) {
 export function confirmPlannedTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.ConfirmPlannedTxnRequest
+      type: AT.ConfirmPlannedTxnRequest
     })
 
     model.call('transactions.add', [newTxn], [['guid']]).then(
@@ -109,7 +111,7 @@ export function confirmPlannedTxn(newTxn) {
         dispatch(fetchPlannedTxnsCard(true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ConfirmPlannedTxnReceive,
+          type: AT.ConfirmPlannedTxnReceive,
           plannedTxnGuid: newTxn.plannedTransactionGuid,
           txnGuid: response.json.transactions.latest.guid
         })
@@ -121,7 +123,7 @@ export function confirmPlannedTxn(newTxn) {
 export function deletePlannedTxn(guid) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.DeletePlannedTxnRequest
+      type: AT.DeletePlannedTxnRequest
     })
 
     model.call('plannedTransactions.delete', [guid]).then(
@@ -129,7 +131,7 @@ export function deletePlannedTxn(guid) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.DeletePlannedTxnReceive,
+          type: AT.DeletePlannedTxnReceive,
           guid: guid
         })
       }
@@ -140,7 +142,7 @@ export function deletePlannedTxn(guid) {
 export function deleteTxn(guid) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.DeleteTxnRequest
+      type: AT.DeleteTxnRequest
     })
 
     model.call('transactions.delete', [guid]).then(
@@ -148,7 +150,7 @@ export function deleteTxn(guid) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.DeleteTxnReceive,
+          type: AT.DeleteTxnReceive,
           guid: guid
         })
       }
@@ -163,7 +165,7 @@ export function fetchAccounts() {
     ).then(
       response => {
         dispatch({
-          type: ActionTypes.ReceiveModel,
+          type: AT.ReceiveModel,
           model: response.json,
         })
       }
@@ -174,7 +176,7 @@ export function fetchAccounts() {
 export function fetchPlannedTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.PlannedTxnsCardRequest
+      type: AT.PlannedTxnsCardRequest
     })
 
     if (force) { model.invalidate(['plannedTransactions']) }
@@ -186,7 +188,7 @@ export function fetchPlannedTxnsCard(force = false) {
     ).then(
       response => {
         dispatch(receiveModel(response.json))
-        dispatch({ type: ActionTypes.PlannedTxnsCardReceive })
+        dispatch({ type: AT.PlannedTxnsCardReceive })
       }
     )
   }
@@ -197,7 +199,7 @@ export function fetchProjectionsCard(date, force = false) {
     const _date = moment(date || getState().overview.projectionsCard.date)
 
     dispatch({
-      type: ActionTypes.ProjectionsCardRequest,
+      type: AT.ProjectionsCardRequest,
       date: _date.format()
     })
 
@@ -211,7 +213,7 @@ export function fetchProjectionsCard(date, force = false) {
     ).then(
       response => {
         dispatch(receiveModel(response.json))
-        dispatch({ type: ActionTypes.ProjectionsCardReceive })
+        dispatch({ type: AT.ProjectionsCardReceive })
       }
     )
   }
@@ -220,7 +222,7 @@ export function fetchProjectionsCard(date, force = false) {
 export function fetchTxnsCard(force = false) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.TxnsCardRequest
+      type: AT.TxnsCardRequest
     })
 
     if (force) { model.invalidate(['transactions']) }
@@ -232,7 +234,7 @@ export function fetchTxnsCard(force = false) {
     ).then(
       response => {
         dispatch(receiveModel(response.json))
-        dispatch({ type: ActionTypes.TxnsCardReceive })
+        dispatch({ type: AT.TxnsCardReceive })
       }
     )
   }
@@ -245,7 +247,7 @@ export function fetchTxnTypes() {
     ).then(
       response => {
         dispatch({
-          type: ActionTypes.ReceiveModel,
+          type: AT.ReceiveModel,
           model: response.json
         })
       }
@@ -255,7 +257,7 @@ export function fetchTxnTypes() {
 
 export function receiveModel(model) {
   return {
-    type: ActionTypes.ReceiveModel,
+    type: AT.ReceiveModel,
     model: model,
   }
 }

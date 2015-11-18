@@ -3,6 +3,8 @@ import u from 'updeep'
 
 import { ActionTypes, UserActionTypes } from './actions'
 
+const AT = ActionTypes
+
 const initialState = {
   model: {},
   overview: {
@@ -43,7 +45,7 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case ActionTypes.AddPlannedTxnReceive:
+    case AT.AddPlannedTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -55,14 +57,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.AddPlannedTxnRequest:
+    case AT.AddPlannedTxnRequest:
       return update({
         addPlannedTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.AddTxnReceive:
+    case AT.AddTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -74,14 +76,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.AddTxnRequest:
+    case AT.AddTxnRequest:
       return update({
         addTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.AdjustTxnReceive:
+    case AT.AdjustTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -94,14 +96,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.AdjustTxnRequest:
+    case AT.AdjustTxnRequest:
       return update({
         adjustTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.ConfirmPlannedTxnReceive:
+    case AT.ConfirmPlannedTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -115,14 +117,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.ConfirmPlannedTxnRequest:
+    case AT.ConfirmPlannedTxnRequest:
       return update({
         resolvePlannedTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.DeletePlannedTxnReceive:
+    case AT.DeletePlannedTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -135,14 +137,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.DeletePlannedTxnRequest:
+    case AT.DeletePlannedTxnRequest:
       return update({
         resolvePlannedTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.DeleteTxnReceive:
+    case AT.DeleteTxnReceive:
       return update({
         activeModal: null,
         lastUserAction: {
@@ -155,40 +157,40 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.DeleteTxnRequest:
+    case AT.DeleteTxnRequest:
       return update({
         adjustTxnModal: {
           isFetching: true
         }
       })
 
-    case ActionTypes.HideModal:
+    case AT.HideModal:
       return update({
         activeModal: null
       })
 
-    case ActionTypes.PlannedTxnsCardReceive:
+    case AT.PlannedTxnsCardReceive:
       return update({
         plannedTxnsCard: {
           isFetching: false
         }
       })
 
-    case ActionTypes.PlannedTxnsCardRequest:
+    case AT.PlannedTxnsCardRequest:
       return update({
         plannedTxnsCard: {
           isFetching: true
         }
       })
 
-    case ActionTypes.ProjectionsCardReceive:
+    case AT.ProjectionsCardReceive:
       return update({
         projectionsCard: {
           isFetching: false
         }
       })
 
-    case ActionTypes.ProjectionsCardRequest:
+    case AT.ProjectionsCardRequest:
       return update({
         projectionsCard: {
           date: action.date,
@@ -196,17 +198,17 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.ReceiveModel:
+    case AT.ReceiveModel:
       return u({
         model: action.model
       }, state)
 
-    case ActionTypes.ShowAddPlannedTxnModal:
+    case AT.ShowAddPlannedTxnModal:
       return update({
         activeModal: 'addPlannedTxnModal'
       })
 
-    case ActionTypes.ShowResolvePlannedTxnModal:
+    case AT.ShowResolvePlannedTxnModal:
       return update({
         activeModal: 'resolvePlannedTxnModal',
         resolvePlannedTxnModal: {
@@ -214,12 +216,12 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.ShowAddTxnModal:
+    case AT.ShowAddTxnModal:
       return update({
         activeModal: 'addTxnModal'
       })
 
-    case ActionTypes.ShowAdjustTxnModal:
+    case AT.ShowAdjustTxnModal:
       return update({
         activeModal: 'adjustTxnModal',
         adjustTxnModal: {
@@ -227,14 +229,14 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.TxnsCardReceive:
+    case AT.TxnsCardReceive:
       return update({
         txnsCard: {
           isFetching: false
         }
       })
 
-    case ActionTypes.TxnsCardRequest:
+    case AT.TxnsCardRequest:
       return update({
         txnsCard: {
           isFetching: true
