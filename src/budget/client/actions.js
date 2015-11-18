@@ -21,7 +21,8 @@ export const ActionTypes = {
   PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
   ProjectionsCardReceive: 'ProjectionsCardReceive',
   ProjectionsCardRequest: 'ProjectionsCardRequest',
-  ReceiveModel: 'ReceiveModel',
+  SetAccounts: 'SetAccounts',
+  SetTxnTypes: 'SetTxnTypes',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
@@ -164,10 +165,8 @@ export function fetchAccounts() {
       ['accounts', {from: 0, to: 9}, ['guid', 'name']]
     ).then(
       response => {
-        dispatch({
-          type: AT.ReceiveModel,
-          model: response.json,
-        })
+        const accounts = response ? response.json.accounts : []
+        dispatch({ type: AT.SetAccounts, accounts })
       }
     )
   }
@@ -187,8 +186,8 @@ export function fetchPlannedTxnsCard(force = false) {
       ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        dispatch(receiveModel(response.json))
-        dispatch({ type: AT.PlannedTxnsCardReceive })
+        const plannedTxns = response ? response.json.plannedTransactions : []
+        dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
       }
     )
   }
@@ -212,8 +211,8 @@ export function fetchProjectionsCard(date, force = false) {
       ['projectionsByDate', formattedDate, {from: 0, to: 9}, 'account', ['name', 'balance']]
     ).then(
       response => {
-        dispatch(receiveModel(response.json))
-        dispatch({ type: AT.ProjectionsCardReceive })
+        const projections = response ? response.json.projectionsByDate[formattedDate] : []
+        dispatch({ type: AT.ProjectionsCardReceive, projections })
       }
     )
   }
@@ -233,8 +232,8 @@ export function fetchTxnsCard(force = false) {
       ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
       response => {
-        dispatch(receiveModel(response.json))
-        dispatch({ type: AT.TxnsCardReceive })
+        const txns = response ? response.json.transactions : []
+        dispatch({ type: AT.TxnsCardReceive, txns })
       }
     )
   }
@@ -246,18 +245,9 @@ export function fetchTxnTypes() {
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
     ).then(
       response => {
-        dispatch({
-          type: AT.ReceiveModel,
-          model: response.json
-        })
+        const txnTypes = response ? response.json.transactionTypes : []
+        dispatch({ type: AT.SetTxnTypes, txnTypes })
       }
     )
-  }
-}
-
-export function receiveModel(model) {
-  return {
-    type: AT.ReceiveModel,
-    model: model,
   }
 }

@@ -6,10 +6,10 @@ import { ActionTypes, UserActionTypes } from './actions'
 const AT = ActionTypes
 
 const initialState = {
-  model: {},
+  accounts: [],
+  txnTypes: [],
   overview: {
     activeModal: null,
-    lastUserAction: null,
     addPlannedTxnModal: {
       isFetching: false,
     },
@@ -20,11 +20,14 @@ const initialState = {
       txn: null,
       isFetching: false,
     },
+    lastUserAction: null,
     plannedTxnsCard: {
+      plannedTxns: [],
       isFetching: false,
     },
     projectionsCard: {
       date: moment().add(1, 'month').startOf('month').format(),
+      projections: [],
       isFetching: false,
     },
     resolvePlannedTxnModal: {
@@ -32,9 +35,10 @@ const initialState = {
       isFetching: false,
     },
     txnsCard: {
+      txns: [],
       isFetching: false,
     },
-  }
+  },
 }
 
 export default function reducer(state = initialState, action) {
@@ -172,7 +176,8 @@ export default function reducer(state = initialState, action) {
     case AT.PlannedTxnsCardReceive:
       return update({
         plannedTxnsCard: {
-          isFetching: false
+          plannedTxns: action.plannedTxns,
+          isFetching: false,
         }
       })
 
@@ -186,7 +191,8 @@ export default function reducer(state = initialState, action) {
     case AT.ProjectionsCardReceive:
       return update({
         projectionsCard: {
-          isFetching: false
+          projections: action.projections,
+          isFetching: false,
         }
       })
 
@@ -208,6 +214,12 @@ export default function reducer(state = initialState, action) {
       })
 
       return _state
+
+    case AT.SetAccounts:
+      return u({ accounts: action.accounts }, state)
+
+    case AT.SetTxnTypes:
+      return u({ txnTypes: action.txnTypes }, state)
 
     case AT.ShowAddPlannedTxnModal:
       return update({
@@ -238,7 +250,8 @@ export default function reducer(state = initialState, action) {
     case AT.TxnsCardReceive:
       return update({
         txnsCard: {
-          isFetching: false
+          txns: action.txns,
+          isFetching: false,
         }
       })
 

@@ -12,16 +12,7 @@ class ProjectionsCard extends React.Component {
   }
 
   render() {
-    const projectionDateForModel = formatDateForModel(this.props.date)
-    let projections
-
-    if (this.props.projectionsByDate && this.props.projectionsByDate[projectionDateForModel]) {
-      projections = this.props.projectionsByDate[projectionDateForModel]
-    } else {
-      projections = []
-    }
-
-    const rows = _map(projections, (value, key) => {
+    const rows = _map(this.props.projections, (value, key) => {
       return (
         <tr key={value.account.name}>
           <td>{value.account.name}</td>

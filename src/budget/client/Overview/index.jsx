@@ -86,30 +86,30 @@ class Overview extends React.Component {
 
     if (this.props.overview.activeModal === 'addPlannedTxnModal') {
       modal = <AddPlannedTxnModal {...this.props.overview.addPlannedTxnModal}
-        transactionTypes={this.props.model.transactionTypes}
-        accounts={this.props.model.accounts}
+        transactionTypes={this.props.transactionTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'resolvePlannedTxnModal') {
       modal = <ResolvePlannedTxnModal {...this.props.overview.resolvePlannedTxnModal}
-        transactionTypes={this.props.model.transactionTypes}
-        accounts={this.props.model.accounts}
+        transactionTypes={this.props.transactionTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTxnModal') {
       modal = <AddTxnModal {...this.props.overview.addTxnModal}
-        transactionTypes={this.props.model.transactionTypes}
-        accounts={this.props.model.accounts}
+        transactionTypes={this.props.transactionTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'adjustTxnModal') {
       modal = <AdjustTxnModal {...this.props.overview.adjustTxnModal}
-        transactionTypes={this.props.model.transactionTypes}
-        accounts={this.props.model.accounts}
+        transactionTypes={this.props.transactionTypes}
+        accounts={this.props.accounts}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}
@@ -126,17 +126,14 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard {...this.props.overview.projectionsCard}
-            projectionsByDate={this.props.model.projectionsByDate}
             onDateChange={this.changeProjectionDate.bind(this)}
           />
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
-            plannedTxns={this.props.model.plannedTransactions}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard {...this.props.overview.txnsCard}
-            txns={this.props.model.transactions}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}
