@@ -11,8 +11,8 @@ import Overview from './Overview'
 require("./app.scss")
 
 const store = applyMiddleware(
-  thunkMiddleware,
-  createLogger()
+  thunkMiddleware//,
+  // createLogger()
 )(createStore)(reducer)
 
 render(

@@ -22,7 +22,7 @@ class TxnsCard extends React.Component {
   }
 
   render() {
-    var rows = _map(this.props.transactions, (value, key) => {
+    var rows = _map(this.props.txns, (value, key) => {
       return (
         <tr key={value.guid}>
           <td>{shortenGuid(value.guid)}</td>

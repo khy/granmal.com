@@ -4,24 +4,24 @@ import model from './model'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
+  AddPlannedTxnReceive: 'AddPlannedTxnReceive',
+  AddPlannedTxnRequest: 'AddPlannedTxnRequest',
+  AddTxnReceive: 'AddTxnReceive',
+  AddTxnRequest: 'AddTxnRequest',
+  AdjustTxnReceive: 'AdjustTxnReceive',
+  AdjustTxnRequest: 'AdjustTxnRequest',
+  ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
+  ConfirmPlannedTxnRequest: 'ConfirmPlannedTxnRequest',
+  DeletePlannedTxnReceive: 'DeletePlannedTxnReceive',
+  DeletePlannedTxnRequest: 'DeletePlannedTxnRequest',
+  DeleteTxnReceive: 'DeleteTxnReceive',
+  DeleteTxnRequest: 'DeleteTxnRequest',
   HideModal: 'HideModal',
   PlannedTxnsCardReceive: 'PlannedTxnsCardReceive',
   PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
   ProjectionsCardReceive: 'ProjectionsCardReceive',
   ProjectionsCardRequest: 'ProjectionsCardRequest',
-  ReceiveAddPlannedTxn: 'ReceiveAddPlannedTxn',
-  ReceiveAddTxn: 'ReceiveAddTxn',
-  ReceiveAdjustTxn: 'ReceiveAdjustTxn',
-  ReceiveConfirmPlannedTxn: 'ReceiveConfirmPlannedTxn',
-  ReceiveDeletePlannedTxn: 'ReceiveDeletePlannedTxn',
-  ReceiveDeleteTxn: 'ReceiveDeleteTxn',
   ReceiveModel: 'ReceiveModel',
-  RequestAddPlannedTxn: 'RequestAddPlannedTxn',
-  RequestAddTxn: 'RequestAddTxn',
-  RequestAdjustTxn: 'RequestAdjustTxn',
-  RequestConfirmPlannedTxn: 'RequestConfirmPlannedTxn',
-  RequestDeletePlannedTxn: 'RequestDeletePlannedTxn',
-  RequestDeleteTxn: 'RequestDeleteTxn',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
@@ -42,7 +42,7 @@ export const UserActionTypes = {
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestAddPlannedTxn
+      type: ActionTypes.AddPlannedTxnRequest
     })
 
     model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
@@ -50,7 +50,7 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveAddPlannedTxn,
+          type: ActionTypes.AddPlannedTxnReceive,
           guid: response.json.plannedTransactions.latest.guid
         })
       }
@@ -61,7 +61,7 @@ export function addPlannedTxn(newPlannedTxn) {
 export function addTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestAddTxn
+      type: ActionTypes.AddTxnRequest
     })
 
     model.call('transactions.add', [newTxn], [['guid']]).then(
@@ -69,7 +69,7 @@ export function addTxn(newTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveAddTxn,
+          type: ActionTypes.AddTxnReceive,
           guid: response.json.transactions.latest.guid
         })
       }
@@ -80,7 +80,7 @@ export function addTxn(newTxn) {
 export function adjustTxn(guid, newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestAdjustTxn
+      type: ActionTypes.AdjustTxnRequest
     })
 
     model.call('transactions.adjust', [guid, newTxn], [['guid']]).then(
@@ -88,7 +88,7 @@ export function adjustTxn(guid, newTxn) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveAdjustTxn,
+          type: ActionTypes.AdjustTxnReceive,
           oldGuid: guid,
           newGuid: response.json.transactions.latest.guid,
         })
@@ -100,7 +100,7 @@ export function adjustTxn(guid, newTxn) {
 export function confirmPlannedTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestConfirmPlannedTxn
+      type: ActionTypes.ConfirmPlannedTxnRequest
     })
 
     model.call('transactions.add', [newTxn], [['guid']]).then(
@@ -109,7 +109,7 @@ export function confirmPlannedTxn(newTxn) {
         dispatch(fetchPlannedTxnsCard(true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveConfirmPlannedTxn,
+          type: ActionTypes.ConfirmPlannedTxnReceive,
           plannedTxnGuid: newTxn.plannedTransactionGuid,
           txnGuid: response.json.transactions.latest.guid
         })
@@ -121,7 +121,7 @@ export function confirmPlannedTxn(newTxn) {
 export function deletePlannedTxn(guid) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestDeletePlannedTxn
+      type: ActionTypes.DeletePlannedTxnRequest
     })
 
     model.call('plannedTransactions.delete', [guid]).then(
@@ -129,7 +129,7 @@ export function deletePlannedTxn(guid) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchPlannedTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveDeletePlannedTxn,
+          type: ActionTypes.DeletePlannedTxnReceive,
           guid: guid
         })
       }
@@ -140,7 +140,7 @@ export function deletePlannedTxn(guid) {
 export function deleteTxn(guid) {
   return function (dispatch) {
     dispatch({
-      type: ActionTypes.RequestDeleteTxn
+      type: ActionTypes.DeleteTxnRequest
     })
 
     model.call('transactions.delete', [guid]).then(
@@ -148,7 +148,7 @@ export function deleteTxn(guid) {
         dispatch(fetchProjectionsCard(null, true))
         dispatch(fetchTxnsCard(true))
         dispatch({
-          type: ActionTypes.ReceiveDeleteTxn,
+          type: ActionTypes.DeleteTxnReceive,
           guid: guid
         })
       }

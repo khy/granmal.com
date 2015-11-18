@@ -136,7 +136,7 @@ class Overview extends React.Component {
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard {...this.props.overview.txnsCard}
-            transactions={this.props.model.transactions}
+            txns={this.props.model.transactions}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}

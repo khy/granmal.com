@@ -43,6 +43,125 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
 
+    case ActionTypes.AddPlannedTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.AddPlannedTxn,
+          guid: action.guid,
+        },
+        addPlannedTxnModal: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.AddPlannedTxnRequest:
+      return update({
+        addPlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.AddTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.AddTxn,
+          guid: action.guid,
+        },
+        addTxnModal: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.AddTxnRequest:
+      return update({
+        addTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.AdjustTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.AdjustTxn,
+          oldGuid: action.oldGuid,
+          newGuid: action.newGuid,
+        },
+        adjustTxnModal: {
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.AdjustTxnRequest:
+      return update({
+        adjustTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.ConfirmPlannedTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.ConfirmPlannedTxn,
+          plannedTxnGuid: action.plannedTxnGuid,
+          txnGuid: action.txnGuid,
+        },
+        resolvePlannedTxnModal: {
+          plannedTxn: null,
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.ConfirmPlannedTxnRequest:
+      return update({
+        resolvePlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.DeletePlannedTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.DeletePlannedTxn,
+          guid: action.guid,
+        },
+        resolvePlannedTxnModal: {
+          plannedTxn: null,
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.DeletePlannedTxnRequest:
+      return update({
+        resolvePlannedTxnModal: {
+          isFetching: true
+        }
+      })
+
+    case ActionTypes.DeleteTxnReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.DeleteTxn,
+          guid: action.guid,
+        },
+        adjustTxnModal: {
+          txn: null,
+          isFetching: false
+        }
+      })
+
+    case ActionTypes.DeleteTxnRequest:
+      return update({
+        adjustTxnModal: {
+          isFetching: true
+        }
+      })
+
     case ActionTypes.HideModal:
       return update({
         activeModal: null
@@ -77,129 +196,10 @@ export default function reducer(state = initialState, action) {
         }
       })
 
-    case ActionTypes.ReceiveAddPlannedTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AddPlannedTxn,
-          guid: action.guid,
-        },
-        addPlannedTxnModal: {
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveAddTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AddTxn,
-          guid: action.guid,
-        },
-        addTxnModal: {
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveAdjustTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AdjustTxn,
-          oldGuid: action.oldGuid,
-          newGuid: action.newGuid,
-        },
-        adjustTxnModal: {
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveConfirmPlannedTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.ConfirmPlannedTxn,
-          plannedTxnGuid: action.plannedTxnGuid,
-          txnGuid: action.txnGuid,
-        },
-        resolvePlannedTxnModal: {
-          plannedTxn: null,
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveDeletePlannedTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.DeletePlannedTxn,
-          guid: action.guid,
-        },
-        resolvePlannedTxnModal: {
-          plannedTxn: null,
-          isFetching: false
-        }
-      })
-
-    case ActionTypes.ReceiveDeleteTxn:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.DeleteTxn,
-          guid: action.guid,
-        },
-        adjustTxnModal: {
-          txn: null,
-          isFetching: false
-        }
-      })
-
     case ActionTypes.ReceiveModel:
       return u({
         model: action.model
       }, state)
-
-    case ActionTypes.RequestAddPlannedTxn:
-      return update({
-        addPlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestAddTxn:
-      return update({
-        addTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestAdjustTxn:
-      return update({
-        adjustTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestConfirmPlannedTxn:
-      return update({
-        resolvePlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestDeletePlannedTxn:
-      return update({
-        resolvePlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case ActionTypes.RequestDeleteTxn:
-      return update({
-        adjustTxnModal: {
-          isFetching: true
-        }
-      })
 
     case ActionTypes.ShowAddPlannedTxnModal:
       return update({
