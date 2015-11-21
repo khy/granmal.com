@@ -6,7 +6,7 @@ var $ref = Falcor.Model.ref;
 
 var httpGet = (path) => {
   return request({
-    uri: 'http://localhost:8999/budget' + path ,
+    uri: 'http://localhost:9000/budget' + path ,
     headers: {
       'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda'
     },
@@ -17,7 +17,7 @@ var httpGet = (path) => {
 var httpPost = (path, body) => {
   return request({
     method: 'POST',
-    uri: 'http://localhost:8999/budget' + path ,
+    uri: 'http://localhost:9000/budget' + path ,
     headers: {
       'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda',
       'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ var httpPost = (path, body) => {
 var httpDelete = (path) => {
   return request({
     method: 'DELETE',
-    uri: 'http://localhost:8999/budget' + path ,
+    uri: 'http://localhost:9000/budget' + path ,
     headers: {
       'Authorization': '71a6828a-d20f-4fa6-8b2b-05a254487bda'
     }
