@@ -12,16 +12,26 @@ class ProjectionsCard extends React.Component {
   }
 
   render() {
-    const rows = _map(this.props.projections, (value, key) => {
-      return (
-        <tr key={value.account.name}>
-          <td>{value.account.name}</td>
-          <td>{value.account.balance}</td>
-          <td>{value.minBalance}</td>
-          <td>{value.maxBalance}</td>
+    let rows
+
+    if (Object.keys(this.props.projections).length > 0) {
+      const rows = _map(this.props.projections, (value, key) => {
+        return (
+          <tr key={value.account.name}>
+            <td>{value.account.name}</td>
+            <td>{value.account.balance}</td>
+            <td>{value.minBalance}</td>
+            <td>{value.maxBalance}</td>
+          </tr>
+        )
+      })
+    } else {
+      rows = (
+        <tr>
+          <td colSpan="6" className="text-center text-muted">No Projections</td>
         </tr>
       )
-    })
+    }
 
     return (
       <div className="card">

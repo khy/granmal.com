@@ -25,29 +25,40 @@ class PlannedTxnsCard extends React.Component {
   }
 
   render() {
-    var rows = _map(this.props.plannedTxns, (value, key) => {
-      const minDate = formatDate(value.minTimestamp)
-      const maxDate = formatDate(value.maxTimestamp)
-      const date = (minDate === maxDate) ?
-        minDate : minDate + " / " + maxDate
+    let rows
 
-      const amount = (value.minAmount === value.maxAmount) ?
-        value.minAmount : value.minAmount +  " / " + value.maxAmount
+    if (Object.keys(this.props.plannedTxns).length > 0) {
+      rows = _map(this.props.plannedTxns, (value, key) => {
+        const minDate = formatDate(value.minTimestamp)
+        const maxDate = formatDate(value.maxTimestamp)
+        const date = (minDate === maxDate) ?
+          minDate : minDate + " / " + maxDate
 
-      const rowClass = (moment(value.minTimestamp) < moment()) ?
-        'table-warning' : ''
+        const amount = (value.minAmount === value.maxAmount) ?
+          value.minAmount : value.minAmount +  " / " + value.maxAmount
 
-      return (
-        <tr key={value.guid} className={rowClass}>
-          <td>{shortenGuid(value.guid)}</td>
-          <td>{date}</td>
-          <td>{amount}</td>
-          <td>{value.transactionType.name}</td>
-          <td>{value.account.name}</td>
-          <td><a onClick={this.onResolve.bind(this)} data-guid={value.guid} href="#">Resolve</a></td>
+        const rowClass = (moment(value.minTimestamp) < moment()) ?
+          'table-warning' : ''
+
+        return (
+          <tr key={value.guid} className={rowClass}>
+            <td>{shortenGuid(value.guid)}</td>
+            <td>{date}</td>
+            <td>{amount}</td>
+            <td>{value.transactionType.name}</td>
+            <td>{value.account.name}</td>
+            <td><a onClick={this.onResolve.bind(this)} data-guid={value.guid} href="#">Resolve</a></td>
+          </tr>
+        )
+      })
+    } else {
+      rows = (
+        <tr>
+          <td colSpan="6" className="text-center text-muted">No Planned Transactions</td>
         </tr>
       )
-    })
+    }
+
 
     let message
 

@@ -22,18 +22,28 @@ class TxnsCard extends React.Component {
   }
 
   render() {
-    var rows = _map(this.props.txns, (value, key) => {
-      return (
-        <tr key={value.guid}>
-          <td>{shortenGuid(value.guid)}</td>
-          <td>{formatDate(value.timestamp)}</td>
-          <td>{value.amount}</td>
-          <td>{value.transactionType.name}</td>
-          <td>{value.account.name}</td>
-          <td><a onClick={this.onAdjust.bind(this)} data-guid={value.guid} href="#">Adjust</a></td>
+    let rows
+
+    if (Object.keys(this.props.txns).length > 0) {
+      rows = _map(this.props.txns, (value, key) => {
+        return (
+          <tr key={value.guid}>
+            <td>{shortenGuid(value.guid)}</td>
+            <td>{formatDate(value.timestamp)}</td>
+            <td>{value.amount}</td>
+            <td>{value.transactionType.name}</td>
+            <td>{value.account.name}</td>
+            <td><a onClick={this.onAdjust.bind(this)} data-guid={value.guid} href="#">Adjust</a></td>
+          </tr>
+        )
+      })
+    } else {
+      rows = (
+        <tr>
+          <td colSpan="6" className="text-center text-muted">No Transactions</td>
         </tr>
       )
-    })
+    }
 
     let message
 
