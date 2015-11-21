@@ -85,6 +85,63 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'accounts.add',
+    call: (pathSet, args) => {
+      return httpPost('/accounts', args[0]).then ( account => {
+        return [
+          {
+            path: ['accounts', 'latest'],
+            value: $ref(['accountsByGuid', account.guid])
+          }
+        ]
+      })
+    }
+  },
+  {
+    route: 'accountTypes[{integers:indices}]',
+    get: (pathSet) => {
+      return httpGet('/accountTypes').then ( accountTypes => {
+        var results = []
+
+        pathSet.indices.forEach ( index => {
+          if (accountTypes[index]) {
+            results.push({
+              path: ['accountTypes', index],
+              value: $ref(['accountTypesByKey', accountTypes[index].key])
+            })
+          }
+        })
+
+        return results
+      })
+    }
+  },
+  {
+    route: 'accountTypesByKey[{keys:keys}][{keys:attributes}]',
+    get: (pathSet) => {
+      return httpGet('/accountTypes').then ( accountTypes => {
+        var results = []
+
+        pathSet.keys.forEach ( key => {
+          var accountType = accountTypes.find ( accountType => {
+            return accountType.key === key
+          })
+
+          if (accountType) {
+            pathSet.attributes.forEach ( attribute =>
+              results.push({
+                path: ['accountTypesByKey', key, attribute],
+                value: accountType[attribute]
+              })
+            )
+          }
+        })
+
+        return results
+      })
+    }
+  },
+  {
     route: 'transactionTypes[{integers:indices}]',
     get: (pathSet) => {
       return httpGet('/transactionTypes').then(

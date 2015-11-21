@@ -4,6 +4,8 @@ import model from './model'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
+  AddAccountReceive: 'AddAccountReceive',
+  AddAccountRequest: 'AddAccountRequest',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
   AddPlannedTxnRequest: 'AddPlannedTxnRequest',
   AddTxnReceive: 'AddTxnReceive',
@@ -22,7 +24,9 @@ export const ActionTypes = {
   ProjectionsCardReceive: 'ProjectionsCardReceive',
   ProjectionsCardRequest: 'ProjectionsCardRequest',
   SetAccounts: 'SetAccounts',
+  SetAccountTypes: 'SetAccountTypes',
   SetTxnTypes: 'SetTxnTypes',
+  ShowAddAccountModal: 'ShowAddAccountModal',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
@@ -34,12 +38,31 @@ export const ActionTypes = {
 const AT = ActionTypes
 
 export const UserActionTypes = {
+  AddAccount: 'AddAccount',
   AddPlannedTxn: 'AddPlannedTxn',
   AddTxn: 'AddTxn',
   AdjustTxn: 'AdjustTxn',
   ConfirmPlannedTxn: 'ConfirmPlannedTxn',
   DeletePlannedTxn: 'DeletePlannedTxn',
   DeleteTxn: 'DeleteTxn'
+}
+
+export function addAccount(newAccount) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.AddAccountRequest
+    })
+
+    model.call('accounts.add', [newAccount], [['name']]).then ( response => {
+      console.log(response)
+      dispatch(fetchAccounts(true))
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch({
+        type: AT.AddAccountReceive,
+        name: response.json.accounts.latest.name
+      })
+    })
+  }
 }
 
 export function addPlannedTxn(newPlannedTxn) {
@@ -159,14 +182,29 @@ export function deleteTxn(guid) {
   }
 }
 
-export function fetchAccounts() {
+export function fetchAccounts(force = false) {
   return function (dispatch) {
+    if (force) { model.invalidate(['accounts']) }
+
     model.get(
       ['accounts', {from: 0, to: 9}, ['guid', 'name']]
     ).then(
       response => {
         const accounts = response ? response.json.accounts : []
         dispatch({ type: AT.SetAccounts, accounts })
+      }
+    )
+  }
+}
+
+export function fetchAccountTypes() {
+  return function (dispatch) {
+    model.get(
+      ['accountTypes', {from: 0, to: 9}, ['key', 'name']]
+    ).then(
+      response => {
+        const accountTypes = response ? response.json.accountTypes : []
+        dispatch({ type: AT.SetAccountTypes, accountTypes })
       }
     )
   }

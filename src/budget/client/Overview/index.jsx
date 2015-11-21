@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 import {
-  ActionTypes, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn,
-  deletePlannedTxn, deleteTxn, fetchAccounts, fetchPlannedTxnsCard,
-  fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes
+  ActionTypes, addAccount, addPlannedTxn, addTxn, adjustTxn, confirmPlannedTxn,
+  deletePlannedTxn, deleteTxn, fetchAccounts, fetchAccountTypes,
+  fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes
 } from 'budget/client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 var TxnsCard = require('./Card/TxnsCard')
 
+var AddAccountModal = require('./Modal/AddAccountModal')
 var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
 var AddTxnModal = require('./Modal/AddTxnModal')
@@ -21,6 +22,7 @@ class Overview extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(fetchAccounts())
+    this.props.dispatch(fetchAccountTypes())
     this.props.dispatch(fetchTxnTypes())
     this.props.dispatch(fetchProjectionsCard())
     this.props.dispatch(fetchPlannedTxnsCard())
@@ -29,6 +31,14 @@ class Overview extends React.Component {
 
   changeProjectionDate(date) {
     this.props.dispatch(fetchProjectionsCard(date))
+  }
+
+  showAddAccountModal() {
+    this.props.dispatch({ type: ActionTypes.ShowAddAccountModal })
+  }
+
+  addAccount(newAccount) {
+    this.props.dispatch(addAccount(newAccount))
   }
 
   addPlannedTxn(newPlannedTxn) {
@@ -84,7 +94,13 @@ class Overview extends React.Component {
   render() {
     let modal
 
-    if (this.props.overview.activeModal === 'addPlannedTxnModal') {
+    if (this.props.overview.activeModal === 'addAccountModal') {
+      modal = <AddAccountModal {...this.props.overview.addAccountModal}
+        accountTypes={this.props.accountTypes}
+        onClose={this.hideModal.bind(this)}
+        onAdd={this.addAccount.bind(this)}
+      />
+    } else if (this.props.overview.activeModal === 'addPlannedTxnModal') {
       modal = <AddPlannedTxnModal {...this.props.overview.addPlannedTxnModal}
         txnTypes={this.props.txnTypes}
         accounts={this.props.accounts}
@@ -126,7 +142,9 @@ class Overview extends React.Component {
 
         <div className="container">
           <ProjectionsCard {...this.props.overview.projectionsCard}
+            lastUserAction={this.props.overview.lastUserAction}
             onDateChange={this.changeProjectionDate.bind(this)}
+            onNewAccount={this.showAddAccountModal.bind(this)}
           />
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
             lastUserAction={this.props.overview.lastUserAction}

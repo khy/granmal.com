@@ -7,6 +7,7 @@ const AT = ActionTypes
 
 const initialState = {
   accounts: [],
+  accountTypes: [],
   txnTypes: [],
   overview: {
     activeModal: null,
@@ -48,6 +49,25 @@ export default function reducer(state = initialState, action) {
   }
 
   switch (action.type) {
+
+    case AT.AddAccountReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.AddAccount,
+          name: action.name,
+        },
+        addAccountModal: {
+          isFetching: false,
+        },
+      })
+
+    case AT.AddAccountRequest:
+      return update({
+        addAccountModal: {
+          isFetching: true,
+        },
+      })
 
     case AT.AddPlannedTxnReceive:
       return update({
@@ -218,8 +238,16 @@ export default function reducer(state = initialState, action) {
     case AT.SetAccounts:
       return u({ accounts: action.accounts }, state)
 
+    case AT.SetAccountTypes:
+      return u({ accountTypes: action.accountTypes }, state)
+
     case AT.SetTxnTypes:
       return u({ txnTypes: action.txnTypes }, state)
+
+    case AT.ShowAddAccountModal:
+      return update({
+        activeModal: 'addAccountModal'
+      })
 
     case AT.ShowAddPlannedTxnModal:
       return update({

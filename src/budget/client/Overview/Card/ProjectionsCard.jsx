@@ -1,9 +1,15 @@
-var React = require('react')
-var _map = require('lodash/collection/map')
+import React from 'react'
+import _map from 'lodash/collection/map'
 
+import { UserActionTypes } from 'budget/client/actions'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 
 class ProjectionsCard extends React.Component {
+
+  onNewAccount(event) {
+    event.preventDefault()
+    this.props.onNewAccount()
+  }
 
   onSubmit(event) {
     event.preventDefault()
@@ -15,7 +21,7 @@ class ProjectionsCard extends React.Component {
     let rows
 
     if (Object.keys(this.props.projections).length > 0) {
-      const rows = _map(this.props.projections, (value, key) => {
+      rows = _map(this.props.projections, (value, key) => {
         return (
           <tr key={value.account.name}>
             <td>{value.account.name}</td>
@@ -26,18 +32,40 @@ class ProjectionsCard extends React.Component {
         )
       })
     } else {
+      const rowsMessage = this.props.isFetching ? "Loading" : "No Projections"
+
       rows = (
         <tr>
-          <td colSpan="6" className="text-center text-muted">No Projections</td>
+          <td colSpan="6" className="text-center text-muted">{rowsMessage}</td>
         </tr>
       )
+    }
+
+    let message
+
+    if (this.props.lastUserAction) {
+      if (this.props.lastUserAction.type === UserActionTypes.AddAccount) {
+        message = (
+          <div className="card-block card-message">
+            <p className="card-text text-success">
+              Added account <strong>{this.props.lastUserAction.name}</strong>.
+            </p>
+          </div>
+        )
+      }
     }
 
     return (
       <div className="card">
         <div className="card-header">
           Projections
+
+          <a className="pull-right" onClick={this.onNewAccount.bind(this)} href="#">
+            New Account
+          </a>
         </div>
+
+        {message}
 
         <div className="card-block">
           <form className="form-inline" onSubmit={this.onSubmit.bind(this)}>
