@@ -107,6 +107,21 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case AT.AddTxnTypeReceive:
+    return update({
+      activeModal: null,
+      lastUserAction: {
+        type: UserActionTypes.AddTxnType,
+        name: action.name,
+      },
+      addTxnTypeModal: {
+        isFetching: false
+      }
+    })
+
+    case AT.AddTxnTypeRequest:
+      return update({ addTxnTypeModal: { isFetching: true } })
+
     case AT.AdjustTxnReceive:
       return update({
         activeModal: null,
@@ -265,6 +280,11 @@ export default function reducer(state = initialState, action) {
     case AT.ShowAddTxnModal:
       return update({
         activeModal: 'addTxnModal'
+      })
+
+    case AT.ShowAddTxnTypeModal:
+      return update({
+        activeModal: 'addTxnTypeModal'
       })
 
     case AT.ShowAdjustTxnModal:

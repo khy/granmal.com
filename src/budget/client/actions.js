@@ -10,6 +10,8 @@ export const ActionTypes = {
   AddPlannedTxnRequest: 'AddPlannedTxnRequest',
   AddTxnReceive: 'AddTxnReceive',
   AddTxnRequest: 'AddTxnRequest',
+  AddTxnTypeReceive: 'AddTxnTypeReceive',
+  AddTxnTypeRequest: 'AddTxnTypeRequest',
   AdjustTxnReceive: 'AdjustTxnReceive',
   AdjustTxnRequest: 'AdjustTxnRequest',
   ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
@@ -30,6 +32,7 @@ export const ActionTypes = {
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
+  ShowAddTxnTypeModal: 'ShowAddTxnTypeModal',
   ShowAdjustTxnModal: 'ShowAdjustTxnModal',
   TxnsCardReceive: 'TxnsCardReceive',
   TxnsCardRequest: 'TxnsCardRequest',
@@ -41,6 +44,7 @@ export const UserActionTypes = {
   AddAccount: 'AddAccount',
   AddPlannedTxn: 'AddPlannedTxn',
   AddTxn: 'AddTxn',
+  AddTxnType: 'AddTxnType',
   AdjustTxn: 'AdjustTxn',
   ConfirmPlannedTxn: 'ConfirmPlannedTxn',
   DeletePlannedTxn: 'DeletePlannedTxn',
@@ -100,6 +104,20 @@ export function addTxn(newTxn) {
         })
       }
     )
+  }
+}
+
+export function addTxnType(newTxnType) {
+  return function (dispatch) {
+    dispatch({ type: AT.AddTxnTypeRequest })
+
+    model.call('transactionTypes.add', [newTxnType], [['name']]).then ( response => {
+      dispatch(fetchTxnTypes(true))
+      dispatch({
+        type: AT.AddTxnTypeReceive,
+        name: response.json.transactionTypes.latest.name,
+      })
+    })
   }
 }
 
@@ -277,8 +295,10 @@ export function fetchTxnsCard(force = false) {
   }
 }
 
-export function fetchTxnTypes() {
+export function fetchTxnTypes(force = false) {
   return function (dispatch) {
+    if (force) { model.invalidate(['transactionTypes']) }
+
     model.get(
       ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
     ).then(

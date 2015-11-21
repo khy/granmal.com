@@ -190,6 +190,19 @@ var Router = FalcorRouter.createClass([
     }
   },
   {
+    route: 'transactionTypes.add',
+    call: (pathSet, args) => {
+      return httpPost('/transactionTypes', args[0]).then ( transactionType => {
+        return [
+          {
+            path: ['transactionTypes', 'latest'],
+            value: $ref(['transactionTypesByGuid', transactionType.guid])
+          }
+        ]
+      })
+    }
+  },
+  {
     route: 'projectionsByDate[{keys:dates}][{integers:indices}][{keys:attributes}]',
     get: (pathSet) => {
       const date = pathSet.dates[0]
