@@ -13,14 +13,14 @@ class AdjustTxnModal extends React.Component {
   adjust(event) {
     event.preventDefault()
 
-    const newTransaction = {
-      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+    const newTxn = {
+      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
       timestamp: normalizeDateInput(this.refs.timestampInput.value)
     }
 
-    this.props.onAdjust(this.props.txn.guid, newTransaction)
+    this.props.onAdjust(this.props.txn.guid, newTxn)
   }
 
   delete(event) {
@@ -30,9 +30,9 @@ class AdjustTxnModal extends React.Component {
 
   render() {
 
-    const transactionTypeOptions = (
-      _map(this.props.transactionTypes, (transactionType) => {
-        return <option value={transactionType.guid} key={transactionType.guid}>{transactionType.name}</option>
+    const txnTypeOptions = (
+      _map(this.props.txnTypes, (txnType) => {
+        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
 
@@ -64,10 +64,10 @@ class AdjustTxnModal extends React.Component {
                       <label>Transaction Type</label>
                       <select
                         className="form-control"
-                        ref="transactionTypeGuidSelect"
-                        defaultValue={txn.transactionType.guid}
+                        ref="txnTypeGuidSelect"
+                        defaultValue={txn.txnType.guid}
                       >
-                        {transactionTypeOptions}
+                        {txnTypeOptions}
                       </select>
                     </fieldset>
 

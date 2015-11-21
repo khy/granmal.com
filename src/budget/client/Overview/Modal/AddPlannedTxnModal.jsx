@@ -13,8 +13,8 @@ class AddPlannedTxnModal extends React.Component {
   add(event) {
     event.preventDefault()
 
-    const plannedTransaction = {
-      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+    const plannedTxn = {
+      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       minAmount: parseFloat(this.refs.minAmountInput.value),
       maxAmount: parseFloat(this.refs.maxAmountInput.value),
@@ -22,14 +22,14 @@ class AddPlannedTxnModal extends React.Component {
       maxTimestamp: normalizeDateInput(this.refs.maxTimestampInput.value)
     }
 
-    this.props.onAdd(plannedTransaction)
+    this.props.onAdd(plannedTxn)
   }
 
   render() {
 
-    const transactionTypeOptions = (
-      _map(this.props.transactionTypes, (transactionType) => {
-        return <option value={transactionType.guid} key={transactionType.guid}>{transactionType.name}</option>
+    const txnTypeOptions = (
+      _map(this.props.txnTypes, (txnType) => {
+        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
 
@@ -56,8 +56,8 @@ class AddPlannedTxnModal extends React.Component {
                   <fieldset disabled={this.props.isFetching}>
                     <fieldset className="form-group">
                       <label>Transaction Type</label>
-                      <select ref="transactionTypeGuidSelect" className="form-control">
-                        {transactionTypeOptions}
+                      <select ref="txnTypeGuidSelect" className="form-control">
+                        {txnTypeOptions}
                       </select>
                     </fieldset>
 

@@ -13,21 +13,21 @@ class AddTxnModal extends React.Component {
   add(event) {
     event.preventDefault()
 
-    const newTransaction = {
-      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+    const newTxn = {
+      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
       timestamp: normalizeDateInput(this.refs.timestampInput.value)
     }
 
-    this.props.onAdd(newTransaction)
+    this.props.onAdd(newTxn)
   }
 
   render() {
 
-    const transactionTypeOptions = (
-      _map(this.props.transactionTypes, (transactionType) => {
-        return <option value={transactionType.guid} key={transactionType.guid}>{transactionType.name}</option>
+    const txnTypeOptions = (
+      _map(this.props.txnTypes, (txnType) => {
+        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
 
@@ -54,8 +54,8 @@ class AddTxnModal extends React.Component {
                   <fieldset disabled={this.props.isFetching}>
                     <fieldset className="form-group">
                       <label>Transaction Type</label>
-                      <select ref="transactionTypeGuidSelect" className="form-control">
-                        {transactionTypeOptions}
+                      <select ref="txnTypeGuidSelect" className="form-control">
+                        {txnTypeOptions}
                       </select>
                     </fieldset>
 

@@ -13,15 +13,15 @@ class ResolvePlannedTxnModal extends React.Component {
   confirm(event) {
     event.preventDefault()
 
-    const transaction = {
-      transactionTypeGuid: this.refs.transactionTypeGuidSelect.value,
+    const txn = {
+      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
       timestamp: normalizeDateInput(this.refs.timestampInput.value),
       plannedTransactionGuid: this.props.plannedTxn.guid
     }
 
-    this.props.onConfirm(transaction)
+    this.props.onConfirm(txn)
   }
 
   delete(event) {
@@ -31,9 +31,9 @@ class ResolvePlannedTxnModal extends React.Component {
 
   render() {
 
-    const transactionTypeOptions = (
-      _map(this.props.transactionTypes, (transactionType) => {
-        return <option value={transactionType.guid} key={transactionType.guid}>{transactionType.name}</option>
+    const txnTypeOptions = (
+      _map(this.props.txnTypes, (txnType) => {
+        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
 
@@ -65,10 +65,10 @@ class ResolvePlannedTxnModal extends React.Component {
                       <label>Transaction Type</label>
                       <select
                         className="form-control"
-                        ref="transactionTypeGuidSelect"
-                        defaultValue={plannedTxn.transactionType.guid}
+                        ref="txnTypeGuidSelect"
+                        defaultValue={plannedTxn.txnType.guid}
                       >
-                        {transactionTypeOptions}
+                        {txnTypeOptions}
                       </select>
                     </fieldset>
 
