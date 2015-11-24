@@ -9,7 +9,7 @@ var $ref = Falcor.Model.ref;
 
 class Client {
   constructor(account) {
-    this.account = account
+    this.auth = account.access_tokens[0].token
   }
 
   static fullPath(path) {
@@ -20,7 +20,7 @@ class Client {
     return request({
       uri: Client.fullPath(path),
       headers: {
-        'Authorization': this.account.auth
+        'Authorization': this.auth
       },
       json: true
     })
@@ -31,7 +31,7 @@ class Client {
       method: 'POST',
       uri: Client.fullPath(path),
       headers: {
-        'Authorization': this.account.auth,
+        'Authorization': this.auth,
         'Content-Type': 'application/json'
       },
       body: body,
@@ -44,7 +44,7 @@ class Client {
       method: 'DELETE',
       uri: Client.fullPath(path),
       headers: {
-        'Authorization': this.account.auth
+        'Authorization': this.auth
       }
     })
   }
