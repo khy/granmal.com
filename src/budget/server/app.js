@@ -1,5 +1,8 @@
 "use strict"
 
+var express = require('express');
+var router = express.Router();
+
 var Falcor = require('falcor')
 var FalcorExpress = require('falcor-express')
 var FalcorRouter = require('falcor-router')
@@ -9,7 +12,7 @@ var $ref = Falcor.Model.ref;
 
 class Client {
   constructor(account) {
-    this.auth = account.access_tokens[0].token
+    this.auth = account.uselessAccessToken.token
   }
 
   static fullPath(path) {
@@ -50,7 +53,19 @@ class Client {
   }
 }
 
-var Router = FalcorExpress.dataSourceRoute((req, res) => {
+router.use((req, res, next) => {
+  if (req.uselessAccessToken) {
+    next()
+  } else {
+    res.send("NOT LOGGED IN")
+  }
+})
+
+router.get('/', (req, res) => {
+  res.render('budget')
+})
+
+router.use('/model.json', FalcorExpress.dataSourceRoute((req, res) => {
 
   const client = new Client(req.account)
 
@@ -461,6 +476,6 @@ var Router = FalcorExpress.dataSourceRoute((req, res) => {
       }
     }
   ])
-})
+}))
 
-module.exports = Router
+module.exports = router
