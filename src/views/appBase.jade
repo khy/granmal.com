@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
   head
     meta(charset="UTF-8")
-    title Budget
+    title= title || key
   body
     div(id="app")
-    script(src="/bundle/budget.js")
+    script(src="/bundle/#{key}.js")

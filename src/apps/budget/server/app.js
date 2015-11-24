@@ -62,7 +62,7 @@ router.use((req, res, next) => {
 })
 
 router.get('/', (req, res) => {
-  res.render('budget')
+  res.render('appBase', { key: 'budget', title: 'Budget' })
 })
 
 router.use('/model.json', FalcorExpress.dataSourceRoute((req, res) => {
