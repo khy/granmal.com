@@ -14,6 +14,7 @@ app.set('views', './src/views')
 
 app.use(express.static('./public'))
 app.use(cookieParser())
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(auth)
 

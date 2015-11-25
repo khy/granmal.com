@@ -19,6 +19,9 @@ var AddTxnModal = require('./Modal/AddTxnModal')
 import AddTxnTypeModal from './Modal/AddTxnTypeModal'
 var AdjustTxnModal = require('./Modal/AdjustTxnModal')
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 class Overview extends React.Component {
 
   componentWillMount() {
@@ -100,7 +103,46 @@ class Overview extends React.Component {
     this.props.dispatch({ type: ActionTypes.HideModal })
   }
 
+  login(event) {
+    event.preventDefault()
+
+    fetch('/sessions', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.refs.emailInput.value,
+        password: this.refs.passwordInput.value,
+      }),
+      credentials: 'same-origin',
+    })
+  }
+
   render() {
+    if (!this.props.user) {
+      return (
+        <div>
+          <div className="container">
+            <form onSubmit={this.login.bind(this)}>
+              <fieldset className="form-group">
+                <label>Email</label>
+                <input ref="emailInput" className="form-control" type="email" />
+              </fieldset>
+
+              <fieldset className="form-group">
+                <label>Password</label>
+                <input ref="passwordInput" className="form-control" type="password" />
+              </fieldset>
+
+              <button type="submit" className="btn btn-primary">Log In</button>
+            </form>
+          </div>
+        </div>
+      )
+    }
+
     let alert
 
     if (this.props.overview.lastUserAction) {

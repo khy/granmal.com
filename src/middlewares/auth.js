@@ -8,9 +8,9 @@ class RichAccount {
   }
 
   get uselessAccessToken() {
-    account.access_tokens.find((accessToken =>
-      accessToken.oauth_provider === 'useless'
-    ))
+    return this.rawAccount.access_tokens.find( accessToken => {
+      return accessToken.oauth_provider === 'useless'
+    })
   }
 }
 

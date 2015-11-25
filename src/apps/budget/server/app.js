@@ -57,7 +57,7 @@ router.use((req, res, next) => {
   if (req.uselessAccessToken) {
     next()
   } else {
-    res.send("NOT LOGGED IN")
+    next()
   }
 })
 
