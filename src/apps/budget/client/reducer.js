@@ -50,6 +50,10 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
 
+    // TO BE MOVED
+    case AT.Login:
+      return u({ auth: { account: action.account } }, state)
+
     case AT.AddAccountReceive:
       return update({
         activeModal: null,

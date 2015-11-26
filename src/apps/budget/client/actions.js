@@ -4,6 +4,8 @@ import model from './model'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
+  Login: 'Login', // to be moved elsewhere
+
   AddAccountReceive: 'AddAccountReceive',
   AddAccountRequest: 'AddAccountRequest',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
@@ -58,7 +60,6 @@ export function addAccount(newAccount) {
     })
 
     model.call('accounts.add', [newAccount], [['name']]).then ( response => {
-      console.log(response)
       dispatch(fetchAccounts(true))
       dispatch(fetchProjectionsCard(null, true))
       dispatch({
