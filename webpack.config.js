@@ -1,14 +1,14 @@
 module.exports = {
   entry: {
-    budget: './src/apps/budget/client/App.jsx',
-    index: './src/apps/index/client/App.jsx'
+    budget: './apps/budget/client/App.jsx',
+    index: './client/containers/App.jsx'
   },
   output: {
     filename: './public/bundle/[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
-    modulesDirectories: ['node_modules', 'src/apps']
+    modulesDirectories: ['node_modules', 'apps']
   },
   module: {
     loaders: [

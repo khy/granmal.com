@@ -2,15 +2,15 @@ var express = require('express')
 
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-var auth = require('./src/middlewares/auth')
+var auth = require('./server/middleware/auth')
 
-var Budget = require('./src/apps/budget/server/app')
-var Index = require('./src/apps/index/server/app')
+var Budget = require('./apps/budget/server/app')
+var Index = require('./server/routers/app')
 
 var app = express()
 
 app.set('view engine', 'jade')
-app.set('views', './src/views')
+app.set('views', './server/views')
 
 app.use(express.static('./public'))
 app.use(cookieParser())

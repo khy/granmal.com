@@ -1,8 +1,7 @@
 var React = require('react')
 var ReactDom = require('react-dom')
-var _map = require('lodash/collection/map')
 
-require("./app.scss")
+require('../stylesheets/app.scss')
 
 class App extends React.Component {
 
@@ -24,7 +23,7 @@ class App extends React.Component {
       return (
         <div className="card-app-link" key={app.key}>
           <div className="card-block">
-            <a href="/{app.key}">
+            <a href={"/" + app.key}>
               <h5 className="card-title">{app.name}</h5>
               <p className="card-subtitle text-muted">{app.description}</p>
             </a>
