@@ -5,4 +5,9 @@ html(lang="en")
     title= title || key
   body
     div(id="app")
+
+    if initialState
+      script(type="text/javascript").
+        initialState = !{JSON.stringify(initialState)}
+
     script(src="/bundle/#{key}.js")

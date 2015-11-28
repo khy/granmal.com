@@ -3,12 +3,16 @@
 var MongoClient = require('mongodb').MongoClient
 
 class RichAccount {
-  constructor(rawAccount) {
-    this.rawAccount = rawAccount
+  constructor(raw) {
+    this.raw = raw
+  }
+
+  get public() {
+    return this.raw
   }
 
   get uselessAccessToken() {
-    return this.rawAccount.access_tokens.find( accessToken => {
+    return this.raw.access_tokens.find( accessToken => {
       return accessToken.oauth_provider === 'useless'
     })
   }

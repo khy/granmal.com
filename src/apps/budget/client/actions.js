@@ -16,6 +16,7 @@ export const ActionTypes = {
   AddTxnTypeRequest: 'AddTxnTypeRequest',
   AdjustTxnReceive: 'AdjustTxnReceive',
   AdjustTxnRequest: 'AdjustTxnRequest',
+  BootstrapReceived: 'BootstrapReceived',
   ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
   ConfirmPlannedTxnRequest: 'ConfirmPlannedTxnRequest',
   DeletePlannedTxnReceive: 'DeletePlannedTxnReceive',
@@ -139,6 +140,21 @@ export function adjustTxn(guid, newTxn) {
         })
       }
     )
+  }
+}
+
+export function bootstrap() {
+  return function (dispatch) {
+    model.get(
+      ['accounts', {from: 0, to: 9}, ['guid', 'name']],
+      ['accountTypes', {from: 0, to: 9}, ['key', 'name']],
+      ['transactionTypes', {from: 0, to: 50}, ['guid', 'name']]
+    ).then( response => {
+      dispatch({ type: AT.SetAccounts, accounts: response.json.accounts })
+      dispatch({ type: AT.SetAccountTypes, accountTypes: response.json.accountTypes })
+      dispatch({ type: AT.SetTxnTypes, txnTypes: response.json.transactionTypes })
+      dispatch({ type: AT.BootstrapReceived })
+    })
   }
 }
 

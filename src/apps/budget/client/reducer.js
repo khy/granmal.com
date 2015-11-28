@@ -5,7 +5,8 @@ import { ActionTypes, UserActionTypes } from './actions'
 
 const AT = ActionTypes
 
-const initialState = {
+export const initialState = u(window.initialState, {
+  isBootstrapped: false,
   accounts: [],
   accountTypes: [],
   txnTypes: [],
@@ -40,7 +41,7 @@ const initialState = {
       isFetching: false,
     },
   },
-}
+})
 
 export default function reducer(state = initialState, action) {
 
@@ -145,6 +146,9 @@ export default function reducer(state = initialState, action) {
           isFetching: true
         }
       })
+
+    case AT.BootstrapReceived:
+      return u({ isBootstrapped: true }, state)
 
     case AT.ConfirmPlannedTxnReceive:
       return update({

@@ -22,9 +22,6 @@ var AdjustTxnModal = require('./Modal/AdjustTxnModal')
 class Overview extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(fetchAccounts())
-    this.props.dispatch(fetchAccountTypes())
-    this.props.dispatch(fetchTxnTypes())
     this.props.dispatch(fetchProjectionsCard())
     this.props.dispatch(fetchPlannedTxnsCard())
     this.props.dispatch(fetchTxnsCard())

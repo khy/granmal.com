@@ -53,16 +53,26 @@ class Client {
   }
 }
 
-router.use((req, res, next) => {
-  if (req.uselessAccessToken) {
-    next()
-  } else {
-    next()
+router.get('/', (req, res) => {
+  let initialState = { auth: {} }
+
+  if (req.account) {
+    initialState.auth.account = req.account.public
   }
+
+  res.render('appBase', {
+    key: 'budget',
+    title: 'Budget',
+    initialState,
+  })
 })
 
-router.get('/', (req, res) => {
-  res.render('appBase', { key: 'budget', title: 'Budget' })
+router.use((req, res, next) => {
+  if (req.account && req.account.uselessAccessToken) {
+    next()
+  } else {
+    res.status(401).send("Must be logged in, and have useless.io access token.")
+  }
 })
 
 router.use('/model.json', FalcorExpress.dataSourceRoute((req, res) => {

@@ -6,7 +6,7 @@ import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 
 import reducer from './reducer'
-import { ActionTypes } from './actions'
+import { ActionTypes, bootstrap } from './actions'
 import Overview from './Overview'
 
 require('es6-promise').polyfill();
@@ -46,7 +46,12 @@ class App extends React.Component {
 
   render() {
     if (this.props.auth && this.props.auth.account) {
-      return <Overview />
+      if (this.props.isBootstrapped) {
+        return <Overview />
+      } else {
+        this.props.dispatch(bootstrap())
+        return <div className="container"><h1>This would be an Ad.</h1></div>
+      }
     } else {
       return (
         <div>
@@ -74,7 +79,8 @@ class App extends React.Component {
 
 function select(state) { return {
   dispatch: state.dispatch,
-  auth: state.auth
+  auth: state.auth,
+  isBootstrapped: state.isBootstrapped,
 }}
 
 const ConnectedApp = connect(select)(App)
