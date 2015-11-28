@@ -1,28 +1,32 @@
 var React = require('react')
 var ReactDom = require('react-dom')
-var model = require('./model.js')
+var _map = require('lodash/collection/map')
 
 require("./app.scss")
 
-class H1Manager extends React.Component {
-
-  constructor() {
-    super()
-    this.state = {apps: {}}
-  }
-
-  componentWillMount() {
-    this.update()
-  }
+class App extends React.Component {
 
   render() {
-    var appNames = Object.keys(this.state.apps).map(idx => {
+    const appData = [
+      {
+        key: 'budget',
+        name: 'Budget',
+        description: 'Personal finances for obsessive compulsives.',
+      },
+      {
+        key: 'haikunst',
+        name: 'Haikunst',
+        description: 'Like Twitter, but with haikus.',
+      },
+    ]
+
+    const cards = appData.map( app => {
       return (
-        <div className="card-app-link">
+        <div className="card-app-link" key={app.key}>
           <div className="card-block">
-            <a href={this.state.apps[idx].path}>
-              <h5 className="card-title">{this.state.apps[idx].name}</h5>
-              <p className="card-subtitle text-muted">{this.state.apps[idx].description}</p>
+            <a href="/{app.key}">
+              <h5 className="card-title">{app.name}</h5>
+              <p className="card-subtitle text-muted">{app.description}</p>
             </a>
           </div>
         </div>
@@ -38,18 +42,12 @@ class H1Manager extends React.Component {
         </nav>
 
         <div className="container">
-          {appNames}
+          {cards}
         </div>
       </div>
     )
   }
 
-  update() {
-    model.getValue(['apps', 'length'])
-      .then(length => model.get(['apps', {from: 0, to: length-1}, ['name', 'description', 'path']]))
-      .then(response => this.setState({apps: response.json.apps}))
-  }
-
 }
 
-ReactDom.render(<H1Manager/>, document.querySelector('#app'))
+ReactDom.render(<App/>, document.querySelector('#app'))
