@@ -8,6 +8,7 @@ import { connect, Provider } from 'react-redux'
 import reducer from './reducer'
 import { ActionTypes, bootstrap } from './actions'
 import Overview from './Overview'
+import Prestitial from 'client/components/ads/Prestitial'
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -44,13 +45,25 @@ class App extends React.Component {
     })
   }
 
+  dismissPrestitial() {
+    this.props.dispatch({
+      type: ActionTypes.DismissPrestitial
+    })
+  }
+
   render() {
     if (this.props.auth && this.props.auth.account) {
-      if (this.props.isBootstrapped) {
+      if (!this.props.isBootstrapped) {
+        this.props.dispatch(bootstrap())
+      }
+
+      if (this.props.prestitialDismissed) {
         return <Overview />
       } else {
-        this.props.dispatch(bootstrap())
-        return <div className="container"><h1>This would be an Ad.</h1></div>
+        return <Prestitial
+          appIsReady={this.props.isBootstrapped}
+          onContinue={this.dismissPrestitial.bind(this)}
+        />
       }
     } else {
       return (
@@ -81,6 +94,7 @@ function select(state) { return {
   dispatch: state.dispatch,
   auth: state.auth,
   isBootstrapped: state.isBootstrapped,
+  prestitialDismissed: state.prestitialDismissed,
 }}
 
 const ConnectedApp = connect(select)(App)

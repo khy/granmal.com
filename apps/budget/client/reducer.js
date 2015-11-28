@@ -7,6 +7,7 @@ const AT = ActionTypes
 
 export const initialState = u(window.initialState, {
   isBootstrapped: false,
+  prestitialDismissed: false,
   accounts: [],
   accountTypes: [],
   txnTypes: [],
@@ -210,6 +211,9 @@ export default function reducer(state = initialState, action) {
           isFetching: true
         }
       })
+
+    case AT.DismissPrestitial:
+      return u({ prestitialDismissed: true }, state)
 
     case AT.HideModal:
       return update({

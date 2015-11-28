@@ -8,7 +8,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
-    modulesDirectories: ['node_modules', 'apps']
+    modulesDirectories: ['node_modules', 'apps', '.']
   },
   module: {
     loaders: [

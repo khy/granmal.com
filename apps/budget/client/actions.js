@@ -23,6 +23,7 @@ export const ActionTypes = {
   DeletePlannedTxnRequest: 'DeletePlannedTxnRequest',
   DeleteTxnReceive: 'DeleteTxnReceive',
   DeleteTxnRequest: 'DeleteTxnRequest',
+  DismissPrestitial: 'DismissPrestitial',
   HideModal: 'HideModal',
   PlannedTxnsCardReceive: 'PlannedTxnsCardReceive',
   PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
