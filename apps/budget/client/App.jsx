@@ -4,9 +4,12 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
+import u from 'updeep'
 
+import authReducer from 'client/reducers/auth'
 import reducer from './reducer'
 import { ActionTypes, bootstrap } from './actions'
+import { SetAccount } from 'client/actions/auth'
 import Overview from './Overview'
 import Prestitial from 'client/components/ads/Prestitial'
 import Login from 'client/components/auth/Login'
@@ -16,9 +19,16 @@ require('isomorphic-fetch');
 
 require("./app.scss")
 
+function combinedReducer(state, action) {
+  let newState = reducer(state, action)
+  return u({
+    auth: authReducer(newState.auth, action)
+  }, newState)
+}
+
 const store = applyMiddleware(
   thunkMiddleware, createLogger()
-)(createStore)(reducer)
+)(createStore)(combinedReducer)
 
 class App extends React.Component {
 
@@ -36,10 +46,7 @@ class App extends React.Component {
     }).then((response) => {
       return response.json()
     }).then((account) => {
-      this.props.dispatch({
-        type: ActionTypes.Login,
-        account
-      })
+      this.props.dispatch({ type: SetAccount, account })
     })
   }
 

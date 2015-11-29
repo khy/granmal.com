@@ -4,8 +4,6 @@ import model from './model'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
-  Login: 'Login', // to be moved elsewhere
-
   AddAccountReceive: 'AddAccountReceive',
   AddAccountRequest: 'AddAccountRequest',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
