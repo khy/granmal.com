@@ -7,7 +7,7 @@ import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
 import authReducer from 'client/reducers/auth'
-import reducer from './reducer'
+import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions'
 import { login } from 'client/actions/auth'
 import Navbar from './components/Navbar'
