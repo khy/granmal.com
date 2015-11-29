@@ -9,6 +9,7 @@ import reducer from './reducer'
 import { ActionTypes, bootstrap } from './actions'
 import Overview from './Overview'
 import Prestitial from 'client/components/ads/Prestitial'
+import Login from 'client/components/auth/Login'
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -21,7 +22,7 @@ const store = applyMiddleware(
 
 class App extends React.Component {
 
-  login(event) {
+  login(email, password) {
     event.preventDefault()
 
     fetch('/sessions', {
@@ -30,10 +31,7 @@ class App extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        email: this.refs.emailInput.value,
-        password: this.refs.passwordInput.value,
-      }),
+      body: JSON.stringify({ email, password }),
       credentials: 'same-origin',
     }).then((response) => {
       return response.json()
@@ -52,39 +50,26 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.auth && this.props.auth.account) {
-      if (!this.props.isBootstrapped) {
-        this.props.dispatch(bootstrap())
-      }
+    const loggedIn = this.props.auth && this.props.auth.account
 
-      if (this.props.prestitialDismissed) {
+    if (loggedIn && !this.props.isBootstrapped) {
+      this.props.dispatch(bootstrap())
+    }
+
+    if (this.props.prestitialDismissed) {
+      if (loggedIn) {
         return <Overview />
       } else {
-        return <Prestitial
-          appIsReady={this.props.isBootstrapped}
-          onContinue={this.dismissPrestitial.bind(this)}
+        return <Login
+          message="You must log in to use Budget."
+          onLogin={this.login.bind(this)}
         />
       }
     } else {
-      return (
-        <div>
-          <div className="container">
-            <form onSubmit={this.login.bind(this)}>
-              <fieldset className="form-group">
-                <label>Email</label>
-                <input ref="emailInput" className="form-control" type="email" />
-              </fieldset>
-
-              <fieldset className="form-group">
-                <label>Password</label>
-                <input ref="passwordInput" className="form-control" type="password" />
-              </fieldset>
-
-              <button type="submit" className="btn btn-primary">Log In</button>
-            </form>
-          </div>
-        </div>
-      )
+      return <Prestitial
+        appIsReady={!loggedIn || this.props.isBootstrapped}
+        onContinue={this.dismissPrestitial.bind(this)}
+      />
     }
   }
 
