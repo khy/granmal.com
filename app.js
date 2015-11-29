@@ -2,10 +2,12 @@ var express = require('express')
 
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
-var auth = require('./server/middleware/auth')
+var authMiddleware = require('./server/middleware/auth')
 
 var Budget = require('./apps/budget/server/app')
-var Index = require('./server/routers/app')
+
+var AuthRouter = require('./server/routers/auth')
+var BaseRouter = require('./server/routers/base')
 
 var app = express()
 
@@ -16,10 +18,12 @@ app.use(express.static('./public'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
-app.use(auth)
+app.use(authMiddleware)
 
 app.use('/budget', Budget)
-app.use('/', Index)
+
+app.use('/auth', AuthRouter)
+app.use('/', BaseRouter)
 
 app.listen(3000, err => {
   if (err) {

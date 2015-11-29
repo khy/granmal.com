@@ -1,13 +1,8 @@
 var router = require('express').Router()
-
-router.get('/', (req, res) => {
-  res.render('appBase', { key: 'index', title: 'Gran Mal' })
-})
-
 var MongoClient = require('mongodb').MongoClient
 var bcrypt = require('bcrypt')
 
-router.post('/sessions', (req, res) => {
+router.post('/session', (req, res) => {
   MongoClient.connect('mongodb://localhost/granmal_dev', (err, db) => {
     const collection = db.collection('accounts')
 

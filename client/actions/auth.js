@@ -5,7 +5,7 @@ export const SetAccount = 'SetAccount'
 
 export function login(email, password) {
   return function (dispatch) {
-    fetch('/sessions', {
+    fetch('/auth/session', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
