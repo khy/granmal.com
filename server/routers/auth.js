@@ -1,9 +1,10 @@
 var router = require('express').Router()
 var MongoClient = require('mongodb').MongoClient
 var bcrypt = require('bcrypt')
+var config = require('../config')
 
 router.post('/session', (req, res) => {
-  MongoClient.connect('mongodb://localhost/granmal_dev', (err, db) => {
+  MongoClient.connect(config.mongo.url, (err, db) => {
     const collection = db.collection('accounts')
 
     collection.find({ email: req.body.email }).toArray((err, docs) => {

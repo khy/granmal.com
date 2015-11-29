@@ -2,6 +2,8 @@
 
 var MongoClient = require('mongodb').MongoClient
 
+var config = require('../config')
+
 class RichAccount {
   constructor(raw) {
     this.raw = raw
@@ -22,7 +24,7 @@ const auth = (req, res, next) => {
   const accountGuid = req.cookies['GRANMAL_ACCOUNT_GUID']
 
   if (accountGuid) {
-    MongoClient.connect('mongodb://localhost/granmal_dev', (err, db) => {
+    MongoClient.connect(config.mongo.url, (err, db) => {
       const collection = db.collection('accounts')
 
       collection.find({_id: accountGuid}).toArray((err, docs) => {
