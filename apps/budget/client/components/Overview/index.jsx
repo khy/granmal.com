@@ -12,6 +12,7 @@ var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 var TxnsCard = require('./Card/TxnsCard')
 
+import Navbar from '../Navbar'
 var AddAccountModal = require('./Modal/AddAccountModal')
 var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
@@ -159,11 +160,7 @@ class Overview extends React.Component {
 
     return (
       <div>
-        <nav className="navbar navbar-light bg-faded">
-          <div className="container">
-            <h1 className="navbar-brand" href="#">Budget</h1>
-          </div>
-        </nav>
+        <Navbar />
 
         <div className="container">
           {alert}

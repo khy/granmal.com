@@ -10,7 +10,8 @@ import authReducer from 'client/reducers/auth'
 import reducer from './reducer'
 import { ActionTypes, bootstrap } from './actions'
 import { login } from 'client/actions/auth'
-import Overview from './Overview'
+import Navbar from './components/Navbar'
+import Overview from './components/Overview'
 import Prestitial from 'client/components/ads/Prestitial'
 import Login from 'client/components/auth/Login'
 
@@ -51,10 +52,15 @@ class App extends React.Component {
       if (loggedIn) {
         return <Overview />
       } else {
-        return <Login
-          message="You must log in to use Budget."
-          onLogin={this.login.bind(this)}
-        />
+        return (
+          <div>
+            <Navbar />
+            <Login
+              message="You must log in to use Budget."
+              onLogin={this.login.bind(this)}
+            />
+          </div>
+        )
       }
     } else {
       return <Prestitial
