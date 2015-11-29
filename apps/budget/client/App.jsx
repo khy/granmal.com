@@ -9,13 +9,10 @@ import u from 'updeep'
 import authReducer from 'client/reducers/auth'
 import reducer from './reducer'
 import { ActionTypes, bootstrap } from './actions'
-import { SetAccount } from 'client/actions/auth'
+import { login } from 'client/actions/auth'
 import Overview from './Overview'
 import Prestitial from 'client/components/ads/Prestitial'
 import Login from 'client/components/auth/Login'
-
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
 
 require("./app.scss")
 
@@ -34,20 +31,7 @@ class App extends React.Component {
 
   login(email, password) {
     event.preventDefault()
-
-    fetch('/sessions', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: 'same-origin',
-    }).then((response) => {
-      return response.json()
-    }).then((account) => {
-      this.props.dispatch({ type: SetAccount, account })
-    })
+    this.props.dispatch(login(email, password))
   }
 
   dismissPrestitial() {
