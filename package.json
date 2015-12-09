@@ -7,7 +7,8 @@
     "url": "https://github.com/khy/granmal.com.git"
   },
   "scripts": {
-    "webpack": "webpack -w"
+    "webpack": "webpack -w",
+    "webpack-docker": "webpack"
   },
   "author": "Kevin Hyland",
   "license": "ISC",
