@@ -8,6 +8,8 @@ var FalcorExpress = require('falcor-express')
 var FalcorRouter = require('falcor-router')
 var request = require('request-promise')
 
+var config = require('./config')
+
 var $ref = Falcor.Model.ref;
 
 class Client {
@@ -16,7 +18,7 @@ class Client {
   }
 
   static fullPath(path) {
-    return 'http://localhost:9000/budget' + path
+    return config.useless.baseUrl + path
   }
 
   get(path) {
