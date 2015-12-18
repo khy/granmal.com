@@ -13,7 +13,18 @@ export default class Prestitial extends React.Component {
 
     return (
       <div className="container">
-        <h1>This would be an Ad.</h1>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+        <ins className="adsbygoogle"
+             style={{display: 'block'}}
+             data-ad-client="ca-pub-3521883129684519"
+             data-ad-slot="2681225984"
+             data-ad-format="auto"></ins>
+
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
         {button}
       </div>
     )
