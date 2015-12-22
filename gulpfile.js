@@ -11,19 +11,19 @@ function version() {
 }
 
 gulp.task('set-release-version', () => {
-  return gulp.src('./package.json')
-    .pipe(bump({type: "patch"}).on('error', util.log))
-    .pipe(gulp.dest('./'))
+  return gulp.src('./package.json').
+    pipe(bump({type: "patch"}).on('error', util.log)).
+    pipe(gulp.dest('./'))
 })
 
-gulp.task('commit-release-version', () => {
+gulp.task('commit-release-version', ['set-release-version'], () => {
   return gulp.src('./package.json').
     pipe(git.commit('Setting version to ' + version()))
 })
 
-gulp.task('tag-release-version', () => {
+gulp.task('tag-release-version', ['commit-release-version'], (cb) => {
   git.tag('v' + version(), 'Releasing ' + version(), (err) => {
-    if (err) throw err;
+    return err ? cb(err) : cb()
   })
 })
 
@@ -34,3 +34,5 @@ gulp.task('build-docker', () => {
 gulp.task('push-docker', () => {
   spawnSync('docker', ['push', 'khyland/granmal.com:' + version()], {stdio: 'inherit'})
 })
+
+gulp.task('release-version', ['set-release-version', 'commit-release-version', 'tag-release-version'])
