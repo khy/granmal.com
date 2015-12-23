@@ -29,10 +29,10 @@ gulp.task('tag-release-version', ['commit-release-version'], (cb) => {
 
 gulp.task('build-docker', ['tag-release-version'], (cb) => {
   var result = spawnSync('docker', ['build', '-t', 'khyland/granmal.com:' + version(), '.'], {stdio: 'inherit'})
-  return (result.status != 0) ? cb(result.error) : cb
+  return (result.status != 0) ? cb(result.error) : cb()
 })
 
 gulp.task('push-docker', ['build-docker'], (cb) => {
-  spawnSync('docker', ['push', 'khyland/granmal.com:' + version()], {stdio: 'inherit'})
-  return (result.status != 0) ? cb(result.error) : cb
+  var result = spawnSync('docker', ['push', 'khyland/granmal.com:' + version()], {stdio: 'inherit'})
+  return (result.status != 0) ? cb(result.error) : cb()
 })
