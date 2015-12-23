@@ -2,10 +2,6 @@ var React = require('react')
 
 export default class Prestitial extends React.Component {
 
-  componentDidMount() {
-    (window.adsbygoogle = window.adsbygoogle || []).push({})
-  }
-
   render() {
     let button
 
@@ -17,14 +13,6 @@ export default class Prestitial extends React.Component {
 
     return (
       <div className="container prestitial">
-        <div className="ad">
-          <ins className="adsbygoogle"
-            style={{display: 'block'}}
-            data-ad-client="ca-pub-3521883129684519"
-            data-ad-slot="2681225984"
-            data-ad-format="auto"></ins>
-        </div>
-
         <div className="button">
           {button}
         </div>
