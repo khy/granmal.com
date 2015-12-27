@@ -55,20 +55,6 @@ class Client {
   }
 }
 
-router.get('/', (req, res) => {
-  let initialState = { auth: {} }
-
-  if (req.account) {
-    initialState.auth.account = req.account.public
-  }
-
-  res.render('appBase', {
-    key: 'budget',
-    title: 'Budget',
-    initialState,
-  })
-})
-
 router.use((req, res, next) => {
   if (req.account && req.account.uselessAccessToken) {
     next()
@@ -502,5 +488,19 @@ router.use('/model.json', FalcorExpress.dataSourceRoute((req, res) => {
     },
   ])
 }))
+
+router.get('*', (req, res) => {
+  let initialState = { auth: {} }
+
+  if (req.account) {
+    initialState.auth.account = req.account.public
+  }
+
+  res.render('appBase', {
+    key: 'budget',
+    title: 'Budget',
+    initialState,
+  })
+})
 
 module.exports = router

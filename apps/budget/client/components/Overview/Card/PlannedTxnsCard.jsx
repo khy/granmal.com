@@ -1,4 +1,5 @@
 var React = require('react')
+import { Link } from 'react-router'
 var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
@@ -94,6 +95,7 @@ class PlannedTxnsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Planned Transactions
+          <Link to="/budget/plannedTransactions" className="pull-right">All</Link>
           <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
             New Planned Transaction
           </a>
