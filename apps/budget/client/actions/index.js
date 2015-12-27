@@ -8,6 +8,8 @@ export const ActionTypes = {
   AddAccountRequest: 'AddAccountRequest',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
   AddPlannedTxnRequest: 'AddPlannedTxnRequest',
+  AddTransferReceive: 'AddTransferReceive',
+  AddTransferRequest: 'AddTransferRequest',
   AddTxnReceive: 'AddTxnReceive',
   AddTxnRequest: 'AddTxnRequest',
   AddTxnTypeReceive: 'AddTxnTypeReceive',
@@ -33,6 +35,7 @@ export const ActionTypes = {
   ShowAddAccountModal: 'ShowAddAccountModal',
   ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
+  ShowAddTransferModal: 'ShowAddTransferModal',
   ShowAddTxnModal: 'ShowAddTxnModal',
   ShowAddTxnTypeModal: 'ShowAddTxnTypeModal',
   ShowAdjustTxnModal: 'ShowAdjustTxnModal',
@@ -45,6 +48,7 @@ const AT = ActionTypes
 export const UserActionTypes = {
   AddAccount: 'AddAccount',
   AddPlannedTxn: 'AddPlannedTxn',
+  AddTransfer: 'AddTransfer',
   AddTxn: 'AddTxn',
   AddTxnType: 'AddTxnType',
   AdjustTxn: 'AdjustTxn',
@@ -83,6 +87,25 @@ export function addPlannedTxn(newPlannedTxn) {
         dispatch({
           type: AT.AddPlannedTxnReceive,
           guid: response.json.plannedTransactions.latest.guid
+        })
+      }
+    )
+  }
+}
+
+export function addTransfer(newTransfer) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.AddTransferRequest
+    })
+
+    model.call('transfers.add', [newTransfer], [['guid']]).then(
+      response => {
+        dispatch(fetchProjectionsCard(null, true))
+        dispatch(fetchTxnsCard(true))
+        dispatch({
+          type: AT.AddTransferReceive,
+          guid: response.json.transfers.latestGuid
         })
       }
     )

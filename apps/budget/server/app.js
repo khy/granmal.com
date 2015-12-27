@@ -486,7 +486,20 @@ router.use('/model.json', FalcorExpress.dataSourceRoute((req, res) => {
           }
         )
       }
-    }
+    },
+    {
+      route: 'transfers.add',
+      call: (pathSet, args) => {
+        return client.post('/transfers', args[0]).then ( transfer => {
+          return [
+            {
+              path: ['transfers', 'latestGuid'],
+              value: transfer.guid
+            }
+          ]
+        })
+      }
+    },
   ])
 }))
 

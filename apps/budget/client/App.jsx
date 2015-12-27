@@ -25,7 +25,7 @@ function combinedReducer(state, action) {
 }
 
 const store = applyMiddleware(
-  thunkMiddleware, createLogger()
+  thunkMiddleware //, createLogger()
 )(createStore)(combinedReducer)
 
 class App extends React.Component {

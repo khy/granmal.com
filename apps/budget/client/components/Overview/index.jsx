@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 import {
-  ActionTypes, UserActionTypes, addAccount, addPlannedTxn, addTxn, addTxnType, adjustTxn,
-  confirmPlannedTxn, deletePlannedTxn, deleteTxn, fetchAccounts, fetchAccountTypes,
-  fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnsCard, fetchTxnTypes
+  ActionTypes, UserActionTypes, addAccount, addPlannedTxn, addTxn, addTxnType,
+  adjustTxn, addTransfer, confirmPlannedTxn, deletePlannedTxn, deleteTxn,
+  fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard, fetchProjectionsCard,
+  fetchTxnsCard, fetchTxnTypes
 } from 'budget/client/actions'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
@@ -16,9 +17,12 @@ import Navbar from '../Navbar'
 var AddAccountModal = require('./Modal/AddAccountModal')
 var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
+var AddTransferModal = require('./Modal/AddTransferModal')
 var AddTxnModal = require('./Modal/AddTxnModal')
 import AddTxnTypeModal from './Modal/AddTxnTypeModal'
 var AdjustTxnModal = require('./Modal/AdjustTxnModal')
+
+import { shortenGuid } from 'budget/client/lib/guid'
 
 class Overview extends React.Component {
 
@@ -94,6 +98,14 @@ class Overview extends React.Component {
     this.props.dispatch(addTxnType(newTxnType))
   }
 
+  showAddTransferModal() {
+    this.props.dispatch({ type: ActionTypes.ShowAddTransferModal })
+  }
+
+  addTransfer(newTransfer) {
+    this.props.dispatch(addTransfer(newTransfer))
+  }
+
   hideModal() {
     this.props.dispatch({ type: ActionTypes.HideModal })
   }
@@ -106,6 +118,12 @@ class Overview extends React.Component {
         alert = (
           <div className="alert alert-success" role="alert">
             Added transaction type <strong>{this.props.overview.lastUserAction.name}</strong>
+          </div>
+        )
+      } else if (this.props.overview.lastUserAction.type === UserActionTypes.AddTransfer) {
+        alert = (
+          <div className="alert alert-success" role="alert">
+            Added transfer <strong>{shortenGuid(this.props.overview.lastUserAction.guid)}</strong>
           </div>
         )
       }
@@ -134,6 +152,12 @@ class Overview extends React.Component {
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
+      />
+    } else if (this.props.overview.activeModal === 'addTransferModal') {
+      modal = <AddTransferModal {...this.props.overview.AddTransferModal}
+        accounts={this.props.accounts}
+        onClose={this.hideModal.bind(this)}
+        onAdd={this.addTransfer.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTxnModal') {
       modal = <AddTxnModal {...this.props.overview.addTxnModal}
@@ -169,6 +193,7 @@ class Overview extends React.Component {
             lastUserAction={this.props.overview.lastUserAction}
             onDateChange={this.changeProjectionDate.bind(this)}
             onNewAccount={this.showAddAccountModal.bind(this)}
+            onNewTransfer={this.showAddTransferModal.bind(this)}
           />
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
             lastUserAction={this.props.overview.lastUserAction}

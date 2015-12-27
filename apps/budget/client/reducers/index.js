@@ -90,6 +90,25 @@ export default function reducer(state = initialState, action) {
         }
       })
 
+    case AT.AddTransferReceive:
+      return update({
+        activeModal: null,
+        lastUserAction: {
+          type: UserActionTypes.AddTransfer,
+          guid: action.guid,
+        },
+        addTransferModal: {
+          isFetching: false
+        }
+      })
+
+    case AT.AddTransferRequest:
+      return update({
+        addTransferModal: {
+          isFetching: true
+        }
+      })
+
     case AT.AddTxnReceive:
       return update({
         activeModal: null,
@@ -283,6 +302,11 @@ export default function reducer(state = initialState, action) {
         resolvePlannedTxnModal: {
           plannedTxn: action.plannedTxn
         }
+      })
+
+    case AT.ShowAddTransferModal:
+      return update({
+        activeModal: 'addTransferModal',
       })
 
     case AT.ShowAddTxnModal:

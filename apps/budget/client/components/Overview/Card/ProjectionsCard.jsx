@@ -6,6 +6,11 @@ import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/clien
 
 class ProjectionsCard extends React.Component {
 
+  onNewTransfer(event) {
+    event.preventDefault()
+    this.props.onNewTransfer()
+  }
+
   onNewAccount(event) {
     event.preventDefault()
     this.props.onNewAccount()
@@ -59,6 +64,10 @@ class ProjectionsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Projections
+
+          <a className="pull-right" onClick={this.onNewTransfer.bind(this)} href="#">
+            New Transfer
+          </a>
 
           <a className="pull-right" onClick={this.onNewAccount.bind(this)} href="#">
             New Account
