@@ -1,5 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { IndexRoute, Router, Route } from 'react-router'
+import createBrowserHistory from 'history/lib/createBrowserHistory'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
@@ -50,7 +52,7 @@ class App extends React.Component {
 
     if (this.props.prestitialDismissed) {
       if (loggedIn) {
-        return <Overview />
+        return this.props.children
       } else {
         return (
           <div>
@@ -83,7 +85,11 @@ const ConnectedApp = connect(select)(App)
 
 render(
   <Provider store={store}>
-    <ConnectedApp />
+    <Router history={createBrowserHistory()}>
+      <Route path="/budget" component={ConnectedApp}>
+        <IndexRoute component={Overview} />
+      </Route>
+    </Router>
   </Provider>,
   document.querySelector('#app')
 )
