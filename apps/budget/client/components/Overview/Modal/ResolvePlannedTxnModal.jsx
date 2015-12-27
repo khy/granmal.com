@@ -17,7 +17,7 @@ class ResolvePlannedTxnModal extends React.Component {
       transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
-      timestamp: normalizeDateInput(this.refs.timestampInput.value),
+      date: normalizeDateInput(this.refs.dateInput.value),
       plannedTransactionGuid: this.props.plannedTxn.guid
     }
 
@@ -44,7 +44,7 @@ class ResolvePlannedTxnModal extends React.Component {
     )
 
     var plannedTxn = this.props.plannedTxn
-    var defaultDate = formatDate(plannedTxn.minTimestamp)
+    var defaultDate = formatDate(plannedTxn.minDate)
 
     return (
       <div>
@@ -98,7 +98,7 @@ class ResolvePlannedTxnModal extends React.Component {
                       <input
                         className="form-control"
                         type="text"
-                        ref="timestampInput"
+                        ref="dateInput"
                         defaultValue={defaultDate}
                       />
                     </fieldset>

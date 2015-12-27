@@ -17,7 +17,7 @@ class AddTxnModal extends React.Component {
       transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
-      timestamp: normalizeDateInput(this.refs.timestampInput.value)
+      date: normalizeDateInput(this.refs.dateInput.value)
     }
 
     this.props.onAdd(newTxn)
@@ -73,7 +73,7 @@ class AddTxnModal extends React.Component {
 
                     <fieldset className="form-group">
                       <label>Date</label>
-                      <input ref="timestampInput" className="form-control" type="text" />
+                      <input ref="dateInput" className="form-control" type="text" />
                     </fieldset>
                   </fieldset>
                 </form>

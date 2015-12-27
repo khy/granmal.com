@@ -17,7 +17,7 @@ class AdjustTxnModal extends React.Component {
       transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
       accountGuid: this.refs.accountGuidSelect.value,
       amount: parseFloat(this.refs.amountInput.value),
-      timestamp: normalizeDateInput(this.refs.timestampInput.value)
+      date: normalizeDateInput(this.refs.dateInput.value)
     }
 
     this.props.onAdjust(this.props.txn.guid, newTxn)
@@ -43,7 +43,7 @@ class AdjustTxnModal extends React.Component {
     )
 
     var txn = this.props.txn
-    var defaultDate = formatDate(txn.timestamp)
+    var defaultDate = formatDate(txn.date)
 
     return (
       <div>
@@ -97,7 +97,7 @@ class AdjustTxnModal extends React.Component {
                       <input
                         className="form-control"
                         type="text"
-                        ref="timestampInput"
+                        ref="dateInput"
                         defaultValue={defaultDate}
                       />
                     </fieldset>

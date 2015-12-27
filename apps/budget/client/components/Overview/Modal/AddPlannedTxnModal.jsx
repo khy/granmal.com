@@ -18,8 +18,8 @@ class AddPlannedTxnModal extends React.Component {
       accountGuid: this.refs.accountGuidSelect.value,
       minAmount: parseFloat(this.refs.minAmountInput.value),
       maxAmount: parseFloat(this.refs.maxAmountInput.value),
-      minTimestamp: normalizeDateInput(this.refs.minTimestampInput.value),
-      maxTimestamp: normalizeDateInput(this.refs.maxTimestampInput.value)
+      minDate: normalizeDateInput(this.refs.minDateInput.value),
+      maxDate: normalizeDateInput(this.refs.maxDateInput.value)
     }
 
     this.props.onAdd(plannedTxn)
@@ -93,13 +93,13 @@ class AddPlannedTxnModal extends React.Component {
                       <div className="col-md-6">
                         <fieldset className="form-group">
                           <label>Min Date</label>
-                          <input ref="minTimestampInput" className="form-control" type="text" />
+                          <input ref="minDateInput" className="form-control" type="text" />
                         </fieldset>
                       </div>
                       <div className="col-md-6">
                         <fieldset className="form-group">
                           <label>Max Date</label>
-                          <input ref="maxTimestampInput" className="form-control" type="text" />
+                          <input ref="maxDateInput" className="form-control" type="text" />
                         </fieldset>
                       </div>
                     </div>

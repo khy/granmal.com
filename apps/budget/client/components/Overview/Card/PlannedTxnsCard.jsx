@@ -29,15 +29,15 @@ class PlannedTxnsCard extends React.Component {
 
     if (Object.keys(this.props.plannedTxns).length > 0) {
       rows = _map(this.props.plannedTxns, (value, key) => {
-        const minDate = formatDate(value.minTimestamp)
-        const maxDate = formatDate(value.maxTimestamp)
+        const minDate = formatDate(value.minDate)
+        const maxDate = formatDate(value.maxDate)
         const date = (minDate === maxDate) ?
           minDate : minDate + " / " + maxDate
 
         const amount = (value.minAmount === value.maxAmount) ?
           value.minAmount : value.minAmount +  " / " + value.maxAmount
 
-        const rowClass = (moment(value.minTimestamp) < moment()) ?
+        const rowClass = (moment(value.minDate) < moment()) ?
           'table-warning' : ''
 
         return (

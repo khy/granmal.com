@@ -29,7 +29,7 @@ class TxnsCard extends React.Component {
         return (
           <tr key={value.guid}>
             <td>{shortenGuid(value.guid)}</td>
-            <td>{formatDate(value.timestamp)}</td>
+            <td>{formatDate(value.date)}</td>
             <td>{value.amount}</td>
             <td>{value.transactionType.name}</td>
             <td>{value.account.name}</td>

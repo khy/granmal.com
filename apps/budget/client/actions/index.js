@@ -276,7 +276,7 @@ export function fetchPlannedTxnsCard(force = false) {
     if (force) { model.invalidate(['plannedTransactions']) }
 
     model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minTimestamp', 'maxTimestamp', 'minAmount', 'maxAmount']],
+      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minDate', 'maxDate', 'minAmount', 'maxAmount']],
       ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
       ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
@@ -322,7 +322,7 @@ export function fetchTxnsCard(force = false) {
     if (force) { model.invalidate(['transactions']) }
 
     model.get(
-      ['transactions', {from: 0, to: 9}, ['guid', 'timestamp', 'amount']],
+      ['transactions', {from: 0, to: 9}, ['guid', 'date', 'amount']],
       ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
       ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
     ).then(
