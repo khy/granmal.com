@@ -32,13 +32,13 @@ class ResolvePlannedTxnModal extends React.Component {
   render() {
 
     const txnTypeOptions = (
-      _map(this.props.txnTypes, (txnType) => {
+      _map(this.props.app.txnTypes, (txnType) => {
         return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
 
     const accountOptions = (
-      _map(this.props.accounts, (account) => {
+      _map(this.props.app.accounts, (account) => {
         return <option value={account.guid} key={account.guid}>{account.name}</option>
       })
     )

@@ -8,7 +8,6 @@ import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
-import authReducer from 'client/reducers/auth'
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions'
 import { login } from 'client/actions/auth'
@@ -20,16 +19,9 @@ import Login from 'client/components/auth/Login'
 
 require("./app.scss")
 
-function combinedReducer(state, action) {
-  let newState = reducer(state, action)
-  return u({
-    auth: authReducer(newState.auth, action)
-  }, newState)
-}
-
 const store = applyMiddleware(
-  thunkMiddleware //, createLogger()
-)(createStore)(combinedReducer)
+  thunkMiddleware, createLogger()
+)(createStore)(reducer, window.initialState)
 
 class App extends React.Component {
 
@@ -47,11 +39,11 @@ class App extends React.Component {
   render() {
     const loggedIn = this.props.auth && this.props.auth.account
 
-    if (loggedIn && !this.props.isBootstrapped) {
+    if (loggedIn && !this.props.app.isBootstrapped) {
       this.props.dispatch(bootstrap())
     }
 
-    if (this.props.prestitialDismissed) {
+    if (this.props.app.prestitialDismissed) {
       if (loggedIn) {
         return this.props.children
       } else {
@@ -67,7 +59,7 @@ class App extends React.Component {
       }
     } else {
       return <Prestitial
-        appIsReady={!loggedIn || this.props.isBootstrapped}
+        appIsReady={!loggedIn || this.props.app.isBootstrapped}
         onContinue={this.dismissPrestitial.bind(this)}
       />
     }
@@ -78,8 +70,7 @@ class App extends React.Component {
 function select(state) { return {
   dispatch: state.dispatch,
   auth: state.auth,
-  isBootstrapped: state.isBootstrapped,
-  prestitialDismissed: state.prestitialDismissed,
+  app: state.app,
 }}
 
 const ConnectedApp = connect(select)(App)

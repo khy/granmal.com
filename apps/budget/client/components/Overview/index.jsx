@@ -133,49 +133,49 @@ class Overview extends React.Component {
 
     if (this.props.overview.activeModal === 'addAccountModal') {
       modal = <AddAccountModal {...this.props.overview.addAccountModal}
-        accountTypes={this.props.accountTypes}
+        accountTypes={this.props.app.accountTypes}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addAccount.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addPlannedTxnModal') {
       modal = <AddPlannedTxnModal {...this.props.overview.addPlannedTxnModal}
-        txnTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+        txnTypes={this.props.app.txnTypes}
+        accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
         onNewTxnType={this.showNewTxnTypeModal.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'resolvePlannedTxnModal') {
       modal = <ResolvePlannedTxnModal {...this.props.overview.resolvePlannedTxnModal}
-        txnTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+        txnTypes={this.props.app.txnTypes}
+        accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onConfirm={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTransferModal') {
       modal = <AddTransferModal {...this.props.overview.AddTransferModal}
-        accounts={this.props.accounts}
+        accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTransfer.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTxnModal') {
       modal = <AddTxnModal {...this.props.overview.addTxnModal}
-        txnTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+        txnTypes={this.props.app.txnTypes}
+        accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTxnTypeModal') {
       modal = <AddTxnTypeModal {...this.props.overview.addTxnTypeModal}
-        txnTypes={this.props.txnTypes}
+        txnTypes={this.props.app.txnTypes}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxnType.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'adjustTxnModal') {
       modal = <AdjustTxnModal {...this.props.overview.adjustTxnModal}
-        txnTypes={this.props.txnTypes}
-        accounts={this.props.accounts}
+        txnTypes={this.props.app.txnTypes}
+        accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onAdjust={this.adjustTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}

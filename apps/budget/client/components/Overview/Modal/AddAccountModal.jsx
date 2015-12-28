@@ -23,7 +23,7 @@ export default class AddAccountModal extends React.Component {
   render() {
 
     const accountTypeOptions = (
-      _map(this.props.accountTypes, (accountType) => {
+      _map(this.props.app.accountTypes, (accountType) => {
         return <option value={accountType.key} key={accountType.key}>{accountType.name}</option>
       })
     )

@@ -26,7 +26,7 @@ export default class AddTransferModal extends React.Component {
   render() {
 
     const accountOptions = (
-      _map(this.props.accounts, (account) => {
+      _map(this.props.app.accounts, (account) => {
         return <option value={account.guid} key={account.guid}>{account.name}</option>
       })
     )
