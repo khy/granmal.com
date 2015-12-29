@@ -9,7 +9,7 @@ import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
 import reducer from './reducers'
-import { ActionTypes, bootstrap } from './actions'
+import { ActionTypes, bootstrap } from './actions/app'
 import { login } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'

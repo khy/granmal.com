@@ -7,7 +7,7 @@ import {
   adjustTxn, addTransfer, confirmPlannedTxn, deletePlannedTxn, deleteTxn,
   fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard, fetchProjectionsCard,
   fetchTxnsCard, fetchTxnTypes
-} from 'budget/client/actions'
+} from 'budget/client/actions/overview'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')

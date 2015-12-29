@@ -1,7 +1,7 @@
 import React from 'react'
 import _map from 'lodash/collection/map'
 
-import { UserActionTypes } from 'budget/client/actions'
+import { UserActionTypes } from 'budget/client/actions/overview'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 
 class ProjectionsCard extends React.Component {

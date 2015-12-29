@@ -1,6 +1,6 @@
 import u from 'updeep'
 
-import { ActionTypes } from '../actions'
+import { ActionTypes } from '../actions/app'
 
 const AT = ActionTypes
 

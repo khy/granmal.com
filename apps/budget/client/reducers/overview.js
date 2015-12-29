@@ -1,7 +1,7 @@
 import moment from 'moment'
 import u from 'updeep'
 
-import { ActionTypes, UserActionTypes } from '../actions'
+import { ActionTypes, UserActionTypes } from '../actions/overview'
 
 const AT = ActionTypes
 

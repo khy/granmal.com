@@ -4,7 +4,7 @@ var moment = require('moment')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
-import { UserActionTypes } from 'budget/client/actions'
+import { UserActionTypes } from 'budget/client/actions/overview'
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
 
