@@ -3,8 +3,15 @@ import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
 
 import Navbar from '../Navbar'
+import { fetchPlannedTxns } from 'budget/client/actions/plannedTxns'
+import { formatDate } from 'budget/client/lib/date'
+import { shortenGuid } from 'budget/client/lib/guid'
 
 class PlannedTxns extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(fetchPlannedTxns())
+  }
 
   render() {
     const txnTypeOptions = (
@@ -18,6 +25,40 @@ class PlannedTxns extends React.Component {
         return <option value={account.guid} key={account.guid}>{account.name}</option>
       })
     )
+
+    let rows
+
+    if (this.props.isFetching) {
+      rows = (
+        <tr>
+          <td colSpan="5" className="text-center text-muted">Loading...</td>
+        </tr>
+      )
+    } else if (this.props.plannedTxns.results.length > 0) {
+      rows = _map(this.props.plannedTxns.results, (plannedTxn) => {
+        const date = (plannedTxn.minDate === plannedTxn.maxDate) ?
+          plannedTxn.minDate : plannedTxn.minDate + " / " + plannedTxn.maxDate
+
+        const amount = (plannedTxn.minAmount === plannedTxn.maxAmount) ?
+          plannedTxn.minAmount : plannedTxn.minAmount +  " / " + plannedTxn.maxAmount
+
+        return (
+          <tr key={plannedTxn.guid}>
+            <td>{shortenGuid(plannedTxn.guid)}</td>
+            <td>{date}</td>
+            <td>{amount}</td>
+            <td>{plannedTxn.transactionType.name}</td>
+            <td>{plannedTxn.account.name}</td>
+          </tr>
+        )
+      })
+    } else {
+      rows = (
+        <tr>
+          <td colSpan="5" className="text-center text-muted">No Planned Transactions</td>
+        </tr>
+      )
+    }
 
     return (
       <div>
@@ -54,10 +95,10 @@ class PlannedTxns extends React.Component {
                 <th>Amount</th>
                 <th>Type</th>
                 <th>Account</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
+              {rows}
             </tbody>
           </table>
         </div>

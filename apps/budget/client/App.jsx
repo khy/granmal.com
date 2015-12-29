@@ -20,7 +20,7 @@ import Login from 'client/components/auth/Login'
 require("./app.scss")
 
 const store = applyMiddleware(
-  thunkMiddleware, createLogger()
+  thunkMiddleware//, createLogger()
 )(createStore)(reducer, window.initialState)
 
 class App extends React.Component {
