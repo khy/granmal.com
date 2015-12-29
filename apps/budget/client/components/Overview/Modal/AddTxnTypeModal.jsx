@@ -22,7 +22,7 @@ export default class AddTxnTypeModal extends React.Component {
   render() {
 
     const txnTypeOptions = (
-      _map(this.props.app.txnTypes, (txnType) => {
+      _map(this.props.txnTypes, (txnType) => {
         return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
       })
     )
