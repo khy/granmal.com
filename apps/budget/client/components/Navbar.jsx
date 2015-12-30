@@ -1,4 +1,5 @@
-var React = require('react')
+import React from 'react'
+import { Link } from 'react-router'
 
 export default class Navbar extends React.Component {
 
@@ -6,7 +7,7 @@ export default class Navbar extends React.Component {
     return (
       <nav className="navbar navbar-light bg-faded">
         <div className="container">
-          <h1 className="navbar-brand" href="#">Budget</h1>
+          <Link to="/budget" className="navbar-brand">Budget</Link>
         </div>
       </nav>
     )
