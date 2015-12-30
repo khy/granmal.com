@@ -28,7 +28,7 @@ class PlannedTxns extends React.Component {
 
     let rows
 
-    if (this.props.isFetching) {
+    if (this.props.plannedTxns.isFetching) {
       rows = (
         <tr>
           <td colSpan="5" className="text-center text-muted">Loading...</td>
