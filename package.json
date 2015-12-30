@@ -19,7 +19,7 @@
     "cookie-parser": "1.4.0",
     "es6-promise": "3.0.2",
     "express": "4.13.3",
-    "falcor": "0.1.14",
+    "falcor": "0.1.15",
     "falcor-express": "0.1.2",
     "falcor-http-datasource": "0.1.2",
     "falcor-router": "0.2.11",
