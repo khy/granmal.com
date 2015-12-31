@@ -76,26 +76,6 @@ class PlannedTxns extends React.Component {
         <div className="container">
           <h1>Planned Transactions</h1>
 
-          <div className="card card-block">
-            <form>
-              <fieldset className="form-group">
-                <label>Transaction Type</label>
-                <select ref="txnTypeGuidSelect" className="form-control c-select">
-                  {txnTypeOptions}
-                </select>
-              </fieldset>
-
-              <fieldset className="form-group">
-                <label>Account</label>
-                <select ref="accountGuidSelect" className="form-control c-select">
-                  {accountOptions}
-                </select>
-              </fieldset>
-
-              <button type="submit" className="btn btn-primary">Filter</button>
-            </form>
-          </div>
-
           <table className="table">
             <thead>
               <tr>
