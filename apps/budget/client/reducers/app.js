@@ -5,6 +5,7 @@ import { ActionTypes } from '../actions/app'
 const AT = ActionTypes
 
 export const initialState = {
+  isBootstrapping: false,
   isBootstrapped: false,
   prestitialDismissed: false,
   accounts: [],
@@ -17,7 +18,10 @@ export default function app(state = initialState, action) {
   switch (action.type) {
 
     case AT.BootstrapReceived:
-      return u({ isBootstrapped: true }, state)
+      return u({ isBootstrapping: false, isBootstrapped: true }, state)
+
+    case AT.BootstrapRequested:
+      return u({ isBootstrapping: true }, state)
 
     case AT.DismissPrestitial:
       return u({ prestitialDismissed: true }, state)

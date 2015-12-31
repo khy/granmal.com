@@ -39,7 +39,7 @@ class App extends React.Component {
   render() {
     const loggedIn = this.props.auth && this.props.auth.account
 
-    if (loggedIn && !this.props.app.isBootstrapped) {
+    if (loggedIn && !this.props.app.isBootstrapped && !this.props.app.isBootstrapping) {
       this.props.dispatch(bootstrap())
     }
 
