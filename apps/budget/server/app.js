@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 
+var api = require('./api')
 var falcorRouter = require('./falcorRouter')
 
 router.use((req, res, next) => {
@@ -13,6 +14,7 @@ router.use((req, res, next) => {
   }
 })
 
+router.use('/api', api)
 router.use('/model.json', falcorRouter)
 
 router.get('*', (req, res) => {

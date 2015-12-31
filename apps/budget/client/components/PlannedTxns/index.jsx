@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
+import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
 import { fetchPlannedTxns } from 'budget/client/actions/plannedTxns'
@@ -42,13 +43,21 @@ class PlannedTxns extends React.Component {
         const amount = (plannedTxn.minAmount === plannedTxn.maxAmount) ?
           plannedTxn.minAmount : plannedTxn.minAmount +  " / " + plannedTxn.maxAmount
 
+        const transactionType = _find(this.props.app.txnTypes, (txnType) => {
+          return txnType.guid === plannedTxn.transactionTypeGuid
+        })
+
+        const account = _find(this.props.app.accounts, (account) => {
+          return account.guid === plannedTxn.accountGuid
+        })
+
         return (
           <tr key={plannedTxn.guid}>
             <td>{shortenGuid(plannedTxn.guid)}</td>
             <td>{date}</td>
             <td>{amount}</td>
-            <td>{plannedTxn.transactionType.name}</td>
-            <td>{plannedTxn.account.name}</td>
+            <td>{transactionType.name}</td>
+            <td>{account.name}</td>
           </tr>
         )
       })

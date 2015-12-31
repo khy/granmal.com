@@ -1,3 +1,7 @@
+import es6Promise from 'es6-promise'
+es6Promise.polyfill()
+
+import 'isomorphic-fetch'
 import _map from 'lodash/collection/map'
 
 import model from '../model'
@@ -13,14 +17,18 @@ export function fetchPlannedTxns() {
   return function (dispatch) {
     dispatch({ type: AT.PlannedTxnsRequest })
 
-    model.get(
-      ['plannedTransactions', {from: 0, to: 20}, ['guid', 'minDate', 'maxDate', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 20}, 'transactionType', ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 20}, 'account', ['guid', 'name']]
-    ).then( response => {
+    fetch('/budget/api/plannedTxns', {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json',
+      },
+      credentials: 'same-origin',
+    }).then((response) => {
+      return response.json()
+    }).then((plannedTxns) => {
       dispatch({
         type: AT.PlannedTxnsReceive,
-        results: response.json.plannedTransactions,
+        results: plannedTxns,
       })
     })
   }
