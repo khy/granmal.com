@@ -196,11 +196,13 @@ class Overview extends React.Component {
             onNewTransfer={this.showAddTransferModal.bind(this)}
           />
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
+            app={this.props.app}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
           <TxnsCard {...this.props.overview.txnsCard}
+            app={this.props.app}
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddTxnModal.bind(this)}
             onAdjust={this.showAdjustTxnModal.bind(this)}

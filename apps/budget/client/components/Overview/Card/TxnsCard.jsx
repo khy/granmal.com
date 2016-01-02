@@ -25,15 +25,23 @@ class TxnsCard extends React.Component {
     let rows
 
     if (Object.keys(this.props.txns).length > 0) {
-      rows = _map(this.props.txns, (value, key) => {
+      rows = _map(this.props.txns, (txn) => {
+        const txnType = _find(this.props.app.txnTypes, (txnType) => {
+          return txnType.guid === txn.transactionTypeGuid
+        })
+
+        const account = _find(this.props.app.accounts, (account) => {
+          return account.guid === txn.accountGuid
+        })
+
         return (
-          <tr key={value.guid}>
-            <td>{shortenGuid(value.guid)}</td>
-            <td>{formatDate(value.date)}</td>
-            <td>{value.amount}</td>
-            <td>{value.transactionType.name}</td>
-            <td>{value.account.name}</td>
-            <td><a onClick={this.onAdjust.bind(this)} data-guid={value.guid} href="#">Adjust</a></td>
+          <tr key={txn.guid}>
+            <td>{shortenGuid(txn.guid)}</td>
+            <td>{formatDate(txn.date)}</td>
+            <td>{txn.amount}</td>
+            <td>{txnType.name}</td>
+            <td>{account.name}</td>
+            <td><a onClick={this.onAdjust.bind(this)} data-guid={txn.guid} href="#">Adjust</a></td>
           </tr>
         )
       })

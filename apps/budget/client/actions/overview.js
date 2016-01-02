@@ -220,18 +220,9 @@ export function fetchPlannedTxnsCard(force = false) {
       type: AT.PlannedTxnsCardRequest
     })
 
-    if (force) { model.invalidate(['plannedTransactions']) }
-
-    model.get(
-      ['plannedTransactions', {from: 0, to: 9}, ['guid', 'minDate', 'maxDate', 'minAmount', 'maxAmount']],
-      ['plannedTransactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['plannedTransactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        const plannedTxns = response ? response.json.plannedTransactions : []
-        dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
-      }
-    )
+    getJson('/budget/api/plannedTxns').then((plannedTxns) => {
+      dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
+    })
   }
 }
 
@@ -266,17 +257,8 @@ export function fetchTxnsCard(force = false) {
       type: AT.TxnsCardRequest
     })
 
-    if (force) { model.invalidate(['transactions']) }
-
-    model.get(
-      ['transactions', {from: 0, to: 9}, ['guid', 'date', 'amount']],
-      ['transactions', {from: 0, to: 9}, 'transactionType', ['guid', 'name']],
-      ['transactions', {from: 0, to: 9}, 'account', ['guid', 'name']]
-    ).then(
-      response => {
-        const txns = response ? response.json.transactions : []
-        dispatch({ type: AT.TxnsCardReceive, txns })
-      }
-    )
+    getJson('/budget/api/txns').then((txns) => {
+      dispatch({ type: AT.TxnsCardReceive, txns })
+    })
   }
 }

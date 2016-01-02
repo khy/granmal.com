@@ -29,26 +29,34 @@ class PlannedTxnsCard extends React.Component {
     let rows
 
     if (Object.keys(this.props.plannedTxns).length > 0) {
-      rows = _map(this.props.plannedTxns, (value, key) => {
-        const minDate = formatDate(value.minDate)
-        const maxDate = formatDate(value.maxDate)
+      rows = _map(this.props.plannedTxns, (plannedTxn) => {
+        const minDate = formatDate(plannedTxn.minDate)
+        const maxDate = formatDate(plannedTxn.maxDate)
         const date = (minDate === maxDate) ?
           minDate : minDate + " / " + maxDate
 
-        const amount = (value.minAmount === value.maxAmount) ?
-          value.minAmount : value.minAmount +  " / " + value.maxAmount
+        const amount = (plannedTxn.minAmount === plannedTxn.maxAmount) ?
+          plannedTxn.minAmount : plannedTxn.minAmount +  " / " + plannedTxn.maxAmount
 
-        const rowClass = (moment(value.minDate) < moment()) ?
+        const rowClass = (moment(plannedTxn.minDate) < moment()) ?
           'table-warning' : ''
 
+        const txnType = _find(this.props.app.txnTypes, (txnType) => {
+          return txnType.guid === plannedTxn.transactionTypeGuid
+        })
+
+        const account = _find(this.props.app.accounts, (account) => {
+          return account.guid === plannedTxn.accountGuid
+        })
+
         return (
-          <tr key={value.guid} className={rowClass}>
-            <td>{shortenGuid(value.guid)}</td>
+          <tr key={plannedTxn.guid} className={rowClass}>
+            <td>{shortenGuid(plannedTxn.guid)}</td>
             <td>{date}</td>
             <td>{amount}</td>
-            <td>{value.transactionType.name}</td>
-            <td>{value.account.name}</td>
-            <td><a onClick={this.onResolve.bind(this)} data-guid={value.guid} href="#">Resolve</a></td>
+            <td>{txnType.name}</td>
+            <td>{account.name}</td>
+            <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
           </tr>
         )
       })
