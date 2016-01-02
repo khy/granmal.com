@@ -1,6 +1,7 @@
 import moment from 'moment'
 import model from '../model'
 
+import { postJson, getJson } from 'budget/client/lib/client'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
@@ -58,12 +59,12 @@ export function addAccount(newAccount) {
       type: AT.AddAccountRequest
     })
 
-    model.call('accounts.add', [newAccount], [['name']]).then ( response => {
+    postJson('/budget/api/accounts', newAccount).then((account) => {
       dispatch(fetchAccounts(true))
       dispatch(fetchProjectionsCard(null, true))
       dispatch({
         type: AT.AddAccountReceive,
-        name: response.json.accounts.latest.name
+        name: account.name
       })
     })
   }
@@ -75,16 +76,14 @@ export function addPlannedTxn(newPlannedTxn) {
       type: AT.AddPlannedTxnRequest
     })
 
-    model.call('plannedTransactions.add', [newPlannedTxn], [['guid']]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchPlannedTxnsCard(true))
-        dispatch({
-          type: AT.AddPlannedTxnReceive,
-          guid: response.json.plannedTransactions.latest.guid
-        })
-      }
-    )
+    postJson('/budget/api/plannedTxns', newPlannedTxn).then((plannedTxn) => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchPlannedTxnsCard(true))
+      dispatch({
+        type: AT.AddPlannedTxnReceive,
+        guid: plannedTxn.guid
+      })
+    })
   }
 }
 
@@ -94,16 +93,14 @@ export function addTransfer(newTransfer) {
       type: AT.AddTransferRequest
     })
 
-    model.call('transfers.add', [newTransfer], [['guid']]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchTxnsCard(true))
-        dispatch({
-          type: AT.AddTransferReceive,
-          guid: response.json.transfers.latestGuid
-        })
-      }
-    )
+    postJson('/budget/api/transfers', newTransfer).then((transfer) => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchTxnsCard(true))
+      dispatch({
+        type: AT.AddTransferReceive,
+        guid: transfer.guid
+      })
+    })
   }
 }
 
@@ -113,16 +110,14 @@ export function addTxn(newTxn) {
       type: AT.AddTxnRequest
     })
 
-    model.call('transactions.add', [newTxn], [['guid']]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchTxnsCard(true))
-        dispatch({
-          type: AT.AddTxnReceive,
-          guid: response.json.transactions.latest.guid
-        })
-      }
-    )
+    postJson('/budget/api/txns', newTxn).then((txn) => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchTxnsCard(true))
+      dispatch({
+        type: AT.AddTxnReceive,
+        guid: txn.guid
+      })
+    })
   }
 }
 
@@ -130,11 +125,11 @@ export function addTxnType(newTxnType) {
   return function (dispatch) {
     dispatch({ type: AT.AddTxnTypeRequest })
 
-    model.call('transactionTypes.add', [newTxnType], [['name']]).then ( response => {
+    postJson('/budget/api/txnTypes', newTxnType).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AddTxnTypeReceive,
-        name: response.json.transactionTypes.latest.name,
+        name: txnType.name,
       })
     })
   }

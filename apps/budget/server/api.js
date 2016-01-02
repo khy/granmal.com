@@ -6,14 +6,29 @@ var Client = require('./client')
 const proxyGet = (fromPath, toPath) => {
   router.get(fromPath, (req, res) => {
     const client = new Client(req.account)
-    const _fromPath = toPath || fromPath
-    client.get(_fromPath).then ( results => res.json(results) )
+    const _toPath = toPath || fromPath
+    client.get(_toPath).then ( results => res.json(results) )
+  })
+}
+
+const proxyPost = (fromPath, toPath) => {
+  router.post(fromPath, (req, res) => {
+    const client = new Client(req.account)
+    const _toPath = toPath || fromPath
+    client.post(_toPath, req.body).then((results) => {
+      res.status(201).json(results)
+    })
   })
 }
 
 proxyGet('/accounts')
+proxyPost('/accounts')
 proxyGet('/accountTypes')
-proxyGet('/txnTypes', '/transactionTypes')
 proxyGet('/plannedTxns', '/plannedTransactions')
+proxyPost('/plannedTxns', '/plannedTransactions')
+proxyPost('/transfers')
+proxyPost('/txns', '/transactions')
+proxyGet('/txnTypes', '/transactionTypes')
+proxyPost('/txnTypes', '/transactionTypes')
 
 module.exports = router
