@@ -1,5 +1,4 @@
 import moment from 'moment'
-import model from '../model'
 
 import { getJson } from 'budget/client/lib/client'
 import { formatDateForModel } from 'budget/client/lib/date'

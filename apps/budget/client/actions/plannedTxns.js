@@ -1,7 +1,3 @@
-import es6Promise from 'es6-promise'
-es6Promise.polyfill()
-
-import 'isomorphic-fetch'
 import _map from 'lodash/collection/map'
 
 import { getJson } from 'budget/client/lib/client'
