@@ -165,6 +165,7 @@ class Overview extends React.Component {
         accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
+        onNewTxnType={this.showNewTxnTypeModal.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTxnTypeModal') {
       modal = <AddTxnTypeModal {...this.props.overview.addTxnTypeModal}

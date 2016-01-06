@@ -23,6 +23,11 @@ class AddTxnModal extends React.Component {
     this.props.onAdd(newTxn)
   }
 
+  onNewTxnType(event) {
+    event.preventDefault()
+    this.props.onNewTxnType()
+  }
+
   render() {
 
     const txnTypeOptions = (
@@ -57,6 +62,7 @@ class AddTxnModal extends React.Component {
                       <select ref="txnTypeGuidSelect" className="form-control">
                         {txnTypeOptions}
                       </select>
+                      <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
                     </fieldset>
 
                     <fieldset className="form-group">
