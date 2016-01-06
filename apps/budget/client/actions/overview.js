@@ -159,18 +159,16 @@ export function confirmPlannedTxn(newTxn) {
       type: AT.ConfirmPlannedTxnRequest
     })
 
-    model.call('transactions.add', [newTxn], [['guid']]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchPlannedTxnsCard(true))
-        dispatch(fetchTxnsCard(true))
-        dispatch({
-          type: AT.ConfirmPlannedTxnReceive,
-          plannedTxnGuid: newTxn.plannedTransactionGuid,
-          txnGuid: response.json.transactions.latest.guid
-        })
-      }
-    )
+    postJson('/budget/api/txns', newTxn).then((txn) => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchPlannedTxnsCard(true))
+      dispatch(fetchTxnsCard(true))
+      dispatch({
+        type: AT.ConfirmPlannedTxnReceive,
+        plannedTxnGuid: newTxn.plannedTransactionGuid,
+        txnGuid: txn.guid
+      })
+    })
   }
 }
 

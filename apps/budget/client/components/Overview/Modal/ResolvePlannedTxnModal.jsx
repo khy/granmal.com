@@ -66,7 +66,7 @@ class ResolvePlannedTxnModal extends React.Component {
                       <select
                         className="form-control"
                         ref="txnTypeGuidSelect"
-                        defaultValue={plannedTxn.txnType.guid}
+                        defaultValue={plannedTxn.txnTypeGuid}
                       >
                         {txnTypeOptions}
                       </select>
@@ -77,7 +77,7 @@ class ResolvePlannedTxnModal extends React.Component {
                       <select
                         className="form-control"
                         ref="accountGuidSelect"
-                        defaultValue={plannedTxn.account.guid}
+                        defaultValue={plannedTxn.accountGuid}
                       >
                         {accountOptions}
                       </select>
