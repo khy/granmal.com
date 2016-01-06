@@ -141,17 +141,15 @@ export function adjustTxn(guid, newTxn) {
       type: AT.AdjustTxnRequest
     })
 
-    model.call('transactions.adjust', [guid, newTxn], [['guid']]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchTxnsCard(true))
-        dispatch({
-          type: AT.AdjustTxnReceive,
-          oldGuid: guid,
-          newGuid: response.json.transactions.latest.guid,
-        })
-      }
-    )
+    postJson('/budget/api/txns/' + guid + '/adjustments', newTxn).then((txn) => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchTxnsCard(true))
+      dispatch({
+        type: AT.AdjustTxnReceive,
+        oldGuid: guid,
+        newGuid: txn.guid,
+      })
+    })
   }
 }
 

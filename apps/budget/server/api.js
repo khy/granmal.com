@@ -32,4 +32,12 @@ proxyPost('/txns', '/transactions')
 proxyGet('/txnTypes', '/transactionTypes')
 proxyPost('/txnTypes', '/transactionTypes')
 
+router.post('/txns/:guid/adjustments', (req, res) => {
+  const client = new Client(req.account)
+
+  client.post('/transactions/' + req.params.guid + '/adjustments', req.body).then((results) => {
+    res.status(201).json(results)
+  })
+})
+
 module.exports = router

@@ -65,7 +65,7 @@ class AdjustTxnModal extends React.Component {
                       <select
                         className="form-control"
                         ref="txnTypeGuidSelect"
-                        defaultValue={txn.txnType.guid}
+                        defaultValue={txn.txnTypeGuid}
                       >
                         {txnTypeOptions}
                       </select>
@@ -76,7 +76,7 @@ class AdjustTxnModal extends React.Component {
                       <select
                         className="form-control"
                         ref="accountGuidSelect"
-                        defaultValue={txn.account.guid}
+                        defaultValue={txn.accountGuid}
                       >
                         {accountOptions}
                       </select>
