@@ -229,17 +229,9 @@ export function fetchProjectionsCard(date, force = false) {
 
     const formattedDate = formatDateForModel(_date)
 
-    if (force) { model.invalidate(['projectionsByDate', formattedDate]) }
-
-    model.get(
-      ['projectionsByDate', formattedDate, {from: 0, to: 9}, ['minBalance', 'maxBalance']],
-      ['projectionsByDate', formattedDate, {from: 0, to: 9}, 'account', ['name', 'balance']]
-    ).then(
-      response => {
-        const projections = response ? response.json.projectionsByDate[formattedDate] : []
-        dispatch({ type: AT.ProjectionsCardReceive, projections })
-      }
-    )
+    getJson('/budget/api/projections?date=' + formattedDate).then((projections) => {
+      dispatch({ type: AT.ProjectionsCardReceive, projections })
+    })
   }
 }
 

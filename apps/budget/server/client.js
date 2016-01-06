@@ -14,9 +14,10 @@ class Client {
     return config.useless.baseUrl + path
   }
 
-  get(path) {
+  get(path, qs) {
     return request({
       uri: Client.fullPath(path),
+      qs: qs,
       headers: {
         'Authorization': this.auth
       },

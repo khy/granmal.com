@@ -28,7 +28,7 @@ class ProjectionsCard extends React.Component {
     if (Object.keys(this.props.projections).length > 0) {
       rows = _map(this.props.projections, (value, key) => {
         return (
-          <tr key={value.account.name}>
+          <tr key={value.account.guid}>
             <td>{value.account.name}</td>
             <td>{value.account.balance}</td>
             <td>{value.minBalance}</td>
