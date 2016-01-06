@@ -40,4 +40,20 @@ router.post('/txns/:guid/adjustments', (req, res) => {
   })
 })
 
+router.delete('/plannedTxns/:guid', (req, res) => {
+  const client = new Client(req.account)
+
+  client.delete('/plannedTransactions/' + req.params.guid).then(() => {
+    res.status(204).send()
+  })
+})
+
+router.delete('/txns/:guid', (req, res) => {
+  const client = new Client(req.account)
+
+  client.delete('/transactions/' + req.params.guid).then(() => {
+    res.status(204).send()
+  })
+})
+
 module.exports = router

@@ -28,3 +28,10 @@ export function postJson(url, json) {
     return response.json()
   })
 }
+
+export function deleteResource(url) {
+  return fetch(url, {
+    method: 'delete',
+    credentials: 'same-origin',
+  })
+}

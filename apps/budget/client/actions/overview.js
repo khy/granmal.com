@@ -1,7 +1,7 @@
 import moment from 'moment'
 import model from '../model'
 
-import { postJson, getJson } from 'budget/client/lib/client'
+import { postJson, getJson, deleteResource } from 'budget/client/lib/client'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
@@ -178,16 +178,14 @@ export function deletePlannedTxn(guid) {
       type: AT.DeletePlannedTxnRequest
     })
 
-    model.call('plannedTransactions.delete', [guid]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchPlannedTxnsCard(true))
-        dispatch({
-          type: AT.DeletePlannedTxnReceive,
-          guid: guid
-        })
-      }
-    )
+    deleteResource('/budget/api/plannedTxns/' + guid).then(() => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchPlannedTxnsCard(true))
+      dispatch({
+        type: AT.DeletePlannedTxnReceive,
+        guid: guid
+      })
+    })
   }
 }
 
@@ -197,16 +195,14 @@ export function deleteTxn(guid) {
       type: AT.DeleteTxnRequest
     })
 
-    model.call('transactions.delete', [guid]).then(
-      response => {
-        dispatch(fetchProjectionsCard(null, true))
-        dispatch(fetchTxnsCard(true))
-        dispatch({
-          type: AT.DeleteTxnReceive,
-          guid: guid
-        })
-      }
-    )
+    deleteResource('/budget/api/txns/' + guid).then(() => {
+      dispatch(fetchProjectionsCard(null, true))
+      dispatch(fetchTxnsCard(true))
+      dispatch({
+        type: AT.DeleteTxnReceive,
+        guid: guid
+      })
+    })
   }
 }
 
