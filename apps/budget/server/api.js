@@ -21,6 +21,14 @@ const proxyPost = (fromPath, toPath) => {
   })
 }
 
+router.use((req, res, next) => {
+  if (req.account && req.account.uselessAccessToken) {
+    next()
+  } else {
+    res.status(401).send("Must be logged in, and have useless.io access token.")
+  }
+})
+
 proxyGet('/accounts')
 proxyPost('/accounts')
 proxyGet('/accountTypes')

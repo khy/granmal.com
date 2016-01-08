@@ -5,14 +5,6 @@ var router = express.Router();
 
 var api = require('./api')
 
-router.use((req, res, next) => {
-  if (req.account && req.account.uselessAccessToken) {
-    next()
-  } else {
-    res.status(401).send("Must be logged in, and have useless.io access token.")
-  }
-})
-
 router.use('/api', api)
 
 router.get('*', (req, res) => {
