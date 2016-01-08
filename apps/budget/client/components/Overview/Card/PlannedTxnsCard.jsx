@@ -50,7 +50,7 @@ class PlannedTxnsCard extends React.Component {
             <td>{date}</td>
             <td>{amount}</td>
             <td>{txnType.name}</td>
-            <td>{account.name}</td>
+            <td><Link to={"/budget/account/" + account.guid}>{account.name}</Link></td>
             <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
           </tr>
         )

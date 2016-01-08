@@ -13,6 +13,7 @@ import { ActionTypes, bootstrap } from './actions/app'
 import { login } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'
+import Account from './components/Account'
 import PlannedTxns from './components/PlannedTxns'
 import Prestitial from 'client/components/ads/Prestitial'
 import Login from 'client/components/auth/Login'
@@ -80,6 +81,7 @@ render(
     <Router history={createBrowserHistory()}>
       <Route path="/budget" component={ConnectedApp}>
         <IndexRoute component={Overview} />
+        <Route path="account/:accountGuid" component={Account} />
         <Route path="plannedTransactions" component={PlannedTxns} />
       </Route>
     </Router>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import _map from 'lodash/collection/map'
 
 import { UserActionTypes } from 'budget/client/actions/overview'
@@ -29,7 +30,7 @@ class ProjectionsCard extends React.Component {
       rows = _map(this.props.projections, (value, key) => {
         return (
           <tr key={value.account.guid}>
-            <td>{value.account.name}</td>
+            <td><Link to={"/budget/account/" + value.account.guid}>{value.account.name}</Link></td>
             <td>{value.account.balance}</td>
             <td>{value.minBalance}</td>
             <td>{value.maxBalance}</td>
