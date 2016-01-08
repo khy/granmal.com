@@ -10,11 +10,6 @@ import { shortenGuid } from 'budget/client/lib/guid'
 
 class PlannedTxnsCard extends React.Component {
 
-  onNew(event) {
-    event.preventDefault()
-    this.props.onNew()
-  }
-
   onResolve(event) {
     event.preventDefault()
 
@@ -72,15 +67,7 @@ class PlannedTxnsCard extends React.Component {
     let message
 
     if (this.props.lastUserAction) {
-      if (this.props.lastUserAction.type === UserActionTypes.AddPlannedTxn) {
-        message = (
-          <div className="card-block">
-            <p className="card-text text-success">
-              Added planned transaction <strong>{shortenGuid(this.props.lastUserAction.guid)}</strong>.
-            </p>
-          </div>
-        )
-      } else if (this.props.lastUserAction.type === UserActionTypes.ConfirmPlannedTxn) {
+      if (this.props.lastUserAction.type === UserActionTypes.ConfirmPlannedTxn) {
         message = (
           <div className="card-block">
             <p className="card-text text-success">
@@ -104,9 +91,6 @@ class PlannedTxnsCard extends React.Component {
         <div className="card-header">
           Planned Transactions
           <Link to="/budget/plannedTransactions" className="pull-right">All</Link>
-          <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
-            New Planned Transaction
-          </a>
         </div>
         {message}
         <table className="table table-hover">

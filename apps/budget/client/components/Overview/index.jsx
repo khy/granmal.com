@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 import {
-  ActionTypes, UserActionTypes, addAccount, addPlannedTxn, addTxnType,
-  addTransfer, confirmPlannedTxn, deletePlannedTxn, fetchAccounts,
-  fetchAccountTypes, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnTypes
+  ActionTypes, UserActionTypes, addAccount, addTxnType, addTransfer,
+  confirmPlannedTxn, deletePlannedTxn, fetchAccounts, fetchAccountTypes,
+  fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnTypes
 } from 'budget/client/actions/overview'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
@@ -13,7 +13,6 @@ var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 
 import Navbar from '../Navbar'
 var AddAccountModal = require('./Modal/AddAccountModal')
-var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
 var AddTransferModal = require('./Modal/AddTransferModal')
 import AddTxnTypeModal from './Modal/AddTxnTypeModal'
@@ -37,14 +36,6 @@ class Overview extends React.Component {
 
   addAccount(newAccount) {
     this.props.dispatch(addAccount(newAccount))
-  }
-
-  addPlannedTxn(newPlannedTxn) {
-    this.props.dispatch(addPlannedTxn(newPlannedTxn))
-  }
-
-  showAddPlannedTxnModal() {
-    this.props.dispatch({ type: ActionTypes.ShowAddPlannedTxnModal })
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
@@ -109,14 +100,6 @@ class Overview extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.addAccount.bind(this)}
       />
-    } else if (this.props.overview.activeModal === 'addPlannedTxnModal') {
-      modal = <AddPlannedTxnModal {...this.props.overview.addPlannedTxnModal}
-        txnTypes={this.props.app.txnTypes}
-        accounts={this.props.app.accounts}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addPlannedTxn.bind(this)}
-        onNewTxnType={this.showNewTxnTypeModal.bind(this)}
-      />
     } else if (this.props.overview.activeModal === 'resolvePlannedTxnModal') {
       modal = <ResolvePlannedTxnModal {...this.props.overview.resolvePlannedTxnModal}
         txnTypes={this.props.app.txnTypes}
@@ -155,7 +138,6 @@ class Overview extends React.Component {
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
             app={this.props.app}
             lastUserAction={this.props.overview.lastUserAction}
-            onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />
         </div>
