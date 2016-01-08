@@ -3,24 +3,20 @@ import { connect } from 'react-redux'
 var moment = require('moment')
 
 import {
-  ActionTypes, UserActionTypes, addAccount, addPlannedTxn, addTxn, addTxnType,
-  adjustTxn, addTransfer, confirmPlannedTxn, deletePlannedTxn, deleteTxn,
-  fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard, fetchProjectionsCard,
-  fetchTxnsCard, fetchTxnTypes
+  ActionTypes, UserActionTypes, addAccount, addPlannedTxn, addTxnType,
+  addTransfer, confirmPlannedTxn, deletePlannedTxn, fetchAccounts,
+  fetchAccountTypes, fetchPlannedTxnsCard, fetchProjectionsCard, fetchTxnTypes
 } from 'budget/client/actions/overview'
 
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
-var TxnsCard = require('./Card/TxnsCard')
 
 import Navbar from '../Navbar'
 var AddAccountModal = require('./Modal/AddAccountModal')
 var AddPlannedTxnModal = require('./Modal/AddPlannedTxnModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
 var AddTransferModal = require('./Modal/AddTransferModal')
-var AddTxnModal = require('./Modal/AddTxnModal')
 import AddTxnTypeModal from './Modal/AddTxnTypeModal'
-var AdjustTxnModal = require('./Modal/AdjustTxnModal')
 
 import { shortenGuid } from 'budget/client/lib/guid'
 
@@ -29,7 +25,6 @@ class Overview extends React.Component {
   componentWillMount() {
     this.props.dispatch(fetchProjectionsCard())
     this.props.dispatch(fetchPlannedTxnsCard())
-    this.props.dispatch(fetchTxnsCard())
   }
 
   changeProjectionDate(date) {
@@ -65,29 +60,6 @@ class Overview extends React.Component {
 
   onDeletePlannedTxn(guid) {
     this.props.dispatch(deletePlannedTxn(guid))
-  }
-
-  showAddTxnModal() {
-    this.props.dispatch({ type: ActionTypes.ShowAddTxnModal })
-  }
-
-  addTxn(txn) {
-    this.props.dispatch(addTxn(txn))
-  }
-
-  showAdjustTxnModal(txn) {
-    this.props.dispatch({
-      type: ActionTypes.ShowAdjustTxnModal,
-      txn
-    })
-  }
-
-  adjustTxn(guid, newTxn) {
-    this.props.dispatch(adjustTxn(guid, newTxn))
-  }
-
-  deleteTxn(guid) {
-    this.props.dispatch(deleteTxn(guid))
   }
 
   showNewTxnTypeModal() {
@@ -159,27 +131,11 @@ class Overview extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTransfer.bind(this)}
       />
-    } else if (this.props.overview.activeModal === 'addTxnModal') {
-      modal = <AddTxnModal {...this.props.overview.addTxnModal}
-        txnTypes={this.props.app.txnTypes}
-        accounts={this.props.app.accounts}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addTxn.bind(this)}
-        onNewTxnType={this.showNewTxnTypeModal.bind(this)}
-      />
     } else if (this.props.overview.activeModal === 'addTxnTypeModal') {
       modal = <AddTxnTypeModal {...this.props.overview.addTxnTypeModal}
         txnTypes={this.props.app.txnTypes}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxnType.bind(this)}
-      />
-    } else if (this.props.overview.activeModal === 'adjustTxnModal') {
-      modal = <AdjustTxnModal {...this.props.overview.adjustTxnModal}
-        txnTypes={this.props.app.txnTypes}
-        accounts={this.props.app.accounts}
-        onClose={this.hideModal.bind(this)}
-        onAdjust={this.adjustTxn.bind(this)}
-        onDelete={this.deleteTxn.bind(this)}
       />
     }
 
@@ -201,12 +157,6 @@ class Overview extends React.Component {
             lastUserAction={this.props.overview.lastUserAction}
             onNew={this.showAddPlannedTxnModal.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
-          />
-          <TxnsCard {...this.props.overview.txnsCard}
-            app={this.props.app}
-            lastUserAction={this.props.overview.lastUserAction}
-            onNew={this.showAddTxnModal.bind(this)}
-            onAdjust={this.showAdjustTxnModal.bind(this)}
           />
         </div>
 
