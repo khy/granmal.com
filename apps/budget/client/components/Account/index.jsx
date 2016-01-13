@@ -3,12 +3,14 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
+import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
-import { fetchTxns } from 'budget/client/actions/account'
+import { fetchPlannedTxns, fetchTxns } from 'budget/client/actions/account'
 
 class Account extends React.Component {
 
   componentWillMount() {
+    this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
   }
 
@@ -23,6 +25,10 @@ class Account extends React.Component {
 
         <div className="container">
           <h1>{account.name}</h1>
+
+            <PlannedTxns {...this.props.account.plannedTxns}
+              app={this.props.app}
+            />
 
             <Txns {...this.props.account.txns}
               app={this.props.app}
