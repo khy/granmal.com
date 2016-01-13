@@ -7,7 +7,11 @@ const proxyGet = (fromPath, toPath) => {
   router.get(fromPath, (req, res) => {
     const client = new Client(req.account)
     const _toPath = toPath || fromPath
-    client.get(_toPath, req.query).then ( results => res.json(results) )
+    client.get(_toPath, req.query).then ( response => {
+      res.
+        append('X-Useless-Link', response.headers.link).
+        json(response.body)
+    })
   })
 }
 

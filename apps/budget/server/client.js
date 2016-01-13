@@ -21,7 +21,8 @@ class Client {
       headers: {
         'Authorization': this.auth
       },
-      json: true
+      json: true,
+      resolveWithFullResponse: true,
     })
   }
 

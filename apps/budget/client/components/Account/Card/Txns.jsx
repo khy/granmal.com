@@ -55,6 +55,12 @@ export default class TxnsCard extends React.Component {
             {rows}
           </tbody>
         </table>
+        <nav>
+          <ul className="pager">
+            <li className="pager-prev"><a href="#">Newer</a></li>
+            <li className="pager-next"><a href="#">Older</a></li>
+          </ul>
+        </nav>
       </div>
     )
   }
