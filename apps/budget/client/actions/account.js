@@ -9,11 +9,13 @@ export const ActionTypes = {
 
 const AT = ActionTypes
 
-export function fetchTxns(accountGuid) {
+export function fetchTxns(accountGuid, page = 1) {
   return function (dispatch) {
     dispatch({ type: AT.FetchTxnsRequest })
 
-    getJson('/budget/api/txns?accountGuid=' + accountGuid).then( txns => {
+    const url = '/budget/api/txns?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
+
+    getJson(url).then( txns => {
       dispatch({
         type: AT.FetchTxnsReceive,
         txns

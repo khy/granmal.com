@@ -9,7 +9,7 @@ import { fetchTxns } from 'budget/client/actions/account'
 class Account extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(fetchTxns(this.props.params.accountGuid))
+    this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
   }
 
   render() {
