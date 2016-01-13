@@ -22,7 +22,7 @@ class Account extends React.Component {
         <Navbar />
 
         <div className="container">
-          <h1>Account {account.name}</h1>
+          <h1>{account.name}</h1>
 
             <Txns {...this.props.account.txns}
               app={this.props.app}
