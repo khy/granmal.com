@@ -3,16 +3,22 @@ es6Promise.polyfill()
 
 import 'isomorphic-fetch'
 
-export function getJson(url) {
-  return fetch(url, {
+export function getJson(url, fullResponse = false) {
+  const response = fetch(url, {
     method: 'get',
     headers: {
       'Accept': 'application/json',
     },
     credentials: 'same-origin',
-  }).then((response) => {
-    return response.json()
   })
+
+  if (fullResponse) {
+    return response
+  } else {
+    return response.then((response) => {
+      return response.json()
+    })
+  }
 }
 
 export function postJson(url, json) {

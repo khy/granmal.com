@@ -32,10 +32,13 @@ export function fetchTxns(accountGuid, page = 1) {
 
     const url = '/budget/api/txns?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    getJson(url).then( txns => {
-      dispatch({
-        type: AT.TxnsFetchReceive,
-        txns
+    getJson(url, true).then( response => {
+      response.json().then(txns => {
+        dispatch({
+          type: AT.TxnsFetchReceive,
+          linkHeader: response.headers.get('X-Useless-Link'),
+          txns
+        })
       })
     })
   }

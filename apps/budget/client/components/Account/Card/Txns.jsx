@@ -2,10 +2,34 @@ var React = require('react')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
+import { getQueryParam, parseLinkHeader } from 'budget/client/lib/http'
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
 
 export default class TxnsCard extends React.Component {
+
+  static extractLinkPages(linkHeader) {
+    let result = {}
+
+    if (linkHeader) {
+      const parsedLinkHeader = parseLinkHeader(linkHeader)
+
+      if (parsedLinkHeader.previous) {
+        result.previous = getQueryParam(parsedLinkHeader.previous, 'p.page')
+      }
+
+      if (parsedLinkHeader.next) {
+        result.next = getQueryParam(parsedLinkHeader.next, 'p.page')
+      }
+    }
+
+    return result
+  }
+
+  onNewPage(event) {
+    event.preventDefault()
+    this.props.onNewPage(event.target.dataset.page)
+  }
 
   render() {
     let rows
@@ -37,6 +61,24 @@ export default class TxnsCard extends React.Component {
       )
     }
 
+    const linkPages = TxnsCard.extractLinkPages(this.props.linkHeader)
+
+    let previousPageLink
+
+    if (linkPages.previous) {
+      previousPageLink = <li className="pager-prev"><a onClick={this.onNewPage.bind(this)} data-page={linkPages.previous} href="#">Newer</a></li>
+    } else {
+      previousPageLink = <li className="pager-prev disabled"><a href="#">Newer</a></li>
+    }
+
+    let nextPageLink
+
+    if (linkPages.next) {
+      nextPageLink = <li className="pager-next"><a onClick={this.onNewPage.bind(this)} data-page={linkPages.next} href="#">Older</a></li>
+    } else {
+      nextPageLink = <li className="pager-next disabled"><a href="#">Older</a></li>
+    }
+
     return (
       <div className="card">
         <div className="card-header">
@@ -57,8 +99,8 @@ export default class TxnsCard extends React.Component {
         </table>
         <nav>
           <ul className="pager">
-            <li className="pager-prev"><a href="#">Newer</a></li>
-            <li className="pager-next"><a href="#">Older</a></li>
+            {previousPageLink}
+            {nextPageLink}
           </ul>
         </nav>
       </div>

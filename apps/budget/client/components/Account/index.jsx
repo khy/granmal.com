@@ -14,6 +14,10 @@ class Account extends React.Component {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
   }
 
+  onNewTxnPage(page) {
+    this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
+  }
+
   render() {
     const account = _find(this.props.app.accounts, (account) => {
       return account.guid === this.props.params.accountGuid
@@ -31,6 +35,7 @@ class Account extends React.Component {
             />
 
             <Txns {...this.props.account.txns}
+              onNewPage={this.onNewTxnPage.bind(this)}
               app={this.props.app}
             />
         </div>
