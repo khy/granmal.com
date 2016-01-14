@@ -1,4 +1,4 @@
-import { parseLinkHeader } from 'budget/client/lib/http'
+import { parseLinkHeader, getQueryParam } from 'budget/client/lib/http'
 
 describe('parseLinkHeader', () => {
 
@@ -16,6 +16,29 @@ describe('parseLinkHeader', () => {
     const parsedLinkHeader = parseLinkHeader(linkHeader)
 
     expect(parsedLinkHeader).toEqual({})
+  })
+
+})
+
+
+describe('getQueryParam', () => {
+
+  it('returns the specified query param from the specified url', () => {
+    const url = 'http://localhost:9000/budget/transactions?p.page=1&p.limit=10'
+    const queryParam = getQueryParam(url, 'p.page')
+    expect(queryParam).toBe('1')
+  })
+
+  it('returns undefined if the specified query param does not exist', () => {
+    const url = 'http://localhost:9000/budget/transactions?p.page=1&p.limit=10'
+    const queryParam = getQueryParam(url, 'guid')
+    expect(queryParam).toBeUndefined
+  })
+
+  it('returns undefined if the specified url does not have a query string', () => {
+    const url = 'http://localhost:9000/budget/transactions'
+    const queryParam = getQueryParam(url, 'p.page')
+    expect(queryParam).toBeUndefined
   })
 
 })

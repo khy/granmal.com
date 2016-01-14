@@ -1,3 +1,14 @@
+export function getQueryParam(url, key) {
+  const queryString = url.split('?')[1]
+
+  if (queryString) {
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    const rx = new RegExp(escapedKey + "=([^&]*)(?:&.*)?$")
+    const match = rx.exec(queryString)
+    if (match) { return match[1] }
+  }
+}
+
 const LinkHeaderRx = /<([^>]+)>\s*;\s*rel="([a-z\-]+)"/
 
 export function parseLinkHeader(linkHeader) {
