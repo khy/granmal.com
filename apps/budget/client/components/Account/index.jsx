@@ -14,6 +14,10 @@ class Account extends React.Component {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
   }
 
+  onNewPlannedTxnPage(page) {
+    this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, page))
+  }
+
   onNewTxnPage(page) {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
   }
@@ -31,7 +35,7 @@ class Account extends React.Component {
           <h1>{account.name}</h1>
 
           <PlannedTxns {...this.props.account.plannedTxns}
-            onNewPage={this.onNewTxnPage.bind(this)}
+            onNewPage={this.onNewPlannedTxnPage.bind(this)}
             app={this.props.app}
           />
 
