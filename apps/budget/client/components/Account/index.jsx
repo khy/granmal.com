@@ -30,15 +30,15 @@ class Account extends React.Component {
         <div className="container">
           <h1>{account.name}</h1>
 
-            <PlannedTxns {...this.props.account.plannedTxns}
-              onNewPage={this.onNewTxnPage.bind(this)}
-              app={this.props.app}
-            />
+          <PlannedTxns {...this.props.account.plannedTxns}
+            onNewPage={this.onNewTxnPage.bind(this)}
+            app={this.props.app}
+          />
 
-            <Txns {...this.props.account.txns}
-              onNewPage={this.onNewTxnPage.bind(this)}
-              app={this.props.app}
-            />
+          <Txns {...this.props.account.txns}
+            onNewPage={this.onNewTxnPage.bind(this)}
+            app={this.props.app}
+          />
         </div>
       </div>
     )
