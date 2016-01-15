@@ -3,7 +3,7 @@ var _map = require('lodash/collection/map')
 
 import { normalizeDateInput } from 'budget/client/lib/date'
 
-class AddPlannedTxnModal extends React.Component {
+export default class PlannedTxn extends React.Component {
 
   close(event) {
     event.preventDefault()
@@ -14,8 +14,8 @@ class AddPlannedTxnModal extends React.Component {
     event.preventDefault()
 
     const plannedTxn = {
+      accountGuid: this.props.accountGuid,
       transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
-      accountGuid: this.refs.accountGuidSelect.value,
       minAmount: parseFloat(this.refs.minAmountInput.value),
       maxAmount: parseFloat(this.refs.maxAmountInput.value),
       minDate: normalizeDateInput(this.refs.minDateInput.value),
@@ -27,20 +27,14 @@ class AddPlannedTxnModal extends React.Component {
 
   onNewTxnType(event) {
     event.preventDefault()
-    this.props.onNewTxnType()
+    alert("IMPLEMENT ME!")
   }
 
   render() {
 
     const txnTypeOptions = (
-      _map(this.props.txnTypes, (txnType) => {
+      _map(this.props.app.txnTypes, (txnType) => {
         return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
-      })
-    )
-
-    const accountOptions = (
-      _map(this.props.accounts, (account) => {
-        return <option value={account.guid} key={account.guid}>{account.name}</option>
       })
     )
 
@@ -65,13 +59,6 @@ class AddPlannedTxnModal extends React.Component {
                         {txnTypeOptions}
                       </select>
                       <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
-                    </fieldset>
-
-                    <fieldset className="form-group">
-                      <label>Account</label>
-                      <select ref="accountGuidSelect" className="form-control">
-                        {accountOptions}
-                      </select>
                     </fieldset>
 
                     <div className="row">
@@ -133,5 +120,3 @@ class AddPlannedTxnModal extends React.Component {
   }
 
 }
-
-module.exports = AddPlannedTxnModal

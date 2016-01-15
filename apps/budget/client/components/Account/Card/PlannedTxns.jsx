@@ -10,6 +10,11 @@ import { PagerLink } from 'client/components/pagination/Pager'
 
 export default class PlannedTxnsCard extends React.Component {
 
+  onNew(event) {
+    event.preventDefault()
+    this.props.onNew()
+  }
+
   render() {
     let rows
 
@@ -57,6 +62,10 @@ export default class PlannedTxnsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Planned Transactions
+
+          <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
+            New Planned Transaction
+          </a>
         </div>
         <table className="table table-hover">
           <thead>

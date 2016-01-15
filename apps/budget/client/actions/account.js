@@ -3,8 +3,10 @@ import _map from 'lodash/collection/map'
 import { getJson } from 'budget/client/lib/client'
 
 export const ActionTypes = {
+  HideModal: 'HideModal',
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
+  PlannedTxnModalShow: 'PlannedTxnModalShow',
   TxnsFetchReceive: 'TxnsFetchReceive',
   TxnsFetchRequest: 'TxnsFetchRequest',
 }

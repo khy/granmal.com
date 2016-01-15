@@ -3,15 +3,24 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
+import PlannedTxnModal from './Modal/PlannedTxn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
-import { fetchPlannedTxns, fetchTxns } from 'budget/client/actions/account'
+import { ActionTypes as AT, fetchPlannedTxns, fetchTxns } from 'budget/client/actions/account'
 
 class Account extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
+  }
+
+  onNewPlannedTxn() {
+    this.props.dispatch({type: AT.PlannedTxnModalShow})
+  }
+
+  addPlannedTxn(plannedTxn) {
+    console.log(plannedTxn)
   }
 
   onNewPlannedTxnPage(page) {
@@ -22,10 +31,27 @@ class Account extends React.Component {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
   }
 
+  hideModal() {
+    this.props.dispatch({ type: AT.HideModal })
+  }
+
   render() {
     const account = _find(this.props.app.accounts, (account) => {
       return account.guid === this.props.params.accountGuid
     })
+
+    let modal
+
+    console.log(this.props)
+
+    if (this.props.account.currentModal === 'plannedTxnModal') {
+      modal = <PlannedTxnModal {...this.props.plannedTxnModal}
+        app={this.props.app}
+        accountGuid={this.props.params.accountGuid}
+        onClose={this.hideModal.bind(this)}
+        onAdd={this.addPlannedTxn.bind(this)}
+      />
+    }
 
     return (
       <div>
@@ -35,6 +61,7 @@ class Account extends React.Component {
           <h1>{account.name}</h1>
 
           <PlannedTxns {...this.props.account.plannedTxns}
+            onNew={this.onNewPlannedTxn.bind(this)}
             onNewPage={this.onNewPlannedTxnPage.bind(this)}
             app={this.props.app}
           />
@@ -44,6 +71,8 @@ class Account extends React.Component {
             app={this.props.app}
           />
         </div>
+
+        {modal}
       </div>
     )
   }

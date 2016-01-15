@@ -7,6 +7,9 @@ export const initialState = {
     isFetching: false,
     results: [],
   },
+  plannedTxnModal: {
+    isPosting: false,
+  },
   txns: {
     isFetching: false,
     results: [],
@@ -17,6 +20,9 @@ export default function account(state = initialState, action) {
 
   switch (action.type) {
 
+    case AT.HideModal:
+      return u({currentModal: undefined}, state)
+
     case AT.PlannedTxnsFetchReceive:
       return u({plannedTxns: {
         isFetching: false,
@@ -26,6 +32,9 @@ export default function account(state = initialState, action) {
 
     case AT.PlannedTxnsFetchRequest:
       return u({plannedTxns: {isFetching: true}}, state)
+
+    case AT.PlannedTxnModalShow:
+      return u({currentModal: 'plannedTxnModal'}, state)
 
     case AT.TxnsFetchReceive:
       return u({txns: {
