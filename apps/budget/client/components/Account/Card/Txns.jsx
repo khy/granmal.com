@@ -2,6 +2,7 @@ var React = require('react')
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 
+import { PagerLink } from 'client/components/pagination/Pager'
 import { getQueryParam, parseLinkHeader } from 'budget/client/lib/http'
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -24,11 +25,6 @@ export default class TxnsCard extends React.Component {
     }
 
     return result
-  }
-
-  onNewPage(event) {
-    event.preventDefault()
-    this.props.onNewPage(event.target.dataset.page)
   }
 
   render() {
@@ -63,22 +59,6 @@ export default class TxnsCard extends React.Component {
 
     const linkPages = TxnsCard.extractLinkPages(this.props.linkHeader)
 
-    let previousPageLink
-
-    if (linkPages.previous) {
-      previousPageLink = <li className="pager-prev"><a onClick={this.onNewPage.bind(this)} data-page={linkPages.previous} href="#">Newer</a></li>
-    } else {
-      previousPageLink = <li className="pager-prev disabled"><a href="#">Newer</a></li>
-    }
-
-    let nextPageLink
-
-    if (linkPages.next) {
-      nextPageLink = <li className="pager-next"><a onClick={this.onNewPage.bind(this)} data-page={linkPages.next} href="#">Older</a></li>
-    } else {
-      nextPageLink = <li className="pager-next disabled"><a href="#">Older</a></li>
-    }
-
     return (
       <div className="card">
         <div className="card-header">
@@ -99,8 +79,12 @@ export default class TxnsCard extends React.Component {
         </table>
         <nav>
           <ul className="pager">
-            {previousPageLink}
-            {nextPageLink}
+            <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
+              Newer
+            </PagerLink>
+            <PagerLink direction="next" page={linkPages.next} onClick={this.props.onNewPage.bind(this)}>
+              Older
+            </PagerLink>
           </ul>
         </nav>
       </div>
