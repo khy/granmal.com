@@ -18,7 +18,11 @@ export default function account(state = initialState, action) {
   switch (action.type) {
 
     case AT.PlannedTxnsFetchReceive:
-      return u({plannedTxns: {isFetching: false, results: action.plannedTxns}}, state)
+      return u({plannedTxns: {
+        isFetching: false,
+        results: action.plannedTxns,
+        linkHeader: action.linkHeader,
+      }}, state)
 
     case AT.PlannedTxnsFetchRequest:
       return u({plannedTxns: {isFetching: true}}, state)

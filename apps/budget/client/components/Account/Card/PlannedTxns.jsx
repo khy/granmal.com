@@ -5,6 +5,8 @@ var moment = require('moment')
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
+import { extractPagerPages } from 'budget/client/lib/pager'
+import { PagerLink } from 'client/components/pagination/Pager'
 
 export default class PlannedTxnsCard extends React.Component {
 
@@ -49,6 +51,8 @@ export default class PlannedTxnsCard extends React.Component {
       )
     }
 
+    const pagerPages = extractPagerPages(this.props.linkHeader)
+
     return (
       <div className="card">
         <div className="card-header">
@@ -67,6 +71,16 @@ export default class PlannedTxnsCard extends React.Component {
             {rows}
           </tbody>
         </table>
+        <nav>
+          <ul className="pager">
+            <PagerLink direction="prev" page={pagerPages.previous} onClick={this.props.onNewPage.bind(this)}>
+              Newer
+            </PagerLink>
+            <PagerLink direction="next" page={pagerPages.next} onClick={this.props.onNewPage.bind(this)}>
+              Older
+            </PagerLink>
+          </ul>
+        </nav>
       </div>
     )
   }

@@ -17,10 +17,13 @@ export function fetchPlannedTxns(accountGuid, page = 1) {
 
     const url = '/budget/api/plannedTxns?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    getJson(url).then( plannedTxns => {
-      dispatch({
-        type: AT.PlannedTxnsFetchReceive,
-        plannedTxns
+    getJson(url, true).then(response  => {
+      response.json().then(plannedTxns => {
+        dispatch({
+          type: AT.PlannedTxnsFetchReceive,
+          linkHeader: response.headers.get('X-Useless-Link'),
+          plannedTxns
+        })
       })
     })
   }

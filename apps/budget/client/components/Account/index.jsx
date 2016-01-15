@@ -31,6 +31,7 @@ class Account extends React.Component {
           <h1>{account.name}</h1>
 
             <PlannedTxns {...this.props.account.plannedTxns}
+              onNewPage={this.onNewTxnPage.bind(this)}
               app={this.props.app}
             />
 
