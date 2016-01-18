@@ -7,12 +7,6 @@ const AT = ActionTypes
 
 export const initialState = {
   activeModal: null,
-  addPlannedTxnModal: {
-    isFetching: false,
-  },
-  addTxnModal: {
-    isFetching: false,
-  },
   adjustTxnModal: {
     txn: null,
     isFetching: false,
@@ -29,10 +23,6 @@ export const initialState = {
   },
   resolvePlannedTxnModal: {
     plannedTxn: null,
-    isFetching: false,
-  },
-  txnsCard: {
-    txns: [],
     isFetching: false,
   },
 }
@@ -83,36 +73,17 @@ export default function overview(state = initialState, action) {
         }
       })
 
-    case AT.AddTxnReceive:
+    case AT.AddTxnTypeReceive:
       return update({
         activeModal: null,
         lastUserAction: {
-          type: UserActionTypes.AddTxn,
-          guid: action.guid,
+          type: UserActionTypes.AddTxnType,
+          name: action.name,
         },
-        addTxnModal: {
+        addTxnTypeModal: {
           isFetching: false
         }
       })
-
-    case AT.AddTxnRequest:
-      return update({
-        addTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case AT.AddTxnTypeReceive:
-    return update({
-      activeModal: null,
-      lastUserAction: {
-        type: UserActionTypes.AddTxnType,
-        name: action.name,
-      },
-      addTxnTypeModal: {
-        isFetching: false
-      }
-    })
 
     case AT.AddTxnTypeRequest:
       return update({ addTxnTypeModal: { isFetching: true } })
@@ -239,11 +210,6 @@ export default function overview(state = initialState, action) {
         activeModal: 'addAccountModal'
       })
 
-    case AT.ShowAddPlannedTxnModal:
-      return update({
-        activeModal: 'addPlannedTxnModal'
-      })
-
     case AT.ShowResolvePlannedTxnModal:
       return update({
         activeModal: 'resolvePlannedTxnModal',
@@ -257,11 +223,6 @@ export default function overview(state = initialState, action) {
         activeModal: 'addTransferModal',
       })
 
-    case AT.ShowAddTxnModal:
-      return update({
-        activeModal: 'addTxnModal'
-      })
-
     case AT.ShowAddTxnTypeModal:
       return update({
         activeModal: 'addTxnTypeModal'
@@ -272,21 +233,6 @@ export default function overview(state = initialState, action) {
         activeModal: 'adjustTxnModal',
         adjustTxnModal: {
           txn: action.txn
-        }
-      })
-
-    case AT.TxnsCardReceive:
-      return update({
-        txnsCard: {
-          txns: action.txns,
-          isFetching: false,
-        }
-      })
-
-    case AT.TxnsCardRequest:
-      return update({
-        txnsCard: {
-          isFetching: true
         }
       })
 
