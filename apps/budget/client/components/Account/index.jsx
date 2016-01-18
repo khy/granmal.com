@@ -6,7 +6,10 @@ import Navbar from '../Navbar'
 import PlannedTxnModal from './Modal/PlannedTxn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
-import { ActionTypes as AT, fetchPlannedTxns, fetchTxns } from 'budget/client/actions/account'
+import {
+  ActionTypes as AT, addPlannedTxn, fetchPlannedTxns,
+  fetchTxns
+} from 'budget/client/actions/account'
 
 class Account extends React.Component {
 
@@ -20,7 +23,7 @@ class Account extends React.Component {
   }
 
   addPlannedTxn(plannedTxn) {
-    console.log(plannedTxn)
+    this.props.dispatch(addPlannedTxn(plannedTxn))
   }
 
   onNewPlannedTxnPage(page) {
@@ -44,7 +47,7 @@ class Account extends React.Component {
 
     console.log(this.props)
 
-    if (this.props.account.currentModal === 'plannedTxnModal') {
+    if (this.props.account.activeModal === 'plannedTxnModal') {
       modal = <PlannedTxnModal {...this.props.plannedTxnModal}
         app={this.props.app}
         accountGuid={this.props.params.accountGuid}

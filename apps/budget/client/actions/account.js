@@ -1,9 +1,11 @@
 import _map from 'lodash/collection/map'
 
-import { getJson } from 'budget/client/lib/client'
+import { getJson, postJson } from 'budget/client/lib/client'
 
 export const ActionTypes = {
   HideModal: 'HideModal',
+  PlannedTxnsAddReceive: 'PlannedTxnsAddReceive',
+  PlannedTxnsAddRequest: 'PlannedTxnsAddRequest',
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
   PlannedTxnModalShow: 'PlannedTxnModalShow',
@@ -12,6 +14,22 @@ export const ActionTypes = {
 }
 
 const AT = ActionTypes
+
+export function addPlannedTxn(newPlannedTxn) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.PlannedTxnsAddRequest
+    })
+
+    postJson('/budget/api/plannedTxns', newPlannedTxn).then((plannedTxn) => {
+      dispatch(fetchPlannedTxns(plannedTxn.accountGuid))
+      dispatch({
+        type: AT.PlannedTxnsAddReceive,
+        plannedTxn
+      })
+    })
+  }
+}
 
 export function fetchPlannedTxns(accountGuid, page = 1) {
   return function (dispatch) {

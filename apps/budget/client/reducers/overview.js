@@ -64,25 +64,6 @@ export default function overview(state = initialState, action) {
         },
       })
 
-    case AT.AddPlannedTxnReceive:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AddPlannedTxn,
-          guid: action.guid,
-        },
-        addPlannedTxnModal: {
-          isFetching: false
-        }
-      })
-
-    case AT.AddPlannedTxnRequest:
-      return update({
-        addPlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
     case AT.AddTransferReceive:
       return update({
         activeModal: null,

@@ -20,8 +20,21 @@ export default function account(state = initialState, action) {
 
   switch (action.type) {
 
+    case AT.PlannedTxnsAddReceive:
+      return u({
+        activeModal: undefined,
+        lastUserAction: {
+          type: 'AddPlannedTxn',
+          plannedTxn: action.plannedTxn,
+        },
+        plannedTxnModal: {isPosting: false}
+      }, state)
+
+    case AT.PlannedTxnsAddRequest:
+      return u({plannedTxnModal: {isPosting: true}}, state)
+
     case AT.HideModal:
-      return u({currentModal: undefined}, state)
+      return u({activeModal: undefined}, state)
 
     case AT.PlannedTxnsFetchReceive:
       return u({plannedTxns: {
@@ -34,7 +47,7 @@ export default function account(state = initialState, action) {
       return u({plannedTxns: {isFetching: true}}, state)
 
     case AT.PlannedTxnModalShow:
-      return u({currentModal: 'plannedTxnModal'}, state)
+      return u({activeModal: 'plannedTxnModal'}, state)
 
     case AT.TxnsFetchReceive:
       return u({txns: {

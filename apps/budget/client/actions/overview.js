@@ -70,23 +70,6 @@ export function addAccount(newAccount) {
   }
 }
 
-export function addPlannedTxn(newPlannedTxn) {
-  return function (dispatch) {
-    dispatch({
-      type: AT.AddPlannedTxnRequest
-    })
-
-    postJson('/budget/api/plannedTxns', newPlannedTxn).then((plannedTxn) => {
-      dispatch(fetchProjectionsCard(null, true))
-      dispatch(fetchPlannedTxnsCard(true))
-      dispatch({
-        type: AT.AddPlannedTxnReceive,
-        guid: plannedTxn.guid
-      })
-    })
-  }
-}
-
 export function addTransfer(newTransfer) {
   return function (dispatch) {
     dispatch({
