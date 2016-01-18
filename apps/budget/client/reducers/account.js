@@ -49,6 +49,19 @@ export default function account(state = initialState, action) {
     case AT.PlannedTxnModalShow:
       return u({activeModal: 'plannedTxnModal'}, state)
 
+    case AT.TxnsAddReceive:
+      return u({
+        activeModal: undefined,
+        lastUserAction: {
+          type: 'AddTxn',
+          txn: action.txn,
+        },
+        txnModal: {isPosting: false}
+      }, state)
+
+    case AT.TxnsAddRequest:
+      return u({txnModal: {isPosting: true}}, state)
+
     case AT.TxnsFetchReceive:
       return u({txns: {
         isFetching: false,
@@ -58,6 +71,9 @@ export default function account(state = initialState, action) {
 
     case AT.TxnsFetchRequest:
       return u({txns: {isFetching: true}}, state)
+
+    case AT.TxnModalShow:
+      return u({activeModal: 'txnModal'}, state)
 
     default:
       return state

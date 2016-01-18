@@ -9,8 +9,11 @@ export const ActionTypes = {
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
   PlannedTxnModalShow: 'PlannedTxnModalShow',
+  TxnsAddReceive: 'TxnsAddReceive',
+  TxnsAddRequest: 'TxnsAddRequest',
   TxnsFetchReceive: 'TxnsFetchReceive',
   TxnsFetchRequest: 'TxnsFetchRequest',
+  TxnModalShow: 'TxnModalShow',
 }
 
 const AT = ActionTypes
@@ -26,6 +29,22 @@ export function addPlannedTxn(newPlannedTxn) {
       dispatch({
         type: AT.PlannedTxnsAddReceive,
         plannedTxn
+      })
+    })
+  }
+}
+
+export function addTxn(newTxn) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.TxnsAddRequest
+    })
+
+    postJson('/budget/api/txns', newTxn).then((txn) => {
+      dispatch(fetchTxns(txn.accountGuid))
+      dispatch({
+        type: AT.TxnsAddReceive,
+        txn
       })
     })
   }

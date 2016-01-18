@@ -9,6 +9,11 @@ import { extractPagerPages } from 'budget/client/lib/pager'
 
 export default class TxnsCard extends React.Component {
 
+  onNew(event) {
+    event.preventDefault()
+    this.props.onNew()
+  }
+
   render() {
     let rows
 
@@ -45,6 +50,10 @@ export default class TxnsCard extends React.Component {
       <div className="card">
         <div className="card-header">
           Transactions
+
+          <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
+            New Transaction
+          </a>
         </div>
         <table className="table table-hover">
           <thead>

@@ -4,11 +4,12 @@ import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
 import PlannedTxnModal from './Modal/PlannedTxn'
+import TxnModal from './Modal/Txn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
 import {
-  ActionTypes as AT, addPlannedTxn, fetchPlannedTxns,
-  fetchTxns
+  ActionTypes as AT, addPlannedTxn, addTxn,
+  fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
 class Account extends React.Component {
@@ -22,8 +23,16 @@ class Account extends React.Component {
     this.props.dispatch({type: AT.PlannedTxnModalShow})
   }
 
+  onNewTxn() {
+    this.props.dispatch({type: AT.TxnModalShow})
+  }
+
   addPlannedTxn(plannedTxn) {
     this.props.dispatch(addPlannedTxn(plannedTxn))
+  }
+
+  addTxn(txn) {
+    this.props.dispatch(addTxn(txn))
   }
 
   onNewPlannedTxnPage(page) {
@@ -45,14 +54,19 @@ class Account extends React.Component {
 
     let modal
 
-    console.log(this.props)
-
     if (this.props.account.activeModal === 'plannedTxnModal') {
       modal = <PlannedTxnModal {...this.props.plannedTxnModal}
         app={this.props.app}
         accountGuid={this.props.params.accountGuid}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
+      />
+    } else if (this.props.account.activeModal === 'txnModal') {
+      modal = <TxnModal {...this.props.txnModal}
+        app={this.props.app}
+        accountGuid={this.props.params.accountGuid}
+        onClose={this.hideModal.bind(this)}
+        onAdd={this.addTxn.bind(this)}
       />
     }
 
@@ -70,6 +84,7 @@ class Account extends React.Component {
           />
 
           <Txns {...this.props.account.txns}
+            onNew={this.onNewTxn.bind(this)}
             onNewPage={this.onNewTxnPage.bind(this)}
             app={this.props.app}
           />
