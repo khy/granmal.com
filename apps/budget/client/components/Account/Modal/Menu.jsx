@@ -14,11 +14,12 @@ export default class Menu extends React.Component {
   render() {
     return (
       <Modal>
-        <ModalBody>
-          <div className="list-group">
-            <Link to="/budget" className="list-group-item">Home</Link>
-          </div>
-        </ModalBody>
+        <div className="modal-header"></div>
+        <div className="list-group list-group-flush">
+          <Link to="/budget" className="list-group-item">Home</Link>
+          <Link to="/budget" className="list-group-item">Away</Link>
+          <Link to="/budget" className="list-group-item">Neutral</Link>
+        </div>
         <ModalFooter>
           <SecondaryButton onClick={this.close.bind(this)}>Close</SecondaryButton>
         </ModalFooter>
