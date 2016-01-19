@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
+import { SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 export default class Menu extends React.Component {
@@ -19,13 +20,7 @@ export default class Menu extends React.Component {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={this.close.bind(this)}
-          >
-            Close
-          </button>
+          <SecondaryButton onClick={this.close.bind(this)}>Close</SecondaryButton>
         </ModalFooter>
       </Modal>
     )
