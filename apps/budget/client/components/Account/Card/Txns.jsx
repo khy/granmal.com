@@ -55,19 +55,21 @@ export default class TxnsCard extends React.Component {
             New Transaction
           </a>
         </div>
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
+        </div>
         <nav>
           <ul className="pager">
             <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
