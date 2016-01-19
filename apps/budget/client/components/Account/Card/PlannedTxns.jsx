@@ -6,7 +6,7 @@ var moment = require('moment')
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { extractPagerPages } from 'budget/client/lib/pager'
-import { PagerLink } from 'client/components/pagination/Pager'
+import { PagerLink } from 'client/components/bootstrap/pagination'
 
 export default class PlannedTxnsCard extends React.Component {
 
