@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
+import MenuModal from './Modal/Menu'
 import PlannedTxnModal from './Modal/PlannedTxn'
 import TxnModal from './Modal/Txn'
 import PlannedTxns from './Card/PlannedTxns'
@@ -13,6 +14,14 @@ import {
 } from 'budget/client/actions/account'
 
 class Account extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      menuToggled: false,
+    }
+  }
 
   componentWillMount() {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
@@ -43,6 +52,14 @@ class Account extends React.Component {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
   }
 
+  showMenu() {
+    this.setState({menuToggled: true})
+  }
+
+  hideMenu() {
+    this.setState({menuToggled: false})
+  }
+
   hideModal() {
     this.props.dispatch({ type: AT.HideModal })
   }
@@ -54,7 +71,9 @@ class Account extends React.Component {
 
     let modal
 
-    if (this.props.account.activeModal === 'plannedTxnModal') {
+    if (this.state.menuToggled) {
+      modal = <MenuModal onClose={this.hideMenu.bind(this)} />
+    } else if (this.props.account.activeModal === 'plannedTxnModal') {
       modal = <PlannedTxnModal {...this.props.plannedTxnModal}
         app={this.props.app}
         accountGuid={this.props.params.accountGuid}
@@ -72,7 +91,9 @@ class Account extends React.Component {
 
     return (
       <div>
-        <Navbar />
+        <Navbar
+          onMenuClick={this.showMenu.bind(this)}
+        />
 
         <div className="container">
           <h1>{account.name}</h1>
