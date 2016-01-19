@@ -2,6 +2,8 @@ var React = require('react')
 var _map = require('lodash/collection/map')
 
 import { normalizeDateInput } from 'budget/client/lib/date'
+import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 export default class PlannedTxn extends React.Component {
 
@@ -39,83 +41,67 @@ export default class PlannedTxn extends React.Component {
     )
 
     return (
-      <div>
-        <div className="modal-backdrop in" onClick={this.close.bind(this)}></div>
-        <div className="modal" style={{display: 'block', paddingLeft: '0px'}}>
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button className="close" type="button" onClick={this.close.bind(this)}>
-                  <span>&times;</span>
-                </button>
-                <h4 className="modal-title">New Planned Transaction</h4>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <fieldset disabled={this.props.isFetching}>
-                    <fieldset className="form-group">
-                      <label>Transaction Type</label>
-                      <select ref="txnTypeGuidSelect" className="form-control">
-                        {txnTypeOptions}
-                      </select>
-                      <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
-                    </fieldset>
+      <Modal>
+        <ModalHeader>New Planned Transaction</ModalHeader>
+        <ModalBody>
+          <form>
+            <fieldset disabled={this.props.isFetching}>
+              <fieldset className="form-group">
+                <label>Transaction Type</label>
+                <select ref="txnTypeGuidSelect" className="form-control">
+                  {txnTypeOptions}
+                </select>
+                <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
+              </fieldset>
 
-                    <div className="row">
-                      <div className="col-md-6">
-                        <fieldset className="form-group">
-                          <label>Min Amount</label>
-                          <input ref="minAmountInput" className="form-control" type="text" />
-                        </fieldset>
-                      </div>
-                      <div className="col-md-6">
-                        <fieldset className="form-group">
-                          <label>Max Amount</label>
-                          <input ref="maxAmountInput" className="form-control" type="text" />
-                        </fieldset>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-6">
-                        <fieldset className="form-group">
-                          <label>Min Date</label>
-                          <input ref="minDateInput" className="form-control" type="text" />
-                        </fieldset>
-                      </div>
-                      <div className="col-md-6">
-                        <fieldset className="form-group">
-                          <label>Max Date</label>
-                          <input ref="maxDateInput" className="form-control" type="text" />
-                        </fieldset>
-                      </div>
-                    </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <fieldset className="form-group">
+                    <label>Min Amount</label>
+                    <input ref="minAmountInput" className="form-control" type="text" />
                   </fieldset>
-                </form>
+                </div>
+                <div className="col-md-6">
+                  <fieldset className="form-group">
+                    <label>Max Amount</label>
+                    <input ref="maxAmountInput" className="form-control" type="text" />
+                  </fieldset>
+                </div>
               </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={this.close.bind(this)}
-                  disabled={this.props.isFetching}
-                >
-                  Close
-                </button>
 
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={this.add.bind(this)}
-                  disabled={this.props.isFetching}
-                >
-                  Add
-                </button>
+              <div className="row">
+                <div className="col-md-6">
+                  <fieldset className="form-group">
+                    <label>Min Date</label>
+                    <input ref="minDateInput" className="form-control" type="text" />
+                  </fieldset>
+                </div>
+                <div className="col-md-6">
+                  <fieldset className="form-group">
+                    <label>Max Date</label>
+                    <input ref="maxDateInput" className="form-control" type="text" />
+                  </fieldset>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </fieldset>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <SecondaryButton
+            onClick={this.close.bind(this)}
+            disabled={this.props.isFetching}
+          >
+            Close
+          </SecondaryButton>
+
+          <PrimaryButton
+            onClick={this.add.bind(this)}
+            disabled={this.props.isFetching}
+          >
+            Add
+          </PrimaryButton>
+        </ModalFooter>
+      </Modal>
     )
   }
 
