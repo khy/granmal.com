@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
-import MenuModal from './Modal/Menu'
+import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
 import TxnModal from './Modal/Txn'
 import PlannedTxns from './Card/PlannedTxns'
@@ -72,7 +72,7 @@ class Account extends React.Component {
     let modal
 
     if (this.state.menuToggled) {
-      modal = <MenuModal onClose={this.hideMenu.bind(this)} />
+      modal = <NavMenuModal onClose={this.hideMenu.bind(this)} />
     } else if (this.props.account.activeModal === 'plannedTxnModal') {
       modal = <PlannedTxnModal {...this.props.plannedTxnModal}
         app={this.props.app}

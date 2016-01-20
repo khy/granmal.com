@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export default class Menu extends React.Component {
+export class BaseNavMenu extends React.Component {
 
   close(event) {
     event.preventDefault()
@@ -16,8 +16,7 @@ export default class Menu extends React.Component {
       <Modal>
         <div className="modal-header"></div>
         <div className="list-group list-group-flush">
-          <Link to="/budget/transactionTypes" className="list-group-item">Transaction Types</Link>
-          <Link to="/budget" className="list-group-item">Home</Link>
+          {this.props.children}
         </div>
         <ModalFooter>
           <SecondaryButton onClick={this.close.bind(this)}>Close</SecondaryButton>
@@ -27,3 +26,5 @@ export default class Menu extends React.Component {
   }
 
 }
+
+export const NavMenuLink = (props) => <Link {...props} className="list-group-item">{props.children}</Link>

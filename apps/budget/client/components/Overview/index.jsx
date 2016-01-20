@@ -12,7 +12,7 @@ var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 
 import Navbar from '../Navbar'
-import MenuModal from './Modal/Menu'
+import NavMenuModal from './Modal/NavMenu'
 var AddAccountModal = require('./Modal/AddAccountModal')
 var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
 var AddTransferModal = require('./Modal/AddTransferModal')
@@ -112,7 +112,7 @@ class Overview extends React.Component {
     let modal
 
     if (this.state.menuToggled) {
-      modal = <MenuModal onClose={this.hideMenu.bind(this)} />
+      modal = <NavMenuModal onClose={this.hideMenu.bind(this)} />
     } else if (this.props.overview.activeModal === 'addAccountModal') {
       modal = <AddAccountModal {...this.props.overview.addAccountModal}
         accountTypes={this.props.app.accountTypes}
