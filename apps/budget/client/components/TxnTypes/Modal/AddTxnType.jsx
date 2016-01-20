@@ -28,7 +28,7 @@ export default class AddTxnTypeModal extends React.Component {
         <ModalHeader>New Transaction Type</ModalHeader>
         <ModalBody>
           <form>
-            <fieldset disabled={this.props.isFetching}>
+            <fieldset disabled={this.props.modalIsPosting}>
               <fieldset className="form-group">
                 <label>Parent Transaction Type</label>
                 <input className="form-control" type="text" placeholder={this.props.parentTxnType.name} readOnly />
@@ -44,14 +44,14 @@ export default class AddTxnTypeModal extends React.Component {
         <ModalFooter>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.props.modalIsPosting}
           >
             Close
           </SecondaryButton>
 
           <PrimaryButton
             onClick={this.add.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.props.modalIsPosting}
           >
             Add
           </PrimaryButton>

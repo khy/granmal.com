@@ -5,6 +5,7 @@ import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
 import AddTxnTypeModal from './Modal/AddTxnType'
+import { ActionTypes as AT, addTxnType } from 'budget/client/actions/txnTypes'
 
 class TxnTypes extends React.Component {
 
@@ -15,27 +16,30 @@ class TxnTypes extends React.Component {
 
   showModal(event) {
     event.preventDefault()
-    this.setState({modalGuid: event.target.dataset.guid})
+    this.props.dispatch({
+      type: AT.ShowTxnTypeModal,
+      parentGuid: event.target.dataset.guid
+    })
   }
 
   hideModal() {
-    this.setState({modalGuid: undefined})
+    this.props.dispatch({type: AT.HideTxnTypeModal})
   }
 
   addTxnType(newTxnType) {
-    console.log(newTxnType)
+    this.props.dispatch(addTxnType(newTxnType))
   }
 
   render() {
     let modal
 
-    if (this.state.modalGuid) {
-      const txnType = _find(this.props.app.txnTypes, (txnType) => {
-        return txnType.guid === this.state.modalGuid
+    if (this.props.txnTypes.modalParentGuid) {
+      const parentTxnType = _find(this.props.app.txnTypes, (txnType) => {
+        return txnType.guid === this.props.txnTypes.modalParentGuid
       })
 
-      modal = <AddTxnTypeModal
-        parentTxnType={txnType}
+      modal = <AddTxnTypeModal {...this.props.txnTypes}
+        parentTxnType={parentTxnType}
         onAdd={this.addTxnType.bind(this)}
         onClose={this.hideModal.bind(this)}
       />

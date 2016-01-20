@@ -2,7 +2,6 @@ import moment from 'moment'
 
 import { postJson, getJson, deleteResource } from 'budget/client/lib/client'
 import { formatDateForModel } from 'budget/client/lib/date'
-import { fetchTxnTypes } from './app'
 
 export const ActionTypes = {
   AddAccountReceive: 'AddAccountReceive',
@@ -13,8 +12,6 @@ export const ActionTypes = {
   AddTransferRequest: 'AddTransferRequest',
   AddTxnReceive: 'AddTxnReceive',
   AddTxnRequest: 'AddTxnRequest',
-  AddTxnTypeReceive: 'AddTxnTypeReceive',
-  AddTxnTypeRequest: 'AddTxnTypeRequest',
   AdjustTxnReceive: 'AdjustTxnReceive',
   AdjustTxnRequest: 'AdjustTxnRequest',
   ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
@@ -99,20 +96,6 @@ export function addTxn(newTxn) {
       dispatch({
         type: AT.AddTxnReceive,
         guid: txn.guid
-      })
-    })
-  }
-}
-
-export function addTxnType(newTxnType) {
-  return function (dispatch) {
-    dispatch({ type: AT.AddTxnTypeRequest })
-
-    postJson('/budget/api/txnTypes', newTxnType).then((txnType) => {
-      dispatch(fetchTxnTypes(true))
-      dispatch({
-        type: AT.AddTxnTypeReceive,
-        name: txnType.name,
       })
     })
   }

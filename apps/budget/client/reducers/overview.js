@@ -73,21 +73,6 @@ export default function overview(state = initialState, action) {
         }
       })
 
-    case AT.AddTxnTypeReceive:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AddTxnType,
-          name: action.name,
-        },
-        addTxnTypeModal: {
-          isFetching: false
-        }
-      })
-
-    case AT.AddTxnTypeRequest:
-      return update({ addTxnTypeModal: { isFetching: true } })
-
     case AT.AdjustTxnReceive:
       return update({
         activeModal: null,
