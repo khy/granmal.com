@@ -15,6 +15,7 @@ import Navbar from './components/Navbar'
 import Overview from './components/Overview'
 import Account from './components/Account'
 import PlannedTxns from './components/PlannedTxns'
+import TxnTypes from './components/TxnTypes'
 import Prestitial from 'client/components/ads/Prestitial'
 import Login from 'client/components/auth/Login'
 
@@ -83,6 +84,7 @@ render(
         <IndexRoute component={Overview} />
         <Route path="account/:accountGuid" component={Account} />
         <Route path="plannedTransactions" component={PlannedTxns} />
+        <Route path="transactionTypes" component={TxnTypes} />
       </Route>
     </Router>
   </Provider>,

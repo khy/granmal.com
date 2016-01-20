@@ -17,7 +17,6 @@ export default class Menu extends React.Component {
         <div className="modal-header"></div>
         <div className="list-group list-group-flush">
           <Link to="/budget/transactionTypes" className="list-group-item">Transaction Types</Link>
-          <Link to="/budget" className="list-group-item">Home</Link>
         </div>
         <ModalFooter>
           <SecondaryButton onClick={this.close.bind(this)}>Close</SecondaryButton>
