@@ -25,3 +25,9 @@ h1 { margin-bottom: 1.5rem; }
     border-bottom-width: 0
   }
 }
+
+$i: 0;
+@while $i < 10 {
+  .list-group-item-level-#{$i} { padding-left: 1.25rem * ($i + 1); }
+  $i: $i + 1;
+}
