@@ -53,6 +53,14 @@ router.post('/txns/:guid/adjustments', (req, res) => {
   })
 })
 
+router.post('/txnTypes/:guid/adjustments', (req, res) => {
+  const client = new Client(req.account)
+
+  client.post('/transactionTypes/' + req.params.guid + '/adjustments', req.body).then((results) => {
+    res.status(201).json(results)
+  })
+})
+
 router.delete('/plannedTxns/:guid', (req, res) => {
   const client = new Client(req.account)
 
