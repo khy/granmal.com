@@ -35,7 +35,7 @@ export default class AdjustTxnTypeModal extends React.Component {
             <fieldset disabled={this.props.modalIsPosting}>
               <fieldset className="form-group">
                 <label>Parent Transaction Type</label>
-                <select ref="txnTypeGuidSelect" className="form-control">
+                <select defaultValue={this.props.txnType.parentGuid} ref="txnTypeGuidSelect" className="form-control">
                   {txnTypeOptions}
                 </select>
               </fieldset>
