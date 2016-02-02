@@ -14,6 +14,7 @@ import { login } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'
 import Account from './components/Account'
+import Month from './components/Month'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypes from './components/TxnTypes'
 import Prestitial from 'client/components/ads/Prestitial'
@@ -83,6 +84,7 @@ render(
       <Route path="/budget" component={ConnectedApp}>
         <IndexRoute component={Overview} />
         <Route path="account/:accountGuid" component={Account} />
+        <Route path="months/:year/:month" component={Month} />
         <Route path="plannedTransactions" component={PlannedTxns} />
         <Route path="transactionTypes" component={TxnTypes} />
       </Route>

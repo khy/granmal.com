@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 var api = require('./api')
+var config = require('./config')
 
 router.use('/api', api)
 
@@ -17,6 +18,12 @@ router.get('*', (req, res) => {
   res.render('appBase', {
     key: 'budget',
     title: 'Budget',
+    config: {
+      useless: {
+        baseUrl: config.useless.baseUrl,
+        auth: req.account.uselessAccessToken
+      }
+    },
     initialState,
   })
 })

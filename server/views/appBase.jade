@@ -8,6 +8,10 @@ html(lang="en")
   body
     div(id="app")
 
+    if config
+      script(type="text/javascript").
+        config = !{JSON.stringify(config)}
+
     if initialState
       script(type="text/javascript").
         initialState = !{JSON.stringify(initialState)}
