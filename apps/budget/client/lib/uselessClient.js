@@ -12,8 +12,10 @@ export class UselessClient {
     this.authorization = authorization
   }
 
+  url(path) { return this.baseUrl + path }
+
   get(path, fullResponse = false) {
-    const response = fetch(this.baseUrl + path, {
+    const response = fetch(this.url(path), {
       method: 'get',
       headers: {
         'Authorization': this.authorization,
@@ -31,7 +33,7 @@ export class UselessClient {
   }
 
   post(path, json) {
-    return fetch(this.baseUrl + path, {
+    return fetch(this.url(path), {
       method: 'post',
       headers: {
         'Authorization': this.authorization,
@@ -41,6 +43,15 @@ export class UselessClient {
       body: JSON.stringify(json),
     }).then((response) => {
       return response.json()
+    })
+  }
+
+  delete(path) {
+    return fetch(this.url(path), {
+      method: 'delete',
+      headers: {
+        'Authorization': this.authorization,
+      },
     })
   }
 
