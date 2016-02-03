@@ -1,6 +1,6 @@
 import _map from 'lodash/collection/map'
 
-import { getJson, postJson } from 'budget/client/lib/client'
+import client from 'budget/client/lib/uselessClient'
 
 export const ActionTypes = {
   HideModal: 'HideModal',
@@ -24,7 +24,7 @@ export function addPlannedTxn(newPlannedTxn) {
       type: AT.PlannedTxnsAddRequest
     })
 
-    postJson('/budget/api/plannedTxns', newPlannedTxn).then((plannedTxn) => {
+    client.post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
       dispatch(fetchPlannedTxns(plannedTxn.accountGuid))
       dispatch({
         type: AT.PlannedTxnsAddReceive,
@@ -40,7 +40,7 @@ export function addTxn(newTxn) {
       type: AT.TxnsAddRequest
     })
 
-    postJson('/budget/api/txns', newTxn).then((txn) => {
+    client.post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.TxnsAddReceive,
@@ -54,13 +54,13 @@ export function fetchPlannedTxns(accountGuid, page = 1) {
   return function (dispatch) {
     dispatch({ type: AT.PlannedTxnsFetchRequest })
 
-    const url = '/budget/api/plannedTxns?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
+    const url = '/plannedTransactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    getJson(url, true).then(response  => {
+    client.get(url, true).then(response  => {
       response.json().then(plannedTxns => {
         dispatch({
           type: AT.PlannedTxnsFetchReceive,
-          linkHeader: response.headers.get('X-Useless-Link'),
+          linkHeader: response.headers.get('Link'),
           plannedTxns
         })
       })
@@ -72,13 +72,13 @@ export function fetchTxns(accountGuid, page = 1) {
   return function (dispatch) {
     dispatch({ type: AT.TxnsFetchRequest })
 
-    const url = '/budget/api/txns?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
+    const url = '/transactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    getJson(url, true).then( response => {
+    client.get(url, true).then( response => {
       response.json().then(txns => {
         dispatch({
           type: AT.TxnsFetchReceive,
-          linkHeader: response.headers.get('X-Useless-Link'),
+          linkHeader: response.headers.get('Link'),
           txns
         })
       })

@@ -30,6 +30,20 @@ export class UselessClient {
     }
   }
 
+  post(path, json) {
+    return fetch(this.baseUrl + path, {
+      method: 'post',
+      headers: {
+        'Authorization': this.authorization,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(json),
+    }).then((response) => {
+      return response.json()
+    })
+  }
+
 }
 
 export default new UselessClient(config.uselessBaseUrl, config.uselessAccessToken.token)
