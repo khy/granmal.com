@@ -3,18 +3,20 @@ es6Promise.polyfill()
 
 import 'isomorphic-fetch'
 
+import config from 'budget/client/config'
+
 export class UselessClient {
 
-  constructor(baseUrl, auth) {
+  constructor(baseUrl, authorization) {
     this.baseUrl = baseUrl
-    this.auth = auth
+    this.authorization = authorization
   }
 
   get(path, fullResponse = false) {
     const response = fetch(this.baseUrl + path, {
       method: 'get',
       headers: {
-        'Authorization': this.auth,
+        'Authorization': this.authorization,
         'Accept': 'application/json',
       },
     })
@@ -29,3 +31,5 @@ export class UselessClient {
   }
 
 }
+
+export default new UselessClient(config.uselessBaseUrl, config.uselessAccessToken.token)

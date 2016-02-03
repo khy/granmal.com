@@ -12,10 +12,6 @@ html(lang="en")
       script(type="text/javascript").
         config = !{JSON.stringify(config)}
 
-    if initialState
-      script(type="text/javascript").
-        initialState = !{JSON.stringify(initialState)}
-
     script(src="/bundle/#{key}.js")
 
     script.

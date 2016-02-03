@@ -1,4 +1,4 @@
-import { UselessClient } from 'budget/client/lib/uselessClient'
+import client from 'budget/client/lib/uselessClient'
 
 export const ActionTypes = {
   MonthTxnTypeRollupReceive: 'MonthTxnTypeRollupReceive',
@@ -10,8 +10,6 @@ const AT = ActionTypes
 export function fetchMonthTxnTypeRollup(year, month) {
   return function (dispatch) {
     dispatch({ type: AT.MonthTxnTypeRollupRequest, month: `${year}-${month}` })
-
-    const client = new UselessClient(config.useless.baseUrl, config.useless.auth.token)
 
     // TODO: Remove obvious bug
     const fromDate = `${year}-${month}-01`

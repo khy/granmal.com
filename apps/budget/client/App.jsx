@@ -8,6 +8,7 @@ import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
+import config from './config'
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
 import { login } from 'client/actions/auth'
@@ -24,7 +25,7 @@ require("./app.scss")
 
 const store = applyMiddleware(
   thunkMiddleware//, createLogger()
-)(createStore)(reducer, window.initialState)
+)(createStore)(reducer)
 
 class App extends React.Component {
 
@@ -40,7 +41,7 @@ class App extends React.Component {
   }
 
   render() {
-    const loggedIn = this.props.auth && this.props.auth.account
+    const loggedIn = config.account
 
     if (loggedIn && !this.props.app.isBootstrapped && !this.props.app.isBootstrapping) {
       this.props.dispatch(bootstrap())
