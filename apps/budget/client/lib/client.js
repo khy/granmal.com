@@ -3,41 +3,58 @@ es6Promise.polyfill()
 
 import 'isomorphic-fetch'
 
-export function getJson(url, fullResponse = false) {
-  const response = fetch(url, {
-    method: 'get',
-    headers: {
-      'Accept': 'application/json',
-    },
-    credentials: 'same-origin',
-  })
+import config from 'budget/client/config'
 
-  if (fullResponse) {
-    return response
-  } else {
-    return response.then((response) => {
+export class Client {
+
+  constructor(baseUrl, authorization) {
+    this.baseUrl = baseUrl
+    this.authorization = authorization
+  }
+
+  url(path) { return this.baseUrl + path }
+
+  get(path, fullResponse = false) {
+    const response = fetch(this.url(path), {
+      method: 'get',
+      headers: {
+        'Authorization': this.authorization,
+        'Accept': 'application/json',
+      },
+    })
+
+    if (fullResponse) {
+      return response
+    } else {
+      return response.then((response) => {
+        return response.json()
+      })
+    }
+  }
+
+  post(path, json) {
+    return fetch(this.url(path), {
+      method: 'post',
+      headers: {
+        'Authorization': this.authorization,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(json),
+    }).then((response) => {
       return response.json()
     })
   }
+
+  delete(path) {
+    return fetch(this.url(path), {
+      method: 'delete',
+      headers: {
+        'Authorization': this.authorization,
+      },
+    })
+  }
+
 }
 
-export function postJson(url, json) {
-  return fetch(url, {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(json),
-    credentials: 'same-origin',
-  }).then((response) => {
-    return response.json()
-  })
-}
-
-export function deleteResource(url) {
-  return fetch(url, {
-    method: 'delete',
-    credentials: 'same-origin',
-  })
-}
+export default new Client(config.uselessBaseUrl, config.uselessAccessToken.token)

@@ -1,6 +1,6 @@
 import _map from 'lodash/collection/map'
 
-import client from 'budget/client/lib/uselessClient'
+import client from 'budget/client/lib/client'
 import { fetchTxnTypes } from 'budget/client/actions/app'
 
 export const ActionTypes = {

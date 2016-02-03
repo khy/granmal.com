@@ -1,6 +1,6 @@
 import _map from 'lodash/collection/map'
 
-import client from 'budget/client/lib/uselessClient'
+import client from 'budget/client/lib/client'
 
 export const ActionTypes = {
   HideModal: 'HideModal',

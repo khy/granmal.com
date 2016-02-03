@@ -1,4 +1,4 @@
-import client from 'budget/client/lib/uselessClient'
+import client from 'budget/client/lib/client'
 
 export const ActionTypes = {
   MonthTxnTypeRollupReceive: 'MonthTxnTypeRollupReceive',

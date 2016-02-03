@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import client from 'budget/client/lib/uselessClient'
+import client from 'budget/client/lib/client'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
