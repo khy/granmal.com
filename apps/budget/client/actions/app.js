@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { getJson } from 'budget/client/lib/client'
+import client from 'budget/client/lib/uselessClient'
 import { formatDateForModel } from 'budget/client/lib/date'
 
 export const ActionTypes = {
@@ -20,9 +20,9 @@ export function bootstrap() {
     dispatch({ type: AT.BootstrapRequested })
 
     Promise.all([
-      getJson('/budget/api/accounts'),
-      getJson('/budget/api/accountTypes'),
-      getJson('/budget/api/txnTypes'),
+      client.get('/accounts'),
+      client.get('/accountTypes'),
+      client.get('/transactionTypes'),
     ]).then( (results) => {
       dispatch({ type: AT.SetAccounts, accounts: results[0] })
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
@@ -34,7 +34,7 @@ export function bootstrap() {
 
 export function fetchAccounts() {
   return function (dispatch) {
-    getJson('/budget/api/accounts').then( accounts => {
+    client.get('/accounts').then( accounts => {
       dispatch({ type: AT.SetAccounts, accounts })
     })
   }
@@ -42,7 +42,7 @@ export function fetchAccounts() {
 
 export function fetchAccountTypes() {
   return function (dispatch) {
-    getJson('/budget/api/accountTypes').then( accountTypes => {
+    client.get('/accountTypes').then( accountTypes => {
       dispatch({ type: AT.SetAccountTypes, accountTypes })
     })
   }
@@ -50,7 +50,7 @@ export function fetchAccountTypes() {
 
 export function fetchTxnTypes() {
   return function (dispatch) {
-    getJson('/budget/api/txnTypes').then( txnTypes => {
+    client.get('/transactionTypes').then( txnTypes => {
       dispatch({ type: AT.SetTxnTypes, txnTypes })
     })
   }
