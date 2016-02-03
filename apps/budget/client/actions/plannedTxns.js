@@ -1,6 +1,6 @@
 import _map from 'lodash/collection/map'
 
-import { getJson } from 'budget/client/lib/client'
+import client from 'budget/client/lib/uselessClient'
 
 export const ActionTypes = {
   PlannedTxnsReceive: 'PlannedTxnsReceive',
@@ -13,7 +13,7 @@ export function fetchPlannedTxns() {
   return function (dispatch) {
     dispatch({ type: AT.PlannedTxnsRequest })
 
-    getJson('/budget/api/plannedTxns').then( plannedTxns => {
+    client.get('/plannedTransactions').then( plannedTxns => {
       dispatch({
         type: AT.PlannedTxnsReceive,
         results: plannedTxns,
