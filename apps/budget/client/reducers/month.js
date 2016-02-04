@@ -6,14 +6,14 @@ export default function plannedTxns(state = {}, action) {
 
   switch (action.type) {
 
-    case AT.TxnTypeRollupReceive:
+    case AT.MonthTxnTypeRollupReceive:
       return u({rollups: {
         isFetching: false,
         rollups: action.rollups
       }}, state)
 
-    case AT.TxnTypeRollupRequest:
-      return u({ rollups: {
+    case AT.MonthTxnTypeRollupRequest:
+      return u({rollups: {
         month: action.month,
         isFetching: true
       }}, state)
