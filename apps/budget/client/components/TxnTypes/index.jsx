@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
 
+import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 
 import Navbar from '../Navbar'
 import AddTxnTypeModal from './Modal/AddTxnType'
@@ -101,13 +102,23 @@ class TxnTypes extends React.Component {
         <div className="container">
           <h1>Transaction Types</h1>
 
-          <ul className="list-group">
-            {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Expense")))}
-          </ul>
+          <Card>
+            <CardHeader>
+              Expense Types
+            </CardHeader>
+            <CardList>
+              {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Expense")))}
+            </CardList>
+          </Card>
 
-          <ul className="list-group">
-            {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Income")))}
-          </ul>
+          <Card>
+            <CardHeader>
+              Income Types
+            </CardHeader>
+            <CardList>
+              {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Income")))}
+            </CardList>
+          </Card>
 
           {modal}
         </div>

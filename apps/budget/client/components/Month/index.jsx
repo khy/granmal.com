@@ -4,9 +4,12 @@ import moment from 'moment'
 import _map from 'lodash/collection/map'
 import _find from 'lodash/collection/find'
 
+import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
+
 import Navbar from '../Navbar'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/month'
+
 
 class Month extends React.Component {
 
@@ -51,14 +54,14 @@ class Month extends React.Component {
         <div className="container">
           <h1>{this.moment.format("MMMM 'YY")}</h1>
 
-          <div className="card">
-            <div className="card-header">
+          <Card>
+            <CardHeader>
               Expense Trasnaction Types
-            </div>
-            <ul className="list-group list-group-flush">
+            </CardHeader>
+            <CardList>
               {listItems}
-            </ul>
-          </div>
+            </CardList>
+          </Card>
         </div>
       </div>
     )
