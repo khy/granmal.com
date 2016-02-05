@@ -91,13 +91,8 @@ class TxnTypes extends React.Component {
       })
     }
 
-    const expenseListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
-      this.props.app.txnTypes, systemTxnType(this.props.app.txnTypes, "Expense")
-    ))
-
-    const incomeListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
-      this.props.app.txnTypes, systemTxnType(this.props.app.txnTypes, "Income")
-    ))
+    const hierarchyForParent = txnTypeHierarchyArray(this.props.app.txnTypes)
+    const systemTxnTypeByName = systemTxnType(this.props.app.txnTypes)
 
     return (
       <div>
@@ -107,11 +102,11 @@ class TxnTypes extends React.Component {
           <h1>Transaction Types</h1>
 
           <ul className="list-group">
-            {expenseListGroupItems}
+            {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Expense")))}
           </ul>
 
           <ul className="list-group">
-            {incomeListGroupItems}
+            {buildListGroupItems(hierarchyForParent(systemTxnTypeByName("Income")))}
           </ul>
 
           {modal}
