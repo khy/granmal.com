@@ -1,9 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
-import _flatten from 'lodash/array/flatten'
 import _find from 'lodash/collection/find'
-import _filter from 'lodash/collection/filter'
 
 import Navbar from '../Navbar'
 import AddTxnTypeModal from './Modal/AddTxnType'
@@ -12,6 +10,7 @@ import {
   ActionTypes as AT, addTxnType, adjustTxnType
 } from 'budget/client/actions/txnTypes'
 import { ModalTypes } from 'budget/client/reducers/txnTypes'
+import { txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 
 class TxnTypes extends React.Component {
 
@@ -76,18 +75,6 @@ class TxnTypes extends React.Component {
       }
     }
 
-    const buildHierarchy = (parent, level = 0) => {
-      const children = _filter(this.props.app.txnTypes, (txnType) => {
-        return txnType.parentGuid === parent.guid
-      })
-
-      const successors = _flatten(_map(children, (txnType) => {
-        return buildHierarchy(txnType, level + 1)
-      }))
-
-      return [{txnType: parent, level}].concat(successors)
-    }
-
     const getSystemTxnType = (name) => _find(this.props.app.txnTypes, (txnType) => {
       return txnType.ownership === "system" && txnType.name === name
     })
@@ -108,8 +95,13 @@ class TxnTypes extends React.Component {
       })
     }
 
-    const expenseListGroupItems = buildListGroupItems(buildHierarchy(getSystemTxnType("Expense")))
-    const incomeListGroupItems = buildListGroupItems(buildHierarchy(getSystemTxnType("Income")))
+    const expenseListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
+      this.props.app.txnTypes, getSystemTxnType("Expense")
+    ))
+
+    const incomeListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
+      this.props.app.txnTypes, getSystemTxnType("Income")
+    ))
 
     return (
       <div>
