@@ -1,6 +1,13 @@
-import _map from 'lodash/collection/map'
-import _flatten from 'lodash/array/flatten'
 import _filter from 'lodash/collection/filter'
+import _find from 'lodash/collection/find'
+import _flatten from 'lodash/array/flatten'
+import _map from 'lodash/collection/map'
+
+export function systemTxnType(txnTypes, name) {
+  return _find(txnTypes, (txnType) => {
+    return txnType.ownership === "system" && txnType.name === name
+  })
+}
 
 export function txnTypeHierarchyArray(txnTypes, parent) {
   const buildHierarchy = (parent, level = 0) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
-import _find from 'lodash/collection/find'
+
 
 import Navbar from '../Navbar'
 import AddTxnTypeModal from './Modal/AddTxnType'
@@ -10,7 +10,7 @@ import {
   ActionTypes as AT, addTxnType, adjustTxnType
 } from 'budget/client/actions/txnTypes'
 import { ModalTypes } from 'budget/client/reducers/txnTypes'
-import { txnTypeHierarchyArray } from 'budget/client/lib/txnType'
+import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 
 class TxnTypes extends React.Component {
 
@@ -75,10 +75,6 @@ class TxnTypes extends React.Component {
       }
     }
 
-    const getSystemTxnType = (name) => _find(this.props.app.txnTypes, (txnType) => {
-      return txnType.ownership === "system" && txnType.name === name
-    })
-
     const buildListGroupItems = (hierarchy) => {
       return _map(hierarchy, (h) => {
         return (
@@ -96,11 +92,11 @@ class TxnTypes extends React.Component {
     }
 
     const expenseListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
-      this.props.app.txnTypes, getSystemTxnType("Expense")
+      this.props.app.txnTypes, systemTxnType(this.props.app.txnTypes, "Expense")
     ))
 
     const incomeListGroupItems = buildListGroupItems(txnTypeHierarchyArray(
-      this.props.app.txnTypes, getSystemTxnType("Income")
+      this.props.app.txnTypes, systemTxnType(this.props.app.txnTypes, "Income")
     ))
 
     return (
