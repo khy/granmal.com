@@ -2,8 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import _map from 'lodash/collection/map'
+import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
+import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/month'
 
 class Month extends React.Component {
@@ -19,14 +21,26 @@ class Month extends React.Component {
   render() {
     let listItems
 
-    if (this.props.month.rollups) {
-      listItems = _map(this.props.month.rollups.rollups, (rollup) => {
-        return (<li className="list-group-item" key={rollup.transactionType.guid}>
-          {rollup.transactionType.name}
-          <span className="pull-right">
-            {rollup.transactionAmountTotal}
-          </span>
-        </li>)
+    if (!this.props.month.rollups.isFetching) {
+      const expense = systemTxnType(this.props.app.txnTypes)("Expense")
+      const expenseHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(expense)
+
+      const txnAmtTotal = (guid) => {
+        const rollup = _find(this.props.month.rollups.rollups, (rollup) => {
+          return rollup.transactionType.guid === guid
+        })
+        return rollup ? rollup.transactionAmountTotal : 0.0
+      }
+
+      listItems = _map(expenseHierarchy, (h) => {
+        return (
+          <li className={"list-group-item list-group-item-level-" + h.level} key={h.txnType.guid}>
+            {h.txnType.name}
+            <span className="pull-right">
+              {txnAmtTotal(h.txnType.guid)}
+            </span>
+          </li>
+        )
       })
     }
 
@@ -37,9 +51,14 @@ class Month extends React.Component {
         <div className="container">
           <h1>{this.moment.format("MMMM 'YY")}</h1>
 
-          <ul className="list-group">
-            {listItems}
-          </ul>
+          <div className="card">
+            <div className="card-header">
+              Expense Trasnaction Types
+            </div>
+            <ul className="list-group list-group-flush">
+              {listItems}
+            </ul>
+          </div>
         </div>
       </div>
     )

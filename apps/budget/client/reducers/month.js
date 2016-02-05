@@ -2,7 +2,14 @@ import u from 'updeep'
 
 import { ActionTypes as AT } from '../actions/month'
 
-export default function plannedTxns(state = {}, action) {
+const initialState = {
+  rollups: {
+    isFetching: false,
+    rollups: [],
+  }
+}
+
+export default function plannedTxns(state = initialState, action) {
 
   switch (action.type) {
 
