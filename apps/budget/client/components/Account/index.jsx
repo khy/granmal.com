@@ -6,7 +6,7 @@ import Navbar from '../Navbar'
 import EditTxnModal from './Modal/EditTxn'
 import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
-import TxnModal from './Modal/Txn'
+import AddTxnModal from './Modal/AddTxn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
 import {
@@ -93,8 +93,8 @@ class Account extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.addPlannedTxn.bind(this)}
       />
-    } else if (this.props.account.activeModal === 'txnModal') {
-      modal = <TxnModal {...this.props.txnModal}
+    } else if (this.props.account.activeModal === 'addTxnModal') {
+      modal = <AddTxnModal {...this.props.addTxnModal}
         app={this.props.app}
         accountGuid={this.props.params.accountGuid}
         onClose={this.hideModal.bind(this)}

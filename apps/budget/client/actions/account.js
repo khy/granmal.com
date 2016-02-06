@@ -3,6 +3,8 @@ import _map from 'lodash/collection/map'
 import client from 'budget/client/lib/client'
 
 export const ActionTypes = {
+  AddTxnsReceive: 'AddTxnsReceive',
+  AddTxnsRequest: 'AddTxnsRequest',
   EditTxnModalShow: 'EditTxnModalShow',
   EditTxnReceive: 'EditTxnReceive',
   EditTxnRequest: 'EditTxnRequest',
@@ -14,8 +16,6 @@ export const ActionTypes = {
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
   PlannedTxnModalShow: 'PlannedTxnModalShow',
-  TxnsAddReceive: 'TxnsAddReceive',
-  TxnsAddRequest: 'TxnsAddRequest',
   TxnsFetchReceive: 'TxnsFetchReceive',
   TxnsFetchRequest: 'TxnsFetchRequest',
   TxnModalShow: 'TxnModalShow',
@@ -42,13 +42,13 @@ export function addPlannedTxn(newPlannedTxn) {
 export function addTxn(newTxn) {
   return function (dispatch) {
     dispatch({
-      type: AT.TxnsAddRequest
+      type: AT.AddTxnsRequest
     })
 
     client.post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
-        type: AT.TxnsAddReceive,
+        type: AT.AddTxnsReceive,
         txn
       })
     })

@@ -5,7 +5,7 @@ import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export default class Txn extends React.Component {
+export default class NewTxn extends React.Component {
 
   close(event) {
     event.preventDefault()

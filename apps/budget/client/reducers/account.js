@@ -3,6 +3,9 @@ import u from 'updeep'
 import { ActionTypes as AT } from '../actions/account'
 
 export const initialState = {
+  addTxnModal: {
+    isPosting: false
+  },
   editTxnModal: {
     isPosting: false
   },
@@ -22,6 +25,19 @@ export const initialState = {
 export default function account(state = initialState, action) {
 
   switch (action.type) {
+
+    case AT.AddTxnsReceive:
+      return u({
+        activeModal: undefined,
+        lastUserAction: {
+          type: 'AddTxn',
+          txn: action.txn,
+        },
+        addTxnModal: {isPosting: false}
+      }, state)
+
+    case AT.AddTxnsRequest:
+      return u({addTxnModal: {isPosting: true}}, state)
 
     case AT.EditTxnModalShow:
       return u({
@@ -82,19 +98,6 @@ export default function account(state = initialState, action) {
     case AT.PlannedTxnModalShow:
       return u({activeModal: 'plannedTxnModal'}, state)
 
-    case AT.TxnsAddReceive:
-      return u({
-        activeModal: undefined,
-        lastUserAction: {
-          type: 'AddTxn',
-          txn: action.txn,
-        },
-        txnModal: {isPosting: false}
-      }, state)
-
-    case AT.TxnsAddRequest:
-      return u({txnModal: {isPosting: true}}, state)
-
     case AT.TxnsFetchReceive:
       return u({txns: {
         isFetching: false,
@@ -106,7 +109,7 @@ export default function account(state = initialState, action) {
       return u({txns: {isFetching: true}}, state)
 
     case AT.TxnModalShow:
-      return u({activeModal: 'txnModal'}, state)
+      return u({activeModal: 'addTxnModal'}, state)
 
     default:
       return state
