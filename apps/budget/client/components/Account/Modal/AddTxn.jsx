@@ -1,11 +1,17 @@
-var React = require('react')
-var _map = require('lodash/collection/map')
+import React from 'react'
+import _map from 'lodash/collection/map'
+import Select from 'react-select'
 
 import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 export default class NewTxn extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   close(event) {
     event.preventDefault()
@@ -17,7 +23,7 @@ export default class NewTxn extends React.Component {
 
     const newTxn = {
       accountGuid: this.props.accountGuid,
-      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
+      transactionTypeGuid: this.state.selectedTxnTypeGuid,
       amount: parseFloat(this.refs.amountInput.value),
       date: normalizeDateInput(this.refs.dateInput.value)
     }
@@ -30,11 +36,15 @@ export default class NewTxn extends React.Component {
     this.props.onNewTxnType()
   }
 
+  selectTxnType(option) {
+    this.setState({selectedTxnTypeGuid: option.value})
+  }
+
   render() {
 
     const txnTypeOptions = (
       _map(this.props.app.txnTypes, (txnType) => {
-        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
+        return { value: txnType.guid, label: txnType.name}
       })
     )
 
@@ -46,10 +56,12 @@ export default class NewTxn extends React.Component {
             <fieldset disabled={this.props.isFetching}>
               <fieldset className="form-group">
                 <label>Transaction Type</label>
-                <select ref="txnTypeGuidSelect" className="form-control">
-                  {txnTypeOptions}
-                </select>
-                <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
+                <Select
+                  name="txnType"
+                  options={txnTypeOptions}
+                  value={this.state.selectedTxnTypeGuid}
+                  onChange={this.selectTxnType.bind(this)}
+                />
               </fieldset>
 
               <fieldset className="form-group">
