@@ -14,6 +14,14 @@ export default class TxnsCard extends React.Component {
     this.props.onNew()
   }
 
+  onEditTxn(event) {
+    const txn = _find(this.props.results, (txn) => {
+      return txn.guid === event.target.dataset.guid
+    })
+
+    this.props.onEdit(txn)
+  }
+
   render() {
     let rows
 
@@ -33,6 +41,7 @@ export default class TxnsCard extends React.Component {
             <td>{formatDate(txn.date)}</td>
             <td>{txn.amount}</td>
             <td>{txnType.name}</td>
+            <td><a onClick={this.onEditTxn.bind(this)} data-guid={txn.guid} href="#">Edit</a></td>
           </tr>
         )
       })
@@ -63,6 +72,7 @@ export default class TxnsCard extends React.Component {
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Type</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

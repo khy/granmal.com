@@ -3,6 +3,11 @@ import _map from 'lodash/collection/map'
 import client from 'budget/client/lib/client'
 
 export const ActionTypes = {
+  EditTxnModalShow: 'EditTxnModalShow',
+  EditTxnReceive: 'EditTxnReceive',
+  EditTxnRequest: 'EditTxnRequest',
+  DeleteTxnReceive: 'DeleteTxnReceive',
+  DeleteTxnRequest: 'DeleteTxnRequest',
   HideModal: 'HideModal',
   PlannedTxnsAddReceive: 'PlannedTxnsAddReceive',
   PlannedTxnsAddRequest: 'PlannedTxnsAddRequest',
@@ -44,6 +49,39 @@ export function addTxn(newTxn) {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.TxnsAddReceive,
+        txn
+      })
+    })
+  }
+}
+
+export function editTxn(oldTxn, attrs) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.EditTxnRequest
+    })
+
+    client.post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
+      dispatch(fetchTxns(oldTxn.accountGuid))
+      dispatch({
+        type: AT.EditTxnReceive,
+        oldTxn,
+        newTxn,
+      })
+    })
+  }
+}
+
+export function deleteTxn(txn) {
+  return function (dispatch) {
+    dispatch({
+      type: AT.DeleteTxnRequest
+    })
+
+    client.delete('/transactions/' + txn.guid).then(() => {
+      dispatch(fetchTxns(txn.accountGuid))
+      dispatch({
+        type: AT.DeleteTxnReceive,
         txn
       })
     })

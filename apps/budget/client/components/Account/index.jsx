@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import Navbar from '../Navbar'
+import EditTxnModal from './Modal/EditTxn'
 import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
 import TxnModal from './Modal/Txn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
 import {
-  ActionTypes as AT, addPlannedTxn, addTxn,
+  ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
@@ -26,6 +27,14 @@ class Account extends React.Component {
   componentWillMount() {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
+  }
+
+  deleteTxn(txn) {
+    this.props.dispatch(deleteTxn(txn))
+  }
+
+  editTxn(txn, attrs) {
+    this.props.dispatch(editTxn(txn, attrs))
   }
 
   onNewPlannedTxn() {
@@ -54,6 +63,10 @@ class Account extends React.Component {
 
   showMenu() {
     this.setState({menuToggled: true})
+  }
+
+  showEditTxnModal(txn) {
+    this.props.dispatch({type: AT.EditTxnModalShow, txn})
   }
 
   hideMenu() {
@@ -87,6 +100,13 @@ class Account extends React.Component {
         onClose={this.hideModal.bind(this)}
         onAdd={this.addTxn.bind(this)}
       />
+    } else if (this.props.account.activeModal === 'editTxnModal') {
+      modal = <EditTxnModal {...this.props.account.editTxnModal}
+        app={this.props.app}
+        onClose={this.hideModal.bind(this)}
+        onEdit={this.editTxn.bind(this)}
+        onDelete={this.deleteTxn.bind(this)}
+      />
     }
 
     return (
@@ -107,6 +127,7 @@ class Account extends React.Component {
           <Txns {...this.props.account.txns}
             onNew={this.onNewTxn.bind(this)}
             onNewPage={this.onNewTxnPage.bind(this)}
+            onEdit={this.showEditTxnModal.bind(this)}
             app={this.props.app}
           />
         </div>
