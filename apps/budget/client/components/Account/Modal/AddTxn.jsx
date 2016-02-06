@@ -1,10 +1,10 @@
 import React from 'react'
-import _map from 'lodash/collection/map'
-import Select from 'react-select'
 
-import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
+
+import { normalizeDateInput } from 'budget/client/lib/date'
+import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 
 export default class NewTxn extends React.Component {
 
@@ -36,18 +36,11 @@ export default class NewTxn extends React.Component {
     this.props.onNewTxnType()
   }
 
-  selectTxnType(option) {
-    this.setState({selectedTxnTypeGuid: option.value})
+  selectTxnTypeGuid(guid) {
+    this.setState({selectedTxnTypeGuid: guid})
   }
 
   render() {
-
-    const txnTypeOptions = (
-      _map(this.props.app.txnTypes, (txnType) => {
-        return { value: txnType.guid, label: txnType.name}
-      })
-    )
-
     return (
       <Modal>
         <ModalHeader>New Transaction</ModalHeader>
@@ -56,11 +49,10 @@ export default class NewTxn extends React.Component {
             <fieldset disabled={this.props.isFetching}>
               <fieldset className="form-group">
                 <label>Transaction Type</label>
-                <Select
-                  name="txnType"
-                  options={txnTypeOptions}
+                <TxnTypeSelect
+                  txnTypes={this.props.app.txnTypes}
                   value={this.state.selectedTxnTypeGuid}
-                  onChange={this.selectTxnType.bind(this)}
+                  onChange={this.selectTxnTypeGuid.bind(this)}
                 />
               </fieldset>
 
