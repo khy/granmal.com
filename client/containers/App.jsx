@@ -1,5 +1,5 @@
-var React = require('react')
-var ReactDom = require('react-dom')
+import React from 'react'
+import ReactDom from 'react-dom'
 import Navbar from 'client/components/nav/Navbar'
 
 require('../stylesheets/app.scss')
@@ -7,20 +7,15 @@ require('../stylesheets/app.scss')
 class App extends React.Component {
 
   render() {
-    const appData = [
+    const apps = [
       {
         key: 'budget',
         name: 'Budget',
         description: 'Personal finances for obsessive compulsives.',
       },
-      {
-        key: 'haikunst',
-        name: 'Haikunst',
-        description: 'Like Twitter, but with haikus.',
-      },
     ]
 
-    const cards = appData.map( app => {
+    const cards = apps.map( app => {
       return (
         <div className="card-app-link" key={app.key}>
           <div className="card-block">
