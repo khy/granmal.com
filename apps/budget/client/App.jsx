@@ -15,6 +15,7 @@ import { login } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'
 import Account from './components/Account'
+import Contexts from './components/Contexts'
 import Month from './components/Month'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypes from './components/TxnTypes'
@@ -85,6 +86,7 @@ render(
       <Route path="/budget" component={ConnectedApp}>
         <IndexRoute component={Overview} />
         <Route path="account/:accountGuid" component={Account} />
+        <Route path="contexts" component={Contexts} />
         <Route path="months/:year/:month" component={Month} />
         <Route path="plannedTransactions" component={PlannedTxns} />
         <Route path="transactionTypes" component={TxnTypes} />
