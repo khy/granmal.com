@@ -1,5 +1,6 @@
 var React = require('react')
 var ReactDom = require('react-dom')
+import Navbar from 'client/components/nav/Navbar'
 
 require('../stylesheets/app.scss')
 
@@ -34,11 +35,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <nav className="navbar navbar-light bg-faded">
-          <div className="container">
-            <h1 className="navbar-brand" href="#">Gran Mal</h1>
-          </div>
-        </nav>
+        <Navbar title="Gran Mal" titleUrl="/" />
 
         <div className="container">
           {cards}

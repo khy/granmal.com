@@ -1,20 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router'
+import Navbar from 'client/components/nav/Navbar'
 
-export default class Navbar extends React.Component {
-
-  render() {
-    return (
-      <nav className="navbar navbar-light bg-faded">
-        <div className="container">
-          <Link to="/budget" className="navbar-brand">Budget</Link>
-
-          <button onClick={this.props.onMenuClick} className="navbar-toggler pull-right" type="button">
-            &#9776;
-          </button>
-        </div>
-      </nav>
-    )
-  }
-
+export default function BudgetNavbar(props) {
+  return <Navbar {...props} title="Budget" titleUrl="/budget" />
 }
