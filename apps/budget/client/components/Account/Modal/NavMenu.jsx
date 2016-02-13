@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-import { BaseNavMenu, NavMenuLink } from 'budget/client/components/navMenu'
+import { NavMenu as BaseNavMenu, NavMenuLink } from 'client/components/nav/navMenu'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 

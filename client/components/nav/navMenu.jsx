@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export class BaseNavMenu extends React.Component {
+export class NavMenu extends React.Component {
 
   close(event) {
     event.preventDefault()
@@ -27,4 +27,6 @@ export class BaseNavMenu extends React.Component {
 
 }
 
-export const NavMenuLink = (props) => <Link {...props} className="list-group-item">{props.children}</Link>
+export function NavMenuLink(props) {
+  return <Link {...props} className="list-group-item">{props.children}</Link>
+}
