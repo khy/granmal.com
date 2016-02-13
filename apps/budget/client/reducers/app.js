@@ -10,6 +10,7 @@ export const initialState = {
   prestitialDismissed: false,
   accounts: [],
   accountTypes: [],
+  contexts: [],
   txnTypes: [],
 }
 
@@ -31,6 +32,9 @@ export default function app(state = initialState, action) {
 
     case AT.SetAccountTypes:
       return u({ accountTypes: action.accountTypes }, state)
+
+    case AT.SetContexts:
+      return u({ contexts: action.contexts }, state)
 
     case AT.SetTxnTypes:
       return u({ txnTypes: action.txnTypes }, state)

@@ -10,6 +10,7 @@ export const ActionTypes = {
   HideModal: 'HideModal',
   SetAccounts: 'SetAccounts',
   SetAccountTypes: 'SetAccountTypes',
+  SetContexts: 'SetContexts',
   SetTxnTypes: 'SetTxnTypes',
 }
 
@@ -22,11 +23,13 @@ export function bootstrap() {
     Promise.all([
       client.get('/accounts'),
       client.get('/accountTypes'),
+      client.get('/contexts'),
       client.get('/transactionTypes'),
     ]).then( (results) => {
       dispatch({ type: AT.SetAccounts, accounts: results[0] })
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
-      dispatch({ type: AT.SetTxnTypes, txnTypes: results[2] })
+      dispatch({ type: AT.SetContexts, contexts: results[2] })
+      dispatch({ type: AT.SetTxnTypes, txnTypes: results[3] })
       dispatch({ type: AT.BootstrapReceived })
     })
   }
@@ -44,6 +47,14 @@ export function fetchAccountTypes() {
   return function (dispatch) {
     client.get('/accountTypes').then( accountTypes => {
       dispatch({ type: AT.SetAccountTypes, accountTypes })
+    })
+  }
+}
+
+export function fetchContexts() {
+  return function (dispatch) {
+    client.get('/contexts').then( contexts => {
+      dispatch({ type: AT.SetContexts, contexts })
     })
   }
 }
