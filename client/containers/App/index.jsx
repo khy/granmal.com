@@ -1,10 +1,30 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+
 import Navbar from 'client/components/nav/Navbar'
 
-require('../stylesheets/app.scss')
+import NavMenu from './Modal/NavMenu'
+
+require('../../stylesheets/app.scss')
 
 class App extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {navMenuToggled: false}
+  }
+
+  showNavMenu() {
+    this.setState({navMenuToggled: true})
+  }
+
+  hideNavMenu() {
+    this.setState({navMenuToggled: false})
+  }
+
+  logOut() {
+    console.log("LOG OUT")
+  }
 
   render() {
     const apps = [
@@ -14,6 +34,15 @@ class App extends React.Component {
         description: 'Personal finances for obsessive compulsives.',
       },
     ]
+
+    let modal
+
+    if (this.state.navMenuToggled) {
+      modal = <NavMenu
+        onLogOut={this.logOut.bind(this)}
+        onClose={this.hideNavMenu.bind(this)}
+      />
+    }
 
     const cards = apps.map( app => {
       return (
@@ -30,11 +59,13 @@ class App extends React.Component {
 
     return (
       <div>
-        <Navbar title="Gran Mal" titleUrl="/" />
+        <Navbar title="Gran Mal!" titleUrl="/" onMenuClick={this.showNavMenu.bind(this)} />
 
         <div className="container">
           {cards}
         </div>
+
+        {modal}
       </div>
     )
   }
