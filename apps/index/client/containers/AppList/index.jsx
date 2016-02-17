@@ -37,6 +37,7 @@ class App extends React.Component {
 
     if (this.state.navMenuToggled) {
       modal = <NavMenu
+        account={this.props.auth.account}
         onLogOut={this.logOut.bind(this)}
         onClose={this.hideNavMenu.bind(this)}
       />

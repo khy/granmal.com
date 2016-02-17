@@ -7,15 +7,24 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 
+import config from 'client/config'
+
+import reducer from './reducer'
 import AppList from './containers/AppList'
 
 require('./app.scss')
 
-const reducer = (state = {}, action) => state
+const initialState = {
+  auth: {
+    account: config.account
+  }
+}
 
-const store = applyMiddleware(
+const enhancer = applyMiddleware(
   thunkMiddleware//, createLogger()
-)(createStore)(reducer)
+)
+
+const store = createStore(reducer, initialState, enhancer)
 
 class App extends React.Component {
   render() {
