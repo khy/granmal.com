@@ -11,7 +11,7 @@ import u from 'updeep'
 import config from './config'
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
-import { login } from 'client/actions/auth'
+import { logIn } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'
 import Account from './components/Account'
@@ -32,7 +32,7 @@ class App extends React.Component {
 
   login(email, password) {
     event.preventDefault()
-    this.props.dispatch(login(email, password))
+    this.props.dispatch(logIn(email, password))
   }
 
   dismissPrestitial() {

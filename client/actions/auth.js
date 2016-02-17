@@ -3,7 +3,7 @@ require('isomorphic-fetch')
 
 export const SetAccount = 'SetAccount'
 
-export function login(email, password) {
+export function logIn(email, password) {
   return function (dispatch) {
     fetch('/auth/session', {
       method: 'post',
