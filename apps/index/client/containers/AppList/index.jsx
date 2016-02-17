@@ -1,11 +1,9 @@
 import React from 'react'
-import ReactDom from 'react-dom'
+import { connect } from 'react-redux'
 
 import Navbar from 'client/components/nav/Navbar'
 
 import NavMenu from './Modal/NavMenu'
-
-require('../../stylesheets/app.scss')
 
 class App extends React.Component {
 
@@ -59,7 +57,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <Navbar title="Gran Mal!" titleUrl="/" onMenuClick={this.showNavMenu.bind(this)} />
+        <Navbar title="Gran Mal" titleUrl="/" onMenuClick={this.showNavMenu.bind(this)} />
 
         <div className="container">
           {cards}
@@ -72,4 +70,4 @@ class App extends React.Component {
 
 }
 
-ReactDom.render(<App/>, document.querySelector('#app'))
+export default connect((state) => state)(App)

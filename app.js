@@ -5,9 +5,9 @@ var bodyParser = require('body-parser')
 var authMiddleware = require('./server/middleware/auth')
 
 var Budget = require('./apps/budget/server/app')
+var Index = require('./apps/index/server')
 
 var AuthRouter = require('./server/routers/auth')
-var BaseRouter = require('./server/routers/base')
 
 var app = express()
 
@@ -20,10 +20,10 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(authMiddleware)
 
-app.use('/budget', Budget)
-
 app.use('/auth', AuthRouter)
-app.use('/', BaseRouter)
+
+app.use('/budget', Budget)
+app.use('/', Index)
 
 app.listen(3000, err => {
   if (err) {

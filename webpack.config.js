@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     budget: './apps/budget/client/App.jsx',
-    index: './client/containers/App/index.jsx'
+    index: './apps/index/client/App.jsx'
   },
   output: {
     filename: './public/bundle/[name].js'
