@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Navbar from 'client/components/nav/Navbar'
+import { logOut } from 'client/actions/auth'
 
 import NavMenu from './Modal/NavMenu'
 
@@ -21,7 +22,7 @@ class App extends React.Component {
   }
 
   logOut() {
-    console.log("LOG OUT")
+    this.props.dispatch(logOut())
   }
 
   render() {

@@ -27,4 +27,11 @@ router.post('/session', (req, res) => {
   })
 })
 
+router.delete('/session', (req, res) => {
+  res.
+    clearCookie('GRANMAL_ACCOUNT_GUID', { httpOnly: true }).
+    status(204).
+    send()
+})
+
 module.exports = router

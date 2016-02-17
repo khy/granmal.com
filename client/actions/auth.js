@@ -20,3 +20,14 @@ export function login(email, password) {
     })
   }
 }
+
+export function logOut() {
+  return function (dispatch) {
+    fetch('/auth/session', {
+      method: 'delete',
+      credentials: 'same-origin',
+    }).then((account) => {
+      dispatch({ type: SetAccount, undefined })
+    })
+  }
+}

@@ -20,11 +20,9 @@ const initialState = {
   }
 }
 
-const enhancer = applyMiddleware(
-  thunkMiddleware//, createLogger()
-)
-
-const store = createStore(reducer, initialState, enhancer)
+const store = applyMiddleware(
+  thunkMiddleware //, createLogger()
+)(createStore)(reducer, initialState)
 
 class App extends React.Component {
   render() {
