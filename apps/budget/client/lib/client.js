@@ -57,4 +57,12 @@ export class Client {
 
 }
 
-export default new Client(config.uselessBaseUrl, config.uselessAccessToken.token)
+let client
+
+export default function client() {
+  if (!client && config && config.uselessBaseUrl && config.uselessAccessToken.token) {
+    client = new Client(config.uselessBaseUrl, config.uselessAccessToken.token)
+  }
+
+  return client
+}

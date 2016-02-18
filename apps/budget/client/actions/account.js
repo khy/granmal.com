@@ -29,7 +29,7 @@ export function addPlannedTxn(newPlannedTxn) {
       type: AT.PlannedTxnsAddRequest
     })
 
-    client.post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
+    client().post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
       dispatch(fetchPlannedTxns(plannedTxn.accountGuid))
       dispatch({
         type: AT.PlannedTxnsAddReceive,
@@ -45,7 +45,7 @@ export function addTxn(newTxn) {
       type: AT.AddTxnsRequest
     })
 
-    client.post('/transactions', newTxn).then((txn) => {
+    client().post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.AddTxnsReceive,
@@ -61,7 +61,7 @@ export function editTxn(oldTxn, attrs) {
       type: AT.EditTxnRequest
     })
 
-    client.post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
+    client().post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
       dispatch(fetchTxns(oldTxn.accountGuid))
       dispatch({
         type: AT.EditTxnReceive,
@@ -78,7 +78,7 @@ export function deleteTxn(txn) {
       type: AT.DeleteTxnRequest
     })
 
-    client.delete('/transactions/' + txn.guid).then(() => {
+    client().delete('/transactions/' + txn.guid).then(() => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.DeleteTxnReceive,
@@ -94,7 +94,7 @@ export function fetchPlannedTxns(accountGuid, page = 1) {
 
     const url = '/plannedTransactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    client.get(url, true).then(response  => {
+    client().get(url, true).then(response  => {
       response.json().then(plannedTxns => {
         dispatch({
           type: AT.PlannedTxnsFetchReceive,
@@ -112,7 +112,7 @@ export function fetchTxns(accountGuid, page = 1) {
 
     const url = '/transactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    client.get(url, true).then( response => {
+    client().get(url, true).then( response => {
       response.json().then(txns => {
         dispatch({
           type: AT.TxnsFetchReceive,

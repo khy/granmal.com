@@ -53,7 +53,7 @@ export function addAccount(newAccount) {
       type: AT.AddAccountRequest
     })
 
-    client.post('/accounts', newAccount).then((account) => {
+    client().post('/accounts', newAccount).then((account) => {
       dispatch(fetchAccounts(true))
       dispatch(fetchProjectionsCard(null, true))
       dispatch({
@@ -70,7 +70,7 @@ export function addTransfer(newTransfer) {
       type: AT.AddTransferRequest
     })
 
-    client.post('/transfers', newTransfer).then((transfer) => {
+    client().post('/transfers', newTransfer).then((transfer) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchTxnsCard(true))
       dispatch({
@@ -87,7 +87,7 @@ export function addTxn(newTxn) {
       type: AT.AddTxnRequest
     })
 
-    client.post('/transactions', newTxn).then((txn) => {
+    client().post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchTxnsCard(true))
       dispatch({
@@ -104,7 +104,7 @@ export function confirmPlannedTxn(newTxn) {
       type: AT.ConfirmPlannedTxnRequest
     })
 
-    client.post('/transactions', newTxn).then((txn) => {
+    client().post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
       dispatch(fetchTxnsCard(true))
@@ -123,7 +123,7 @@ export function deletePlannedTxn(guid) {
       type: AT.DeletePlannedTxnRequest
     })
 
-    client.delete('/plannedTransactions/' + guid).then(() => {
+    client().delete('/plannedTransactions/' + guid).then(() => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
       dispatch({
@@ -140,7 +140,7 @@ export function fetchPlannedTxnsCard(force = false) {
       type: AT.PlannedTxnsCardRequest
     })
 
-    client.get('/plannedTransactions').then((plannedTxns) => {
+    client().get('/plannedTransactions').then((plannedTxns) => {
       dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
     })
   }
@@ -157,7 +157,7 @@ export function fetchProjectionsCard(date, force = false) {
 
     const formattedDate = formatDateForModel(_date)
 
-    client.get('/projections?date=' + formattedDate).then((projections) => {
+    client().get('/projections?date=' + formattedDate).then((projections) => {
       dispatch({ type: AT.ProjectionsCardReceive, projections })
     })
   }
@@ -169,7 +169,7 @@ export function fetchTxnsCard(force = false) {
       type: AT.TxnsCardRequest
     })
 
-    client.get('/transactions').then((txns) => {
+    client().get('/transactions').then((txns) => {
       dispatch({ type: AT.TxnsCardReceive, txns })
     })
   }

@@ -19,7 +19,7 @@ export function addTxnType(newTxnType) {
   return function (dispatch) {
     dispatch({ type: AT.AddTxnTypeRequest })
 
-    client.post('/transactionTypes', newTxnType).then((txnType) => {
+    client().post('/transactionTypes', newTxnType).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AddTxnTypeReceive,
@@ -33,7 +33,7 @@ export function adjustTxnType(guid, attributes) {
   return function (dispatch) {
     dispatch({ type: AT.AdjustTxnTypeRequest })
 
-    client.post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
+    client().post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AdjustTxnTypeReceive,

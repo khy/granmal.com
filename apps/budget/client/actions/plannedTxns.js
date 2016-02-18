@@ -13,7 +13,7 @@ export function fetchPlannedTxns() {
   return function (dispatch) {
     dispatch({ type: AT.PlannedTxnsRequest })
 
-    client.get('/plannedTransactions').then( plannedTxns => {
+    client().get('/plannedTransactions').then( plannedTxns => {
       dispatch({
         type: AT.PlannedTxnsReceive,
         results: plannedTxns,

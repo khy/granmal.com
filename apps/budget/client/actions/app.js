@@ -21,10 +21,10 @@ export function bootstrap() {
     dispatch({ type: AT.BootstrapRequested })
 
     Promise.all([
-      client.get('/accounts'),
-      client.get('/accountTypes'),
-      client.get('/contexts'),
-      client.get('/transactionTypes'),
+      client().get('/accounts'),
+      client().get('/accountTypes'),
+      client().get('/contexts'),
+      client().get('/transactionTypes'),
     ]).then( (results) => {
       dispatch({ type: AT.SetAccounts, accounts: results[0] })
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
@@ -37,7 +37,7 @@ export function bootstrap() {
 
 export function fetchAccounts() {
   return function (dispatch) {
-    client.get('/accounts').then( accounts => {
+    client().get('/accounts').then( accounts => {
       dispatch({ type: AT.SetAccounts, accounts })
     })
   }
@@ -45,7 +45,7 @@ export function fetchAccounts() {
 
 export function fetchAccountTypes() {
   return function (dispatch) {
-    client.get('/accountTypes').then( accountTypes => {
+    client().get('/accountTypes').then( accountTypes => {
       dispatch({ type: AT.SetAccountTypes, accountTypes })
     })
   }
@@ -53,7 +53,7 @@ export function fetchAccountTypes() {
 
 export function fetchContexts() {
   return function (dispatch) {
-    client.get('/contexts').then( contexts => {
+    client().get('/contexts').then( contexts => {
       dispatch({ type: AT.SetContexts, contexts })
     })
   }
@@ -61,7 +61,7 @@ export function fetchContexts() {
 
 export function fetchTxnTypes() {
   return function (dispatch) {
-    client.get('/transactionTypes').then( txnTypes => {
+    client().get('/transactionTypes').then( txnTypes => {
       dispatch({ type: AT.SetTxnTypes, txnTypes })
     })
   }
