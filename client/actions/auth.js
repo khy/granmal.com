@@ -5,7 +5,7 @@ export const SetAccount = 'SetAccount'
 
 export function logIn(email, password) {
   return function (dispatch) {
-    fetch('/auth/session', {
+    return fetch('/auth/session', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -23,7 +23,7 @@ export function logIn(email, password) {
 
 export function logOut() {
   return function (dispatch) {
-    fetch('/auth/session', {
+    return fetch('/auth/session', {
       method: 'delete',
       credentials: 'same-origin',
     }).then((account) => {

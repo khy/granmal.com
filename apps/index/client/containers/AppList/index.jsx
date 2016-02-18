@@ -22,7 +22,8 @@ class App extends React.Component {
   }
 
   logOut() {
-    this.props.dispatch(logOut())
+    return this.props.dispatch(logOut()).
+      then(() => this.hideNavMenu())
   }
 
   render() {
