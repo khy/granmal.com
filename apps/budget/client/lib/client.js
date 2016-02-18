@@ -2,6 +2,7 @@ import es6Promise from 'es6-promise'
 es6Promise.polyfill()
 
 import 'isomorphic-fetch'
+import _find from 'lodash/collection/find'
 
 import config from 'budget/client/config'
 
@@ -59,9 +60,23 @@ export class Client {
 
 let client
 
-export default function client() {
-  if (!client && config && config.uselessBaseUrl && config.uselessAccessToken.token) {
-    client = new Client(config.uselessBaseUrl, config.uselessAccessToken.token)
+export default function client(state) {
+  if (
+    !client &&
+    config && config.uselessBaseUrl &&
+    state && state.auth && state.auth.account
+  ) {
+    const uselessAccessToken = _find(state.auth.account.access_tokens, (accessToken) => {
+      return accessToken.oauth_provider === 'useless'
+    })
+
+    if (uselessAccessToken) {
+      client = new Client(config.uselessBaseUrl, uselessAccessToken.token)
+    }
+  }
+
+  if (!client) {
+    throw "Cannot instantiate Client due to unmet preconditions"
   }
 
   return client

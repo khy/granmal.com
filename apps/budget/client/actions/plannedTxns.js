@@ -10,10 +10,10 @@ export const ActionTypes = {
 const AT = ActionTypes
 
 export function fetchPlannedTxns() {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.PlannedTxnsRequest })
 
-    client().get('/plannedTransactions').then( plannedTxns => {
+    client(getState()).get('/plannedTransactions').then( plannedTxns => {
       dispatch({
         type: AT.PlannedTxnsReceive,
         results: plannedTxns,

@@ -16,10 +16,10 @@ export const ActionTypes = {
 const AT = ActionTypes
 
 export function addTxnType(newTxnType) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.AddTxnTypeRequest })
 
-    client().post('/transactionTypes', newTxnType).then((txnType) => {
+    client(getState()).post('/transactionTypes', newTxnType).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AddTxnTypeReceive,
@@ -30,10 +30,10 @@ export function addTxnType(newTxnType) {
 }
 
 export function adjustTxnType(guid, attributes) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.AdjustTxnTypeRequest })
 
-    client().post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
+    client(getState()).post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AdjustTxnTypeReceive,

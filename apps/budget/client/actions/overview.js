@@ -48,12 +48,12 @@ export const UserActionTypes = {
 }
 
 export function addAccount(newAccount) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.AddAccountRequest
     })
 
-    client().post('/accounts', newAccount).then((account) => {
+    client(getState()).post('/accounts', newAccount).then((account) => {
       dispatch(fetchAccounts(true))
       dispatch(fetchProjectionsCard(null, true))
       dispatch({
@@ -65,12 +65,12 @@ export function addAccount(newAccount) {
 }
 
 export function addTransfer(newTransfer) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.AddTransferRequest
     })
 
-    client().post('/transfers', newTransfer).then((transfer) => {
+    client(getState()).post('/transfers', newTransfer).then((transfer) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchTxnsCard(true))
       dispatch({
@@ -82,12 +82,12 @@ export function addTransfer(newTransfer) {
 }
 
 export function addTxn(newTxn) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.AddTxnRequest
     })
 
-    client().post('/transactions', newTxn).then((txn) => {
+    client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchTxnsCard(true))
       dispatch({
@@ -99,12 +99,12 @@ export function addTxn(newTxn) {
 }
 
 export function confirmPlannedTxn(newTxn) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.ConfirmPlannedTxnRequest
     })
 
-    client().post('/transactions', newTxn).then((txn) => {
+    client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
       dispatch(fetchTxnsCard(true))
@@ -118,12 +118,12 @@ export function confirmPlannedTxn(newTxn) {
 }
 
 export function deletePlannedTxn(guid) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.DeletePlannedTxnRequest
     })
 
-    client().delete('/plannedTransactions/' + guid).then(() => {
+    client(getState()).delete('/plannedTransactions/' + guid).then(() => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
       dispatch({
@@ -135,12 +135,12 @@ export function deletePlannedTxn(guid) {
 }
 
 export function fetchPlannedTxnsCard(force = false) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.PlannedTxnsCardRequest
     })
 
-    client().get('/plannedTransactions').then((plannedTxns) => {
+    client(getState()).get('/plannedTransactions').then((plannedTxns) => {
       dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
     })
   }
@@ -157,19 +157,19 @@ export function fetchProjectionsCard(date, force = false) {
 
     const formattedDate = formatDateForModel(_date)
 
-    client().get('/projections?date=' + formattedDate).then((projections) => {
+    client(getState()).get('/projections?date=' + formattedDate).then((projections) => {
       dispatch({ type: AT.ProjectionsCardReceive, projections })
     })
   }
 }
 
 export function fetchTxnsCard(force = false) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.TxnsCardRequest
     })
 
-    client().get('/transactions').then((txns) => {
+    client(getState()).get('/transactions').then((txns) => {
       dispatch({ type: AT.TxnsCardReceive, txns })
     })
   }

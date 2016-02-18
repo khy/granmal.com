@@ -24,12 +24,12 @@ export const ActionTypes = {
 const AT = ActionTypes
 
 export function addPlannedTxn(newPlannedTxn) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.PlannedTxnsAddRequest
     })
 
-    client().post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
+    client(getState()).post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
       dispatch(fetchPlannedTxns(plannedTxn.accountGuid))
       dispatch({
         type: AT.PlannedTxnsAddReceive,
@@ -40,12 +40,12 @@ export function addPlannedTxn(newPlannedTxn) {
 }
 
 export function addTxn(newTxn) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.AddTxnsRequest
     })
 
-    client().post('/transactions', newTxn).then((txn) => {
+    client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.AddTxnsReceive,
@@ -56,12 +56,12 @@ export function addTxn(newTxn) {
 }
 
 export function editTxn(oldTxn, attrs) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.EditTxnRequest
     })
 
-    client().post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
+    client(getState()).post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
       dispatch(fetchTxns(oldTxn.accountGuid))
       dispatch({
         type: AT.EditTxnReceive,
@@ -73,12 +73,12 @@ export function editTxn(oldTxn, attrs) {
 }
 
 export function deleteTxn(txn) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({
       type: AT.DeleteTxnRequest
     })
 
-    client().delete('/transactions/' + txn.guid).then(() => {
+    client(getState()).delete('/transactions/' + txn.guid).then(() => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch({
         type: AT.DeleteTxnReceive,
@@ -89,12 +89,12 @@ export function deleteTxn(txn) {
 }
 
 export function fetchPlannedTxns(accountGuid, page = 1) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.PlannedTxnsFetchRequest })
 
     const url = '/plannedTransactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    client().get(url, true).then(response  => {
+    client(getState()).get(url, true).then(response  => {
       response.json().then(plannedTxns => {
         dispatch({
           type: AT.PlannedTxnsFetchReceive,
@@ -107,12 +107,12 @@ export function fetchPlannedTxns(accountGuid, page = 1) {
 }
 
 export function fetchTxns(accountGuid, page = 1) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.TxnsFetchRequest })
 
     const url = '/transactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
-    client().get(url, true).then( response => {
+    client(getState()).get(url, true).then( response => {
       response.json().then(txns => {
         dispatch({
           type: AT.TxnsFetchReceive,

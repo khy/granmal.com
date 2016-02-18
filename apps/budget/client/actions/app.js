@@ -17,14 +17,14 @@ export const ActionTypes = {
 const AT = ActionTypes
 
 export function bootstrap() {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     dispatch({ type: AT.BootstrapRequested })
 
     Promise.all([
-      client().get('/accounts'),
-      client().get('/accountTypes'),
-      client().get('/contexts'),
-      client().get('/transactionTypes'),
+      client(getState()).get('/accounts'),
+      client(getState()).get('/accountTypes'),
+      client(getState()).get('/contexts'),
+      client(getState()).get('/transactionTypes'),
     ]).then( (results) => {
       dispatch({ type: AT.SetAccounts, accounts: results[0] })
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
@@ -36,32 +36,32 @@ export function bootstrap() {
 }
 
 export function fetchAccounts() {
-  return function (dispatch) {
-    client().get('/accounts').then( accounts => {
+  return function (dispatch, getState) {
+    client(getState()).get('/accounts').then( accounts => {
       dispatch({ type: AT.SetAccounts, accounts })
     })
   }
 }
 
 export function fetchAccountTypes() {
-  return function (dispatch) {
-    client().get('/accountTypes').then( accountTypes => {
+  return function (dispatch, getState) {
+    client(getState()).get('/accountTypes').then( accountTypes => {
       dispatch({ type: AT.SetAccountTypes, accountTypes })
     })
   }
 }
 
 export function fetchContexts() {
-  return function (dispatch) {
-    client().get('/contexts').then( contexts => {
+  return function (dispatch, getState) {
+    client(getState()).get('/contexts').then( contexts => {
       dispatch({ type: AT.SetContexts, contexts })
     })
   }
 }
 
 export function fetchTxnTypes() {
-  return function (dispatch) {
-    client().get('/transactionTypes').then( txnTypes => {
+  return function (dispatch, getState) {
+    client(getState()).get('/transactionTypes').then( txnTypes => {
       dispatch({ type: AT.SetTxnTypes, txnTypes })
     })
   }
