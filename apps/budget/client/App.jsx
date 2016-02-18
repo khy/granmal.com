@@ -24,11 +24,35 @@ import Login from 'client/components/auth/Login'
 
 require("./app.scss")
 
+const initialState = {
+  auth: {
+    account: config.account
+  }
+}
+
 const store = applyMiddleware(
   thunkMiddleware//, createLogger()
-)(createStore)(reducer)
+)(createStore)(reducer, initialState)
 
 class App extends React.Component {
+
+  componentWillMount() {
+    this.bootstrap(this.props)
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.bootstrap(newProps)
+  }
+
+  bootstrap(props) {
+    if (
+      props.auth.account &&
+      !props.app.isBootstrapped &&
+      !props.app.isBootstrapping
+    ) {
+      this.props.dispatch(bootstrap())
+    }
+  }
 
   login(email, password) {
     event.preventDefault()
@@ -42,11 +66,7 @@ class App extends React.Component {
   }
 
   render() {
-    const loggedIn = config.account
-
-    if (loggedIn && !this.props.app.isBootstrapped && !this.props.app.isBootstrapping) {
-      this.props.dispatch(bootstrap())
-    }
+    const loggedIn = this.props.auth.account
 
     if (this.props.app.prestitialDismissed) {
       if (loggedIn) {
