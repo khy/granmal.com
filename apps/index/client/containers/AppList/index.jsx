@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Navbar from 'client/components/nav/Navbar'
-import { logOut } from 'client/actions/auth'
+import { LogInModal } from 'client/components/auth/logIn'
+import { logIn, logOut } from 'client/actions/auth'
+
 
 import NavMenu from './Modal/NavMenu'
 
@@ -10,20 +12,29 @@ class App extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {navMenuToggled: false}
+    this.state = {}
   }
 
   showNavMenu() {
-    this.setState({navMenuToggled: true})
+    this.setState({activeModal: 'navMenu'})
   }
 
-  hideNavMenu() {
-    this.setState({navMenuToggled: false})
+  showLogIn() {
+    this.setState({activeModal: 'logIn'})
+  }
+
+  hideModal() {
+    this.setState({activeModal: undefined})
+  }
+
+  logIn(email, password) {
+    return this.props.dispatch(logIn(email, password)).
+      then(() => this.hideModal())
   }
 
   logOut() {
     return this.props.dispatch(logOut()).
-      then(() => this.hideNavMenu())
+      then(() => this.hideModal())
   }
 
   render() {
@@ -37,11 +48,17 @@ class App extends React.Component {
 
     let modal
 
-    if (this.state.navMenuToggled) {
+    if (this.state.activeModal === 'navMenu') {
       modal = <NavMenu
         account={this.props.auth.account}
         onLogOut={this.logOut.bind(this)}
-        onClose={this.hideNavMenu.bind(this)}
+        onLogIn={this.showLogIn.bind(this)}
+        onClose={this.hideModal.bind(this)}
+      />
+    } else if (this.state.activeModal === 'logIn') {
+      modal = <LogInModal
+        onLogIn={this.logIn.bind(this)}
+        onClose={this.hideModal.bind(this)}
       />
     }
 

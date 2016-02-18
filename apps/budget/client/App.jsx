@@ -8,6 +8,8 @@ import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
+import { FullPageLogIn } from 'client/components/auth/logIn'
+
 import config from './config'
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
@@ -20,7 +22,6 @@ import Month from './components/Month'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypes from './components/TxnTypes'
 import Prestitial from 'client/components/ads/Prestitial'
-import Login from 'client/components/auth/Login'
 
 require("./app.scss")
 
@@ -54,7 +55,7 @@ class App extends React.Component {
     }
   }
 
-  login(email, password) {
+  logIn(email, password) {
     event.preventDefault()
     this.props.dispatch(logIn(email, password))
   }
@@ -75,9 +76,9 @@ class App extends React.Component {
         return (
           <div>
             <Navbar />
-            <Login
+            <FullPageLogIn
               message="You must log in to use Budget."
-              onLogin={this.login.bind(this)}
+              onLogIn={this.logIn.bind(this)}
             />
           </div>
         )
