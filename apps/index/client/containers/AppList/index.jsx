@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { logIn, logOut } from 'client/actions/auth'
 import Navbar from 'client/components/nav/Navbar'
 import { LogInModal } from 'client/components/auth/logIn'
-import { logIn, logOut } from 'client/actions/auth'
-
+import { Alert } from 'client/components/bootstrap/alert'
 
 import NavMenu from './Modal/NavMenu'
+import { alertSuccess, alertWarning } from 'index/client/actions'
 
 class App extends React.Component {
 
@@ -28,13 +29,17 @@ class App extends React.Component {
   }
 
   logIn(email, password) {
-    return this.props.dispatch(logIn(email, password)).
-      then(() => this.hideModal())
+    return this.props.dispatch(logIn(email, password)).then(() => {
+      this.props.dispatch(alertSuccess('You logged in successfully!'))
+      this.hideModal()
+    })
   }
 
   logOut() {
-    return this.props.dispatch(logOut()).
-      then(() => this.hideModal())
+    return this.props.dispatch(logOut()).then(() => {
+      this.props.dispatch(alertWarning('You logged out.'))
+      this.hideModal()
+    })
   }
 
   render() {
@@ -62,6 +67,14 @@ class App extends React.Component {
       />
     }
 
+    let alert
+
+    if (this.props.index.alert) {
+      alert = <Alert context={this.props.index.alert.context}>
+        {this.props.index.alert.message}
+      </Alert>
+    }
+
     const cards = apps.map( app => {
       return (
         <div className="card-app-link" key={app.key}>
@@ -80,6 +93,7 @@ class App extends React.Component {
         <Navbar title="Gran Mal" titleUrl="/" onMenuClick={this.showNavMenu.bind(this)} />
 
         <div className="container">
+          {alert}
           {cards}
         </div>
 
