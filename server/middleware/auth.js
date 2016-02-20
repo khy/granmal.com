@@ -1,6 +1,6 @@
 'use strict'
 
-var MongoClient = require('mongodb').MongoClient
+var pg = require('pg')
 
 var config = require('../config')
 
@@ -24,12 +24,10 @@ const auth = (req, res, next) => {
   const accountGuid = req.cookies['GRANMAL_ACCOUNT_GUID']
 
   if (accountGuid) {
-    MongoClient.connect(config.mongo.url, (err, db) => {
-      const collection = db.collection('accounts')
-
-      collection.find({_id: accountGuid}).toArray((err, docs) => {
-        db.close()
-        const account = docs[0]
+    pg.connect(config.pg.url, (err, client, done) => {
+      client.query('select * from accounts where guid = $1', [accountGuid], (err, result) => {
+        done()
+        const account = result.rows[0]
 
         if (account) {
           console.log('auth: Logged in as ' + account.handle)

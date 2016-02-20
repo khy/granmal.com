@@ -1,20 +1,18 @@
 var router = require('express').Router()
-var MongoClient = require('mongodb').MongoClient
+var pg = require('pg')
 var bcrypt = require('bcrypt')
 var config = require('../config')
 
 router.post('/session', (req, res) => {
-  MongoClient.connect(config.mongo.url, (err, db) => {
-    const collection = db.collection('accounts')
+  pg.connect(config.pg.url, (err, client, done) => {
+    client.query('select * from accounts where email = $1', [req.body.email], (err, result) => {
+      done()
+      const account = result.rows[0]
 
-    collection.find({ email: req.body.email }).toArray((err, docs) => {
-      db.close()
-      const account = docs[0]
-
-      bcrypt.compare(req.body.password, account.password, (err, match) => {
+      bcrypt.compare(req.body.password, account.password_hash, (err, match) => {
         if (match) {
           res.
-            cookie('GRANMAL_ACCOUNT_GUID', account._id, { httpOnly: true }).
+            cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
             status(201).
             send(account)
         } else {
