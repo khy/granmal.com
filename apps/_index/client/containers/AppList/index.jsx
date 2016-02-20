@@ -7,7 +7,7 @@ import { LogInModal } from 'client/components/auth/logIn'
 import { Alert } from 'client/components/bootstrap/alert'
 
 import NavMenu from './Modal/NavMenu'
-import { alertSuccess, alertWarning } from 'index/client/actions'
+import { alertSuccess, alertWarning } from '_index/client/actions'
 
 class App extends React.Component {
 

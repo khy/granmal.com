@@ -5,7 +5,7 @@ var bodyParser = require('body-parser')
 var authMiddleware = require('./server/middleware/auth')
 
 var Budget = require('./apps/budget/server/app')
-var Index = require('./apps/index/server')
+var Index = require('./apps/_index/server')
 
 var AuthRouter = require('./server/routers/auth')
 
