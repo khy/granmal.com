@@ -14,6 +14,7 @@ class RichAccount {
   }
 
   get uselessAccessToken() {
+    console.log(this.raw)
     return this.raw.access_tokens.find( accessToken => {
       return accessToken.oauth_provider === 'useless'
     })
@@ -30,13 +31,16 @@ const auth = (req, res, next) => {
         const account = result.rows[0]
 
         if (account) {
-          console.log('auth: Logged in as ' + account.handle)
-          req.account = new RichAccount(account)
+          client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
+            account.access_tokens = result.rows
+            console.log('auth: Logged in as ' + account.handle)
+            req.account = new RichAccount(account)
+            next()
+          })
         } else {
           console.log('auth: No account for \'GRANMAL_ACCOUNT_GUID\' cookie')
+          next()
         }
-
-        next()
       })
     })
   } else {

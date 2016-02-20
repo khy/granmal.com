@@ -11,10 +11,14 @@ router.post('/session', (req, res) => {
 
       bcrypt.compare(req.body.password, account.password_hash, (err, match) => {
         if (match) {
-          res.
-            cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
-            status(201).
-            send(account)
+          client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
+            account.access_tokens = result.rows
+
+            res.
+              cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
+              status(201).
+              send(account)
+          })
         } else {
           res.
             status(401).
