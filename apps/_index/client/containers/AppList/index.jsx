@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { logIn, logOut } from 'client/actions/auth'
+import { logIn, signUp, logOut } from 'client/actions/auth'
 import Navbar from 'client/components/nav/Navbar'
 import { LogInModal } from 'client/components/auth/logIn'
+import { SignUpModal } from 'client/components/auth/signUp'
 import { Alert } from 'client/components/bootstrap/alert'
 
 import NavMenu from './Modal/NavMenu'
@@ -24,6 +25,10 @@ class App extends React.Component {
     this.setState({activeModal: 'logIn'})
   }
 
+  showSignUp() {
+    this.setState({activeModal: 'signUp'})
+  }
+
   hideModal() {
     this.setState({activeModal: undefined})
   }
@@ -31,6 +36,13 @@ class App extends React.Component {
   logIn(email, password) {
     return this.props.dispatch(logIn(email, password)).then(() => {
       this.props.dispatch(alertSuccess('You logged in successfully!'))
+      this.hideModal()
+    })
+  }
+
+  signUp(email, handle, name, password) {
+    return this.props.dispatch(signUp(email, handle, name, password)).then(() => {
+      this.props.dispatch(alertSuccess('You signed up successfully!'))
       this.hideModal()
     })
   }
@@ -58,6 +70,7 @@ class App extends React.Component {
         account={this.props.auth.account}
         onLogOut={this.logOut.bind(this)}
         onLogIn={this.showLogIn.bind(this)}
+        onSignUp={this.showSignUp.bind(this)}
         onClose={this.hideModal.bind(this)}
       />
     } else if (this.state.activeModal === 'logIn') {
@@ -65,7 +78,13 @@ class App extends React.Component {
         onLogIn={this.logIn.bind(this)}
         onClose={this.hideModal.bind(this)}
       />
+    } else if (this.state.activeModal === 'signUp') {
+      modal = <SignUpModal
+        onSignUp={this.signUp.bind(this)}
+        onClose={this.hideModal.bind(this)}
+      />
     }
+
 
     let alert
 

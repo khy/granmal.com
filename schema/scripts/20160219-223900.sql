@@ -5,8 +5,10 @@ CREATE TABLE accounts (
   handle text NOT NULL,
   name text,
   password_hash text NOT NULL,
-  created_at timestamptz,
-  updated_at timestamptz
+  created_at timestamptz NOT NULL default now(),
+  updated_at timestamptz NOT NULL default now(),
+  deleted_at timestamptz,
+  deleted_by bigint REFERENCES accounts
 );
 
 CREATE INDEX accounts_guid_idx ON accounts (guid);
@@ -26,10 +28,13 @@ CREATE TABLE access_tokens (
   token text NOT NULL,
   code text,
   scopes text[],
-  created_at timestamptz
+  created_at timestamptz NOT NULL default now(),
+  created_by bigint NOT NULL REFERENCES accounts,
+  deleted_at timestamptz,
+  deleted_by bigint REFERENCES accounts
 );
 
 CREATE INDEX access_tokens_account_id_idx ON access_tokens (account_id);
 
-INSERT INTO access_tokens (account_id, oauth_provider, resource_owner_id, token, code, scopes, created_at) VALUES
-  ((SELECT id FROM accounts WHERE handle = 'khy'), 'useless', '2a436fb0-7336-4f19-bde7-61570c05640c', '71a6828a-d20f-4fa6-8b2b-05a254487bda', '335d3cf9-8d3d-4335-b25d-eb8f57625d6e', '{}', timestamp '2015-02-28T02:27:22.781Z');
+INSERT INTO access_tokens (account_id, oauth_provider, resource_owner_id, token, code, scopes, created_at, created_by) VALUES
+  ((SELECT id FROM accounts WHERE handle = 'khy'), 'useless', '2a436fb0-7336-4f19-bde7-61570c05640c', '71a6828a-d20f-4fa6-8b2b-05a254487bda', '335d3cf9-8d3d-4335-b25d-eb8f57625d6e', '{}', timestamp '2015-02-28T02:27:22.781Z', (SELECT id FROM accounts WHERE handle = 'khy'));
