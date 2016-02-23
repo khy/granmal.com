@@ -1,8 +1,13 @@
+const uselessBaseUrl = 'http://localhost:9000'
+
 module.exports = {
-  mongo: {
-    url: "mongodb://localhost/granmal_dev",
-  },
   pg: {
-    url: "postgres://localhost/granmal_dev",
+    url: 'postgres://localhost/granmal_dev',
+  },
+  useless: {
+    accessToken: 'dummy',
+    urls: {
+      core: (uselessBaseUrl + '/core'),
+    },
   }
 }

@@ -2,21 +2,20 @@
 
 var request = require('request-promise')
 
-var config = require('./config')
+class BaseClient {
 
-class Client {
-
-  constructor(account) {
-    this.auth = account.uselessAccessToken.token
+  constructor(baseUrl, auth) {
+    this.baseUrl = baseUrl
+    this.auth = auth
   }
 
-  static fullPath(path) {
-    return config.useless.baseUrl + path
+  fullPath(path) {
+    return this.baseUrl + path
   }
 
   get(path, qs) {
     return request({
-      uri: Client.fullPath(path),
+      uri: this.fullPath(path),
       qs: qs,
       headers: {
         'Authorization': this.auth
@@ -29,7 +28,7 @@ class Client {
   post(path, body) {
     return request({
       method: 'POST',
-      uri: Client.fullPath(path),
+      uri: this.fullPath(path),
       headers: {
         'Authorization': this.auth,
         'Content-Type': 'application/json'
@@ -42,7 +41,7 @@ class Client {
   delete(path) {
     return request({
       method: 'DELETE',
-      uri: Client.fullPath(path),
+      uri: this.fullPath(path),
       headers: {
         'Authorization': this.auth
       }
@@ -51,4 +50,4 @@ class Client {
 
 }
 
-module.exports = Client
+module.exports = BaseClient

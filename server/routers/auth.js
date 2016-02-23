@@ -2,8 +2,10 @@ var router = require('express').Router()
 var pg = require('pg')
 var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
+const _find = require('lodash/collection/find')
 
 var config = require('../config')
+var TrustedUselessClient = require('../clients/TrustedUselessClient')
 
 router.post('/session', (req, res) => {
   pg.connect(config.pg.url, (err, client, done) => {
@@ -56,20 +58,79 @@ router.post('/accounts', (req, res) => {
 
       client.query(insert, values, (err, result) => {
         done()
-        const id = result.rows[0].id
+        const newAccountId = result.rows[0].id
 
-        client.query('select * from accounts where id = $1', [id], (err, result) => {
-          done()
-          const account = result.rows[0]
-
-          res.
-            cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
-            status(201).
-            send(account)
+        getAccountForId(newAccountId, (account) => {
+          ensureUselessAccessToken(account, (accountWithUselessAccessToken) => {
+            res.
+              cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
+              status(201).
+              send(accountWithUselessAccessToken)
+          })
         })
       })
     })
   })
 })
+
+const trustedUselessClient = new TrustedUselessClient(config)
+
+function ensureUselessAccessToken(account, cb) {
+  const uselessAccessToken = _find(account.access_tokens, (accessToken) => {
+    return accessToken.oauth_provider === 'useless'
+  })
+
+  if (uselessAccessToken) {
+    cb(acount)
+  } else {
+    trustedUselessClient.getUserByEmail(account.email).then((uselessUser) => {
+      if (uselessUser) {
+        createUselessAccessToken(account, uselessUser, () => {
+          getAccountForId(account.id, cb)
+        })
+      } else {
+        trustedUselessClient.createUser(account.email, account.handle, account.name).then((uselessUser) => {
+          createUselessAccessToken(account, uselessUser, () => {
+            getAccountForId(account.id, cb)
+          })
+        })
+      }
+    })
+  }
+}
+
+function createUselessAccessToken(account, uselessUser, cb) {
+  trustedUselessClient.createAccessToken(uselessUser.guid).then((accessToken) => {
+    const insert = (
+      `INSERT INTO access_tokens (account_id, oauth_provider, resource_ower_id, token, scopes, created_by)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+    )
+
+    const values = [
+      accessToken.resourceOwner.guid,
+      'useless',
+      account.id,
+      accessToken.guid,
+      accessToken.scopes,
+      account.id
+    ]
+
+    client.query(insert, values, (err, result) => { cb() })
+  })
+}
+
+function getAccountForId(id, cb) {
+  pg.connect(config.pg.url, (err, client, done) => {
+    client.query('select * from accounts where id = $1', [id], (err, result) => {
+      const account = result.rows[0]
+
+      client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
+        done()
+        account.access_tokens = result.rows
+        cb(account)
+      })
+    })
+  })
+}
 
 module.exports = router
