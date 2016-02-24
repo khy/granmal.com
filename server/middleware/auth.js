@@ -14,7 +14,6 @@ class RichAccount {
   }
 
   get uselessAccessToken() {
-    console.log(this.raw)
     return this.raw.access_tokens.find( accessToken => {
       return accessToken.oauth_provider === 'useless'
     })

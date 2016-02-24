@@ -101,21 +101,26 @@ function ensureUselessAccessToken(account, cb) {
 
 function createUselessAccessToken(account, uselessUser, cb) {
   trustedUselessClient.createAccessToken(uselessUser.guid).then((accessToken) => {
-    const insert = (
-      `INSERT INTO access_tokens (account_id, oauth_provider, resource_ower_id, token, scopes, created_by)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
-    )
+    pg.connect(config.pg.url, (err, client, done) => {
+      const insert = (
+        `INSERT INTO access_tokens (account_id, oauth_provider, resource_owner_id, token, scopes, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+      )
 
-    const values = [
-      accessToken.resourceOwner.guid,
-      'useless',
-      account.id,
-      accessToken.guid,
-      accessToken.scopes,
-      account.id
-    ]
+      const values = [
+        account.id,
+        'useless',
+        accessToken.resource_owner.guid,
+        accessToken.guid,
+        accessToken.scopes,
+        account.id
+      ]
 
-    client.query(insert, values, (err, result) => { cb() })
+      client.query(insert, values, (err, result) => {
+        done()
+        cb(result.rows.id)
+      })
+    })
   })
 }
 

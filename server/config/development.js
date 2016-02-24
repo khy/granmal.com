@@ -5,7 +5,7 @@ module.exports = {
     url: 'postgres://localhost/granmal_dev',
   },
   useless: {
-    accessToken: 'dummy',
+    accessToken: process.env.USELESS_ACCESS_TOKEN,
     urls: {
       core: (uselessBaseUrl + '/core'),
     },
