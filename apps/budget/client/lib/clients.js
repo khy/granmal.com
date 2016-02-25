@@ -2,18 +2,21 @@ import _find from 'lodash/collection/find'
 
 import Client from 'client/lib/Client'
 
-let client
+export function budgetClient(state) { return uselessClient(state, 'budget') }
+export function coreClient(state) { return uselessClient(state, 'core') }
 
-export default function client(state) {
-  if (!client) {
+let clients = {}
+
+function uselessClient(state, api) {
+  if (!clients[api]) {
     const uselessAccessToken = _find(state.auth.account.access_tokens, (accessToken) => {
       return accessToken.oauth_provider === 'useless'
     })
 
     if (uselessAccessToken) {
-      client = new Client(state.config.useless.urls.budget, uselessAccessToken.token)
+      clients[api] = new Client(state.config.useless.urls[api], uselessAccessToken.token)
     }
   }
 
-  return client
+  return clients[api]
 }
