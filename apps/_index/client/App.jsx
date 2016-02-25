@@ -14,15 +14,9 @@ import AppList from './containers/AppList'
 
 require('./app.scss')
 
-const initialState = {
-  auth: {
-    account: config.account
-  }
-}
-
 const store = applyMiddleware(
   thunkMiddleware //, createLogger()
-)(createStore)(reducer, initialState)
+)(createStore)(reducer, window.__INITIAL_STATE__)
 
 class App extends React.Component {
   render() {

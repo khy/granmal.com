@@ -9,4 +9,9 @@ import overview from './overview'
 import plannedTxns from './plannedTxns'
 import txnTypes from './txnTypes'
 
-export default combineReducers({ account, app, auth, month, overview, plannedTxns, txnTypes })
+const emptyReducer = (state = {}, action) => state
+const config = emptyReducer
+
+export default combineReducers({
+  account, app, auth, config, month, overview, plannedTxns, txnTypes
+})

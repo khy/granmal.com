@@ -8,9 +8,9 @@ html(lang="en")
   body
     div(id="app")
 
-    if config
+    if initialState
       script(type="text/javascript").
-        config = !{JSON.stringify(config)}
+        window.__INITIAL_STATE__ = !{JSON.stringify(initialState)}
 
     script(src="/bundle/#{key}.js")
 

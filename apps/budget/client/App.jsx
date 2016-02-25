@@ -10,7 +10,6 @@ import u from 'updeep'
 
 import { FullPageLogIn } from 'client/components/auth/logIn'
 
-import config from './config'
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
 import { logIn } from 'client/actions/auth'
@@ -25,15 +24,9 @@ import Prestitial from 'client/components/ads/Prestitial'
 
 require("./app.scss")
 
-const initialState = {
-  auth: {
-    account: config.account
-  }
-}
-
 const store = applyMiddleware(
   thunkMiddleware//, createLogger()
-)(createStore)(reducer, initialState)
+)(createStore)(reducer, window.__INITIAL_STATE__)
 
 class App extends React.Component {
 

@@ -1,27 +1,18 @@
 import _find from 'lodash/collection/find'
 
 import Client from 'client/lib/Client'
-import config from 'budget/client/config'
 
 let client
 
 export default function client(state) {
-  if (
-    !client &&
-    config && config.uselessBaseUrl &&
-    state && state.auth && state.auth.account
-  ) {
+  if (!client) {
     const uselessAccessToken = _find(state.auth.account.access_tokens, (accessToken) => {
       return accessToken.oauth_provider === 'useless'
     })
 
     if (uselessAccessToken) {
-      client = new Client(config.uselessBaseUrl, uselessAccessToken.token)
+      client = new Client(state.config.useless.urls.budget, uselessAccessToken.token)
     }
-  }
-
-  if (!client) {
-    throw "Cannot instantiate Client due to unmet preconditions"
   }
 
   return client

@@ -1,5 +1,10 @@
+const uselessBaseUrl = 'http://localhost:9000'
+
 module.exports = {
   useless: {
-    baseUrl: 'http://localhost:9000/budget'
+    urls: {
+      core: (uselessBaseUrl + '/core'),
+      budget: (uselessBaseUrl + '/budget')
+    }
   }
 }
