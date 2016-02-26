@@ -5,6 +5,7 @@ import _map from 'lodash/collection/map'
 import Navbar from '../Navbar'
 import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
+import { addContextUser } from 'budget/client/actions/contexts'
 import AddUserModal from './Modal/AddUser'
 
 class Contexts extends React.Component {
@@ -16,7 +17,10 @@ class Contexts extends React.Component {
 
   showAddUserModal(event) {
     event.preventDefault()
-    this.setState({activeModal: 'addUser'})
+    this.setState({
+      activeModal: 'addUser',
+      selectedContextGuid: event.target.dataset.guid,
+    })
   }
 
   hideModal() {
@@ -24,7 +28,7 @@ class Contexts extends React.Component {
   }
 
   addUser(guid) {
-    console.log(guid)
+    this.props.dispatch(addContextUser(this.state.selectedContextGuid, guid))
   }
 
   render() {
