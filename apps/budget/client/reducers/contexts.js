@@ -2,7 +2,11 @@ import u from 'updeep'
 
 import { ActionTypes as AT } from '../actions/contexts'
 
-export default function txnTypes(state = {}, action) {
+const initialState = {
+  modal: undefined
+}
+
+export default function contexts(state = initialState, action) {
 
   switch (action.type) {
 
@@ -10,7 +14,11 @@ export default function txnTypes(state = {}, action) {
       return u({modal: {isPosting: true}}, state)
 
     case AT.AddContextUserReceive:
+    case AT.HideContextModal:
       return u({modal: undefined}, state)
+
+    case AT.ShowAddContextUserModal:
+      return u({modal: {type: 'addContextUser', contextGuid: action.contextGuid}}, state)
 
     default:
       return state

@@ -6,6 +6,8 @@ import { fetchContexts } from 'budget/client/actions/app'
 export const ActionTypes = {
   AddContextUserReceive: 'AddContextUserReceive',
   AddContextUserRequest: 'AddContextUserRequest',
+  HideContextModal: 'HideContextModal',
+  ShowAddContextUserModal: 'ShowAddContextUserModal',
 }
 
 const AT = ActionTypes

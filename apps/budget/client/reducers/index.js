@@ -4,6 +4,7 @@ import auth from 'client/reducers/auth'
 
 import account from './account'
 import app from './app'
+import contexts from './contexts'
 import month from './month'
 import overview from './overview'
 import plannedTxns from './plannedTxns'
@@ -13,5 +14,5 @@ const emptyReducer = (state = {}, action) => state
 const config = emptyReducer
 
 export default combineReducers({
-  account, app, auth, config, month, overview, plannedTxns, txnTypes
+  account, app, auth, config, contexts, month, overview, plannedTxns, txnTypes
 })
