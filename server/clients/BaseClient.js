@@ -21,7 +21,6 @@ class BaseClient {
         'Authorization': this.auth
       },
       json: true,
-      resolveWithFullResponse: true,
     })
   }
 
