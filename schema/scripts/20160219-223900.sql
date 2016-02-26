@@ -11,9 +11,9 @@ CREATE TABLE accounts (
   deleted_by bigint REFERENCES accounts
 );
 
-CREATE INDEX accounts_guid_idx ON accounts (guid);
-CREATE INDEX accounts_email_idx ON accounts (email);
-CREATE INDEX accounts_handle_idx ON accounts (handle);
+CREATE UNIQUE INDEX accounts_guid_idx ON accounts (guid);
+CREATE UNIQUE INDEX accounts_email_idx ON accounts (email);
+CREATE UNIQUE INDEX accounts_handle_idx ON accounts (handle);
 CREATE INDEX accounts_name_idx ON accounts (name);
 
 INSERT INTO accounts (guid, email, handle, name, password_hash, created_at, updated_at) VALUES
