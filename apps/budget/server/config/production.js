@@ -1,4 +1,4 @@
-const uselessBaseUrl = 'http://useless.io/budget'
+const uselessBaseUrl = 'http://useless.io'
 
 module.exports = {
   useless: {

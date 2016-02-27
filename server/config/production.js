@@ -1,8 +1,13 @@
+const uselessBaseUrl = 'http://useless.io'
+
 module.exports = {
-  mongo: {
-    url: process.env.MONGO_URL,
-  },
   pg: {
     url: process.env.PG_URL,
   },
+  useless: {
+    accessToken: process.env.USELESS_ACCESS_TOKEN,
+    urls: {
+      core: (uselessBaseUrl + '/core'),
+    },
+  }
 }
