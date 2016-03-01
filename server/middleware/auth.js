@@ -25,6 +25,10 @@ const auth = (req, res, next) => {
 
   if (accountGuid) {
     pg.connect(config.pg.url, (err, client, done) => {
+      if (err) {
+        return console.error('error fetching client from pool', err)
+      }
+
       client.query('select * from accounts where guid = $1', [accountGuid], (err, result) => {
         done()
         const account = result.rows[0]
