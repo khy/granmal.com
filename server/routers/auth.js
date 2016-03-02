@@ -18,10 +18,12 @@ router.post('/session', (req, res) => {
           client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
             account.access_tokens = result.rows
 
-            res.
-              cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
-              status(201).
-              send(account)
+            ensureUselessAccessToken(account, (account) => {
+              res.
+                cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
+                status(201).
+                send(account)
+            })
           })
         } else {
           res.
@@ -81,7 +83,7 @@ function ensureUselessAccessToken(account, cb) {
   })
 
   if (uselessAccessToken) {
-    cb(acount)
+    cb(account)
   } else {
     trustedUselessClient.getUserByEmail(account.email).then((uselessUser) => {
       if (uselessUser) {
