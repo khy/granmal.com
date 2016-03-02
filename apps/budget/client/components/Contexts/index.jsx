@@ -27,8 +27,6 @@ class Contexts extends React.Component {
   render() {
     let modal
 
-    console.log(this.props)
-
     if (this.props.contexts.modal) {
       if (this.props.contexts.modal.type === 'addContextUser') {
         modal = <AddUserModal

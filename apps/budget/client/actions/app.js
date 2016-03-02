@@ -29,9 +29,30 @@ export function bootstrap() {
       dispatch({ type: AT.SetAccounts, accounts: results[0] })
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
       dispatch({ type: AT.SetContexts, contexts: results[2] })
+      dispatch(ensureUserContext())
       dispatch({ type: AT.SetTxnTypes, txnTypes: results[3] })
       dispatch({ type: AT.BootstrapReceived })
     })
+  }
+}
+
+export function ensureUserContext() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const uselessAccessToken = state.auth.account.access_tokens.find((accessToken) => {
+      return accessToken.oauth_provider === 'useless'
+    })
+    const existingContexts = state.app.contexts
+    const userContext = existingContexts.find((context) => {
+      return context.createdBy.guid === uselessAccessToken.resource_owner_id
+    })
+
+    if (!userContext) {
+      const attrs = {name: 'Default', userGuids: [uselessAccessToken.resource_owner_id]}
+      client(state).post('/contexts', attrs).then( context => {
+        dispatch({ type: AT.SetContexts, contexts: [context,...existingContexts] })
+      })
+    }
   }
 }
 
