@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { formatDateForModel } from 'budget/client/lib/date'
+import { uselessResourceOwnerId } from 'budget/client/lib/authAccount'
 
 export const ActionTypes = {
   BootstrapReceived: 'BootstrapReceived',
@@ -39,16 +40,14 @@ export function bootstrap() {
 export function ensureUserContext() {
   return function (dispatch, getState) {
     const state = getState()
-    const uselessAccessToken = state.auth.account.access_tokens.find((accessToken) => {
-      return accessToken.oauth_provider === 'useless'
-    })
+    const userGuid = uselessResourceOwnerId(state.auth.account)
     const existingContexts = state.app.contexts
     const userContext = existingContexts.find((context) => {
-      return context.createdBy.guid === uselessAccessToken.resource_owner_id
+      return context.createdBy.guid === userGuid
     })
 
     if (!userContext) {
-      const attrs = {name: 'Default', userGuids: [uselessAccessToken.resource_owner_id]}
+      const attrs = {name: 'Default', userGuids: [userGuid]}
       client(state).post('/contexts', attrs).then( context => {
         dispatch({ type: AT.SetContexts, contexts: [context,...existingContexts] })
       })
