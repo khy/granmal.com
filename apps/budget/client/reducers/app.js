@@ -27,6 +27,9 @@ export default function app(state = initialState, action) {
     case AT.DismissPrestitial:
       return u({ prestitialDismissed: true }, state)
 
+    case AT.SelectContext:
+      return u({ selectedContextGuid: action.guid }, state)
+
     case AT.SetAccounts:
       return u({ accounts: action.accounts }, state)
 

@@ -1,4 +1,8 @@
 import moment from 'moment'
+import es6Promise from 'es6-promise'
+es6Promise.polyfill()
+
+import 'isomorphic-fetch'
 
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { formatDateForModel } from 'budget/client/lib/date'
@@ -12,6 +16,7 @@ export const ActionTypes = {
   SetAccounts: 'SetAccounts',
   SetAccountTypes: 'SetAccountTypes',
   SetContexts: 'SetContexts',
+  SelectContext: 'SelectContext',
   SetTxnTypes: 'SetTxnTypes',
 }
 
@@ -83,6 +88,22 @@ export function fetchTxnTypes() {
   return function (dispatch, getState) {
     client(getState()).get('/transactionTypes').then( txnTypes => {
       dispatch({ type: AT.SetTxnTypes, txnTypes })
+    })
+  }
+}
+
+export function selectContext(guid) {
+  return function (dispatch, getState) {
+    return fetch('/budget/accountAppState', {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ selectedContextGuid: guid }),
+      credentials: 'same-origin',
+    }).then((data) => {
+      dispatch({ type: AT.SelectContext, guid })
     })
   }
 }

@@ -5,11 +5,15 @@ import _map from 'lodash/collection/map'
 import Navbar from '../Navbar'
 import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
-import { addContextUser } from 'budget/client/actions/contexts'
-import { ActionTypes as AT } from 'budget/client/actions/contexts'
+import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
+import { selectContext } from 'budget/client/actions/app'
 import AddUserModal from './Modal/AddUser'
 
 class Contexts extends React.Component {
+
+  selectContext(event) {
+    this.props.dispatch(selectContext(event.target.value))
+  }
 
   showAddUserModal(event) {
     event.preventDefault()
@@ -43,6 +47,15 @@ class Contexts extends React.Component {
       rows = _map(this.props.app.contexts, (context) => {
         return (
           <tr key={context.guid}>
+            <td>
+              <input
+                type="radio"
+                name="selectedContext"
+                value={context.guid}
+                checked={this.props.app.selectedContextGuid === context.guid}
+                onChange={this.selectContext.bind(this)}
+              />
+            </td>
             <td>{context.createdBy.name}</td>
             <td>{context.name}</td>
             <td>{_map(context.users, (user) => user.name).join(", ")}</td>
@@ -69,6 +82,7 @@ class Contexts extends React.Component {
           <table className="table">
             <thead>
               <tr>
+                <th></th>
                 <th>Owner</th>
                 <th>Name</th>
                 <th>Users</th>

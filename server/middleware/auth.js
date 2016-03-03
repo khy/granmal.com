@@ -9,6 +9,10 @@ class RichAccount {
     this.raw = raw
   }
 
+  get id() {
+    return this.raw.id
+  }
+
   get public() {
     return this.raw
   }
