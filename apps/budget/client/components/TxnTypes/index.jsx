@@ -53,17 +53,18 @@ class TxnTypes extends React.Component {
 
     if (this.props.txnTypes.modal) {
       if (this.props.txnTypes.modal.type === ModalTypes.AddTxnType) {
-        const parentTxnType = _find(this.props.app.txnTypes, (txnType) => {
+        const parentTxnType = this.props.app.txnTypes.find((txnType) => {
           return txnType.guid === this.props.txnTypes.modal.parentGuid
         })
 
         modal = <AddTxnTypeModal {...this.props.txnTypes}
+          contextGuid={this.props.app.selectedContextGuid}
           parentTxnType={parentTxnType}
           onAdd={this.addTxnType.bind(this)}
           onClose={this.hideModal.bind(this)}
         />
       } else if (this.props.txnTypes.modal.type === ModalTypes.AdjustTxnType) {
-        const txnType = _find(this.props.app.txnTypes, (txnType) => {
+        const txnType = this.props.app.txnTypes.find((txnType) => {
           return txnType.guid === this.props.txnTypes.modal.guid
         })
 

@@ -15,6 +15,7 @@ export default class AddTxnTypeModal extends React.Component {
     event.preventDefault()
 
     const newTxnType = {
+      contextGuid: this.props.contextGuid,
       parentGuid: this.props.parentTxnType.guid,
       name: this.refs.nameInput.value,
     }

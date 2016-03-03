@@ -12,6 +12,7 @@ export default class AddAccountModal extends React.Component {
     event.preventDefault()
 
     const newAccount = {
+      contextGuid: this.props.contextGuid,
       accountType: this.refs.accountTypeGuidSelect.value,
       name: this.refs.nameInput.value,
       initialBalance: parseFloat(this.refs.initialBalanceInput.value),

@@ -106,6 +106,7 @@ class Overview extends React.Component {
       modal = <NavMenuModal onClose={this.hideMenu.bind(this)} />
     } else if (this.props.overview.activeModal === 'addAccountModal') {
       modal = <AddAccountModal {...this.props.overview.addAccountModal}
+        contextGuid={this.props.app.selectedContextGuid}
         accountTypes={this.props.app.accountTypes}
         onClose={this.hideModal.bind(this)}
         onAdd={this.addAccount.bind(this)}
