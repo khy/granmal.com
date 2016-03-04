@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import _isEmpty from 'lodash/lang/isEmpty'
 
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
@@ -11,7 +12,7 @@ export default class NewTxn extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {rootTxnType: 'expense'}
+    this.state = {rootTxnType: 'expense', errors: {}}
   }
 
   setExpense() {
@@ -30,20 +31,42 @@ export default class NewTxn extends React.Component {
   add(event) {
     event.preventDefault()
 
-    let amount = Math.abs(parseFloat(this.refs.amountInput.value))
+    let errors = {}
 
-    if (this.state.rootTxnType === 'expense') {
-      amount = - amount
+    if (!this.state.selectedTxnTypeGuid) {
+      if (this.state.rootTxnType === 'expense') {
+        errors.txnType = "Expense type is required"
+      } else {
+        errors.txnType = "Income type is required"
+      }
     }
 
-    const newTxn = {
-      accountGuid: this.props.accountGuid,
-      transactionTypeGuid: this.state.selectedTxnTypeGuid,
-      amount: amount,
-      date: normalizeDateInput(this.refs.dateInput.value)
+    if (!this.refs.amountInput.value) {
+      errors.amount = "Amount is required"
     }
 
-    this.props.onAdd(newTxn)
+    if (!this.refs.dateInput.value) {
+      errors.date = "Date is required"
+    }
+
+    if (_isEmpty(errors)) {
+      let amount = Math.abs(parseFloat(this.refs.amountInput.value))
+
+      if (this.state.rootTxnType === 'expense') {
+        amount = - amount
+      }
+
+      const newTxn = {
+        accountGuid: this.props.accountGuid,
+        transactionTypeGuid: this.state.selectedTxnTypeGuid,
+        amount: amount,
+        date: normalizeDateInput(this.refs.dateInput.value)
+      }
+
+      this.props.onAdd(newTxn)
+    } else {
+      this.setState({ errors })
+    }
   }
 
   onNewTxnType(event) {
@@ -73,6 +96,20 @@ export default class NewTxn extends React.Component {
         <span className="input-group-addon text-success">&#43;</span>
         <input ref="amountInput" type="text" className="form-control" />
       </div>
+    }
+
+    let txnTypeError, amountError, dateError
+
+    if (this.state.errors.txnType) {
+      txnTypeError = <span className="text-danger">{this.state.errors.txnType}</span>
+    }
+
+    if (this.state.errors.amount) {
+      amountError = <span className="text-danger">{this.state.errors.amount}</span>
+    }
+
+    if (this.state.errors.date) {
+      dateError = <span className="text-danger">{this.state.errors.date}</span>
     }
 
     return (
@@ -105,17 +142,20 @@ export default class NewTxn extends React.Component {
                   value={this.state.selectedTxnTypeGuid}
                   onChange={this.selectTxnTypeGuid.bind(this)}
                 />
+                {txnTypeError}
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Amount</label>
                 {amountInput}
+                {amountError}
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Date</label>
                 <input ref="dateInput" className="form-control" type="text" defaultValue={formatDate(moment())} />
-              </fieldset>
+                {dateError}
+            </fieldset>
             </fieldset>
           </form>
         </ModalBody>
