@@ -12,9 +12,9 @@ export function Button(props) {
 }
 
 export function PrimaryButton(props) {
-  return <Button {...props} className="btn-primary">{props.children}</Button>
+  return <Button {...props} className={"btn-primary " + props.className}>{props.children}</Button>
 }
 
 export function SecondaryButton(props) {
-  return <Button {...props} className="btn-secondary">{props.children}</Button>
+  return <Button {...props} className={"btn-secondary " + props.className}>{props.children}</Button>
 }

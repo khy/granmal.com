@@ -21,6 +21,16 @@ export default class TxnTypeSelect extends React.Component {
     const expenseOptions = txnTypeOptions(hierarchyForParent(systemTxnTypeByName("Expense")))
     const incomeOptions = txnTypeOptions(hierarchyForParent(systemTxnTypeByName("Income")))
 
+    let options
+
+    if (this.props.rootTxnType == 'expense') {
+      options = expenseOptions
+    } else if (this.props.rootTxnType == 'income') {
+      options = incomeOptions
+    } else {
+      options = expenseOptions.concat(incomeOptions)
+    }
+
     const renderTxnTypeOption = (option) => {
       return <span className={"select-option-level-" + option.level}>{option.label}</span>
     }
@@ -28,7 +38,7 @@ export default class TxnTypeSelect extends React.Component {
     return (
       <Select {...this.props}
         name="txnTypeSelect"
-        options={expenseOptions.concat(incomeOptions)}
+        options={options}
         optionRenderer={renderTxnTypeOption}
         onChange={this.onChange.bind(this)}
       />

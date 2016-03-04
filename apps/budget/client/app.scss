@@ -33,3 +33,7 @@ $i: 0;
   .select-option-level-#{$i} { padding-left: .75rem * $i; }
   $i: $i + 1;
 }
+
+.transaction-type-buttons {
+  margin-bottom: 1rem;
+}
