@@ -16,6 +16,7 @@ export const ActionTypes = {
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
   PlannedTxnModalShow: 'PlannedTxnModalShow',
+  ResolvePlannedTxnModalShow: 'ResolvePlannedTxnModalShow',
   TxnsFetchReceive: 'TxnsFetchReceive',
   TxnsFetchRequest: 'TxnsFetchRequest',
   TxnModalShow: 'TxnModalShow',

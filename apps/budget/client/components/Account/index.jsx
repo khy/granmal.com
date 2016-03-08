@@ -6,6 +6,7 @@ import Navbar from '../Navbar'
 import EditTxnModal from './Modal/EditTxn'
 import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
+import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 import AddTxnModal from './Modal/AddTxn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
@@ -53,6 +54,10 @@ class Account extends React.Component {
     this.props.dispatch(addTxn(txn))
   }
 
+  addTxnToPlannedTxn(plannedTxnGuid, txnGuid) {
+    console.log([addTxnToPlannedTxn, plannedTxnGuid, txnGuid])
+  }
+
   onNewPlannedTxnPage(page) {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, page))
   }
@@ -67,6 +72,10 @@ class Account extends React.Component {
 
   showEditTxnModal(txn) {
     this.props.dispatch({type: AT.EditTxnModalShow, txn})
+  }
+
+  showResolvePlannedTxnModal(plannedTxn) {
+    this.props.dispatch({type: AT.ResolvePlannedTxnModalShow, plannedTxn})
   }
 
   hideMenu() {
@@ -107,6 +116,14 @@ class Account extends React.Component {
         onEdit={this.editTxn.bind(this)}
         onDelete={this.deleteTxn.bind(this)}
       />
+    } else if (this.props.account.activeModal === 'resolvePlannedTxnModal') {
+      modal = <ResolvePlannedTxnModal {...this.props.account.resolvePlannedTxnModal}
+        txnTypes={this.props.app.txnTypes}
+        fixedAccount={account}
+        onClose={this.hideModal.bind(this)}
+        onAddNew={this.addTxn.bind(this)}
+        onAddExisting={this.addTxnToPlannedTxn.bind(this)}
+      />
     }
 
     return (
@@ -120,6 +137,7 @@ class Account extends React.Component {
 
           <PlannedTxns {...this.props.account.plannedTxns}
             onNew={this.onNewPlannedTxn.bind(this)}
+            onResolve={this.showResolvePlannedTxnModal.bind(this)}
             onNewPage={this.onNewPlannedTxnPage.bind(this)}
             app={this.props.app}
           />

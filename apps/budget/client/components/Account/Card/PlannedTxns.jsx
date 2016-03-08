@@ -15,6 +15,16 @@ export default class PlannedTxnsCard extends React.Component {
     this.props.onNew()
   }
 
+  onResolve(event) {
+    event.preventDefault()
+
+    var plannedTxn = _find(this.props.results, (plannedTxn) => {
+      return plannedTxn.guid === event.target.dataset.guid
+    })
+
+    this.props.onResolve(plannedTxn)
+  }
+
   render() {
     let rows
 
@@ -45,6 +55,7 @@ export default class PlannedTxnsCard extends React.Component {
             <td>{date}</td>
             <td>{amount}</td>
             <td>{txnType.name}</td>
+            <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
           </tr>
         )
       })
@@ -75,6 +86,7 @@ export default class PlannedTxnsCard extends React.Component {
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Type</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

@@ -16,6 +16,9 @@ export const initialState = {
   plannedTxnModal: {
     isPosting: false,
   },
+  resolvePlannedTxnModal: {
+    isPosting: false,
+  },
   txns: {
     isFetching: false,
     results: [],
@@ -97,6 +100,14 @@ export default function account(state = initialState, action) {
 
     case AT.PlannedTxnModalShow:
       return u({activeModal: 'plannedTxnModal'}, state)
+
+    case AT.ResolvePlannedTxnModalShow:
+      return u({
+        activeModal: 'resolvePlannedTxnModal',
+        resolvePlannedTxnModal: {
+          plannedTxn: action.plannedTxn,
+        },
+      }, state)
 
     case AT.TxnsFetchReceive:
       return u({txns: {

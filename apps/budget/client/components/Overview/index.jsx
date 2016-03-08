@@ -14,7 +14,7 @@ var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 import Navbar from '../Navbar'
 import NavMenuModal from './Modal/NavMenu'
 var AddAccountModal = require('./Modal/AddAccountModal')
-var ResolvePlannedTxnModal = require('./Modal/ResolvePlannedTxnModal')
+import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 var AddTransferModal = require('./Modal/AddTransferModal')
 
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -116,7 +116,7 @@ class Overview extends React.Component {
         txnTypes={this.props.app.txnTypes}
         accounts={this.props.app.accounts}
         onClose={this.hideModal.bind(this)}
-        onConfirm={this.onConfirmPlannedTxn.bind(this)}
+        onAddNew={this.onConfirmPlannedTxn.bind(this)}
         onDelete={this.onDeletePlannedTxn.bind(this)}
       />
     } else if (this.props.overview.activeModal === 'addTransferModal') {
