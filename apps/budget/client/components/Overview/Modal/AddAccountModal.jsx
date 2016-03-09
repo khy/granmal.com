@@ -3,6 +3,10 @@ var _map = require('lodash/collection/map')
 
 export default class AddAccountModal extends React.Component {
 
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   close(event) {
     event.preventDefault()
     this.props.onClose()
@@ -43,7 +47,7 @@ export default class AddAccountModal extends React.Component {
               </div>
               <div className="modal-body">
                 <form>
-                  <fieldset disabled={this.props.isFetching}>
+                  <fieldset disabled={this.isDisabled}>
                     <fieldset className="form-group">
                       <label>Account Type</label>
                       <select ref="accountTypeGuidSelect" className="form-control">
@@ -68,7 +72,7 @@ export default class AddAccountModal extends React.Component {
                   type="button"
                   className="btn btn-secondary"
                   onClick={this.close.bind(this)}
-                  disabled={this.props.isFetching}
+                  disabled={this.isDisabled}
                 >
                   Close
                 </button>
@@ -76,7 +80,7 @@ export default class AddAccountModal extends React.Component {
                   type="button"
                   className="btn btn-primary"
                   onClick={this.add.bind(this)}
-                  disabled={this.props.isFetching}
+                  disabled={this.isDisabled}
                 >
                   Add
                 </button>

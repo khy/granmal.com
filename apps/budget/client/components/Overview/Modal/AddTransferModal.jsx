@@ -5,6 +5,10 @@ import { normalizeDateInput } from 'budget/client/lib/date'
 
 export default class AddTransferModal extends React.Component {
 
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   close(event) {
     event.preventDefault()
     this.props.onClose()
@@ -75,7 +79,7 @@ export default class AddTransferModal extends React.Component {
                   type="button"
                   className="btn btn-secondary"
                   onClick={this.close.bind(this)}
-                  disabled={this.props.isFetching}
+                  disabled={this.isDisabled}
                 >
                   Close
                 </button>
@@ -83,7 +87,7 @@ export default class AddTransferModal extends React.Component {
                   type="button"
                   className="btn btn-primary"
                   onClick={this.add.bind(this)}
-                  disabled={this.props.isFetching}
+                  disabled={this.isDisabled}
                 >
                   Add
                 </button>

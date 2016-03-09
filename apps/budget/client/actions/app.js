@@ -12,7 +12,6 @@ export const ActionTypes = {
   BootstrapReceived: 'BootstrapReceived',
   BootstrapRequested: 'BootstrapRequested',
   DismissPrestitial: 'DismissPrestitial',
-  HideModal: 'HideModal',
   SetAccounts: 'SetAccounts',
   SetAccountTypes: 'SetAccountTypes',
   SetContexts: 'SetContexts',

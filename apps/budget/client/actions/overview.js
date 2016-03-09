@@ -3,26 +3,18 @@ import moment from 'moment'
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { formatDateForModel } from 'budget/client/lib/date'
 import { fetchAccounts } from 'budget/client/actions/app'
+import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
   AddAccountReceive: 'AddAccountReceive',
-  AddAccountRequest: 'AddAccountRequest',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
-  AddPlannedTxnRequest: 'AddPlannedTxnRequest',
   AddTransferReceive: 'AddTransferReceive',
-  AddTransferRequest: 'AddTransferRequest',
   ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
-  ConfirmPlannedTxnRequest: 'ConfirmPlannedTxnRequest',
   DeletePlannedTxnReceive: 'DeletePlannedTxnReceive',
-  DeletePlannedTxnRequest: 'DeletePlannedTxnRequest',
-  HideModal: 'HideModal',
   PlannedTxnsCardReceive: 'PlannedTxnsCardReceive',
   PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
   ProjectionsCardReceive: 'ProjectionsCardReceive',
   ProjectionsCardRequest: 'ProjectionsCardRequest',
-  ShowAddAccountModal: 'ShowAddAccountModal',
-  ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
-  ShowAddTransferModal: 'ShowAddTransferModal',
 }
 
 const AT = ActionTypes
@@ -36,9 +28,7 @@ export const UserActionTypes = {
 
 export function addAccount(newAccount) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.AddAccountRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/accounts', newAccount).then((account) => {
       dispatch(fetchAccounts(true))
@@ -47,15 +37,14 @@ export function addAccount(newAccount) {
         type: AT.AddAccountReceive,
         name: account.name
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function addTransfer(newTransfer) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.AddTransferRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/transfers', newTransfer).then((transfer) => {
       dispatch(fetchProjectionsCard(null, true))
@@ -63,15 +52,14 @@ export function addTransfer(newTransfer) {
         type: AT.AddTransferReceive,
         guid: transfer.guid
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function confirmPlannedTxn(newTxn) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.ConfirmPlannedTxnRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
@@ -81,15 +69,14 @@ export function confirmPlannedTxn(newTxn) {
         plannedTxnGuid: newTxn.plannedTransactionGuid,
         txnGuid: txn.guid
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function deletePlannedTxn(guid) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.DeletePlannedTxnRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).delete('/plannedTransactions/' + guid).then(() => {
       dispatch(fetchProjectionsCard(null, true))
@@ -98,6 +85,7 @@ export function deletePlannedTxn(guid) {
         type: AT.DeletePlannedTxnReceive,
         guid: guid
       })
+      dispatch(hideModal())
     })
   }
 }

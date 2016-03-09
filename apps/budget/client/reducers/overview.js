@@ -6,11 +6,6 @@ import { ActionTypes, UserActionTypes } from '../actions/overview'
 const AT = ActionTypes
 
 export const initialState = {
-  activeModal: null,
-  adjustTxnModal: {
-    txn: null,
-    isFetching: false,
-  },
   lastUserAction: null,
   plannedTxnsCard: {
     plannedTxns: [],
@@ -19,10 +14,6 @@ export const initialState = {
   projectionsCard: {
     date: moment().add(1, 'month').startOf('month').format(),
     projections: [],
-    isFetching: false,
-  },
-  resolvePlannedTxnModal: {
-    plannedTxn: null,
     isFetching: false,
   },
 }
@@ -37,86 +28,35 @@ export default function overview(state = initialState, action) {
 
     case AT.AddAccountReceive:
       return update({
-        activeModal: null,
         lastUserAction: {
           type: UserActionTypes.AddAccount,
           name: action.name,
-        },
-        addAccountModal: {
-          isFetching: false,
-        },
-      })
-
-    case AT.AddAccountRequest:
-      return update({
-        addAccountModal: {
-          isFetching: true,
         },
       })
 
     case AT.AddTransferReceive:
       return update({
-        activeModal: null,
         lastUserAction: {
           type: UserActionTypes.AddTransfer,
           guid: action.guid,
         },
-        addTransferModal: {
-          isFetching: false
-        }
-      })
-
-    case AT.AddTransferRequest:
-      return update({
-        addTransferModal: {
-          isFetching: true
-        }
       })
 
     case AT.ConfirmPlannedTxnReceive:
       return update({
-        activeModal: null,
         lastUserAction: {
           type: UserActionTypes.ConfirmPlannedTxn,
           plannedTxnGuid: action.plannedTxnGuid,
           txnGuid: action.txnGuid,
         },
-        resolvePlannedTxnModal: {
-          plannedTxn: null,
-          isFetching: false
-        }
-      })
-
-    case AT.ConfirmPlannedTxnRequest:
-      return update({
-        resolvePlannedTxnModal: {
-          isFetching: true
-        }
       })
 
     case AT.DeletePlannedTxnReceive:
       return update({
-        activeModal: null,
         lastUserAction: {
           type: UserActionTypes.DeletePlannedTxn,
           guid: action.guid,
         },
-        resolvePlannedTxnModal: {
-          plannedTxn: null,
-          isFetching: false
-        }
-      })
-
-    case AT.DeletePlannedTxnRequest:
-      return update({
-        resolvePlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case AT.HideModal:
-      return update({
-        activeModal: null
       })
 
     case AT.PlannedTxnsCardReceive:
@@ -148,24 +88,6 @@ export default function overview(state = initialState, action) {
           date: action.date,
           isFetching: true
         }
-      })
-
-    case AT.ShowAddAccountModal:
-      return update({
-        activeModal: 'addAccountModal'
-      })
-
-    case AT.ShowResolvePlannedTxnModal:
-      return update({
-        activeModal: 'resolvePlannedTxnModal',
-        resolvePlannedTxnModal: {
-          plannedTxn: action.plannedTxn
-        }
-      })
-
-    case AT.ShowAddTransferModal:
-      return update({
-        activeModal: 'addTransferModal',
       })
 
     default:

@@ -2,6 +2,8 @@ var React = require('react')
 import { connect } from 'react-redux'
 var moment = require('moment')
 
+import { showModal, hideModal } from 'budget/client/actions/modal'
+
 import {
   ActionTypes, UserActionTypes, addAccount, addTransfer, confirmPlannedTxn,
   deletePlannedTxn, fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard,
@@ -38,7 +40,7 @@ class Overview extends React.Component {
   }
 
   showAddAccountModal() {
-    this.props.dispatch({ type: ActionTypes.ShowAddAccountModal })
+    this.props.dispatch(showModal('addAccountModal'))
   }
 
   addAccount(newAccount) {
@@ -46,10 +48,7 @@ class Overview extends React.Component {
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
-    this.props.dispatch({
-      type: ActionTypes.ShowResolvePlannedTxnModal,
-      plannedTxn
-    })
+    this.props.dispatch(showModal('resolvePlannedTxnModal', {plannedTxn}))
   }
 
   onConfirmPlannedTxn(newTxn) {
@@ -61,7 +60,7 @@ class Overview extends React.Component {
   }
 
   showAddTransferModal() {
-    this.props.dispatch({ type: ActionTypes.ShowAddTransferModal })
+    this.props.dispatch(showModal('addTransferModal'))
   }
 
   addTransfer(newTransfer) {
@@ -69,7 +68,7 @@ class Overview extends React.Component {
   }
 
   hideModal() {
-    this.props.dispatch({ type: ActionTypes.HideModal })
+    this.props.dispatch(hideModal())
   }
 
   render() {
@@ -93,29 +92,29 @@ class Overview extends React.Component {
 
     let modal
 
-    if (this.state.menuToggled) {
-      modal = <NavMenuModal onClose={this.hideMenu.bind(this)} />
-    } else if (this.props.overview.activeModal === 'addAccountModal') {
-      modal = <AddAccountModal {...this.props.overview.addAccountModal}
-        contextGuid={this.props.app.selectedContextGuid}
-        accountTypes={this.props.app.accountTypes}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addAccount.bind(this)}
-      />
-    } else if (this.props.overview.activeModal === 'resolvePlannedTxnModal') {
-      modal = <ResolvePlannedTxnModal {...this.props.overview.resolvePlannedTxnModal}
-        txnTypes={this.props.app.txnTypes}
-        accounts={this.props.app.accounts}
-        onClose={this.hideModal.bind(this)}
-        onAddNew={this.onConfirmPlannedTxn.bind(this)}
-        onDelete={this.onDeletePlannedTxn.bind(this)}
-      />
-    } else if (this.props.overview.activeModal === 'addTransferModal') {
-      modal = <AddTransferModal {...this.props.overview.AddTransferModal}
-        accounts={this.props.app.accounts}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addTransfer.bind(this)}
-      />
+    if (this.props.modal.isVisible) {
+      if (this.props.modal.name === 'addAccountModal') {
+        modal = <AddAccountModal {...this.props.modal}
+          contextGuid={this.props.app.selectedContextGuid}
+          accountTypes={this.props.app.accountTypes}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.addAccount.bind(this)}
+        />
+      } else if (this.props.modal.name === 'resolvePlannedTxnModal') {
+        modal = <ResolvePlannedTxnModal {...this.props.modal}
+          txnTypes={this.props.app.txnTypes}
+          accounts={this.props.app.accounts}
+          onClose={this.hideModal.bind(this)}
+          onAddNew={this.onConfirmPlannedTxn.bind(this)}
+          onDelete={this.onDeletePlannedTxn.bind(this)}
+        />
+      } else if (this.props.modal.name === 'addTransferModal') {
+        modal = <AddTransferModal {...this.props.modal}
+          accounts={this.props.app.accounts}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.addTransfer.bind(this)}
+        />
+      }
     }
 
     return (

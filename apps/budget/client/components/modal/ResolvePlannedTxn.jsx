@@ -8,6 +8,14 @@ import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 
 export default class ResolvePlannedTxn extends React.Component {
 
+  get plannedTxn() {
+    return this.props.data.plannedTxn
+  }
+
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   close(event) {
     event.preventDefault()
     this.props.onClose()
@@ -25,7 +33,7 @@ export default class ResolvePlannedTxn extends React.Component {
       accountGuid: accountGuid,
       amount: parseFloat(this.refs.amountInput.value),
       date: normalizeDateInput(this.refs.dateInput.value),
-      plannedTransactionGuid: this.props.plannedTxn.guid
+      plannedTransactionGuid: this.plannedTxn.guid
     }
 
     this.props.onAddNew(txn)
@@ -33,7 +41,7 @@ export default class ResolvePlannedTxn extends React.Component {
 
   delete(event) {
     event.preventDefault()
-    this.props.onDelete(this.props.plannedTxn.guid)
+    this.props.onDelete(this.plannedTxn.guid)
   }
 
   render() {
@@ -44,8 +52,7 @@ export default class ResolvePlannedTxn extends React.Component {
       })
     )
 
-    const plannedTxn = this.props.plannedTxn
-    const defaultDate = formatDate(plannedTxn.minDate)
+    const defaultDate = formatDate(this.plannedTxn.minDate)
 
     let accountFieldSet
 
@@ -62,7 +69,7 @@ export default class ResolvePlannedTxn extends React.Component {
           <select
             className="form-control"
             ref="accountGuidSelect"
-            defaultValue={plannedTxn.accountGuid}
+            defaultValue={this.plannedTxn.accountGuid}
           >
             {accountOptions}
           </select>
@@ -75,13 +82,13 @@ export default class ResolvePlannedTxn extends React.Component {
         <ModalHeader>Resolve Planned Transaction</ModalHeader>
         <ModalBody>
           <form>
-            <fieldset disabled={this.props.isFetching}>
+            <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Transaction Type</label>
                 <select
                   className="form-control"
                   ref="txnTypeGuidSelect"
-                  defaultValue={plannedTxn.transactionTypeGuid}
+                  defaultValue={this.plannedTxn.transactionTypeGuid}
                 >
                   {txnTypeOptions}
                 </select>
@@ -95,7 +102,7 @@ export default class ResolvePlannedTxn extends React.Component {
                   className="form-control"
                   type="text"
                   ref="amountInput"
-                  defaultValue={plannedTxn.minAmount}
+                  defaultValue={this.plannedTxn.minAmount}
                 />
               </fieldset>
 
@@ -115,19 +122,19 @@ export default class ResolvePlannedTxn extends React.Component {
           <Button
             className="btn-danger-outline pull-left"
             onClick={this.delete.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Delete
           </Button>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Close
           </SecondaryButton>
           <PrimaryButton
             onClick={this.addNew.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Add
           </PrimaryButton>
