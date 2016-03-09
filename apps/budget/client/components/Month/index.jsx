@@ -6,7 +6,6 @@ import _find from 'lodash/collection/find'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 
-import Navbar from '../Navbar'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/month'
 
@@ -49,8 +48,6 @@ class Month extends React.Component {
 
     return (
       <div>
-        <Navbar />
-
         <div className="container">
           <h1>{this.moment.format("MMMM 'YY")}</h1>
 

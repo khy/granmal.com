@@ -11,7 +11,6 @@ import {
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 
-import Navbar from '../Navbar'
 import NavMenuModal from './Modal/NavMenu'
 var AddAccountModal = require('./Modal/AddAccountModal')
 import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
@@ -69,14 +68,6 @@ class Overview extends React.Component {
     this.props.dispatch(addTransfer(newTransfer))
   }
 
-  showMenu() {
-    this.setState({menuToggled: true})
-  }
-
-  hideMenu() {
-    this.setState({menuToggled: false})
-  }
-
   hideModal() {
     this.props.dispatch({ type: ActionTypes.HideModal })
   }
@@ -129,8 +120,6 @@ class Overview extends React.Component {
 
     return (
       <div>
-        <Navbar onMenuClick={this.showMenu.bind(this)} />
-
         <div className="container">
           {alert}
 

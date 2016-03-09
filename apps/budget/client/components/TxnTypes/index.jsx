@@ -4,7 +4,6 @@ import _map from 'lodash/collection/map'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 
-import Navbar from '../Navbar'
 import AddTxnTypeModal from './Modal/AddTxnType'
 import AdjustTxnTypeModal from './Modal/AdjustTxnType'
 import {
@@ -98,8 +97,6 @@ class TxnTypes extends React.Component {
 
     return (
       <div>
-        <Navbar />
-
         <div className="container">
           <h1>Transaction Types</h1>
 

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
 import _find from 'lodash/collection/find'
 
-import Navbar from '../Navbar'
 import { fetchPlannedTxns } from 'budget/client/actions/plannedTxns'
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -71,8 +70,6 @@ class PlannedTxns extends React.Component {
 
     return (
       <div>
-        <Navbar />
-
         <div className="container">
           <h1>Planned Transactions</h1>
 

@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
-import Navbar from '../Navbar'
 import EditTxnModal from './Modal/EditTxn'
 import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
@@ -66,20 +65,12 @@ class Account extends React.Component {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
   }
 
-  showMenu() {
-    this.setState({menuToggled: true})
-  }
-
   showEditTxnModal(txn) {
     this.props.dispatch({type: AT.EditTxnModalShow, txn})
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
     this.props.dispatch({type: AT.ResolvePlannedTxnModalShow, plannedTxn})
-  }
-
-  hideMenu() {
-    this.setState({menuToggled: false})
   }
 
   hideModal() {
@@ -128,10 +119,6 @@ class Account extends React.Component {
 
     return (
       <div>
-        <Navbar
-          onMenuClick={this.showMenu.bind(this)}
-        />
-
         <div className="container">
           <h1>{account.name}</h1>
 

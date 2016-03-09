@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
 
-import Navbar from '../Navbar'
 import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
 import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
@@ -74,8 +73,6 @@ class Contexts extends React.Component {
 
     return (
       <div>
-        <Navbar />
-
         <div className="container">
           <h1>Contexts</h1>
 

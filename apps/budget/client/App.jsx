@@ -64,7 +64,12 @@ class App extends React.Component {
 
     if (this.props.app.prestitialDismissed) {
       if (loggedIn) {
-        return this.props.children
+        return (
+          <div>
+            <Navbar />
+            {this.props.children}
+          </div>
+        )
       } else {
         return (
           <div>
