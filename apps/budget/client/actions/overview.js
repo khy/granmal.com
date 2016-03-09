@@ -11,8 +11,6 @@ export const ActionTypes = {
   AddPlannedTxnRequest: 'AddPlannedTxnRequest',
   AddTransferReceive: 'AddTransferReceive',
   AddTransferRequest: 'AddTransferRequest',
-  AddTxnReceive: 'AddTxnReceive',
-  AddTxnRequest: 'AddTxnRequest',
   ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
   ConfirmPlannedTxnRequest: 'ConfirmPlannedTxnRequest',
   DeletePlannedTxnReceive: 'DeletePlannedTxnReceive',
@@ -23,28 +21,17 @@ export const ActionTypes = {
   ProjectionsCardReceive: 'ProjectionsCardReceive',
   ProjectionsCardRequest: 'ProjectionsCardRequest',
   ShowAddAccountModal: 'ShowAddAccountModal',
-  ShowAddPlannedTxnModal: 'ShowAddPlannedTxnModal',
   ShowResolvePlannedTxnModal: 'ShowResolvePlannedTxnModal',
   ShowAddTransferModal: 'ShowAddTransferModal',
-  ShowAddTxnModal: 'ShowAddTxnModal',
-  ShowAddTxnTypeModal: 'ShowAddTxnTypeModal',
-  ShowAdjustTxnModal: 'ShowAdjustTxnModal',
-  TxnsCardReceive: 'TxnsCardReceive',
-  TxnsCardRequest: 'TxnsCardRequest',
 }
 
 const AT = ActionTypes
 
 export const UserActionTypes = {
   AddAccount: 'AddAccount',
-  AddPlannedTxn: 'AddPlannedTxn',
   AddTransfer: 'AddTransfer',
-  AddTxn: 'AddTxn',
-  AddTxnType: 'AddTxnType',
-  AdjustTxn: 'AdjustTxn',
   ConfirmPlannedTxn: 'ConfirmPlannedTxn',
   DeletePlannedTxn: 'DeletePlannedTxn',
-  DeleteTxn: 'DeleteTxn'
 }
 
 export function addAccount(newAccount) {
@@ -72,27 +59,9 @@ export function addTransfer(newTransfer) {
 
     client(getState()).post('/transfers', newTransfer).then((transfer) => {
       dispatch(fetchProjectionsCard(null, true))
-      dispatch(fetchTxnsCard(true))
       dispatch({
         type: AT.AddTransferReceive,
         guid: transfer.guid
-      })
-    })
-  }
-}
-
-export function addTxn(newTxn) {
-  return function (dispatch, getState) {
-    dispatch({
-      type: AT.AddTxnRequest
-    })
-
-    client(getState()).post('/transactions', newTxn).then((txn) => {
-      dispatch(fetchProjectionsCard(null, true))
-      dispatch(fetchTxnsCard(true))
-      dispatch({
-        type: AT.AddTxnReceive,
-        guid: txn.guid
       })
     })
   }
@@ -107,7 +76,6 @@ export function confirmPlannedTxn(newTxn) {
     client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
-      dispatch(fetchTxnsCard(true))
       dispatch({
         type: AT.ConfirmPlannedTxnReceive,
         plannedTxnGuid: newTxn.plannedTransactionGuid,
@@ -159,18 +127,6 @@ export function fetchProjectionsCard(date, force = false) {
 
     client(getState()).get('/projections?date=' + formattedDate).then((projections) => {
       dispatch({ type: AT.ProjectionsCardReceive, projections })
-    })
-  }
-}
-
-export function fetchTxnsCard(force = false) {
-  return function (dispatch, getState) {
-    dispatch({
-      type: AT.TxnsCardRequest
-    })
-
-    client(getState()).get('/transactions').then((txns) => {
-      dispatch({ type: AT.TxnsCardReceive, txns })
     })
   }
 }

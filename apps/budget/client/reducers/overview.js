@@ -73,26 +73,6 @@ export default function overview(state = initialState, action) {
         }
       })
 
-    case AT.AdjustTxnReceive:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.AdjustTxn,
-          oldGuid: action.oldGuid,
-          newGuid: action.newGuid,
-        },
-        adjustTxnModal: {
-          isFetching: false
-        }
-      })
-
-    case AT.AdjustTxnRequest:
-      return update({
-        adjustTxnModal: {
-          isFetching: true
-        }
-      })
-
     case AT.ConfirmPlannedTxnReceive:
       return update({
         activeModal: null,
@@ -130,26 +110,6 @@ export default function overview(state = initialState, action) {
     case AT.DeletePlannedTxnRequest:
       return update({
         resolvePlannedTxnModal: {
-          isFetching: true
-        }
-      })
-
-    case AT.DeleteTxnReceive:
-      return update({
-        activeModal: null,
-        lastUserAction: {
-          type: UserActionTypes.DeleteTxn,
-          guid: action.guid,
-        },
-        adjustTxnModal: {
-          txn: null,
-          isFetching: false
-        }
-      })
-
-    case AT.DeleteTxnRequest:
-      return update({
-        adjustTxnModal: {
           isFetching: true
         }
       })
@@ -206,19 +166,6 @@ export default function overview(state = initialState, action) {
     case AT.ShowAddTransferModal:
       return update({
         activeModal: 'addTransferModal',
-      })
-
-    case AT.ShowAddTxnTypeModal:
-      return update({
-        activeModal: 'addTxnTypeModal'
-      })
-
-    case AT.ShowAdjustTxnModal:
-      return update({
-        activeModal: 'adjustTxnModal',
-        adjustTxnModal: {
-          txn: action.txn
-        }
       })
 
     default:
