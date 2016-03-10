@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import _map from 'lodash/collection/map'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
+import { showModal, hideModal } from 'budget/client/actions/modal'
 
 import AddTxnTypeModal from './Modal/AddTxnType'
 import AdjustTxnTypeModal from './Modal/AdjustTxnType'
 import {
   ActionTypes as AT, addTxnType, adjustTxnType
 } from 'budget/client/actions/txnTypes'
-import { ModalTypes } from 'budget/client/reducers/txnTypes'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 
 class TxnTypes extends React.Component {
@@ -21,22 +21,16 @@ class TxnTypes extends React.Component {
 
   showAddTxnTypeModal(event) {
     event.preventDefault()
-    this.props.dispatch({
-      type: AT.ShowAddTxnTypeModal,
-      parentGuid: event.target.dataset.guid
-    })
+    this.props.dispatch(showModal('AddTxnType', {parentGuid: event.target.dataset.guid}))
   }
 
   showAdjustTxnTypeModal(event) {
     event.preventDefault()
-    this.props.dispatch({
-      type: AT.ShowAdjustTxnTypeModal,
-      guid: event.target.dataset.guid
-    })
+    this.props.dispatch(showModal('AdjustTxnType', {guid: event.target.dataset.guid}))
   }
 
   hideModal() {
-    this.props.dispatch({type: AT.HideTxnTypeModal})
+    this.props.dispatch(hideModal())
   }
 
   addTxnType(newTxnType) {
@@ -50,24 +44,24 @@ class TxnTypes extends React.Component {
   render() {
     let modal
 
-    if (this.props.txnTypes.modal) {
-      if (this.props.txnTypes.modal.type === ModalTypes.AddTxnType) {
+    if (this.props.modal.isVisible) {
+      if (this.props.modal.name === 'AddTxnType') {
         const parentTxnType = this.props.app.txnTypes.find((txnType) => {
-          return txnType.guid === this.props.txnTypes.modal.parentGuid
+          return txnType.guid === this.props.modal.data.parentGuid
         })
 
-        modal = <AddTxnTypeModal {...this.props.txnTypes}
+        modal = <AddTxnTypeModal {...this.props.modal}
           contextGuid={this.props.app.selectedContextGuid}
           parentTxnType={parentTxnType}
           onAdd={this.addTxnType.bind(this)}
           onClose={this.hideModal.bind(this)}
         />
-      } else if (this.props.txnTypes.modal.type === ModalTypes.AdjustTxnType) {
+      } else if (this.props.modal.name === 'AdjustTxnType') {
         const txnType = this.props.app.txnTypes.find((txnType) => {
-          return txnType.guid === this.props.txnTypes.modal.guid
+          return txnType.guid === this.props.modal.data.guid
         })
 
-        modal = <AdjustTxnTypeModal {...this.props.txnTypes}
+        modal = <AdjustTxnTypeModal {...this.props.modal}
           txnType={txnType}
           txnTypes={this.props.app.txnTypes}
           onAdjust={this.adjustTxnType.bind(this)}

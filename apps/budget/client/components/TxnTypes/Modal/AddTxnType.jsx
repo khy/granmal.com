@@ -6,6 +6,10 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 
 export default class AddTxnTypeModal extends React.Component {
 
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   close(event) {
     event.preventDefault()
     this.props.onClose()
@@ -29,7 +33,7 @@ export default class AddTxnTypeModal extends React.Component {
         <ModalHeader>New Transaction Type</ModalHeader>
         <ModalBody>
           <form>
-            <fieldset disabled={this.props.modalIsPosting}>
+            <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Parent Transaction Type</label>
                 <input className="form-control" type="text" placeholder={this.props.parentTxnType.name} readOnly />
@@ -45,14 +49,14 @@ export default class AddTxnTypeModal extends React.Component {
         <ModalFooter>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.modalIsPosting}
+            disabled={this.isDisabled}
           >
             Close
           </SecondaryButton>
 
           <PrimaryButton
             onClick={this.add.bind(this)}
-            disabled={this.props.modalIsPosting}
+            disabled={this.isDisabled}
           >
             Add
           </PrimaryButton>

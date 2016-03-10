@@ -2,36 +2,33 @@ import _map from 'lodash/collection/map'
 
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { fetchTxnTypes } from 'budget/client/actions/app'
+import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
   AddTxnTypeReceive: 'AddTxnTypeReceive',
-  AddTxnTypeRequest: 'AddTxnTypeRequest',
   AdjustTxnTypeReceive: 'AdjustTxnTypeReceive',
-  AdjustTxnTypeRequest: 'AdjustTxnTypeRequest',
-  HideTxnTypeModal: 'HideTxnTypeModal',
-  ShowAddTxnTypeModal: 'ShowAddTxnTypeModal',
-  ShowAdjustTxnTypeModal: 'ShowAdjustTxnTypeModal'
 }
 
 const AT = ActionTypes
 
 export function addTxnType(newTxnType) {
   return function (dispatch, getState) {
-    dispatch({ type: AT.AddTxnTypeRequest })
+    dispatch(disableModal())
 
     client(getState()).post('/transactionTypes', newTxnType).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
         type: AT.AddTxnTypeReceive,
-        name: txnType.name,
+        txnType: txnType,
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function adjustTxnType(guid, attributes) {
   return function (dispatch, getState) {
-    dispatch({ type: AT.AdjustTxnTypeRequest })
+    dispatch(disableModal())
 
     client(getState()).post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
       dispatch(fetchTxnTypes(true))
@@ -39,6 +36,7 @@ export function adjustTxnType(guid, attributes) {
         type: AT.AdjustTxnTypeReceive,
         txnType: txnType,
       })
+      dispatch(hideModal())
     })
   }
 }
