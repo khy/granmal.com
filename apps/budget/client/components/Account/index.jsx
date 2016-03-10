@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
 import EditTxnModal from './Modal/EditTxn'
-import NavMenuModal from './Modal/NavMenu'
 import PlannedTxnModal from './Modal/PlannedTxn'
 import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 import AddTxnModal from './Modal/AddTxn'

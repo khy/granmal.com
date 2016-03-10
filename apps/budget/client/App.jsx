@@ -9,6 +9,8 @@ import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
 import { FullPageLogIn } from 'client/components/auth/logIn'
+import { showModal, hideModal } from 'budget/client/actions/modal'
+import NavMenu from 'budget/client/components/modal/NavMenu'
 
 import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
@@ -25,7 +27,7 @@ import Prestitial from 'client/components/ads/Prestitial'
 require("./app.scss")
 
 const store = applyMiddleware(
-  thunkMiddleware//, createLogger()
+  thunkMiddleware, createLogger()
 )(createStore)(reducer, window.__INITIAL_STATE__)
 
 class App extends React.Component {
@@ -53,6 +55,14 @@ class App extends React.Component {
     this.props.dispatch(logIn(email, password))
   }
 
+  showMainMenu() {
+    this.props.dispatch(showModal("mainMenu"))
+  }
+
+  hideMainMenu() {
+    this.props.dispatch(hideModal())
+  }
+
   dismissPrestitial() {
     this.props.dispatch({
       type: ActionTypes.DismissPrestitial
@@ -64,10 +74,17 @@ class App extends React.Component {
 
     if (this.props.app.prestitialDismissed) {
       if (loggedIn) {
+        let modal
+
+        if (this.props.modal.isVisible && this.props.modal.name === "mainMenu") {
+          modal = <NavMenu onClose={this.hideMainMenu.bind(this)} />
+        }
+
         return (
           <div>
-            <Navbar />
+            <Navbar onMenuClick={this.showMainMenu.bind(this)} />
             {this.props.children}
+            {modal}
           </div>
         )
       } else {
@@ -95,6 +112,7 @@ function select(state) { return {
   dispatch: state.dispatch,
   auth: state.auth,
   app: state.app,
+  modal: state.modal,
 }}
 
 const ConnectedApp = connect(select)(App)

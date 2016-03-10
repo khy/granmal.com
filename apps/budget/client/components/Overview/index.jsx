@@ -13,7 +13,6 @@ import {
 var ProjectionsCard = require('./Card/ProjectionsCard')
 var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
 
-import NavMenuModal from './Modal/NavMenu'
 var AddAccountModal = require('./Modal/AddAccountModal')
 import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 var AddTransferModal = require('./Modal/AddTransferModal')
