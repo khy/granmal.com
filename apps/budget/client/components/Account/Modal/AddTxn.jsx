@@ -15,6 +15,10 @@ export default class NewTxn extends React.Component {
     this.state = {rootTxnType: 'expense', errors: {}}
   }
 
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   setExpense() {
     this.setState({rootTxnType: 'expense'})
   }
@@ -133,7 +137,7 @@ export default class NewTxn extends React.Component {
             </SecondaryButton>
           </div>
           <form>
-            <fieldset disabled={this.props.isFetching}>
+            <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>{selectLabel}</label>
                 <TxnTypeSelect
@@ -162,13 +166,13 @@ export default class NewTxn extends React.Component {
         <ModalFooter>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Close
           </SecondaryButton>
           <PrimaryButton
             onClick={this.add.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Add
           </PrimaryButton>

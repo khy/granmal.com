@@ -1,34 +1,24 @@
 import _map from 'lodash/collection/map'
 
 import { budgetClient as client } from 'budget/client/lib/clients'
+import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
   AddTxnsReceive: 'AddTxnsReceive',
-  AddTxnsRequest: 'AddTxnsRequest',
-  EditTxnModalShow: 'EditTxnModalShow',
   EditTxnReceive: 'EditTxnReceive',
-  EditTxnRequest: 'EditTxnRequest',
   DeleteTxnReceive: 'DeleteTxnReceive',
-  DeleteTxnRequest: 'DeleteTxnRequest',
-  HideModal: 'HideModal',
   PlannedTxnsAddReceive: 'PlannedTxnsAddReceive',
-  PlannedTxnsAddRequest: 'PlannedTxnsAddRequest',
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
-  PlannedTxnModalShow: 'PlannedTxnModalShow',
-  ResolvePlannedTxnModalShow: 'ResolvePlannedTxnModalShow',
   TxnsFetchReceive: 'TxnsFetchReceive',
   TxnsFetchRequest: 'TxnsFetchRequest',
-  TxnModalShow: 'TxnModalShow',
 }
 
 const AT = ActionTypes
 
 export function addPlannedTxn(newPlannedTxn) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.PlannedTxnsAddRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/plannedTransactions', newPlannedTxn).then((plannedTxn) => {
       dispatch(fetchPlannedTxns(plannedTxn.accountGuid))
@@ -36,15 +26,14 @@ export function addPlannedTxn(newPlannedTxn) {
         type: AT.PlannedTxnsAddReceive,
         plannedTxn
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function addTxn(newTxn) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.AddTxnsRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
@@ -52,15 +41,14 @@ export function addTxn(newTxn) {
         type: AT.AddTxnsReceive,
         txn
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function editTxn(oldTxn, attrs) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.EditTxnRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
       dispatch(fetchTxns(oldTxn.accountGuid))
@@ -69,15 +57,14 @@ export function editTxn(oldTxn, attrs) {
         oldTxn,
         newTxn,
       })
+      dispatch(hideModal())
     })
   }
 }
 
 export function deleteTxn(txn) {
   return function (dispatch, getState) {
-    dispatch({
-      type: AT.DeleteTxnRequest
-    })
+    dispatch(disableModal())
 
     client(getState()).delete('/transactions/' + txn.guid).then(() => {
       dispatch(fetchTxns(txn.accountGuid))
@@ -85,6 +72,7 @@ export function deleteTxn(txn) {
         type: AT.DeleteTxnReceive,
         txn
       })
+      dispatch(hideModal())
     })
   }
 }

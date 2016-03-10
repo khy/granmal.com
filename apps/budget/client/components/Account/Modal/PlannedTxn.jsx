@@ -7,6 +7,10 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 
 export default class PlannedTxn extends React.Component {
 
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
+
   close(event) {
     event.preventDefault()
     this.props.onClose()
@@ -45,7 +49,7 @@ export default class PlannedTxn extends React.Component {
         <ModalHeader>New Planned Transaction</ModalHeader>
         <ModalBody>
           <form>
-            <fieldset disabled={this.props.isFetching}>
+            <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Transaction Type</label>
                 <select ref="txnTypeGuidSelect" className="form-control">
@@ -89,14 +93,14 @@ export default class PlannedTxn extends React.Component {
         <ModalFooter>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Close
           </SecondaryButton>
 
           <PrimaryButton
             onClick={this.add.bind(this)}
-            disabled={this.props.isFetching}
+            disabled={this.isDisabled}
           >
             Add
           </PrimaryButton>

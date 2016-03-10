@@ -9,20 +9,13 @@ import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlanne
 import AddTxnModal from './Modal/AddTxn'
 import PlannedTxns from './Card/PlannedTxns'
 import Txns from './Card/Txns'
+import { showModal, hideModal } from 'budget/client/actions/modal'
 import {
   ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
 class Account extends React.Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      menuToggled: false,
-    }
-  }
 
   componentWillMount() {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
@@ -38,11 +31,11 @@ class Account extends React.Component {
   }
 
   onNewPlannedTxn() {
-    this.props.dispatch({type: AT.PlannedTxnModalShow})
+    this.props.dispatch(showModal('plannedTxnModal'))
   }
 
   onNewTxn() {
-    this.props.dispatch({type: AT.TxnModalShow})
+    this.props.dispatch(showModal('addTxnModal'))
   }
 
   addPlannedTxn(plannedTxn) {
@@ -66,15 +59,15 @@ class Account extends React.Component {
   }
 
   showEditTxnModal(txn) {
-    this.props.dispatch({type: AT.EditTxnModalShow, txn})
+    this.props.dispatch(showModal('editTxnModal', {txn}))
   }
 
   showResolvePlannedTxnModal(plannedTxn) {
-    this.props.dispatch({type: AT.ResolvePlannedTxnModalShow, plannedTxn})
+    this.props.dispatch(showModal('resolvePlannedTxnModal', {plannedTxn}))
   }
 
   hideModal() {
-    this.props.dispatch({ type: AT.HideModal })
+    this.props.dispatch(hideModal())
   }
 
   render() {
@@ -84,37 +77,37 @@ class Account extends React.Component {
 
     let modal
 
-    if (this.state.menuToggled) {
-      modal = <NavMenuModal onClose={this.hideMenu.bind(this)} />
-    } else if (this.props.account.activeModal === 'plannedTxnModal') {
-      modal = <PlannedTxnModal {...this.props.plannedTxnModal}
-        app={this.props.app}
-        accountGuid={this.props.params.accountGuid}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addPlannedTxn.bind(this)}
-      />
-    } else if (this.props.account.activeModal === 'addTxnModal') {
-      modal = <AddTxnModal {...this.props.addTxnModal}
-        app={this.props.app}
-        accountGuid={this.props.params.accountGuid}
-        onClose={this.hideModal.bind(this)}
-        onAdd={this.addTxn.bind(this)}
-      />
-    } else if (this.props.account.activeModal === 'editTxnModal') {
-      modal = <EditTxnModal {...this.props.account.editTxnModal}
-        app={this.props.app}
-        onClose={this.hideModal.bind(this)}
-        onEdit={this.editTxn.bind(this)}
-        onDelete={this.deleteTxn.bind(this)}
-      />
-    } else if (this.props.account.activeModal === 'resolvePlannedTxnModal') {
-      modal = <ResolvePlannedTxnModal {...this.props.account.resolvePlannedTxnModal}
-        txnTypes={this.props.app.txnTypes}
-        fixedAccount={account}
-        onClose={this.hideModal.bind(this)}
-        onAddNew={this.addTxn.bind(this)}
-        onAddExisting={this.addTxnToPlannedTxn.bind(this)}
-      />
+    if (this.props.modal.isVisible) {
+      if (this.props.modal.name === 'plannedTxnModal') {
+        modal = <PlannedTxnModal {...this.props.modal}
+          app={this.props.app}
+          accountGuid={this.props.params.accountGuid}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.addPlannedTxn.bind(this)}
+        />
+      } else if (this.props.modal.name === 'addTxnModal') {
+        modal = <AddTxnModal {...this.props.modal}
+          app={this.props.app}
+          accountGuid={this.props.params.accountGuid}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.addTxn.bind(this)}
+        />
+      } else if (this.props.modal.name === 'editTxnModal') {
+        modal = <EditTxnModal {...this.props.modal}
+          app={this.props.app}
+          onClose={this.hideModal.bind(this)}
+          onEdit={this.editTxn.bind(this)}
+          onDelete={this.deleteTxn.bind(this)}
+        />
+      } else if (this.props.modal.name === 'resolvePlannedTxnModal') {
+        modal = <ResolvePlannedTxnModal {...this.props.modal}
+          txnTypes={this.props.app.txnTypes}
+          fixedAccount={account}
+          onClose={this.hideModal.bind(this)}
+          onAddNew={this.addTxn.bind(this)}
+          onAddExisting={this.addTxnToPlannedTxn.bind(this)}
+        />
+      }
     }
 
     return (

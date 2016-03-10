@@ -6,7 +6,15 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 
-export default class AdjustTxnModal extends React.Component {
+export default class EditTxn extends React.Component {
+
+  get txn() {
+    return this.props.data.txn
+  }
+
+  get isDisabled() {
+    return !this.props.isEnabled
+  }
 
   close(event) {
     event.preventDefault()
@@ -23,12 +31,12 @@ export default class AdjustTxnModal extends React.Component {
       date: normalizeDateInput(this.refs.dateInput.value)
     }
 
-    this.props.onEdit(this.props.txn, attrs)
+    this.props.onEdit(this.txn, attrs)
   }
 
   delete(event) {
     event.preventDefault()
-    this.props.onDelete(this.props.txn)
+    this.props.onDelete(this.txn)
   }
 
   render() {
@@ -45,21 +53,20 @@ export default class AdjustTxnModal extends React.Component {
       })
     )
 
-    var txn = this.props.txn
-    var defaultDate = formatDate(txn.date)
+    var defaultDate = formatDate(this.txn.date)
 
     return (
       <Modal>
         <ModalHeader>New Planned Transaction</ModalHeader>
         <ModalBody>
           <form>
-            <fieldset disabled={this.props.isPosting}>
+            <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Transaction Type</label>
                 <select
                   className="form-control"
                   ref="txnTypeGuidSelect"
-                  defaultValue={txn.transactionTypeGuid}
+                  defaultValue={this.txn.transactionTypeGuid}
                 >
                   {txnTypeOptions}
                 </select>
@@ -70,7 +77,7 @@ export default class AdjustTxnModal extends React.Component {
                 <select
                   className="form-control"
                   ref="accountGuidSelect"
-                  defaultValue={txn.accountGuid}
+                  defaultValue={this.txn.accountGuid}
                 >
                   {accountOptions}
                 </select>
@@ -82,7 +89,7 @@ export default class AdjustTxnModal extends React.Component {
                   className="form-control"
                   type="text"
                   ref="amountInput"
-                  defaultValue={txn.amount}
+                  defaultValue={this.txn.amount}
                 />
               </fieldset>
 
@@ -102,19 +109,19 @@ export default class AdjustTxnModal extends React.Component {
           <Button
             className="btn-danger-outline pull-left"
             onClick={this.delete.bind(this)}
-            disabled={this.props.isPosting}
+            disabled={this.isDisabled}
           >
             Delete
           </Button>
           <SecondaryButton
             onClick={this.close.bind(this)}
-            disabled={this.props.isPosting}
+            disabled={this.isDisabled}
           >
             Close
           </SecondaryButton>
           <PrimaryButton
             onClick={this.edit.bind(this)}
-            disabled={this.props.isPosting}
+            disabled={this.isDisabled}
           >
             Edit
           </PrimaryButton>
