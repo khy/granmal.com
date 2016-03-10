@@ -7,6 +7,10 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 
 export default class AddUser extends React.Component {
 
+  get contextGuid() {
+    return this.props.data.contextGuid
+  }
+
   constructor(props) {
     super(props)
     this.state = {}
@@ -19,7 +23,7 @@ export default class AddUser extends React.Component {
 
   add(event) {
     event.preventDefault()
-    this.props.onAdd(this.state.selectedUserOption.value)
+    this.props.onAdd(this.contextGuid, this.state.selectedUserOption.value)
   }
 
   getUserOptions(input, callback) {

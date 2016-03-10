@@ -6,6 +6,7 @@ import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
 import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
 import { selectContext } from 'budget/client/actions/app'
+import { showModal, hideModal } from 'budget/client/actions/modal'
 import AddUserModal from './Modal/AddUser'
 
 class Contexts extends React.Component {
@@ -16,23 +17,23 @@ class Contexts extends React.Component {
 
   showAddUserModal(event) {
     event.preventDefault()
-    this.props.dispatch({type: AT.ShowAddContextUserModal, contextGuid: event.target.dataset.guid})
+    this.props.dispatch(showModal('addContextUser', {contextGuid: event.target.dataset.guid}))
   }
 
   hideModal() {
-    this.props.dispatch({type: AT.HideContextModal})
+    this.props.dispatch(hideModal())
   }
 
-  addContextUser(guid) {
-    this.props.dispatch(addContextUser(this.props.contexts.modal.contextGuid, guid))
+  addContextUser(contextGuid, userGuid) {
+    this.props.dispatch(addContextUser(contextGuid, userGuid))
   }
 
   render() {
     let modal
 
-    if (this.props.contexts.modal) {
-      if (this.props.contexts.modal.type === 'addContextUser') {
-        modal = <AddUserModal
+    if (this.props.modal.isVisible) {
+      if (this.props.modal.name === 'addContextUser') {
+        modal = <AddUserModal {...this.props.modal}
           client={coreClient(this.props)}
           onAdd={this.addContextUser.bind(this)}
           onClose={this.hideModal.bind(this)}
