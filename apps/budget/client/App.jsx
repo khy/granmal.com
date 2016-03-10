@@ -27,7 +27,7 @@ import Prestitial from 'client/components/ads/Prestitial'
 require("./app.scss")
 
 const store = applyMiddleware(
-  thunkMiddleware, createLogger()
+  thunkMiddleware//, createLogger()
 )(createStore)(reducer, window.__INITIAL_STATE__)
 
 class App extends React.Component {
