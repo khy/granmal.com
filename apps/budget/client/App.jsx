@@ -19,11 +19,11 @@ import Navbar from './components/Navbar'
 import Overview from './components/Overview'
 import Account from './components/Account'
 import Contexts from './components/Contexts'
-import Month from './components/Month'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypes from './components/TxnTypes'
 import Prestitial from 'client/components/ads/Prestitial'
 import MonthsIndex from './containers/Months/Index'
+import MonthsShow from './containers/Months/Show'
 
 require("./app.scss")
 
@@ -126,7 +126,7 @@ render(
         <Route path="account/:accountGuid" component={Account} />
         <Route path="contexts" component={Contexts} />
         <Route path="months" component={MonthsIndex} />
-        <Route path="months/:year/:month" component={Month} />
+        <Route path="months/:year/:month" component={MonthsShow} />
         <Route path="plannedTransactions" component={PlannedTxns} />
         <Route path="transactionTypes" component={TxnTypes} />
       </Route>

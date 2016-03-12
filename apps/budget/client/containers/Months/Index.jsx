@@ -25,7 +25,7 @@ class Index extends React.Component {
         return (
           <tr key={`${rollup.year}-${rollup.month}`}>
             <td>
-              <Link to={`budget/months/${rollup.year}/${rollup.month}`}>
+              <Link to={`/budget/months/${rollup.year}/${rollup.month}`}>
                 {`${rollup.month}/${rollup.year}`}
               </Link>
             </td>
