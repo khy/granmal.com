@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import _map from 'lodash/collection/map'
 import _find from 'lodash/collection/find'
+import _sum from 'lodash/math/sum'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 
@@ -27,7 +28,17 @@ class Month extends React.Component {
       const expense = systemTxnType(this.props.app.txnTypes)("Expense")
       const expenseHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(expense)
 
-      const txnAmtTotal = (guid) => {
+      const descendantAmtTotal = (guid) => _sum(
+        _map(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
+          if (rollup.transactionType.parentGuid === guid) {
+            return rollup.transactionAmountTotal + descendantAmtTotal(rollup.transactionType.guid)
+          } else {
+            return 0
+          }
+        })
+      )
+
+      const txnTypeAmtTotal = (guid) => {
         const rollup = _find(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
           return rollup.transactionType.guid === guid
         })
@@ -39,7 +50,13 @@ class Month extends React.Component {
           <li className={"list-group-item list-group-item-level-" + h.level} key={h.txnType.guid}>
             {h.txnType.name}
             <span className="pull-right">
-              {txnAmtTotal(h.txnType.guid)}
+              {txnTypeAmtTotal(h.txnType.guid) + descendantAmtTotal(h.txnType.guid)}
+            </span>
+            <span className="pull-right">
+              {txnTypeAmtTotal(h.txnType.guid)}
+            </span>
+            <span className="pull-right">
+              {descendantAmtTotal(h.txnType.guid)}
             </span>
           </li>
         )
@@ -53,7 +70,7 @@ class Month extends React.Component {
 
           <Card>
             <CardHeader>
-              Expense Trasnaction Types
+              Expense Transaction Types
             </CardHeader>
             <CardList>
               {listItems}
