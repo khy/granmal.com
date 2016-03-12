@@ -7,7 +7,7 @@ import _find from 'lodash/collection/find'
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
-import { fetchMonthTxnTypeRollup } from 'budget/client/actions/month'
+import { fetchMonthTxnTypeRollup } from 'budget/client/actions/months'
 
 
 class Month extends React.Component {
@@ -23,12 +23,12 @@ class Month extends React.Component {
   render() {
     let listItems
 
-    if (!this.props.month.rollups.isFetching) {
+    if (!this.props.months.show.txnTypeRollups.isFetching) {
       const expense = systemTxnType(this.props.app.txnTypes)("Expense")
       const expenseHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(expense)
 
       const txnAmtTotal = (guid) => {
-        const rollup = _find(this.props.month.rollups.rollups, (rollup) => {
+        const rollup = _find(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
           return rollup.transactionType.guid === guid
         })
         return rollup ? rollup.transactionAmountTotal : 0.0

@@ -9,13 +9,15 @@ export default class NavMenu extends React.Component {
 
   render() {
     const RouteLink = (display, path) => {
-      return <NavMenuLink to={path} onClick={this.props.onClose}>{display}</NavMenuLink>
+      const fullPath = "/budget" + path
+      return <NavMenuLink to={fullPath} onClick={this.props.onClose}>{display}</NavMenuLink>
     }
 
     return (
       <BaseNavMenu onClose={this.props.onClose}>
-        {RouteLink("Transaction Types", "/budget/transactionTypes")}
-        {RouteLink("Home", "/budget")}
+        {RouteLink("Months", "/months")}
+        {RouteLink("Transaction Types", "/transactionTypes")}
+        {RouteLink("Home", "/")}
       </BaseNavMenu>
     )
   }

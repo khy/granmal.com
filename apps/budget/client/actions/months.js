@@ -1,11 +1,29 @@
 import { budgetClient as client } from 'budget/client/lib/clients'
 
 export const ActionTypes = {
+  MonthRollupsReceive: 'MonthRollupsReceive',
+  MonthRollupRequest: 'MonthRollupRequest',
   MonthTxnTypeRollupReceive: 'MonthTxnTypeRollupReceive',
   MonthTxnTypeRollupRequest: 'MonthTxnTypeRollupRequest',
 }
 
 const AT = ActionTypes
+
+export function fetchMonthRollups() {
+  return function (dispatch, getState) {
+    dispatch({type: AT.MonthRollupRequest})
+
+    const state = getState()
+    const contextGuid = state.app.selectedContextGuid
+
+    client(state).get(`/aggregates/monthRollups?contextGuid=${contextGuid}`).then( rollups => {
+      dispatch({
+        type: AT.MonthRollupsReceive,
+        rollups
+      })
+    })
+  }
+}
 
 export function fetchMonthTxnTypeRollup(moment) {
   return function (dispatch, getState) {
