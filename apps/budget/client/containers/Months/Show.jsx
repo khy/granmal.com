@@ -22,44 +22,44 @@ class Month extends React.Component {
   }
 
   render() {
-    let listItems
+    let rows
 
     if (!this.props.months.show.txnTypeRollups.isFetching) {
       const expense = systemTxnType(this.props.app.txnTypes)("Expense")
       const expenseHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(expense)
 
-      const descendantAmtTotal = (guid) => _sum(
+      const descAmtTotal = (guid) => _sum(
         _map(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
           if (rollup.transactionType.parentGuid === guid) {
-            return rollup.transactionAmountTotal + descendantAmtTotal(rollup.transactionType.guid)
+            return rollup.transactionAmountTotal + descAmtTotal(rollup.transactionType.guid)
           } else {
             return 0
           }
         })
       )
 
-      const txnTypeAmtTotal = (guid) => {
+      const amtTotal = (guid) => {
         const rollup = _find(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
           return rollup.transactionType.guid === guid
         })
         return rollup ? rollup.transactionAmountTotal : 0.0
       }
 
-      listItems = _map(expenseHierarchy, (h) => {
-        return (
-          <li className={"list-group-item list-group-item-level-" + h.level} key={h.txnType.guid}>
-            {h.txnType.name}
-            <span className="pull-right">
-              {txnTypeAmtTotal(h.txnType.guid) + descendantAmtTotal(h.txnType.guid)}
-            </span>
-            <span className="pull-right">
-              {txnTypeAmtTotal(h.txnType.guid)}
-            </span>
-            <span className="pull-right">
-              {descendantAmtTotal(h.txnType.guid)}
-            </span>
-          </li>
-        )
+      rows = _map(expenseHierarchy, (h) => {
+        const selfAmtTotal = amtTotal(h.txnType.guid)
+        const grandAmtTotal = selfAmtTotal + descAmtTotal(h.txnType.guid)
+
+        if (grandAmtTotal > 0) {
+          return (
+            <tr key={h.txnType.guid}>
+              <td className={"td-level-" + h.level}>{h.txnType.name}</td>
+              <td className="table-figure">
+                {grandAmtTotal}
+                <span className="txn-type-self-amt-total">{selfAmtTotal}</span>
+              </td>
+            </tr>
+          )
+        }
       })
     }
 
@@ -68,14 +68,17 @@ class Month extends React.Component {
         <div className="container">
           <h1>{this.moment.format("MMMM 'YY")}</h1>
 
-          <Card>
-            <CardHeader>
-              Expense Transaction Types
-            </CardHeader>
-            <CardList>
-              {listItems}
-            </CardList>
-          </Card>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th className="table-figure">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
         </div>
       </div>
     )
