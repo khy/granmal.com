@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import moment from 'moment'
 import _map from 'lodash/collection/map'
 
 import { fetchMonthRollups } from 'budget/client/actions/months'
@@ -22,13 +23,16 @@ class Index extends React.Component {
       )
     } else if (this.props.months.index.rollups.length > 0) {
       rows = _map(this.props.months.index.rollups, (rollup) => {
+        const _moment = moment(`${rollup.year}-${rollup.month}`, 'YYYY-MM')
+
         return (
-          <tr key={`${rollup.year}-${rollup.month}`}>
+          <tr key={_moment.format('YY-MM')}>
             <td>
-              <Link to={`/budget/months/${rollup.year}/${rollup.month}`}>
-                {`${rollup.month}/${rollup.year}`}
+              <Link to={`/budget/months/${_moment.format('YYYY/MM')}`}>
+                {_moment.format("MMMM 'YY")}
               </Link>
             </td>
+            <td className="table-figure">{rollup.transactionCount}</td>
           </tr>
         )
       })
@@ -49,6 +53,7 @@ class Index extends React.Component {
             <thead>
               <tr>
                 <th>Month</th>
+                <th className="table-figure">Transaction Count</th>
               </tr>
             </thead>
             <tbody>
