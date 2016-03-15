@@ -9,6 +9,7 @@ import { connect, Provider } from 'react-redux'
 import u from 'updeep'
 
 import { FullPageLogIn } from 'client/components/auth/logIn'
+import Prestitial from 'client/components/ads/Prestitial'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import NavMenu from 'budget/client/components/modal/NavMenu'
 
@@ -20,8 +21,7 @@ import Overview from './components/Overview'
 import Account from './components/Account'
 import Contexts from './components/Contexts'
 import PlannedTxns from './components/PlannedTxns'
-import TxnTypes from './components/TxnTypes'
-import Prestitial from 'client/components/ads/Prestitial'
+import TxnTypesIndex from './containers/TxnTypes/Index'
 import MonthsIndex from './containers/Months/Index'
 import MonthsShow from './containers/Months/Show'
 
@@ -128,7 +128,7 @@ render(
         <Route path="months" component={MonthsIndex} />
         <Route path="months/:year/:month" component={MonthsShow} />
         <Route path="plannedTransactions" component={PlannedTxns} />
-        <Route path="transactionTypes" component={TxnTypes} />
+        <Route path="transactionTypes" component={TxnTypesIndex} />
       </Route>
     </Router>
   </Provider>,

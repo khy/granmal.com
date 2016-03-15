@@ -5,8 +5,8 @@ import _map from 'lodash/collection/map'
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 
-import AddTxnTypeModal from './Modal/AddTxnType'
-import AdjustTxnTypeModal from './Modal/AdjustTxnType'
+import AddTxnTypeModal from 'budget/client/components/modal/AddTxnType'
+import AdjustTxnTypeModal from 'budget/client/components/modal/AdjustTxnType'
 import {
   ActionTypes as AT, addTxnType, adjustTxnType
 } from 'budget/client/actions/txnTypes'
