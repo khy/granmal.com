@@ -14,9 +14,13 @@ export function fetchMonthRollups() {
     dispatch({type: AT.MonthRollupRequest})
 
     const state = getState()
-    const contextGuid = state.app.selectedContextGuid
+    let url = '/aggregates/monthRollups'
 
-    client(state).get(`/aggregates/monthRollups?contextGuid=${contextGuid}`).then( rollups => {
+    if (state.app.selectedContextGuid) {
+      url = url + `?contextGuid=${contextGuid}`
+    }
+
+    client(state).get(url).then( rollups => {
       dispatch({
         type: AT.MonthRollupsReceive,
         rollups
