@@ -63,6 +63,14 @@ router.patch('/accountAppState', (req, res) => {
 })
 
 router.get('*', (req, res) => {
+  const render = (initialState) => {
+    res.render('appBase', {
+      key: 'budget',
+      title: 'Budget',
+      initialState,
+    })
+  }
+
   let initialState = {
     config
   }
@@ -71,21 +79,19 @@ router.get('*', (req, res) => {
     initialState.auth = {
       account: req.account.public
     }
-  }
 
-  getAccountAppState(req.account.id, 'budget', (state) => {
-    if (state.selectedContextGuid) {
-      initialState.app = {
-        selectedContextGuid: state.selectedContextGuid
+    getAccountAppState(req.account.id, 'budget', (state) => {
+      if (state.selectedContextGuid) {
+        initialState.app = {
+          selectedContextGuid: state.selectedContextGuid
+        }
       }
-    }
 
-    res.render('appBase', {
-      key: 'budget',
-      title: 'Budget',
-      initialState,
+      render(initialState)
     })
-  })
+  } else {
+    render(initialState)
+  }
 })
 
 module.exports = router
