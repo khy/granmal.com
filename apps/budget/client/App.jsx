@@ -21,9 +21,9 @@ import Overview from './components/Overview'
 import Account from './components/Account'
 import Contexts from './components/Contexts'
 import PlannedTxns from './components/PlannedTxns'
-import TxnTypesIndex from './containers/TxnTypes/Index'
-import MonthsIndex from './containers/Months/Index'
-import MonthsShow from './containers/Months/Show'
+import TxnTypesIndex from './containers/txnTypes/Index'
+import MonthsIndex from './containers/months/Index'
+import MonthsShow from './containers/months/Show'
 
 require("./app.scss")
 
