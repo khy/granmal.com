@@ -22,11 +22,15 @@ class Month extends React.Component {
   }
 
   render() {
-    let rows
+    let expenseRows
+    let incomeRows
 
     if (!this.props.months.show.txnTypeRollups.isFetching) {
       const expense = systemTxnType(this.props.app.txnTypes)("Expense")
       const expenseHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(expense)
+
+      const income = systemTxnType(this.props.app.txnTypes)("Income")
+      const incomeHierarchy = txnTypeHierarchyArray(this.props.app.txnTypes)(income)
 
       const descAmtTotal = (guid) => _sum(
         _map(this.props.months.show.txnTypeRollups.rollups, (rollup) => {
@@ -45,7 +49,7 @@ class Month extends React.Component {
         return rollup ? rollup.transactionAmountTotal : 0.0
       }
 
-      rows = _map(expenseHierarchy, (h) => {
+      const buildRows = (hierarchy) => _map(hierarchy, (h) => {
         const selfAmtTotal = amtTotal(h.txnType.guid)
         const grandAmtTotal = selfAmtTotal + descAmtTotal(h.txnType.guid)
 
@@ -61,12 +65,17 @@ class Month extends React.Component {
           )
         }
       })
+
+      expenseRows = buildRows(expenseHierarchy)
+      incomeRows = buildRows(incomeHierarchy)
     }
 
     return (
       <div>
         <div className="container">
           <h1>{this.moment.format("MMMM 'YY")}</h1>
+
+          <h2>Expenses</h2>
 
           <table className="table">
             <thead>
@@ -76,7 +85,21 @@ class Month extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {rows}
+              {expenseRows}
+            </tbody>
+          </table>
+
+          <h2>Incomes</h2>
+
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th className="table-figure">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {incomeRows}
             </tbody>
           </table>
         </div>
