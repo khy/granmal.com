@@ -22,6 +22,7 @@ import Account from './components/Account'
 import Contexts from './components/Contexts'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypesIndex from './containers/txnTypes/Index'
+import TxnTypesShow from './containers/txnTypes/Show'
 import MonthsIndex from './containers/months/Index'
 import MonthsShow from './containers/months/Show'
 
@@ -129,6 +130,7 @@ render(
         <Route path="months/:year/:month" component={MonthsShow} />
         <Route path="plannedTransactions" component={PlannedTxns} />
         <Route path="transactionTypes" component={TxnTypesIndex} />
+        <Route path="transactionTypes/:guid" component={TxnTypesShow} />
       </Route>
     </Router>
   </Provider>,

@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import _map from 'lodash/collection/map'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
@@ -74,7 +75,10 @@ class TxnTypes extends React.Component {
       return _map(hierarchy, (h) => {
         return (
           <li className={"list-group-item list-group-item-level-" + h.level} key={h.txnType.guid}>
-            {h.txnType.name}
+            <Link to={`/budget/transactionTypes/${h.txnType.guid}`}>
+              {h.txnType.name}
+            </Link>
+
             <a onClick={this.showAdjustTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
               Adjust
             </a>
