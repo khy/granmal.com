@@ -53,7 +53,7 @@ class Month extends React.Component {
         const selfAmtTotal = amtTotal(h.txnType.guid)
         const grandAmtTotal = selfAmtTotal + descAmtTotal(h.txnType.guid)
 
-        if (grandAmtTotal > 0) {
+        if (grandAmtTotal != 0) {
           return (
             <tr key={h.txnType.guid}>
               <td className={"td-level-" + h.level}>{h.txnType.name}</td>
