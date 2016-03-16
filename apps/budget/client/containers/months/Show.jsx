@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import moment from 'moment'
 import _map from 'lodash/collection/map'
 import _find from 'lodash/collection/find'
@@ -59,10 +60,14 @@ class Month extends React.Component {
           if (selfAmtTotal != 0 && selfAmtTotal != grandAmtTotal) {
             selfAmtTotalSpan = <span className="txn-type-self-amt-total">{selfAmtTotal}</span>
           }
-          
+
           return (
             <tr key={h.txnType.guid}>
-              <td className={"td-level-" + h.level}>{h.txnType.name}</td>
+              <td className={"td-level-" + h.level}>
+                <Link to={`/budget/transactionTypes/${h.txnType.guid}`}>
+                  {h.txnType.name}
+                </Link>
+              </td>
               <td className="table-figure">
                 {grandAmtTotal}
                 {selfAmtTotalSpan}
