@@ -17,7 +17,7 @@ export function fetchMonthRollups() {
     let url = '/aggregates/monthRollups'
 
     if (state.app.selectedContextGuid) {
-      url = url + `?contextGuid=${contextGuid}`
+      url = url + `?contextGuid=${state.app.selectedContextGuid}`
     }
 
     client(state).get(url).then( rollups => {
