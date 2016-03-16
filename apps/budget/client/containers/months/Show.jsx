@@ -54,12 +54,18 @@ class Month extends React.Component {
         const grandAmtTotal = selfAmtTotal + descAmtTotal(h.txnType.guid)
 
         if (grandAmtTotal != 0) {
+          let selfAmtTotalSpan
+
+          if (selfAmtTotal != 0 && selfAmtTotal != grandAmtTotal) {
+            selfAmtTotalSpan = <span className="txn-type-self-amt-total">{selfAmtTotal}</span>
+          }
+          
           return (
             <tr key={h.txnType.guid}>
               <td className={"td-level-" + h.level}>{h.txnType.name}</td>
               <td className="table-figure">
                 {grandAmtTotal}
-                <span className="txn-type-self-amt-total">{selfAmtTotal}</span>
+                {selfAmtTotalSpan}
               </td>
             </tr>
           )
