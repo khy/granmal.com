@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _find from 'lodash/collection/find'
 import es6Promise from 'es6-promise'
 es6Promise.polyfill()
 
@@ -35,6 +36,7 @@ export function bootstrap() {
       dispatch({ type: AT.SetAccountTypes, accountTypes: results[1] })
       dispatch({ type: AT.SetContexts, contexts: results[2] })
       dispatch(ensureUserContext())
+      dispatch(ensureSelectedContext())
       dispatch({ type: AT.SetTxnTypes, txnTypes: results[3] })
       dispatch({ type: AT.BootstrapReceived })
     })
@@ -59,6 +61,26 @@ export function ensureUserContext() {
   }
 }
 
+export function ensureSelectedContext() {
+  return function (dispatch, getState) {
+    const state = getState()
+
+    if (!state.app.selectedContextGuid) {
+      let selectedContext
+
+      selectedContext = _find(state.app.contexts, (context) => {
+        context.createdBy.guid === state.auth.account.guid
+      })
+
+      if (!selectedContext) {
+        selectedContext = state.app.contexts[0]
+      }
+
+      dispatch(selectContext(selectedContext.guid))
+    }
+  }
+}
+
 export function fetchAccounts() {
   return function (dispatch, getState) {
     client(getState()).get('/accounts').then( accounts => {
@@ -79,6 +101,7 @@ export function fetchContexts() {
   return function (dispatch, getState) {
     client(getState()).get('/contexts').then( contexts => {
       dispatch({ type: AT.SetContexts, contexts })
+      dispatch(ensureSelectedContext())
     })
   }
 }

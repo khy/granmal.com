@@ -35,6 +35,7 @@ class TxnTypes extends React.Component {
   }
 
   addTxnType(newTxnType) {
+    newTxnType.contextGuid = this.props.app.selectedContextGuid
     this.props.dispatch(addTxnType(newTxnType))
   }
 
