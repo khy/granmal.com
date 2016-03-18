@@ -122,11 +122,13 @@ class Account extends React.Component {
             app={this.props.app}
           />
 
-          <Txns {...this.props.account.txns}
+          <Txns
+            txns={this.props.account.txns.results}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
             onNew={this.onNewTxn.bind(this)}
             onNewPage={this.onNewTxnPage.bind(this)}
             onEdit={this.showEditTxnModal.bind(this)}
-            app={this.props.app}
           />
         </div>
 

@@ -4,42 +4,51 @@ import { Link } from 'react-router'
 import _find from 'lodash/collection/find'
 import _filter from 'lodash/collection/filter'
 import _map from 'lodash/collection/map'
+import _pick from 'lodash/object/pick'
+import _get from 'lodash/object/get'
 
 import { formatDate } from 'budget/client/lib/date'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import { fetchTxnTypeTxns } from 'budget/client/actions/txnTypes'
+import Txns from 'budget/client/components/card/Txns'
 
 class Show extends React.Component {
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData(this.txnType.guid)
   }
 
-  componentDidUpdate() {
-    this.fetchData()
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.guid != nextProps.params.guid) {
+      this.fetchData(nextProps.params.guid)
+    }
   }
 
-  fetchData() {
-    this.props.dispatch(fetchTxnTypeTxns(this.txnType.guid))
+  fetchData(txnTypeGuid) {
+    this.props.dispatch(fetchTxnTypeTxns(txnTypeGuid))
   }
 
   get txnType() {
-    return _find(this.props.txnTypes, (txnType) => {
+    return _find(this.props.app.txnTypes, (txnType) => {
       return txnType.guid === this.props.params.guid
     })
   }
 
   get parentTxnType() {
-    return _find(this.props.txnTypes, (txnType) => {
+    return _find(this.props.app.txnTypes, (txnType) => {
       return txnType.guid === this.txnType.parentGuid
     })
   }
 
   get childrenTxnTypes() {
-    return _filter(this.props.txnTypes, (txnType) => {
+    return _filter(this.props.app.txnTypes, (txnType) => {
       return txnType.parentGuid === this.txnType.guid
     })
+  }
+
+  get txns() {
+    return _get(this.props.txnTypes, 'show.txns.records', [])
   }
 
   render() {
@@ -102,6 +111,12 @@ class Show extends React.Component {
               </tr>
             </Tbody>
           </Table>
+
+          <Txns
+            txns={this.txns}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
+          />
         </div>
       </div>
     )
@@ -109,10 +124,5 @@ class Show extends React.Component {
 
 }
 
-function select(state) {
-  return {
-    txnTypes: state.app.txnTypes
-  }
-}
-
+const select = (state) => _pick(state, 'app', 'txnTypes')
 export default connect(select)(Show)

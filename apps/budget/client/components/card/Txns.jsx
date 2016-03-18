@@ -17,7 +17,7 @@ export default class TxnsCard extends React.Component {
   }
 
   onEditTxn(event) {
-    const txn = _find(this.props.results, (txn) => {
+    const txn = _find(this.props.txns, (txn) => {
       return txn.guid === event.target.dataset.guid
     })
 
@@ -25,17 +25,39 @@ export default class TxnsCard extends React.Component {
   }
 
   render() {
+    let newLink
+
+    if (this.props.onNew) {
+      newLink = (
+        <CardHeaderLink onClick={this.onNew.bind(this)}>
+          New Transaction
+        </CardHeaderLink>
+      )
+    }
+
+    let editHeader
+
+    if (this.props.onEdit) {
+      editHeader = <th></th>
+    }
+
     let rows
 
-    if (Object.keys(this.props.results).length > 0) {
-      rows = _map(this.props.results, (txn) => {
-        const txnType = _find(this.props.app.txnTypes, (txnType) => {
+    if (Object.keys(this.props.txns).length > 0) {
+      rows = _map(this.props.txns, (txn) => {
+        const txnType = _find(this.props.txnTypes, (txnType) => {
           return txnType.guid === txn.transactionTypeGuid
         })
 
-        const account = _find(this.props.app.accounts, (account) => {
+        const account = _find(this.props.accounts, (account) => {
           return account.guid === txn.accountGuid
         })
+
+        let editRow
+
+        if (this.props.onEdit) {
+          editRow = <td><a onClick={this.onEditTxn.bind(this)} data-guid={txn.guid} href="#">Edit</a></td>
+        }
 
         return (
           <tr key={txn.guid}>
@@ -43,7 +65,7 @@ export default class TxnsCard extends React.Component {
             <td>{formatDate(txn.date)}</td>
             <td>{txn.amount}</td>
             <td>{txnType.name}</td>
-            <td><a onClick={this.onEditTxn.bind(this)} data-guid={txn.guid} href="#">Edit</a></td>
+            {editRow}
           </tr>
         )
       })
@@ -55,31 +77,12 @@ export default class TxnsCard extends React.Component {
       )
     }
 
-    const linkPages = extractPagerPages(this.props.linkHeader)
+    let pager
 
-    return (
-      <Card>
-        <CardHeader>
-          Transactions
+    if (this.props.linkHeader && this.props.onNewPage) {
+      const linkPages = extractPagerPages(this.props.linkHeader)
 
-          <CardHeaderLink onClick={this.onNew.bind(this)}>
-            New Transaction
-          </CardHeaderLink>
-        </CardHeader>
-
-        <Table>
-          <Thead>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th></th>
-          </Thead>
-          <Tbody>
-            {rows}
-          </Tbody>
-        </Table>
-
+      page = (
         <Pager>
           <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
             Newer
@@ -88,6 +91,30 @@ export default class TxnsCard extends React.Component {
             Older
           </PagerLink>
         </Pager>
+      )
+    }
+
+    return (
+      <Card>
+        <CardHeader>
+          Transactions
+          {newLink}
+        </CardHeader>
+
+        <Table>
+          <Thead>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Type</th>
+            {editHeader}
+          </Thead>
+          <Tbody>
+            {rows}
+          </Tbody>
+        </Table>
+
+        {pager}
       </Card>
     )
   }
