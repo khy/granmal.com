@@ -3,7 +3,7 @@ import u from 'updeep'
 import { ActionTypes as AT } from '../actions/txnTypes'
 
 export const initialState = {
-  lastUserAction: undefined
+  lastUserAction: undefined,
 }
 
 export default function txnTypes(state = initialState, action) {
@@ -23,6 +23,25 @@ export default function txnTypes(state = initialState, action) {
         lastUserAction: {
           type: 'AdjustTxnType',
           txnType: action.txnType,
+        },
+      }, state)
+
+    case AT.FetchTxnTypeTxnsRequest:
+      return u({
+        show: {
+          txns: {
+            isFetching: true,
+          },
+        },
+      }, state)
+
+    case AT.FetchTxnTypeTxnsReceive:
+      return u({
+        show: {
+          txns: {
+            isFetching: false,
+            records: action.txns,
+          },
         },
       }, state)
 

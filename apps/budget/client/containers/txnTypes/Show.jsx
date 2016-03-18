@@ -8,7 +8,21 @@ import _map from 'lodash/collection/map'
 import { formatDate } from 'budget/client/lib/date'
 import { Table, Thead } from 'client/components/bootstrap/table'
 
+import { fetchTxnTypeTxns } from 'budget/client/actions/txnTypes'
+
 class Show extends React.Component {
+
+  componentDidMount() {
+    this.fetchData()
+  }
+
+  componentDidUpdate() {
+    this.fetchData()
+  }
+
+  fetchData() {
+    this.props.dispatch(fetchTxnTypeTxns(this.txnType.guid))
+  }
 
   get txnType() {
     return _find(this.props.txnTypes, (txnType) => {
