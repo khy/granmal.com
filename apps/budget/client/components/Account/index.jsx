@@ -2,17 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _find from 'lodash/collection/find'
 
-import EditTxnModal from './Modal/EditTxn'
-import PlannedTxnModal from './Modal/PlannedTxn'
-import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
-import AddTxnModal from './Modal/AddTxn'
-import PlannedTxns from './Card/PlannedTxns'
-import Txns from './Card/Txns'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import {
   ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
+import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
+import PlannedTxns from 'budget/client/components/card/PlannedTxns'
+import Txns from 'budget/client/components/card/Txns'
+
+import EditTxnModal from './Modal/EditTxn'
+import PlannedTxnModal from './Modal/PlannedTxn'
+import AddTxnModal from './Modal/AddTxn'
 
 class Account extends React.Component {
 

@@ -1,5 +1,15 @@
 import React from 'react'
 
+export const Pager = (props) => {
+  return (
+    <nav>
+      <ul className="pager">
+        {props.children}
+      </ul>
+    </nav>
+  )
+}
+
 export class PagerLink extends React.Component {
 
   onClick(event) {

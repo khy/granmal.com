@@ -5,7 +5,9 @@ var _find = require('lodash/collection/find')
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { extractPagerPages } from 'budget/client/lib/pager'
-import { PagerLink } from 'client/components/bootstrap/pagination'
+import { Card, CardHeader, CardHeaderLink } from 'client/components/bootstrap/card'
+import { Pager, PagerLink } from 'client/components/bootstrap/pagination'
+import { Table, Thead, Tbody } from 'client/components/bootstrap/table'
 
 export default class TxnsCard extends React.Component {
 
@@ -56,41 +58,37 @@ export default class TxnsCard extends React.Component {
     const linkPages = extractPagerPages(this.props.linkHeader)
 
     return (
-      <div className="card">
-        <div className="card-header">
+      <Card>
+        <CardHeader>
           Transactions
 
-          <a className="pull-right" onClick={this.onNew.bind(this)} href="#">
+          <CardHeaderLink onClick={this.onNew.bind(this)}>
             New Transaction
-          </a>
-        </div>
-        <div className="table-responsive">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Type</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
-        </div>
-        <nav>
-          <ul className="pager">
-            <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
-              Newer
-            </PagerLink>
-            <PagerLink direction="next" page={linkPages.next} onClick={this.props.onNewPage.bind(this)}>
-              Older
-            </PagerLink>
-          </ul>
-        </nav>
-      </div>
+          </CardHeaderLink>
+        </CardHeader>
+
+        <Table>
+          <Thead>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th></th>
+          </Thead>
+          <Tbody>
+            {rows}
+          </Tbody>
+        </Table>
+
+        <Pager>
+          <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
+            Newer
+          </PagerLink>
+          <PagerLink direction="next" page={linkPages.next} onClick={this.props.onNewPage.bind(this)}>
+            Older
+          </PagerLink>
+        </Pager>
+      </Card>
     )
   }
 

@@ -6,7 +6,7 @@ import _filter from 'lodash/collection/filter'
 import _map from 'lodash/collection/map'
 
 import { formatDate } from 'budget/client/lib/date'
-import { Table, Thead } from 'client/components/bootstrap/table'
+import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import { fetchTxnTypeTxns } from 'budget/client/actions/txnTypes'
 
@@ -83,7 +83,7 @@ class Show extends React.Component {
           <h1>{this.txnType.name}</h1>
 
           <Table>
-            <tbody>
+            <Tbody>
               <tr>
                 <th>Parent</th>
                 <td>{parentTag}</td>
@@ -100,7 +100,7 @@ class Show extends React.Component {
                 <th>Created At</th>
                 <td>{formatDate(this.txnType.createdAt)}</td>
               </tr>
-            </tbody>
+            </Tbody>
           </Table>
         </div>
       </div>

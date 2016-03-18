@@ -10,4 +10,6 @@ export const Table = (props) => {
   )
 }
 
-export const Thead = props => <thead>{props.children}</thead>
+export const Thead = props => <thead><tr>{props.children}</tr></thead>
+
+export const Tbody = props => <tbody>{props.children}</tbody>
