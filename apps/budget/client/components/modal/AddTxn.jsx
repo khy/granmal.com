@@ -8,7 +8,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 
-export default class NewTxn extends React.Component {
+export default class AddTxn extends React.Component {
 
   constructor(props) {
     super(props)

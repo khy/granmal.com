@@ -7,13 +7,13 @@ import {
   ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
+
+import AddPlannedTxnModal from 'budget/client/components/modal/AddPlannedTxn'
+import AddTxnModal from 'budget/client/components/modal/AddTxn'
+import EditTxnModal from 'budget/client/components/modal/EditTxn'
 import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 import PlannedTxns from 'budget/client/components/card/PlannedTxns'
 import Txns from 'budget/client/components/card/Txns'
-
-import EditTxnModal from './Modal/EditTxn'
-import PlannedTxnModal from './Modal/PlannedTxn'
-import AddTxnModal from './Modal/AddTxn'
 
 class Account extends React.Component {
 
@@ -79,7 +79,7 @@ class Account extends React.Component {
 
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'plannedTxnModal') {
-        modal = <PlannedTxnModal {...this.props.modal}
+        modal = <AddPlannedTxnModal {...this.props.modal}
           app={this.props.app}
           accountGuid={this.props.params.accountGuid}
           onClose={this.hideModal.bind(this)}

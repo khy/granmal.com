@@ -5,7 +5,7 @@ import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export default class PlannedTxn extends React.Component {
+export default class AddPlannedTxn extends React.Component {
 
   get isDisabled() {
     return !this.props.isEnabled
