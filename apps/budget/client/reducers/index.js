@@ -9,11 +9,12 @@ import modal from './modal'
 import months from './months'
 import overview from './overview'
 import plannedTxns from './plannedTxns'
+import txns from './txns'
 import txnTypes from './txnTypes'
 
 const emptyReducer = (state = {}, action) => state
 const config = emptyReducer
 
 export default combineReducers({
-  account, app, auth, config, contexts, months, modal, overview, plannedTxns, txnTypes
+  account, app, auth, config, contexts, months, modal, overview, plannedTxns, txns, txnTypes
 })

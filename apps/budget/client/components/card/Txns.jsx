@@ -1,6 +1,7 @@
-var React = require('react')
-var _map = require('lodash/collection/map')
-var _find = require('lodash/collection/find')
+import React from 'react'
+import _map from 'lodash/collection/map'
+import _find from 'lodash/collection/find'
+import { Link } from 'react-router'
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -61,7 +62,11 @@ export default class TxnsCard extends React.Component {
 
         return (
           <tr key={txn.guid}>
-            <td>{shortenGuid(txn.guid)}</td>
+            <td>
+              <Link to={`/budget/transactions/${txn.guid}`}>
+                {shortenGuid(txn.guid)}
+              </Link>
+            </td>
             <td>{formatDate(txn.date)}</td>
             <td>{txn.amount}</td>
             <td>{txnType.name}</td>
