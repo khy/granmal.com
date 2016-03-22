@@ -10,7 +10,7 @@ import _get from 'lodash/object/get'
 import { formatDate } from 'budget/client/lib/date'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
-import { fetchTxnTypeTxns } from 'budget/client/actions/txnTypes'
+import { fetchTxnTypeTxns, fetchTxnTypePlannedTxns } from 'budget/client/actions/txnTypes'
 import PlannedTxns from 'budget/client/components/card/PlannedTxns'
 import Txns from 'budget/client/components/card/Txns'
 
@@ -27,6 +27,7 @@ class Show extends React.Component {
   }
 
   fetchData(txnTypeGuid) {
+    this.props.dispatch(fetchTxnTypePlannedTxns(txnTypeGuid))
     this.props.dispatch(fetchTxnTypeTxns(txnTypeGuid))
   }
 

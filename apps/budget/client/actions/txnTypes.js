@@ -7,6 +7,8 @@ import { hideModal, disableModal } from 'budget/client/actions/modal'
 export const ActionTypes = {
   AddTxnTypeReceive: 'AddTxnTypeReceive',
   AdjustTxnTypeReceive: 'AdjustTxnTypeReceive',
+  FetchTxnTypePlannedTxnsReceive: 'FetchTxnTypePlannedTxnsReceive',
+  FetchTxnTypePlannedTxnsRequest: 'FetchTxnTypePlannedTxnsRequest',
   FetchTxnTypeTxnsReceive: 'FetchTxnTypeTxnsReceive',
   FetchTxnTypeTxnsRequest: 'FetchTxnTypeTxnsRequest',
 }
@@ -39,6 +41,19 @@ export function adjustTxnType(guid, attributes) {
         txnType,
       })
       dispatch(hideModal())
+    })
+  }
+}
+
+export function fetchTxnTypePlannedTxns(guid) {
+  return function (dispatch, getState) {
+    dispatch({type: AT.FetchTxnTypePlannedTxnsRequest})
+
+    budgetClient(getState()).get(`/plannedTransactions?transactionType=${guid}`).then((plannedTxns) => {
+      dispatch({
+        type: AT.FetchTxnTypePlannedTxnsReceive,
+        plannedTxns,
+      })
     })
   }
 }

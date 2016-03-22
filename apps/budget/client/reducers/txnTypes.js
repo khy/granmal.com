@@ -26,6 +26,25 @@ export default function txnTypes(state = initialState, action) {
         },
       }, state)
 
+    case AT.FetchTxnTypePlannedTxnsRequest:
+      return u({
+        show: {
+          plannedTxns: {
+            isFetching: true,
+          },
+        },
+      }, state)
+
+    case AT.FetchTxnTypePlannedTxnsReceive:
+      return u({
+        show: {
+          plannedTxns: {
+            isFetching: false,
+            records: action.plannedTxns,
+          },
+        },
+      }, state)
+
     case AT.FetchTxnTypeTxnsRequest:
       return u({
         show: {
