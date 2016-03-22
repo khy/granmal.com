@@ -20,7 +20,7 @@ export default class PlannedTxnsCard extends React.Component {
   onResolve(event) {
     event.preventDefault()
 
-    var plannedTxn = _find(this.props.results, (plannedTxn) => {
+    var plannedTxn = _find(this.props.plannedTxns, (plannedTxn) => {
       return plannedTxn.guid === event.target.dataset.guid
     })
 
@@ -28,10 +28,26 @@ export default class PlannedTxnsCard extends React.Component {
   }
 
   render() {
+    let newLink
+
+    if (this.props.onNew) {
+      newLink = (
+        <CardHeaderLink onClick={this.onNew.bind(this)}>
+          New Planned Transaction
+        </CardHeaderLink>
+      )
+    }
+
+    let resolveHeader
+
+    if (this.props.onResolve) {
+      resolveHeader = <th></th>
+    }
+
     let rows
 
-    if (Object.keys(this.props.results).length > 0) {
-      rows = _map(this.props.results, (plannedTxn) => {
+    if (this.props.plannedTxns.length > 0) {
+      rows = _map(this.props.plannedTxns, (plannedTxn) => {
         const minDate = formatDate(plannedTxn.minDate)
         const maxDate = formatDate(plannedTxn.maxDate)
         const date = (minDate === maxDate) ?
@@ -51,13 +67,19 @@ export default class PlannedTxnsCard extends React.Component {
           return account.guid === plannedTxn.accountGuid
         })
 
+        let resolveRow
+
+        if (this.props.onResolve) {
+          resolveRow = <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
+        }
+
         return (
           <tr key={plannedTxn.guid} className={rowClass}>
             <td>{shortenGuid(plannedTxn.guid)}</td>
             <td>{date}</td>
             <td>{amount}</td>
             <td>{txnType.name}</td>
-            <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
+            {resolveRow}
           </tr>
         )
       })
@@ -69,31 +91,12 @@ export default class PlannedTxnsCard extends React.Component {
       )
     }
 
-    const pagerPages = extractPagerPages(this.props.linkHeader)
+    let pager
 
-    return (
-      <Card>
-        <CardHeader>
-          Planned Transactions
+    if (this.props.linkHeader && this.props.onNewPage) {
+      const pagerPages = extractPagerPages(this.props.linkHeader)
 
-          <CardHeaderLink onClick={this.onNew.bind(this)}>
-            New Planned Transaction
-          </CardHeaderLink>
-        </CardHeader>
-
-        <Table>
-          <Thead>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th></th>
-          </Thead>
-          <Tbody>
-            {rows}
-          </Tbody>
-        </Table>
-
+      pager = (
         <Pager>
           <PagerLink direction="prev" page={pagerPages.previous} onClick={this.props.onNewPage.bind(this)}>
             Newer
@@ -102,6 +105,32 @@ export default class PlannedTxnsCard extends React.Component {
             Older
           </PagerLink>
         </Pager>
+      )
+    }
+
+
+
+    return (
+      <Card>
+        <CardHeader>
+          Planned Transactions
+          {newLink}
+        </CardHeader>
+
+        <Table>
+          <Thead>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Type</th>
+            {resolveHeader}
+          </Thead>
+          <Tbody>
+            {rows}
+          </Tbody>
+        </Table>
+
+        {pager}
       </Card>
     )
   }

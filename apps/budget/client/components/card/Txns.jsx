@@ -43,7 +43,7 @@ export default class TxnsCard extends React.Component {
 
     let rows
 
-    if (Object.keys(this.props.txns).length > 0) {
+    if (this.props.txns.length > 0) {
       rows = _map(this.props.txns, (txn) => {
         const txnType = _find(this.props.txnTypes, (txnType) => {
           return txnType.guid === txn.transactionTypeGuid
@@ -82,7 +82,7 @@ export default class TxnsCard extends React.Component {
     if (this.props.linkHeader && this.props.onNewPage) {
       const linkPages = extractPagerPages(this.props.linkHeader)
 
-      page = (
+      pager = (
         <Pager>
           <PagerLink direction="prev" page={linkPages.previous} onClick={this.props.onNewPage.bind(this)}>
             Newer

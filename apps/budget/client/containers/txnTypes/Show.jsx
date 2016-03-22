@@ -11,6 +11,7 @@ import { formatDate } from 'budget/client/lib/date'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import { fetchTxnTypeTxns } from 'budget/client/actions/txnTypes'
+import PlannedTxns from 'budget/client/components/card/PlannedTxns'
 import Txns from 'budget/client/components/card/Txns'
 
 class Show extends React.Component {
@@ -49,6 +50,10 @@ class Show extends React.Component {
 
   get txns() {
     return _get(this.props.txnTypes, 'show.txns.records', [])
+  }
+
+  get plannedTxns() {
+    return _get(this.props.txnTypes, 'show.plannedTxns.records', [])
   }
 
   render() {
@@ -111,6 +116,12 @@ class Show extends React.Component {
               </tr>
             </Tbody>
           </Table>
+
+          <PlannedTxns
+            plannedTxns={this.plannedTxns}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
+          />
 
           <Txns
             txns={this.txns}

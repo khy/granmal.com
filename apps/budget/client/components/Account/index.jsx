@@ -115,11 +115,13 @@ class Account extends React.Component {
         <div className="container">
           <h1>{account.name}</h1>
 
-          <PlannedTxns {...this.props.account.plannedTxns}
+          <PlannedTxns
+            plannedTxns={this.props.account.plannedTxns.results}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
             onNew={this.onNewPlannedTxn.bind(this)}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
             onNewPage={this.onNewPlannedTxnPage.bind(this)}
-            app={this.props.app}
           />
 
           <Txns
@@ -127,8 +129,8 @@ class Account extends React.Component {
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             onNew={this.onNewTxn.bind(this)}
-            onNewPage={this.onNewTxnPage.bind(this)}
             onEdit={this.showEditTxnModal.bind(this)}
+            onNewPage={this.onNewTxnPage.bind(this)}
           />
         </div>
 
