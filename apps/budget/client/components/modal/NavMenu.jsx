@@ -17,6 +17,7 @@ export default class NavMenu extends React.Component {
       <BaseNavMenu onClose={this.props.onClose}>
         {RouteLink("Months", "/months")}
         {RouteLink("Transaction Types", "/transactionTypes")}
+        {RouteLink("Contexts", "/contexts")}
         {RouteLink("Home", "/")}
       </BaseNavMenu>
     )

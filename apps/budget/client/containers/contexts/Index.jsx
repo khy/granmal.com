@@ -7,7 +7,7 @@ import { formatDate } from 'budget/client/lib/date'
 import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
 import { selectContext } from 'budget/client/actions/app'
 import { showModal, hideModal } from 'budget/client/actions/modal'
-import AddUserModal from './Modal/AddUser'
+import AddContextUserModal from 'budget/client/components/modal/AddContextUser'
 
 class Contexts extends React.Component {
 
@@ -33,7 +33,7 @@ class Contexts extends React.Component {
 
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'addContextUser') {
-        modal = <AddUserModal {...this.props.modal}
+        modal = <AddContextUserModal {...this.props.modal}
           client={coreClient(this.props)}
           onAdd={this.addContextUser.bind(this)}
           onClose={this.hideModal.bind(this)}

@@ -5,7 +5,7 @@ import _map from 'lodash/collection/map'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export default class AddUser extends React.Component {
+export default class AddContextUser extends React.Component {
 
   get contextGuid() {
     return this.props.data.contextGuid
