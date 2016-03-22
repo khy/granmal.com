@@ -1,7 +1,7 @@
 var React = require('react')
 var _map = require('lodash/collection/map')
 
-export default class AddAccountModal extends React.Component {
+export default class AddAccount extends React.Component {
 
   get isDisabled() {
     return !this.props.isEnabled

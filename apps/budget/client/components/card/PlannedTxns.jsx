@@ -59,11 +59,11 @@ export default class PlannedTxnsCard extends React.Component {
         const rowClass = (moment(plannedTxn.minDate) < moment()) ?
           'table-warning' : ''
 
-        const txnType = _find(this.props.app.txnTypes, (txnType) => {
+        const txnType = _find(this.props.txnTypes, (txnType) => {
           return txnType.guid === plannedTxn.transactionTypeGuid
         })
 
-        const account = _find(this.props.app.accounts, (account) => {
+        const account = _find(this.props.accounts, (account) => {
           return account.guid === plannedTxn.accountGuid
         })
 

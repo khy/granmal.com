@@ -2,22 +2,19 @@ var React = require('react')
 import { connect } from 'react-redux'
 var moment = require('moment')
 
+import { shortenGuid } from 'budget/client/lib/guid'
 import { showModal, hideModal } from 'budget/client/actions/modal'
-
 import {
   ActionTypes, UserActionTypes, addAccount, addTransfer, confirmPlannedTxn,
   deletePlannedTxn, fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard,
   fetchProjectionsCard, fetchTxnTypes
 } from 'budget/client/actions/overview'
 
-var ProjectionsCard = require('./Card/ProjectionsCard')
-var PlannedTxnsCard = require('./Card/PlannedTxnsCard')
-
-var AddAccountModal = require('./Modal/AddAccountModal')
+import ProjectionsCard from 'budget/client/components/card/Projections'
+import PlannedTxnsCard from 'budget/client/components/card/PlannedTxns'
+import AddAccountModal from 'budget/client/components/modal/AddAccount'
+import AddTransferModal from 'budget/client/components/modal/AddTransfer'
 import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
-var AddTransferModal = require('./Modal/AddTransferModal')
-
-import { shortenGuid } from 'budget/client/lib/guid'
 
 class Overview extends React.Component {
 
@@ -127,8 +124,10 @@ class Overview extends React.Component {
             onNewAccount={this.showAddAccountModal.bind(this)}
             onNewTransfer={this.showAddTransferModal.bind(this)}
           />
+
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
-            app={this.props.app}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
             lastUserAction={this.props.overview.lastUserAction}
             onResolve={this.showResolvePlannedTxnModal.bind(this)}
           />

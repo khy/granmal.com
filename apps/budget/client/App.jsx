@@ -17,7 +17,7 @@ import reducer from './reducers'
 import { ActionTypes, bootstrap } from './actions/app'
 import { logIn } from 'client/actions/auth'
 import Navbar from './components/Navbar'
-import Overview from './components/Overview'
+import Index from './containers/Index'
 import AccountsShow from './containers/accounts/Show'
 import Contexts from './containers/contexts/Index'
 import PlannedTxns from './containers/plannedTxns/Index'
@@ -123,7 +123,7 @@ render(
   <Provider store={store}>
     <Router history={createBrowserHistory()}>
       <Route path="/budget" component={ConnectedApp}>
-        <IndexRoute component={Overview} />
+        <IndexRoute component={Index} />
         <Route path="account/:accountGuid" component={AccountsShow} />
         <Route path="contexts" component={Contexts} />
         <Route path="months" component={MonthsIndex} />
