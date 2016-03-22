@@ -18,7 +18,7 @@ import { ActionTypes, bootstrap } from './actions/app'
 import { logIn } from 'client/actions/auth'
 import Navbar from './components/Navbar'
 import Overview from './components/Overview'
-import Account from './components/Account'
+import AccountsShow from './containers/accounts/Show'
 import Contexts from './components/Contexts'
 import PlannedTxns from './components/PlannedTxns'
 import TxnTypesIndex from './containers/txnTypes/Index'
@@ -124,7 +124,7 @@ render(
     <Router history={createBrowserHistory()}>
       <Route path="/budget" component={ConnectedApp}>
         <IndexRoute component={Overview} />
-        <Route path="account/:accountGuid" component={Account} />
+        <Route path="account/:accountGuid" component={AccountsShow} />
         <Route path="contexts" component={Contexts} />
         <Route path="months" component={MonthsIndex} />
         <Route path="months/:year/:month" component={MonthsShow} />
