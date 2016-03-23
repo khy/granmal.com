@@ -12,7 +12,6 @@ export function fetchTxn(guid) {
     dispatch({type: AT.FetchTxnRequest})
 
     budgetClient(getState()).get(`/transactions?guid=${guid}`).then((txns) => {
-      console.log(txns[0])
       dispatch({
         type: AT.FetchTxnReceive,
         txn: txns[0],

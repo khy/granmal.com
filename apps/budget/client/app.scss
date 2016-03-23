@@ -5,6 +5,11 @@
 
 h1 { margin-bottom: 1.5rem; }
 
+.no-table-content {
+  text-align: center;
+  color: $text-muted;
+}
+
 .card-message { border-bottom: 1px solid $card-border-color; }
 
 .card .pager { margin: 1rem; }
