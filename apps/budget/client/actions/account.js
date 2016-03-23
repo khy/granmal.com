@@ -81,7 +81,7 @@ export function fetchPlannedTxns(accountGuid, page = 1) {
   return function (dispatch, getState) {
     dispatch({ type: AT.PlannedTxnsFetchRequest })
 
-    const url = '/plannedTransactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
+    const url = '/plannedTransactions?account=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
     client(getState()).get(url, true).then(response  => {
       response.json().then(plannedTxns => {
@@ -99,7 +99,7 @@ export function fetchTxns(accountGuid, page = 1) {
   return function (dispatch, getState) {
     dispatch({ type: AT.TxnsFetchRequest })
 
-    const url = '/transactions?accountGuid=' + accountGuid + '&p.page=' + page + '&p.limit=10'
+    const url = '/transactions?account=' + accountGuid + '&p.page=' + page + '&p.limit=10'
 
     client(getState()).get(url, true).then( response => {
       response.json().then(txns => {
