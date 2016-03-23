@@ -1,4 +1,5 @@
 var React = require('react')
+import { Link } from 'react-router'
 var _map = require('lodash/collection/map')
 var _find = require('lodash/collection/find')
 var moment = require('moment')
@@ -75,7 +76,11 @@ export default class PlannedTxnsCard extends React.Component {
 
         return (
           <tr key={plannedTxn.guid} className={rowClass}>
-            <td>{shortenGuid(plannedTxn.guid)}</td>
+            <td>
+              <Link to={`/budget/plannedTransactions/${plannedTxn.guid}`}>
+                {shortenGuid(plannedTxn.guid)}
+              </Link>
+            </td>
             <td>{date}</td>
             <td>{amount}</td>
             <td>{txnType.name}</td>

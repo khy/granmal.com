@@ -20,7 +20,8 @@ import Navbar from './components/Navbar'
 import Index from './containers/Index'
 import AccountsShow from './containers/accounts/Show'
 import Contexts from './containers/contexts/Index'
-import PlannedTxns from './containers/plannedTxns/Index'
+import PlannedTxnsIndex from './containers/plannedTxns/Index'
+import PlannedTxnsShow from './containers/plannedTxns/Show'
 import TxnsShow from './containers/txns/Show'
 import TxnTypesIndex from './containers/txnTypes/Index'
 import TxnTypesShow from './containers/txnTypes/Show'
@@ -129,7 +130,8 @@ render(
         <Route path="contexts" component={Contexts} />
         <Route path="months" component={MonthsIndex} />
         <Route path="months/:year/:month" component={MonthsShow} />
-        <Route path="plannedTransactions" component={PlannedTxns} />
+        <Route path="plannedTransactions" component={PlannedTxnsIndex} />
+        <Route path="plannedTransactions/:guid" component={PlannedTxnsShow} />
         <Route path="transactions/:guid" component={TxnsShow} />
         <Route path="transactionTypes" component={TxnTypesIndex} />
         <Route path="transactionTypes/:guid" component={TxnTypesShow} />
