@@ -5,6 +5,8 @@ import { budgetClient } from 'budget/client/lib/clients'
 export const ActionTypes = {
   FetchPlannedTxnReceive: 'FetchPlannedTxnReceive',
   FetchPlannedTxnRequest: 'FetchPlannedTxnRequest',
+  FetchPlannedTxnTxnsReceive: 'FetchPlannedTxnTxnsReceive',
+  FetchPlannedTxnTxnsRequest: 'FetchPlannedTxnTxnsRequest',
   PlannedTxnsReceive: 'PlannedTxnsReceive',
   PlannedTxnsRequest: 'PlannedTxnsRequest',
 }
@@ -32,6 +34,19 @@ export function fetchPlannedTxns() {
       dispatch({
         type: AT.PlannedTxnsReceive,
         results: plannedTxns,
+      })
+    })
+  }
+}
+
+export function fetchPlannedTxnTxns(guid) {
+  return function (dispatch, getState) {
+    dispatch({type: AT.FetchPlannedTxnTxnsRequest})
+
+    budgetClient(getState()).get(`/transactions?plannedTransaction=${guid}`).then((txns) => {
+      dispatch({
+        type: AT.FetchPlannedTxnTxnsReceive,
+        txns: txns,
       })
     })
   }

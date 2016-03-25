@@ -22,7 +22,28 @@ export default function plannedTxns(state = initialState, action) {
     case AT.FetchPlannedTxnRequest:
       return u({
         show: {
-          isFetching: true
+          isFetching: true,
+          plannedTxn: undefined,
+        },
+      }, state)
+
+    case AT.FetchPlannedTxnTxnsReceive:
+      return u({
+        show: {
+          txns: {
+            isFetching: false,
+            txns: action.txns,
+          }
+        },
+      }, state)
+
+    case AT.FetchPlannedTxnTxnsRequest:
+      return u({
+        show: {
+          txns: {
+            isFetching: true,
+            txns: [],
+          }
         },
       }, state)
 

@@ -9,7 +9,8 @@ import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
-import { fetchPlannedTxn } from 'budget/client/actions/plannedTxns'
+import Txns from 'budget/client/components/card/Txns'
+import { fetchPlannedTxn, fetchPlannedTxnTxns } from 'budget/client/actions/plannedTxns'
 
 class Show extends React.Component {
 
@@ -25,10 +26,15 @@ class Show extends React.Component {
 
   fetchData(plannedTxnGuid) {
     this.props.dispatch(fetchPlannedTxn(plannedTxnGuid))
+    this.props.dispatch(fetchPlannedTxnTxns(plannedTxnGuid))
   }
 
   get plannedTxn() {
     return _get(this.props.plannedTxns, 'show.plannedTxn')
+  }
+
+  get txns() {
+    return _get(this.props.plannedTxns, 'show.txns.txns', [])
   }
 
   get isFetching() {
@@ -105,9 +111,16 @@ class Show extends React.Component {
       <div>
         <div className="container">
           <h1>Planned Transaction {shortenGuid(this.props.params.guid)}</h1>
+
           <Table>
             {mainTableBody}
           </Table>
+
+          <Txns
+            txns={this.txns}
+            txnTypes={this.props.app.txnTypes}
+            accounts={this.props.app.accounts}
+          />
         </div>
       </div>
     )
