@@ -7,9 +7,11 @@ import _pick from 'lodash/object/pick'
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
+import { showModal, hideModal } from 'budget/client/actions/modal'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import Txns from 'budget/client/components/card/Txns'
+import AddTxnModal from 'budget/client/components/modal/AddTxn'
 import { fetchPlannedTxn, fetchPlannedTxnTxns } from 'budget/client/actions/plannedTxns'
 
 class Show extends React.Component {
@@ -27,6 +29,18 @@ class Show extends React.Component {
   fetchData(plannedTxnGuid) {
     this.props.dispatch(fetchPlannedTxn(plannedTxnGuid))
     this.props.dispatch(fetchPlannedTxnTxns(plannedTxnGuid))
+  }
+
+  showAddTxnModal() {
+    this.props.dispatch(showModal('addTxnModal'))
+  }
+
+  hideModal() {
+    this.props.dispatch(hideModal())
+  }
+
+  addTxn(newTxn) {
+    console.log(newTxn)
   }
 
   get plannedTxn() {
@@ -58,6 +72,21 @@ class Show extends React.Component {
   }
 
   render() {
+    let modal
+
+    if (this.props.modal.isVisible && this.plannedTxn) {
+      if (this.props.modal.name === 'addTxnModal') {
+        modal = <AddTxnModal {...this.props.modal}
+          txnTypes={this.props.app.txnTypes}
+          accounts={this.props.app.accounts}
+          accountGuid={this.plannedTxn.accountGuid}
+          plannedTxnGuid={this.plannedTxn.guid}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.addTxn.bind(this)}
+        />
+      }
+    }
+
     let mainTableBody
 
     if (this.plannedTxn) {
@@ -120,7 +149,10 @@ class Show extends React.Component {
             txns={this.txns}
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
+            onNew={this.showAddTxnModal.bind(this)}
           />
+
+          {modal}
         </div>
       </div>
     )
@@ -128,5 +160,5 @@ class Show extends React.Component {
 
 }
 
-const select = (state) => _pick(state, 'app', 'plannedTxns')
+const select = (state) => _pick(state, 'app', 'modal', 'plannedTxns')
 export default connect(select)(Show)

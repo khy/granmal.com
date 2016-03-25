@@ -1,7 +1,9 @@
 import React from 'react'
 import moment from 'moment'
 import _isEmpty from 'lodash/lang/isEmpty'
+import _map from 'lodash/collection/map'
 
+import Select from 'react-select'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
@@ -37,6 +39,12 @@ export default class AddTxn extends React.Component {
 
     let errors = {}
 
+    const accountGuid = this.state.selectedAccountGuid || this.props.accountGuid
+
+    if (!accountGuid) {
+      errors.accountGuid = "Account is required"
+    }
+
     if (!this.state.selectedTxnTypeGuid) {
       if (this.state.rootTxnType === 'expense') {
         errors.txnType = "Expense type is required"
@@ -61,10 +69,11 @@ export default class AddTxn extends React.Component {
       }
 
       const newTxn = {
-        accountGuid: this.props.accountGuid,
+        accountGuid: accountGuid,
         transactionTypeGuid: this.state.selectedTxnTypeGuid,
         amount: amount,
-        date: normalizeDateInput(this.refs.dateInput.value)
+        date: normalizeDateInput(this.refs.dateInput.value),
+        plannedTransactionGuid: this.props.plannedTxnGuid
       }
 
       this.props.onAdd(newTxn)
@@ -78,6 +87,11 @@ export default class AddTxn extends React.Component {
     this.props.onNewTxnType()
   }
 
+  selectAccount(option) {
+    const guid = option ? option.value : undefined
+    this.setState({selectedAccountGuid: guid})
+  }
+
   selectTxnTypeGuid(guid) {
     this.setState({selectedTxnTypeGuid: guid})
   }
@@ -87,6 +101,35 @@ export default class AddTxn extends React.Component {
     const incomeButtonState = (this.state.rootTxnType === 'income') ? 'active' : false
 
     const selectLabel = (this.state.rootTxnType === 'expense') ? 'Expense Type' : 'Income Type'
+
+    let accountFieldset
+
+    if (!this.props.accountGuid) {
+      const options = (
+        _map(this.props.accounts, (account) => {
+          return { value: account.guid, label: account.name }
+        })
+      )
+
+      let error
+
+      if (this.state.errors.accountGuid) {
+        error = <span className="text-danger">{this.state.errors.accountGuid}</span>
+      }
+
+      accountFieldset = (
+        <fieldset className="form-group">
+          <label>Account</label>
+          <Select
+            name="fromAccountGuidSelect"
+            options={options}
+            value={this.state.selectedAccountGuid}
+            onChange={this.selectAccount.bind(this)}
+          />
+          {error}
+        </fieldset>
+      )
+    }
 
     let amountInput
 
@@ -138,11 +181,13 @@ export default class AddTxn extends React.Component {
           </div>
           <form>
             <fieldset disabled={this.isDisabled}>
+              {accountFieldset}
+
               <fieldset className="form-group">
                 <label>{selectLabel}</label>
                 <TxnTypeSelect
                   rootTxnType={this.state.rootTxnType}
-                  txnTypes={this.props.app.txnTypes}
+                  txnTypes={this.props.txnTypes}
                   value={this.state.selectedTxnTypeGuid}
                   onChange={this.selectTxnTypeGuid.bind(this)}
                 />
@@ -159,7 +204,7 @@ export default class AddTxn extends React.Component {
                 <label>Date</label>
                 <input ref="dateInput" className="form-control" type="text" defaultValue={formatDate(moment())} />
                 {dateError}
-            </fieldset>
+              </fieldset>
             </fieldset>
           </form>
         </ModalBody>

@@ -87,7 +87,7 @@ class Account extends React.Component {
         />
       } else if (this.props.modal.name === 'addTxnModal') {
         modal = <AddTxnModal {...this.props.modal}
-          app={this.props.app}
+          txnTypes={this.props.app.txnTypes}
           accountGuid={this.props.params.accountGuid}
           onClose={this.hideModal.bind(this)}
           onAdd={this.addTxn.bind(this)}
