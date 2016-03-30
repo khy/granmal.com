@@ -70,6 +70,7 @@ export default class TxnsCard extends React.Component {
             <td>{formatDate(txn.date)}</td>
             <td>{txn.amount}</td>
             <td>{txnType.name}</td>
+            <td>{txn.name}</td>
             {editRow}
           </tr>
         )
@@ -112,6 +113,7 @@ export default class TxnsCard extends React.Component {
             <th>Date</th>
             <th>Amount</th>
             <th>Type</th>
+            <th>Name</th>
             {editHeader}
           </Thead>
           <Tbody>

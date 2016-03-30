@@ -12,7 +12,7 @@ export default function txns(state = initialState, action) {
       return u({
         show: {
           isFetching: false,
-          txn: action.txn,
+          txn: u.constant(action.txn),
         },
       }, state)
 

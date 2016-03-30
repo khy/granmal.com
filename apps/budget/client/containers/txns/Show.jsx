@@ -101,6 +101,10 @@ class Show extends React.Component {
             <td>{this.txn.amount}</td>
           </tr>
           <tr>
+            <th>Name</th>
+            <td>{this.txn.name}</td>
+          </tr>
+          <tr>
             <th>Planned Transaction</th>
             {plannedTxnTd}
           </tr>

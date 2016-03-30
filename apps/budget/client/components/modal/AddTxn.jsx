@@ -81,6 +81,7 @@ export default class AddTxn extends React.Component {
         transactionTypeGuid: txnTypeGuid,
         amount: amount,
         date: normalizeDateInput(this.refs.dateInput.value),
+        name: this.refs.nameInput.value,
         plannedTransactionGuid: this.props.plannedTxnGuid
       }
 
@@ -225,6 +226,11 @@ export default class AddTxn extends React.Component {
                 <label>Date</label>
                 <input ref="dateInput" className="form-control" type="text" defaultValue={formatDate(moment())} />
                 {dateError}
+              </fieldset>
+
+              <fieldset className="form-group">
+                <label>Name</label>
+                <input ref="nameInput" className="form-control" type="text" />
               </fieldset>
             </fieldset>
           </form>
