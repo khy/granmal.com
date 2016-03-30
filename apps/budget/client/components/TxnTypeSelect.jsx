@@ -23,9 +23,9 @@ export default class TxnTypeSelect extends React.Component {
 
     let options
 
-    if (this.props.rootTxnType == 'expense') {
+    if (this.props.rootTxnType == 'Expense') {
       options = expenseOptions
-    } else if (this.props.rootTxnType == 'income') {
+    } else if (this.props.rootTxnType == 'Income') {
       options = incomeOptions
     } else {
       options = expenseOptions.concat(incomeOptions)

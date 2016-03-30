@@ -81,6 +81,7 @@ class Show extends React.Component {
           accounts={this.props.app.accounts}
           accountGuid={this.plannedTxn.accountGuid}
           plannedTxnGuid={this.plannedTxn.guid}
+          txnTypeGuid={this.plannedTxn.transactionTypeGuid}
           onClose={this.hideModal.bind(this)}
           onAdd={this.addTxn.bind(this)}
         />

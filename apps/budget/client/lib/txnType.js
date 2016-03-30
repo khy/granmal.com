@@ -28,3 +28,15 @@ export function txnTypeHierarchyArray(txnTypes) {
     return buildHierarchy(parent)
   }
 }
+
+export function rootTxnType(txnTypes, txnTypeGuid) {
+  const txnType = _find(txnTypes, (txnType) => {
+    return txnType.guid === txnTypeGuid
+  })
+
+  if (txnType.parentGuid) {
+    return rootTxnType(txnTypes, txnType.parentGuid)
+  } else {
+    return txnType
+  }
+}

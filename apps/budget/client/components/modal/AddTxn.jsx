@@ -8,13 +8,23 @@ import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/butt
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
+import { rootTxnType } from 'budget/client/lib/txnType'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 
 export default class AddTxn extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {rootTxnType: 'expense', errors: {}}
+
+    let _rootTxnType
+
+    if (this.props.txnTypeGuid) {
+      _rootTxnType = rootTxnType(this.props.txnTypes, this.props.txnTypeGuid).name
+    } else {
+      _rootTxnType = 'Expense'
+    }
+
+    this.state = { rootTxnType: _rootTxnType, errors: {} }
   }
 
   get isDisabled() {
@@ -22,11 +32,11 @@ export default class AddTxn extends React.Component {
   }
 
   setExpense() {
-    this.setState({rootTxnType: 'expense'})
+    this.setState({rootTxnType: 'Expense'})
   }
 
   setIncome() {
-    this.setState({rootTxnType: 'income'})
+    this.setState({rootTxnType: 'Income'})
   }
 
   close(event) {
@@ -45,12 +55,10 @@ export default class AddTxn extends React.Component {
       errors.accountGuid = "Account is required"
     }
 
-    if (!this.state.selectedTxnTypeGuid) {
-      if (this.state.rootTxnType === 'expense') {
-        errors.txnType = "Expense type is required"
-      } else {
-        errors.txnType = "Income type is required"
-      }
+    const txnTypeGuid = this.state.selectedTxnTypeGuid || this.props.txnTypeGuid
+
+    if (!txnTypeGuid) {
+      errors.txnType = `${this.state.rootTxnType} type is required`
     }
 
     if (!this.refs.amountInput.value) {
@@ -64,13 +72,13 @@ export default class AddTxn extends React.Component {
     if (_isEmpty(errors)) {
       let amount = Math.abs(parseFloat(this.refs.amountInput.value))
 
-      if (this.state.rootTxnType === 'expense') {
+      if (this.state.rootTxnType === 'Expense') {
         amount = - amount
       }
 
       const newTxn = {
         accountGuid: accountGuid,
-        transactionTypeGuid: this.state.selectedTxnTypeGuid,
+        transactionTypeGuid: txnTypeGuid,
         amount: amount,
         date: normalizeDateInput(this.refs.dateInput.value),
         plannedTransactionGuid: this.props.plannedTxnGuid
@@ -97,11 +105,6 @@ export default class AddTxn extends React.Component {
   }
 
   render() {
-    const expenseButtonState = (this.state.rootTxnType === 'expense') ? 'active' : false
-    const incomeButtonState = (this.state.rootTxnType === 'income') ? 'active' : false
-
-    const selectLabel = (this.state.rootTxnType === 'expense') ? 'Expense Type' : 'Income Type'
-
     let accountFieldset
 
     if (!this.props.accountGuid) {
@@ -131,9 +134,54 @@ export default class AddTxn extends React.Component {
       )
     }
 
+    let txnTypeButtonGroup, txnTypeFieldset
+
+    if (!this.props.txnTypeGuid) {
+      const expenseButtonState = (this.state.rootTxnType === 'Expense') ? 'active' : false
+      const incomeButtonState = (this.state.rootTxnType === 'Income') ? 'active' : false
+
+      txnTypeButtonGroup = (
+        <div className="btn-group transaction-type-buttons">
+          <SecondaryButton
+            className={expenseButtonState}
+            disabled={this.state.rootTxnType === 'Expense'}
+            onClick={this.setExpense.bind(this)}
+          >
+            Expense
+          </SecondaryButton>
+          <SecondaryButton
+            className={incomeButtonState}
+            disabled={this.state.rootTxnType === 'Income'}
+            onClick={this.setIncome.bind(this)}
+          >
+            Income
+          </SecondaryButton>
+        </div>
+      )
+
+      let error
+
+      if (this.state.errors.txnType) {
+        error = <span className="text-danger">{this.state.errors.txnType}</span>
+      }
+
+      txnTypeFieldset = (
+        <fieldset className="form-group">
+          <label>{this.state.rootTxnType} Type</label>
+          <TxnTypeSelect
+            rootTxnType={this.state.rootTxnType}
+            txnTypes={this.props.txnTypes}
+            value={this.state.selectedTxnTypeGuid}
+            onChange={this.selectTxnTypeGuid.bind(this)}
+          />
+          {error}
+        </fieldset>
+      )
+    }
+
     let amountInput
 
-    if (this.state.rootTxnType === 'expense') {
+    if (this.state.rootTxnType === 'Expense') {
       amountInput = <div className="input-group">
         <span className="input-group-addon text-danger">&#45;</span>
         <input ref="amountInput" type="text" className="form-control" />
@@ -145,11 +193,7 @@ export default class AddTxn extends React.Component {
       </div>
     }
 
-    let txnTypeError, amountError, dateError
-
-    if (this.state.errors.txnType) {
-      txnTypeError = <span className="text-danger">{this.state.errors.txnType}</span>
-    }
+    let amountError, dateError
 
     if (this.state.errors.amount) {
       amountError = <span className="text-danger">{this.state.errors.amount}</span>
@@ -163,36 +207,13 @@ export default class AddTxn extends React.Component {
       <Modal>
         <ModalHeader>New Transaction</ModalHeader>
         <ModalBody>
-          <div className="btn-group transaction-type-buttons">
-            <SecondaryButton
-              className={expenseButtonState}
-              disabled={this.state.rootTxnType === 'expense'}
-              onClick={this.setExpense.bind(this)}
-            >
-              Expense
-            </SecondaryButton>
-            <SecondaryButton
-              className={incomeButtonState}
-              disabled={this.state.rootTxnType === 'income'}
-              onClick={this.setIncome.bind(this)}
-            >
-              Income
-            </SecondaryButton>
-          </div>
+          {txnTypeButtonGroup}
+
           <form>
             <fieldset disabled={this.isDisabled}>
               {accountFieldset}
 
-              <fieldset className="form-group">
-                <label>{selectLabel}</label>
-                <TxnTypeSelect
-                  rootTxnType={this.state.rootTxnType}
-                  txnTypes={this.props.txnTypes}
-                  value={this.state.selectedTxnTypeGuid}
-                  onChange={this.selectTxnTypeGuid.bind(this)}
-                />
-                {txnTypeError}
-              </fieldset>
+              {txnTypeFieldset}
 
               <fieldset className="form-group">
                 <label>Amount</label>
