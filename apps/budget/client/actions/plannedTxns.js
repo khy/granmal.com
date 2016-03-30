@@ -1,6 +1,7 @@
 import _map from 'lodash/collection/map'
 
 import { budgetClient } from 'budget/client/lib/clients'
+import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
   FetchPlannedTxnReceive: 'FetchPlannedTxnReceive',
@@ -12,6 +13,17 @@ export const ActionTypes = {
 }
 
 const AT = ActionTypes
+
+export function addPlannedTxnTxn(plannedTxnGuid, newTxn) {
+  return function (dispatch, getState) {
+    dispatch(disableModal())
+
+    budgetClient(getState()).post('/transactions', newTxn).then((txn) => {
+      dispatch(fetchPlannedTxnTxns(plannedTxnGuid))
+      dispatch(hideModal())
+    })
+  }
+}
 
 export function fetchPlannedTxn(guid) {
   return function (dispatch, getState) {

@@ -12,7 +12,9 @@ import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import Txns from 'budget/client/components/card/Txns'
 import AddTxnModal from 'budget/client/components/modal/AddTxn'
-import { fetchPlannedTxn, fetchPlannedTxnTxns } from 'budget/client/actions/plannedTxns'
+import {
+  addPlannedTxnTxn, fetchPlannedTxn, fetchPlannedTxnTxns
+} from 'budget/client/actions/plannedTxns'
 
 class Show extends React.Component {
 
@@ -40,7 +42,7 @@ class Show extends React.Component {
   }
 
   addTxn(newTxn) {
-    console.log(newTxn)
+    this.props.dispatch(addPlannedTxnTxn(this.plannedTxn.guid, newTxn))
   }
 
   get plannedTxn() {
