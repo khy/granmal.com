@@ -3,7 +3,7 @@ import moment from 'moment'
 import _isEmpty from 'lodash/isEmpty'
 import _map from 'lodash/map'
 
-import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
+import { normalizeOptionalDateInput, formatDate } from 'budget/client/lib/date'
 import { normalizeOptionalFormInput } from 'budget/client/lib/form'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
@@ -50,8 +50,8 @@ export default class AddPlannedTxn extends React.Component {
         transactionTypeGuid: this.state.selectedTxnTypeGuid,
         minAmount: parseFloat(this.refs.minAmountInput.value),
         maxAmount: parseFloat(this.refs.maxAmountInput.value),
-        minDate: normalizeDateInput(this.refs.minDateInput.value),
-        maxDate: normalizeDateInput(this.refs.maxDateInput.value),
+        minDate: normalizeOptionalDateInput(this.refs.minDateInput.value),
+        maxDate: normalizeOptionalDateInput(this.refs.maxDateInput.value),
         name: normalizeOptionalFormInput(this.refs.nameInput.value)
       }
 

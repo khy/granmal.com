@@ -4,6 +4,10 @@ export function normalizeDateInput(raw) {
   return moment(raw, ["MM|DD|YYYY"]).format('YYYY-MM-DD')
 }
 
+export function normalizeOptionalDateInput(raw) {
+  (raw.length > 0) ? normalizeDateInput(raw) : undefined
+}
+
 export function formatDate(momentOrDateString) {
   return moment(momentOrDateString).format('MM/DD/YY')
 }
