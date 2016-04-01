@@ -49,7 +49,8 @@ export default class AddPlannedTxn extends React.Component {
         minAmount: parseFloat(this.refs.minAmountInput.value),
         maxAmount: parseFloat(this.refs.maxAmountInput.value),
         minDate: normalizeDateInput(this.refs.minDateInput.value),
-        maxDate: normalizeDateInput(this.refs.maxDateInput.value)
+        maxDate: normalizeDateInput(this.refs.maxDateInput.value),
+        name: (this.refs.nameInput.value.length > 0) ? this.refs.nameInput.value : undefined
       }
 
       this.props.onAdd(plannedTxn)
@@ -116,6 +117,11 @@ export default class AddPlannedTxn extends React.Component {
                   </fieldset>
                 </div>
               </div>
+
+              <fieldset className="form-group">
+                <label>Name</label>
+                <input ref="nameInput" className="form-control" type="text" />
+              </fieldset>
             </fieldset>
           </form>
         </ModalBody>

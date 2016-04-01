@@ -84,6 +84,7 @@ export default class PlannedTxnsCard extends React.Component {
             <td>{date}</td>
             <td>{amount}</td>
             <td>{txnType.name}</td>
+            <td>{plannedTxn.name}</td>
             {resolveRow}
           </tr>
         )
@@ -128,6 +129,7 @@ export default class PlannedTxnsCard extends React.Component {
             <th>Date</th>
             <th>Amount</th>
             <th>Type</th>
+            <th>Name</th>
             {resolveHeader}
           </Thead>
           <Tbody>
