@@ -1,8 +1,9 @@
 import React from 'react'
+import moment from 'moment'
 import _isEmpty from 'lodash/isEmpty'
 import _map from 'lodash/map'
 
-import { normalizeDateInput } from 'budget/client/lib/date'
+import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 import { normalizeOptionalFormInput } from 'budget/client/lib/form'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
@@ -108,13 +109,13 @@ export default class AddPlannedTxn extends React.Component {
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Min Date</label>
-                    <input ref="minDateInput" className="form-control" type="text" />
+                    <input ref="minDateInput" defaultValue={formatDate(moment())} className="form-control" type="text" />
                   </fieldset>
                 </div>
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Max Date</label>
-                    <input ref="maxDateInput" className="form-control" type="text" />
+                    <input ref="maxDateInput" type="text" defaultValue={formatDate(moment())} className="form-control" />
                   </fieldset>
                 </div>
               </div>
