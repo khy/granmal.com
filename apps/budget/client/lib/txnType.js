@@ -1,7 +1,7 @@
-import _filter from 'lodash/collection/filter'
-import _find from 'lodash/collection/find'
-import _flatten from 'lodash/array/flatten'
-import _map from 'lodash/collection/map'
+import _filter from 'lodash/filter'
+import _find from 'lodash/find'
+import _flatten from 'lodash/flatten'
+import _map from 'lodash/map'
 
 export function systemTxnType(txnTypes) {
   return (name) => {

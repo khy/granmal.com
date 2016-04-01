@@ -2,7 +2,7 @@ var router = require('express').Router()
 var pg = require('pg')
 var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
-const _find = require('lodash/collection/find')
+const _find = require('lodash/find')
 
 var config = require('../config')
 var TrustedUselessClient = require('../clients/TrustedUselessClient')

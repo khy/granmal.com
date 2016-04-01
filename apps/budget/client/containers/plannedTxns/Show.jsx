@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import _find from 'lodash/collection/find'
-import _get from 'lodash/object/get'
-import _pick from 'lodash/object/pick'
+import _find from 'lodash/find'
+import _get from 'lodash/get'
+import _pick from 'lodash/pick'
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'

@@ -1,5 +1,5 @@
 import React from 'react'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { Button, PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'

@@ -1,4 +1,4 @@
-import _find from 'lodash/collection/find'
+import _find from 'lodash/find'
 
 import Client from 'client/lib/Client'
 import { uselessBearerToken } from 'budget/client/lib/authAccount'

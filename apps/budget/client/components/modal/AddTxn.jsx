@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
-import _isEmpty from 'lodash/lang/isEmpty'
-import _map from 'lodash/collection/map'
+import _isEmpty from 'lodash/isEmpty'
+import _map from 'lodash/map'
 
 import Select from 'react-select'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'

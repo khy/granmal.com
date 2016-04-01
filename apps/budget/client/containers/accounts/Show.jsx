@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import _find from 'lodash/collection/find'
+import _find from 'lodash/find'
 
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import {

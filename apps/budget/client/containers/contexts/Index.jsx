@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'

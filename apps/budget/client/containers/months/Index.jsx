@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import moment from 'moment'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { fetchMonthRollups } from 'budget/client/actions/months'
 

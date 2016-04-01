@@ -1,5 +1,5 @@
-var React = require('react')
-var _map = require('lodash/collection/map')
+import React from 'react'
+import _map from 'lodash/map'
 
 export default class AddAccount extends React.Component {
 

@@ -1,4 +1,4 @@
-import _find from 'lodash/collection/find'
+import _find from 'lodash/find'
 
 import { budgetClient } from 'budget/client/lib/clients'
 import { fetchContexts } from 'budget/client/actions/app'

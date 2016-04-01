@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 import { showModal, hideModal } from 'budget/client/actions/modal'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import _map from 'lodash/collection/map'
-import _find from 'lodash/collection/find'
+import _map from 'lodash/map'
+import _find from 'lodash/find'
 
 import { fetchPlannedTxns } from 'budget/client/actions/plannedTxns'
 import { formatDate } from 'budget/client/lib/date'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { UserActionTypes } from 'budget/client/actions/overview'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'

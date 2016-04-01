@@ -1,5 +1,5 @@
 import moment from 'moment'
-import _find from 'lodash/collection/find'
+import _find from 'lodash/find'
 import es6Promise from 'es6-promise'
 es6Promise.polyfill()
 

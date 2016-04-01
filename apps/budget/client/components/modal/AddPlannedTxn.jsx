@@ -1,5 +1,5 @@
-var React = require('react')
-var _map = require('lodash/collection/map')
+import React from 'react'
+import _map from 'lodash/map'
 
 import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'

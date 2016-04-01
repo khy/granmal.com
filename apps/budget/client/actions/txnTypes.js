@@ -1,4 +1,4 @@
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { budgetClient } from 'budget/client/lib/clients'
 import { fetchTxnTypes } from 'budget/client/actions/app'

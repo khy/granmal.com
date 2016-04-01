@@ -1,7 +1,7 @@
 var React = require('react')
 import { Link } from 'react-router'
-var _map = require('lodash/collection/map')
-var _find = require('lodash/collection/find')
+import _map from 'lodash/map'
+import _find from 'lodash/find'
 var moment = require('moment')
 
 import { formatDate } from 'budget/client/lib/date'

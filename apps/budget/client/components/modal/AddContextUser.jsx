@@ -1,6 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
-import _map from 'lodash/collection/map'
+import _map from 'lodash/map'
 
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'

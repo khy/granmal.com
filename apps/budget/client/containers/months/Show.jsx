@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import moment from 'moment'
-import _map from 'lodash/collection/map'
-import _find from 'lodash/collection/find'
-import _sum from 'lodash/math/sum'
+import _map from 'lodash/map'
+import _find from 'lodash/find'
+import _sum from 'lodash/sum'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 

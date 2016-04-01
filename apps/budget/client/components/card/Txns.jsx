@@ -1,6 +1,6 @@
 import React from 'react'
-import _map from 'lodash/collection/map'
-import _find from 'lodash/collection/find'
+import _map from 'lodash/map'
+import _find from 'lodash/find'
 import { Link } from 'react-router'
 
 import { formatDate } from 'budget/client/lib/date'
