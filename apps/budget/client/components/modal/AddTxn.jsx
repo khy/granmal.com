@@ -10,6 +10,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
 import { rootTxnType } from 'budget/client/lib/txnType'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
+import TxnTypeButtonGroup from 'budget/client/components/modal/TxnTypeButtonGroup'
 
 export default class AddTxn extends React.Component {
 
@@ -31,12 +32,8 @@ export default class AddTxn extends React.Component {
     return !this.props.isEnabled
   }
 
-  setExpense() {
-    this.setState({rootTxnType: 'Expense'})
-  }
-
-  setIncome() {
-    this.setState({rootTxnType: 'Income'})
+  setRootTxnType(type) {
+    this.setState({rootTxnType: type})
   }
 
   close(event) {
@@ -138,26 +135,11 @@ export default class AddTxn extends React.Component {
     let txnTypeButtonGroup, txnTypeFieldset
 
     if (!this.props.txnTypeGuid) {
-      const expenseButtonState = (this.state.rootTxnType === 'Expense') ? 'active' : false
-      const incomeButtonState = (this.state.rootTxnType === 'Income') ? 'active' : false
-
       txnTypeButtonGroup = (
-        <div className="btn-group transaction-type-buttons">
-          <SecondaryButton
-            className={expenseButtonState}
-            disabled={this.state.rootTxnType === 'Expense'}
-            onClick={this.setExpense.bind(this)}
-          >
-            Expense
-          </SecondaryButton>
-          <SecondaryButton
-            className={incomeButtonState}
-            disabled={this.state.rootTxnType === 'Income'}
-            onClick={this.setIncome.bind(this)}
-          >
-            Income
-          </SecondaryButton>
-        </div>
+        <TxnTypeButtonGroup
+          txnType={this.state.rootTxnType}
+          onClick={this.setRootTxnType.bind(this)}
+        />
       )
 
       let error

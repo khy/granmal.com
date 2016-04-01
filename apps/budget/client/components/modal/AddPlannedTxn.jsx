@@ -5,10 +5,26 @@ import { normalizeDateInput } from 'budget/client/lib/date'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
+import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
+import TxnTypeButtonGroup from 'budget/client/components/modal/TxnTypeButtonGroup'
+
 export default class AddPlannedTxn extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { rootTxnType: 'Expense', errors: {} }
+  }
 
   get isDisabled() {
     return !this.props.isEnabled
+  }
+
+  setRootTxnType(type) {
+    this.setState({rootTxnType: type})
+  }
+
+  selectTxnTypeGuid(guid) {
+    this.setState({selectedTxnTypeGuid: guid})
   }
 
   close(event) {
@@ -21,7 +37,7 @@ export default class AddPlannedTxn extends React.Component {
 
     const plannedTxn = {
       accountGuid: this.props.accountGuid,
-      transactionTypeGuid: this.refs.txnTypeGuidSelect.value,
+      transactionTypeGuid: this.state.selectedTxnTypeGuid,
       minAmount: parseFloat(this.refs.minAmountInput.value),
       maxAmount: parseFloat(this.refs.maxAmountInput.value),
       minDate: normalizeDateInput(this.refs.minDateInput.value),
@@ -31,31 +47,26 @@ export default class AddPlannedTxn extends React.Component {
     this.props.onAdd(plannedTxn)
   }
 
-  onNewTxnType(event) {
-    event.preventDefault()
-    alert("IMPLEMENT ME!")
-  }
-
   render() {
-
-    const txnTypeOptions = (
-      _map(this.props.app.txnTypes, (txnType) => {
-        return <option value={txnType.guid} key={txnType.guid}>{txnType.name}</option>
-      })
-    )
-
     return (
       <Modal>
         <ModalHeader>New Planned Transaction</ModalHeader>
         <ModalBody>
+          <TxnTypeButtonGroup
+            txnType={this.state.rootTxnType}
+            onClick={this.setRootTxnType.bind(this)}
+          />
+
           <form>
             <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
-                <label>Transaction Type</label>
-                <select ref="txnTypeGuidSelect" className="form-control">
-                  {txnTypeOptions}
-                </select>
-                <a onClick={this.onNewTxnType.bind(this)} href="#">New Transaction Type</a>
+                <label>{this.state.rootTxnType} Type</label>
+                <TxnTypeSelect
+                  rootTxnType={this.state.rootTxnType}
+                  txnTypes={this.props.txnTypes}
+                  value={this.state.selectedTxnTypeGuid}
+                  onChange={this.selectTxnTypeGuid.bind(this)}
+                />
               </fieldset>
 
               <div className="row">
