@@ -1,4 +1,5 @@
 import React from 'react'
+import _isEmpty from 'lodash/isEmpty'
 import _map from 'lodash/map'
 
 import { normalizeDateInput } from 'budget/client/lib/date'
@@ -35,19 +36,35 @@ export default class AddPlannedTxn extends React.Component {
   add(event) {
     event.preventDefault()
 
-    const plannedTxn = {
-      accountGuid: this.props.accountGuid,
-      transactionTypeGuid: this.state.selectedTxnTypeGuid,
-      minAmount: parseFloat(this.refs.minAmountInput.value),
-      maxAmount: parseFloat(this.refs.maxAmountInput.value),
-      minDate: normalizeDateInput(this.refs.minDateInput.value),
-      maxDate: normalizeDateInput(this.refs.maxDateInput.value)
+    let errors = {}
+
+    if (!this.state.selectedTxnTypeGuid) {
+      errors.txnType = `${this.state.rootTxnType} type is required`
     }
 
-    this.props.onAdd(plannedTxn)
+    if (_isEmpty(errors)) {
+      const plannedTxn = {
+        accountGuid: this.props.accountGuid,
+        transactionTypeGuid: this.state.selectedTxnTypeGuid,
+        minAmount: parseFloat(this.refs.minAmountInput.value),
+        maxAmount: parseFloat(this.refs.maxAmountInput.value),
+        minDate: normalizeDateInput(this.refs.minDateInput.value),
+        maxDate: normalizeDateInput(this.refs.maxDateInput.value)
+      }
+
+      this.props.onAdd(plannedTxn)
+    } else {
+      this.setState({ errors })
+    }
   }
 
   render() {
+    let txnTypeError
+
+    if (this.state.errors.txnType) {
+      txnTypeError = <span className="text-danger">{this.state.errors.txnType}</span>
+    }
+
     return (
       <Modal>
         <ModalHeader>New Planned Transaction</ModalHeader>
@@ -67,6 +84,7 @@ export default class AddPlannedTxn extends React.Component {
                   value={this.state.selectedTxnTypeGuid}
                   onChange={this.selectTxnTypeGuid.bind(this)}
                 />
+                {txnTypeError}
               </fieldset>
 
               <div className="row">
