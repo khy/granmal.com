@@ -8,6 +8,7 @@ import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/butt
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
+import { normalizeOptionalFormInput } from 'budget/client/lib/form'
 import { rootTxnType } from 'budget/client/lib/txnType'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 import TxnTypeButtonGroup from 'budget/client/components/modal/TxnTypeButtonGroup'
@@ -78,7 +79,7 @@ export default class AddTxn extends React.Component {
         transactionTypeGuid: txnTypeGuid,
         amount: amount,
         date: normalizeDateInput(this.refs.dateInput.value),
-        name: this.refs.nameInput.value,
+        name: normalizeOptionalFormInput(this.refs.nameInput.value),
         plannedTransactionGuid: this.props.plannedTxnGuid
       }
 
