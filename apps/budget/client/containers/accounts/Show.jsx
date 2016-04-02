@@ -1,8 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import _capitalize from 'lodash/capitalize'
 import _find from 'lodash/find'
 
+import { Table, Tbody } from 'client/components/bootstrap/table'
 import { showModal, hideModal } from 'budget/client/actions/modal'
+import { formatDate } from 'budget/client/lib/date'
 import {
   ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
@@ -19,6 +22,12 @@ class Account extends React.Component {
   componentWillMount() {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
+  }
+
+  get account() {
+    return _find(this.props.app.accounts, (account) => {
+      return account.guid === this.props.params.accountGuid
+    })
   }
 
   deleteTxn(txn) {
@@ -66,9 +75,6 @@ class Account extends React.Component {
   }
 
   render() {
-    const account = _find(this.props.app.accounts, (account) => {
-      return account.guid === this.props.params.accountGuid
-    })
 
     let modal
 
@@ -100,7 +106,28 @@ class Account extends React.Component {
     return (
       <div>
         <div className="container">
-          <h1>{account.name}</h1>
+          <h1>{this.account.name}</h1>
+
+          <Table>
+            <Tbody>
+              <tr>
+                <th>Type</th>
+                <td>{_capitalize(this.account.accountType)}</td>
+              </tr>
+              <tr>
+                <th>Balance</th>
+                <td>{this.account.balance}</td>
+              </tr>
+              <tr>
+                <th>Created By</th>
+                <td>{this.account.createdBy.name || this.account.createdBy.handle}</td>
+              </tr>
+              <tr>
+                <th>Created At</th>
+                <td>{formatDate(this.account.createdAt)}</td>
+              </tr>
+            </Tbody>
+          </Table>
 
           <PlannedTxns
             plannedTxns={this.props.account.plannedTxns.results}

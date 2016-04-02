@@ -2,6 +2,7 @@ import _map from 'lodash/map'
 
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { hideModal, disableModal } from 'budget/client/actions/modal'
+import { fetchAccounts } from 'budget/client/actions/app'
 
 export const ActionTypes = {
   AddTxnsReceive: 'AddTxnsReceive',
@@ -37,6 +38,7 @@ export function addTxn(newTxn) {
 
     client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
+      dispatch(fetchAccounts())
       dispatch({
         type: AT.AddTxnsReceive,
         txn
