@@ -112,6 +112,7 @@ class Overview extends React.Component {
           />
 
           <PlannedTxnsCard {...this.props.overview.plannedTxnsCard}
+            title="Pending Planned Transactions"
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             lastUserAction={this.props.overview.lastUserAction}

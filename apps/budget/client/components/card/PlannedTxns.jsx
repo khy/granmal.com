@@ -125,7 +125,7 @@ export default class PlannedTxnsCard extends React.Component {
     return (
       <Card>
         <CardHeader>
-          Planned Transactions
+          {this.props.title || 'Planned Transactions'}
           {newLink}
         </CardHeader>
 

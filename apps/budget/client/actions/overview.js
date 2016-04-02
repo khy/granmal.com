@@ -78,7 +78,10 @@ export function fetchPlannedTxnsCard(force = false) {
       type: AT.PlannedTxnsCardRequest
     })
 
-    budgetClient(getState()).get('/plannedTransactions').then((plannedTxns) => {
+    const minDateFrom = formatDateForModel(moment().subtract(30, 'days'))
+    const minDateTo = formatDateForModel(moment())
+
+    budgetClient(getState()).get(`/plannedTransactions?minDateFrom=${minDateFrom}&minDateTo=${minDateTo}&transactionCountTo=0`).then((plannedTxns) => {
       dispatch({ type: AT.PlannedTxnsCardReceive, plannedTxns })
     })
   }
