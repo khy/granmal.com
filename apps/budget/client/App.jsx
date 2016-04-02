@@ -126,7 +126,7 @@ render(
     <Router history={createBrowserHistory()}>
       <Route path="/budget" component={ConnectedApp}>
         <IndexRoute component={Index} />
-        <Route path="account/:accountGuid" component={AccountsShow} />
+        <Route path="accounts/:accountGuid" component={AccountsShow} />
         <Route path="contexts" component={Contexts} />
         <Route path="months" component={MonthsIndex} />
         <Route path="months/:year/:month" component={MonthsShow} />

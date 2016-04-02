@@ -30,7 +30,7 @@ class ProjectionsCard extends React.Component {
       rows = _map(this.props.projections, (value, key) => {
         return (
           <tr key={value.account.guid}>
-            <td><Link to={"/budget/account/" + value.account.guid}>{value.account.name}</Link></td>
+            <td><Link to={"/budget/accounts/" + value.account.guid}>{value.account.name}</Link></td>
             <td>{value.account.balance}</td>
             <td>{value.minBalance}</td>
             <td>{value.maxBalance}</td>
