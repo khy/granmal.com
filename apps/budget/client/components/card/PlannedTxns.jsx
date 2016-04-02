@@ -1,8 +1,9 @@
-var React = require('react')
+import React from 'react'
 import { Link } from 'react-router'
-import _map from 'lodash/map'
 import _find from 'lodash/find'
-var moment = require('moment')
+import _map from 'lodash/map'
+import _sum from 'lodash/sum'
+import moment from 'moment'
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -39,12 +40,6 @@ export default class PlannedTxnsCard extends React.Component {
       )
     }
 
-    let addTxnHeader
-
-    if (this.props.onAddTxn) {
-      addTxnHeader = <th></th>
-    }
-
     let rows
 
     if (this.props.plannedTxns.length > 0) {
@@ -54,10 +49,12 @@ export default class PlannedTxnsCard extends React.Component {
         const date = (minDate === maxDate) ?
           minDate : minDate + " / " + maxDate
 
+        const txnCount = plannedTxn.transactions.length
+
         const amount = (plannedTxn.minAmount === plannedTxn.maxAmount) ?
           plannedTxn.minAmount : plannedTxn.minAmount +  " / " + plannedTxn.maxAmount
 
-        const rowClass = (moment(plannedTxn.minDate) < moment()) ?
+        const rowClass = (moment(plannedTxn.minDate) < moment() && txnCount === 0) ?
           'table-warning' : ''
 
         const txnType = _find(this.props.txnTypes, (txnType) => {
@@ -68,11 +65,20 @@ export default class PlannedTxnsCard extends React.Component {
           return account.guid === plannedTxn.accountGuid
         })
 
-        let addTxnRow
+        const txnAmountTotal = _sum(_map(plannedTxn.transactions, (txn) => txn.amount))
+
+        let addTxnLink
 
         if (this.props.onAddTxn) {
-          addTxnRow = <td><a onClick={this.onAddTxn.bind(this)} data-guid={plannedTxn.guid} href="#">Add Transaction</a></td>
+          addTxnLink = <a onClick={this.onAddTxn.bind(this)} data-guid={plannedTxn.guid} className="add-txn-link" href="#">Add</a>
         }
+
+        const txns = (
+          <span>
+            {`${txnCount} / ${txnAmountTotal}`}
+            {addTxnLink}
+          </span>
+        )
 
         return (
           <tr key={plannedTxn.guid} className={rowClass}>
@@ -85,14 +91,14 @@ export default class PlannedTxnsCard extends React.Component {
             <td>{amount}</td>
             <td>{txnType.name}</td>
             <td>{plannedTxn.name}</td>
-            {addTxnRow}
+            <td>{txns}</td>
           </tr>
         )
       })
     } else {
       rows = (
         <tr>
-          <td colSpan="4" className="text-center text-muted">No Planned Transactions</td>
+          <td colSpan="6" className="text-center text-muted">No Planned Transactions</td>
         </tr>
       )
     }
@@ -130,7 +136,7 @@ export default class PlannedTxnsCard extends React.Component {
             <th>Amount</th>
             <th>Type</th>
             <th>Name</th>
-            {addTxnHeader}
+            <th>Transactions</th>
           </Thead>
           <Tbody>
             {rows}
