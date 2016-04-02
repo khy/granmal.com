@@ -42,10 +42,10 @@ export default function overview(state = initialState, action) {
         },
       })
 
-    case AT.ConfirmPlannedTxnReceive:
+    case AT.AddPlannedTxnTxnReceive:
       return update({
         lastUserAction: {
-          type: UserActionTypes.ConfirmPlannedTxn,
+          type: UserActionTypes.AddPlannedTxnTxn,
           plannedTxnGuid: action.plannedTxnGuid,
           txnGuid: action.txnGuid,
         },

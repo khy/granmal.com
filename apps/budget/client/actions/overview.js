@@ -9,8 +9,7 @@ export const ActionTypes = {
   AddAccountReceive: 'AddAccountReceive',
   AddPlannedTxnReceive: 'AddPlannedTxnReceive',
   AddTransferReceive: 'AddTransferReceive',
-  ConfirmPlannedTxnReceive: 'ConfirmPlannedTxnReceive',
-  DeletePlannedTxnReceive: 'DeletePlannedTxnReceive',
+  AddPlannedTxnTxnReceive: 'AddPlannedTxnTxnReceive',
   PlannedTxnsCardReceive: 'PlannedTxnsCardReceive',
   PlannedTxnsCardRequest: 'PlannedTxnsCardRequest',
   ProjectionsCardReceive: 'ProjectionsCardReceive',
@@ -22,7 +21,7 @@ const AT = ActionTypes
 export const UserActionTypes = {
   AddAccount: 'AddAccount',
   AddTransfer: 'AddTransfer',
-  ConfirmPlannedTxn: 'ConfirmPlannedTxn',
+  AddPlannedTxnTxn: 'AddPlannedTxnTxn',
   DeletePlannedTxn: 'DeletePlannedTxn',
 }
 
@@ -57,7 +56,7 @@ export function addTransfer(newTransfer) {
   }
 }
 
-export function confirmPlannedTxn(newTxn) {
+export function addPlannedTxnTxn(newTxn) {
   return function (dispatch, getState) {
     dispatch(disableModal())
 
@@ -65,25 +64,9 @@ export function confirmPlannedTxn(newTxn) {
       dispatch(fetchProjectionsCard(null, true))
       dispatch(fetchPlannedTxnsCard(true))
       dispatch({
-        type: AT.ConfirmPlannedTxnReceive,
+        type: AT.AddPlannedTxnTxnReceive,
         plannedTxnGuid: newTxn.plannedTransactionGuid,
         txnGuid: txn.guid
-      })
-      dispatch(hideModal())
-    })
-  }
-}
-
-export function deletePlannedTxn(guid) {
-  return function (dispatch, getState) {
-    dispatch(disableModal())
-
-    client(getState()).delete('/plannedTransactions/' + guid).then(() => {
-      dispatch(fetchProjectionsCard(null, true))
-      dispatch(fetchPlannedTxnsCard(true))
-      dispatch({
-        type: AT.DeletePlannedTxnReceive,
-        guid: guid
       })
       dispatch(hideModal())
     })

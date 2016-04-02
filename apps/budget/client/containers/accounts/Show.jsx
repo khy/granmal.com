@@ -11,7 +11,6 @@ import {
 import AddPlannedTxnModal from 'budget/client/components/modal/AddPlannedTxn'
 import AddTxnModal from 'budget/client/components/modal/AddTxn'
 import EditTxnModal from 'budget/client/components/modal/EditTxn'
-import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
 import PlannedTxns from 'budget/client/components/card/PlannedTxns'
 import Txns from 'budget/client/components/card/Txns'
 
@@ -62,10 +61,6 @@ class Account extends React.Component {
     this.props.dispatch(showModal('editTxnModal', {txn}))
   }
 
-  showResolvePlannedTxnModal(plannedTxn) {
-    this.props.dispatch(showModal('resolvePlannedTxnModal', {plannedTxn}))
-  }
-
   hideModal() {
     this.props.dispatch(hideModal())
   }
@@ -99,14 +94,6 @@ class Account extends React.Component {
           onEdit={this.editTxn.bind(this)}
           onDelete={this.deleteTxn.bind(this)}
         />
-      } else if (this.props.modal.name === 'resolvePlannedTxnModal') {
-        modal = <ResolvePlannedTxnModal {...this.props.modal}
-          txnTypes={this.props.app.txnTypes}
-          fixedAccount={account}
-          onClose={this.hideModal.bind(this)}
-          onAddNew={this.addTxn.bind(this)}
-          onAddExisting={this.addTxnToPlannedTxn.bind(this)}
-        />
       }
     }
 
@@ -120,7 +107,6 @@ class Account extends React.Component {
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             onNew={this.onNewPlannedTxn.bind(this)}
-            onResolve={this.showResolvePlannedTxnModal.bind(this)}
             onNewPage={this.onNewPlannedTxnPage.bind(this)}
           />
 

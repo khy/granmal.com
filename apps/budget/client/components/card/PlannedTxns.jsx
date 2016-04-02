@@ -18,14 +18,14 @@ export default class PlannedTxnsCard extends React.Component {
     this.props.onNew()
   }
 
-  onResolve(event) {
+  onAddTxn(event) {
     event.preventDefault()
 
     var plannedTxn = _find(this.props.plannedTxns, (plannedTxn) => {
       return plannedTxn.guid === event.target.dataset.guid
     })
 
-    this.props.onResolve(plannedTxn)
+    this.props.onAddTxn(plannedTxn)
   }
 
   render() {
@@ -39,10 +39,10 @@ export default class PlannedTxnsCard extends React.Component {
       )
     }
 
-    let resolveHeader
+    let addTxnHeader
 
-    if (this.props.onResolve) {
-      resolveHeader = <th></th>
+    if (this.props.onAddTxn) {
+      addTxnHeader = <th></th>
     }
 
     let rows
@@ -68,10 +68,10 @@ export default class PlannedTxnsCard extends React.Component {
           return account.guid === plannedTxn.accountGuid
         })
 
-        let resolveRow
+        let addTxnRow
 
-        if (this.props.onResolve) {
-          resolveRow = <td><a onClick={this.onResolve.bind(this)} data-guid={plannedTxn.guid} href="#">Resolve</a></td>
+        if (this.props.onAddTxn) {
+          addTxnRow = <td><a onClick={this.onAddTxn.bind(this)} data-guid={plannedTxn.guid} href="#">Add Transaction</a></td>
         }
 
         return (
@@ -85,7 +85,7 @@ export default class PlannedTxnsCard extends React.Component {
             <td>{amount}</td>
             <td>{txnType.name}</td>
             <td>{plannedTxn.name}</td>
-            {resolveRow}
+            {addTxnRow}
           </tr>
         )
       })
@@ -130,7 +130,7 @@ export default class PlannedTxnsCard extends React.Component {
             <th>Amount</th>
             <th>Type</th>
             <th>Name</th>
-            {resolveHeader}
+            {addTxnHeader}
           </Thead>
           <Tbody>
             {rows}

@@ -5,7 +5,7 @@ var moment = require('moment')
 import { shortenGuid } from 'budget/client/lib/guid'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import {
-  ActionTypes, UserActionTypes, addAccount, addTransfer, confirmPlannedTxn,
+  ActionTypes, UserActionTypes, addAccount, addTransfer, addPlannedTxnTxn,
   deletePlannedTxn, fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard,
   fetchProjectionsCard, fetchTxnTypes
 } from 'budget/client/actions/overview'
@@ -14,7 +14,7 @@ import ProjectionsCard from 'budget/client/components/card/Projections'
 import PlannedTxnsCard from 'budget/client/components/card/PlannedTxns'
 import AddAccountModal from 'budget/client/components/modal/AddAccount'
 import AddTransferModal from 'budget/client/components/modal/AddTransfer'
-import ResolvePlannedTxnModal from 'budget/client/components/modal/ResolvePlannedTxn'
+import AddTxnModal from 'budget/client/components/modal/AddTxn'
 
 class Overview extends React.Component {
 
@@ -43,16 +43,12 @@ class Overview extends React.Component {
     this.props.dispatch(addAccount(newAccount))
   }
 
-  showResolvePlannedTxnModal(plannedTxn) {
-    this.props.dispatch(showModal('resolvePlannedTxnModal', {plannedTxn}))
+  showAddPlannedTxnTxnModal(plannedTxn) {
+    this.props.dispatch(showModal('addTxn', {plannedTxn}))
   }
 
-  onConfirmPlannedTxn(newTxn) {
-    this.props.dispatch(confirmPlannedTxn(newTxn))
-  }
-
-  onDeletePlannedTxn(guid) {
-    this.props.dispatch(deletePlannedTxn(guid))
+  addPlannedTxnTxn(newTxn) {
+    this.props.dispatch(addPlannedTxnTxn(newTxn))
   }
 
   showAddTransferModal() {
@@ -96,13 +92,17 @@ class Overview extends React.Component {
           onClose={this.hideModal.bind(this)}
           onAdd={this.addAccount.bind(this)}
         />
-      } else if (this.props.modal.name === 'resolvePlannedTxnModal') {
-        modal = <ResolvePlannedTxnModal {...this.props.modal}
+      } else if (this.props.modal.name === 'addTxn') {
+        const plannedTxn = this.props.modal.data.plannedTxn
+
+        modal = <AddTxnModal {...this.props.modal}
           txnTypes={this.props.app.txnTypes}
           accounts={this.props.app.accounts}
+          accountGuid={plannedTxn.accountGuid}
+          plannedTxnGuid={plannedTxn.guid}
+          txnTypeGuid={plannedTxn.transactionTypeGuid}
           onClose={this.hideModal.bind(this)}
-          onAddNew={this.onConfirmPlannedTxn.bind(this)}
-          onDelete={this.onDeletePlannedTxn.bind(this)}
+          onAdd={this.addPlannedTxnTxn.bind(this)}
         />
       } else if (this.props.modal.name === 'addTransferModal') {
         modal = <AddTransferModal {...this.props.modal}
@@ -129,7 +129,7 @@ class Overview extends React.Component {
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             lastUserAction={this.props.overview.lastUserAction}
-            onResolve={this.showResolvePlannedTxnModal.bind(this)}
+            onAddTxn={this.showAddPlannedTxnTxnModal.bind(this)}
           />
         </div>
 
