@@ -51,14 +51,6 @@ export default function overview(state = initialState, action) {
         },
       })
 
-    case AT.DeletePlannedTxnReceive:
-      return update({
-        lastUserAction: {
-          type: UserActionTypes.DeletePlannedTxn,
-          guid: action.guid,
-        },
-      })
-
     case AT.PlannedTxnsCardReceive:
       return update({
         plannedTxnsCard: {

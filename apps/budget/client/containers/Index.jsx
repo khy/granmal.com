@@ -1,13 +1,13 @@
-var React = require('react')
+import React from 'react'
 import { connect } from 'react-redux'
-var moment = require('moment')
+import moment from 'moment'
 
 import { shortenGuid } from 'budget/client/lib/guid'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import {
-  ActionTypes, UserActionTypes, addAccount, addTransfer, addPlannedTxnTxn,
-  deletePlannedTxn, fetchAccounts, fetchAccountTypes, fetchPlannedTxnsCard,
-  fetchProjectionsCard, fetchTxnTypes
+  ActionTypes, UserActionTypes,
+  addAccount, addTransfer, addPlannedTxnTxn,
+  fetchAccounts, fetchPlannedTxnsCard,fetchProjectionsCard
 } from 'budget/client/actions/overview'
 
 import ProjectionsCard from 'budget/client/components/card/Projections'
@@ -17,14 +17,6 @@ import AddTransferModal from 'budget/client/components/modal/AddTransfer'
 import AddTxnModal from 'budget/client/components/modal/AddTxn'
 
 class Overview extends React.Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      menuToggled: false,
-    }
-  }
 
   componentWillMount() {
     this.props.dispatch(fetchProjectionsCard())
@@ -67,13 +59,7 @@ class Overview extends React.Component {
     let alert
 
     if (this.props.overview.lastUserAction) {
-      if (this.props.overview.lastUserAction.type === UserActionTypes.AddTxnType) {
-        alert = (
-          <div className="alert alert-success" role="alert">
-            Added transaction type <strong>{this.props.overview.lastUserAction.name}</strong>
-          </div>
-        )
-      } else if (this.props.overview.lastUserAction.type === UserActionTypes.AddTransfer) {
+      if (this.props.overview.lastUserAction.type === UserActionTypes.AddTransfer) {
         alert = (
           <div className="alert alert-success" role="alert">
             Added transfer <strong>{shortenGuid(this.props.overview.lastUserAction.guid)}</strong>
