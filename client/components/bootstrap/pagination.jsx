@@ -13,6 +13,7 @@ export const Pager = (props) => {
 export class PagerLink extends React.Component {
 
   onClick(event) {
+    event.preventDefault()
     this.props.onClick(event.target.dataset.page)
   }
 

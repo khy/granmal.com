@@ -131,6 +131,7 @@ class Account extends React.Component {
 
           <PlannedTxns
             plannedTxns={this.props.account.plannedTxns.results}
+            linkHeader={this.props.account.plannedTxns.linkHeader}
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             onNew={this.onNewPlannedTxn.bind(this)}
@@ -139,6 +140,7 @@ class Account extends React.Component {
 
           <Txns
             txns={this.props.account.txns.results}
+            linkHeader={this.props.account.txns.linkHeader}
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             onNew={this.onNewTxn.bind(this)}
