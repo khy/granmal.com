@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import _map from 'lodash/map'
 import _find from 'lodash/find'
 
+import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
+
 import { fetchPlannedTxns } from 'budget/client/actions/plannedTxns'
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
@@ -73,20 +75,18 @@ class PlannedTxns extends React.Component {
         <div className="container">
           <h1>Planned Transactions</h1>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Type</th>
-                <th>Account</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Account</th>
+            </Thead>
+            <Tbody>
               {rows}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
       </div>
     )

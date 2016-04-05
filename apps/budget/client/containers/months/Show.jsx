@@ -7,6 +7,7 @@ import _find from 'lodash/find'
 import _sum from 'lodash/sum'
 
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
+import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
 
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/months'
@@ -88,31 +89,27 @@ class Month extends React.Component {
 
           <h2>Expenses</h2>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Transaction Type</th>
-                <th className="table-figure">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <th>Transaction Type</th>
+              <th className="table-figure">Amount</th>
+            </Thead>
+            <Tbody>
               {expenseRows}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
 
           <h2>Incomes</h2>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Transaction Type</th>
-                <th className="table-figure">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <th>Transaction Type</th>
+              <th className="table-figure">Amount</th>
+            </Thead>
+            <Tbody>
               {incomeRows}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
       </div>
     )

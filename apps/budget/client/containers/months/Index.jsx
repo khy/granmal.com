@@ -4,6 +4,8 @@ import { Link } from 'react-router'
 import moment from 'moment'
 import _map from 'lodash/map'
 
+import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
+
 import { fetchMonthRollups } from 'budget/client/actions/months'
 
 class Index extends React.Component {
@@ -49,17 +51,15 @@ class Index extends React.Component {
         <div className="container">
           <h1>Months</h1>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th className="table-figure">Transaction Count</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <th>Month</th>
+              <th className="table-figure">Transaction Count</th>
+            </Thead>
+            <Tbody>
               {rows}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
       </div>
     )

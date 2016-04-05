@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router'
 import _map from 'lodash/map'
 
+import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
+
 import { UserActionTypes } from 'budget/client/actions/overview'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 
@@ -89,19 +91,17 @@ class ProjectionsCard extends React.Component {
           </form>
         </div>
 
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th>Current Balance</th>
-              <th>Min Balance</th>
-              <th>Max Balance</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <Thead>
+            <th>Account</th>
+            <th>Current Balance</th>
+            <th>Min Balance</th>
+            <th>Max Balance</th>
+          </Thead>
+          <Tbody>
             {rows}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       </div>
     )
   }

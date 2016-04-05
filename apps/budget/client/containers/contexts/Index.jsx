@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _map from 'lodash/map'
 
+import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
+
 import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
 import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
@@ -77,21 +79,19 @@ class Contexts extends React.Component {
         <div className="container">
           <h1>Contexts</h1>
 
-          <table className="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Owner</th>
-                <th>Name</th>
-                <th>Users</th>
-                <th>Created At</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <th></th>
+              <th>Owner</th>
+              <th>Name</th>
+              <th>Users</th>
+              <th>Created At</th>
+              <th></th>
+            </Thead>
+            <Tbody>
               {rows}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </div>
 
         {modal}

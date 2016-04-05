@@ -3,7 +3,7 @@ import React from 'react'
 export const Table = (props) => {
   return (
     <div className="table-responsive">
-      <table className="table">
+      <table className="table table-hover">
         {props.children}
       </table>
     </div>
