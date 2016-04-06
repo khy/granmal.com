@@ -25,15 +25,6 @@ export default function account(state = initialState, action) {
         },
       }, state)
 
-    case AT.EditTxnReceive:
-      return u({
-        lastUserAction: {
-          type: 'EditTxn',
-          oldTxn: action.oldTxn,
-          newTxn: action.newTxn,
-        },
-      }, state)
-
     case AT.DeleteTxnReceive:
       return u({
         lastUserAction: {

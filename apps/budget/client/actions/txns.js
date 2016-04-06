@@ -1,6 +1,8 @@
 import { budgetClient } from 'budget/client/lib/clients'
+import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
+  EditTxnReceive: 'EditTxnReceive',
   FetchTxnReceive: 'FetchTxnReceive',
   FetchTxnRequest: 'FetchTxnRequest',
 }
@@ -16,6 +18,22 @@ export function fetchTxn(guid) {
         type: AT.FetchTxnReceive,
         txn: txns[0],
       })
+    })
+  }
+}
+
+export function editTxn(oldTxn, attrs) {
+  return function (dispatch, getState) {
+    dispatch(disableModal())
+
+    budgetClient(getState()).post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
+      dispatch(fetchTxn(newTxn.guid))
+      dispatch({
+        type: AT.EditTxnReceive,
+        oldTxn,
+        newTxn,
+      })
+      dispatch(hideModal())
     })
   }
 }

@@ -18,3 +18,7 @@ export function PrimaryButton(props) {
 export function SecondaryButton(props) {
   return <Button {...props} className={"btn-secondary " + props.className}>{props.children}</Button>
 }
+
+export function ButtonGroup(props) {
+  return <div className={"btn-group " + props.className}>{props.children}</div>
+}

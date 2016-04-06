@@ -7,13 +7,12 @@ import { Table, Tbody } from 'client/components/bootstrap/table'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import { formatDate } from 'budget/client/lib/date'
 import {
-  ActionTypes as AT, editTxn, deleteTxn, addPlannedTxn, addTxn,
+  ActionTypes as AT, deleteTxn, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
 import AddPlannedTxnModal from 'budget/client/components/modal/AddPlannedTxn'
 import AddTxnModal from 'budget/client/components/modal/AddTxn'
-import EditTxnModal from 'budget/client/components/modal/EditTxn'
 import PlannedTxns from 'budget/client/components/card/PlannedTxns'
 import Txns from 'budget/client/components/card/Txns'
 
@@ -34,10 +33,6 @@ class Account extends React.Component {
     this.props.dispatch(deleteTxn(txn))
   }
 
-  editTxn(txn, attrs) {
-    this.props.dispatch(editTxn(txn, attrs))
-  }
-
   onNewPlannedTxn() {
     this.props.dispatch(showModal('plannedTxnModal'))
   }
@@ -54,20 +49,12 @@ class Account extends React.Component {
     this.props.dispatch(addTxn(txn))
   }
 
-  addTxnToPlannedTxn(plannedTxnGuid, txnGuid) {
-    console.log([addTxnToPlannedTxn, plannedTxnGuid, txnGuid])
-  }
-
   onNewPlannedTxnPage(page) {
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, page))
   }
 
   onNewTxnPage(page) {
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, page))
-  }
-
-  showEditTxnModal(txn) {
-    this.props.dispatch(showModal('editTxnModal', {txn}))
   }
 
   hideModal() {
@@ -92,13 +79,6 @@ class Account extends React.Component {
           accountGuid={this.props.params.accountGuid}
           onClose={this.hideModal.bind(this)}
           onAdd={this.addTxn.bind(this)}
-        />
-      } else if (this.props.modal.name === 'editTxnModal') {
-        modal = <EditTxnModal {...this.props.modal}
-          app={this.props.app}
-          onClose={this.hideModal.bind(this)}
-          onEdit={this.editTxn.bind(this)}
-          onDelete={this.deleteTxn.bind(this)}
         />
       }
     }
@@ -144,7 +124,6 @@ class Account extends React.Component {
             txnTypes={this.props.app.txnTypes}
             accounts={this.props.app.accounts}
             onNew={this.onNewTxn.bind(this)}
-            onEdit={this.showEditTxnModal.bind(this)}
             onNewPage={this.onNewTxnPage.bind(this)}
           />
         </div>

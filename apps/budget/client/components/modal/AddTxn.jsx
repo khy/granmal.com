@@ -26,15 +26,19 @@ export default class AddTxn extends React.Component {
       _rootTxnType = 'Expense'
     }
 
-    this.state = { rootTxnType: _rootTxnType, errors: {} }
+    this.state = {
+      rootTxnType: _rootTxnType,
+      accountGuid: (this.props.accountGuid || this.props.initialAccountGuid),
+      txnTypeGuid: (this.props.txnTypeGuid || this.props.initialTxnTypeGuid),
+      amount: Math.abs(parseFloat(this.props.initialAmount)),
+      date: formatDate(moment(this.props.initialDate)),
+      name: (this.props.initialName),
+      errors: {}
+    }
   }
 
   get isDisabled() {
     return !this.props.isEnabled
-  }
-
-  setRootTxnType(type) {
-    this.setState({rootTxnType: type})
   }
 
   close(event) {
@@ -47,39 +51,35 @@ export default class AddTxn extends React.Component {
 
     let errors = {}
 
-    const accountGuid = this.state.selectedAccountGuid || this.props.accountGuid
-
-    if (!accountGuid) {
+    if (!this.state.accountGuid) {
       errors.accountGuid = "Account is required"
     }
 
-    const txnTypeGuid = this.state.selectedTxnTypeGuid || this.props.txnTypeGuid
-
-    if (!txnTypeGuid) {
+    if (!this.state.txnTypeGuid) {
       errors.txnType = `${this.state.rootTxnType} type is required`
     }
 
-    if (!this.refs.amountInput.value) {
+    if (!this.state.amount) {
       errors.amount = "Amount is required"
     }
 
-    if (!this.refs.dateInput.value) {
+    if (!this.state.date) {
       errors.date = "Date is required"
     }
 
     if (_isEmpty(errors)) {
-      let amount = Math.abs(parseFloat(this.refs.amountInput.value))
+      let amount = Math.abs(parseFloat(this.state.amount))
 
       if (this.state.rootTxnType === 'Expense') {
         amount = - amount
       }
 
       const newTxn = {
-        accountGuid: accountGuid,
-        transactionTypeGuid: txnTypeGuid,
+        accountGuid: this.state.accountGuid,
+        transactionTypeGuid: this.state.txnTypeGuid,
         amount: amount,
-        date: normalizeDateInput(this.refs.dateInput.value),
-        name: normalizeOptionalFormInput(this.refs.nameInput.value),
+        date: normalizeDateInput(this.state.date),
+        name: normalizeOptionalFormInput(this.state.name),
         plannedTransactionGuid: this.props.plannedTxnGuid
       }
 
@@ -94,13 +94,29 @@ export default class AddTxn extends React.Component {
     this.props.onNewTxnType()
   }
 
+  setRootTxnType(type) {
+    this.setState({rootTxnType: type})
+  }
+
   selectAccount(option) {
     const guid = option ? option.value : undefined
-    this.setState({selectedAccountGuid: guid})
+    this.setState({accountGuid: guid})
   }
 
   selectTxnTypeGuid(guid) {
-    this.setState({selectedTxnTypeGuid: guid})
+    this.setState({txnTypeGuid: guid})
+  }
+
+  setAmount(event) {
+    this.setState({amount: event.target.value});
+  }
+
+  setDate(event) {
+    this.setState({date: event.target.value});
+  }
+
+  setName(event) {
+    this.setState({name: event.target.value});
   }
 
   render() {
@@ -125,7 +141,7 @@ export default class AddTxn extends React.Component {
           <Select
             name="fromAccountGuidSelect"
             options={options}
-            value={this.state.selectedAccountGuid}
+            value={this.state.accountGuid}
             onChange={this.selectAccount.bind(this)}
           />
           {error}
@@ -155,7 +171,7 @@ export default class AddTxn extends React.Component {
           <TxnTypeSelect
             rootTxnType={this.state.rootTxnType}
             txnTypes={this.props.txnTypes}
-            value={this.state.selectedTxnTypeGuid}
+            value={this.state.txnTypeGuid}
             onChange={this.selectTxnTypeGuid.bind(this)}
           />
           {error}
@@ -163,18 +179,12 @@ export default class AddTxn extends React.Component {
       )
     }
 
-    let amountInput
+    let amountInputAddon
 
     if (this.state.rootTxnType === 'Expense') {
-      amountInput = <div className="input-group">
-        <span className="input-group-addon text-danger">&#45;</span>
-        <input ref="amountInput" type="text" className="form-control" />
-      </div>
+      amountInputAddon = <span className="input-group-addon text-danger">&#45;</span>
     } else {
-      amountInput = <div className="input-group">
-        <span className="input-group-addon text-success">&#43;</span>
-        <input ref="amountInput" type="text" className="form-control" />
-      </div>
+      amountInputAddon = <span className="input-group-addon text-success">&#43;</span>
     }
 
     let amountError, dateError
@@ -201,19 +211,22 @@ export default class AddTxn extends React.Component {
 
               <fieldset className="form-group">
                 <label>Amount</label>
-                {amountInput}
+                <div className="input-group">
+                  {amountInputAddon}
+                  <input value={this.state.amount} onChange={this.setAmount.bind(this)} className="form-control" type="text" />
+                </div>
                 {amountError}
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Date</label>
-                <input ref="dateInput" className="form-control" type="text" defaultValue={formatDate(moment())} />
+                <input value={this.state.date} onChange={this.setDate.bind(this)} className="form-control" type="text" />
                 {dateError}
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Name</label>
-                <input ref="nameInput" className="form-control" type="text" />
+                <input value={this.state.name} onChange={this.setName.bind(this)} className="form-control" type="text" />
               </fieldset>
             </fieldset>
           </form>

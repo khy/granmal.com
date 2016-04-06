@@ -6,7 +6,6 @@ import { fetchAccounts } from 'budget/client/actions/app'
 
 export const ActionTypes = {
   AddTxnsReceive: 'AddTxnsReceive',
-  EditTxnReceive: 'EditTxnReceive',
   DeleteTxnReceive: 'DeleteTxnReceive',
   PlannedTxnsAddReceive: 'PlannedTxnsAddReceive',
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
@@ -42,22 +41,6 @@ export function addTxn(newTxn) {
       dispatch({
         type: AT.AddTxnsReceive,
         txn
-      })
-      dispatch(hideModal())
-    })
-  }
-}
-
-export function editTxn(oldTxn, attrs) {
-  return function (dispatch, getState) {
-    dispatch(disableModal())
-
-    client(getState()).post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
-      dispatch(fetchTxns(oldTxn.accountGuid))
-      dispatch({
-        type: AT.EditTxnReceive,
-        oldTxn,
-        newTxn,
       })
       dispatch(hideModal())
     })

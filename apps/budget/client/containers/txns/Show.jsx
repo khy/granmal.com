@@ -7,9 +7,12 @@ import _pick from 'lodash/pick'
 
 import { formatDate } from 'budget/client/lib/date'
 import { shortenGuid } from 'budget/client/lib/guid'
+import { showModal, hideModal } from 'budget/client/actions/modal'
+import { ButtonGroup, SecondaryButton } from 'client/components/bootstrap/button'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
-import { fetchTxn } from 'budget/client/actions/txns'
+import { editTxn, fetchTxn } from 'budget/client/actions/txns'
+import AddTxnModal from 'budget/client/components/modal/AddTxn'
 
 class Show extends React.Component {
 
@@ -51,7 +54,37 @@ class Show extends React.Component {
     }
   }
 
+  showAddTxnModal() {
+    this.props.dispatch(showModal('addTxnModal'))
+  }
+
+  editTxn(attrs) {
+    this.props.dispatch(editTxn(this.txn, attrs))
+  }
+
+  hideModal() {
+    this.props.dispatch(hideModal())
+  }
+
   render() {
+    let modal
+
+    if (this.props.modal.isVisible) {
+      if (this.props.modal.name === 'addTxnModal') {
+        modal = <AddTxnModal {...this.props.modal}
+          txnTypes={this.props.app.txnTypes}
+          accounts={this.props.app.accounts}
+          initialAccountGuid={this.txn.accountGuid}
+          initialTxnTypeGuid={this.txn.transactionTypeGuid}
+          initialAmount={this.txn.amount}
+          initialDate={this.txn.date}
+          initialName={this.txn.name}
+          onClose={this.hideModal.bind(this)}
+          onAdd={this.editTxn.bind(this)}
+        />
+      }
+    }
+
     let mainTableBody
 
     if (this.txn) {
@@ -133,9 +166,16 @@ class Show extends React.Component {
       <div>
         <div className="container">
           <h1>Transaction {shortenGuid(this.props.params.guid)}</h1>
+
+          <ButtonGroup className="header-btn-group">
+            <SecondaryButton onClick={this.showAddTxnModal.bind(this)}>Edit</SecondaryButton>
+          </ButtonGroup>
+
           <Table>
             {mainTableBody}
           </Table>
+
+          {modal}
         </div>
       </div>
     )
@@ -143,5 +183,5 @@ class Show extends React.Component {
 
 }
 
-const select = (state) => _pick(state, 'app', 'txns')
+const select = (state) => _pick(state, 'app', 'modal', 'txns')
 export default connect(select)(Show)
