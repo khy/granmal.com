@@ -1,3 +1,5 @@
+import { browserHistory } from 'react-router'
+
 import { budgetClient } from 'budget/client/lib/clients'
 import { hideModal, disableModal } from 'budget/client/actions/modal'
 
@@ -27,7 +29,7 @@ export function editTxn(oldTxn, attrs) {
     dispatch(disableModal())
 
     budgetClient(getState()).post('/transactions/' + oldTxn.guid + '/adjustments', attrs).then((newTxn) => {
-      dispatch(fetchTxn(newTxn.guid))
+      browserHistory.push(`/budget/transactions/${newTxn.guid}`)
       dispatch({
         type: AT.EditTxnReceive,
         oldTxn,
