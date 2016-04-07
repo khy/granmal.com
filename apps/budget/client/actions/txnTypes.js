@@ -6,7 +6,7 @@ import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
   AddTxnTypeReceive: 'AddTxnTypeReceive',
-  AdjustTxnTypeReceive: 'AdjustTxnTypeReceive',
+  EditTxnTypeReceive: 'EditTxnTypeReceive',
   FetchTxnTypePlannedTxnsReceive: 'FetchTxnTypePlannedTxnsReceive',
   FetchTxnTypePlannedTxnsRequest: 'FetchTxnTypePlannedTxnsRequest',
   FetchTxnTypeTxnsReceive: 'FetchTxnTypeTxnsReceive',
@@ -30,14 +30,14 @@ export function addTxnType(newTxnType) {
   }
 }
 
-export function adjustTxnType(guid, attributes) {
+export function editTxnType(guid, attributes) {
   return function (dispatch, getState) {
     dispatch(disableModal())
 
     budgetClient(getState()).post('/transactionTypes/' + guid + '/adjustments', attributes).then((txnType) => {
       dispatch(fetchTxnTypes(true))
       dispatch({
-        type: AT.AdjustTxnTypeReceive,
+        type: AT.EditTxnTypeReceive,
         txnType,
       })
       dispatch(hideModal())

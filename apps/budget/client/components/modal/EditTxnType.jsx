@@ -4,7 +4,7 @@ import _map from 'lodash/map'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
-export default class AdjustTxnTypeModal extends React.Component {
+export default class EditTxnType extends React.Component {
 
   get isDisabled() {
     return !this.props.isEnabled
@@ -15,7 +15,7 @@ export default class AdjustTxnTypeModal extends React.Component {
     this.props.onClose()
   }
 
-  adjust(event) {
+  edit(event) {
     event.preventDefault()
 
     const attributes = {
@@ -23,7 +23,7 @@ export default class AdjustTxnTypeModal extends React.Component {
       name: this.refs.nameInput.value,
     }
 
-    this.props.onAdjust(this.props.txnType.guid, attributes)
+    this.props.onEdit(this.props.txnType.guid, attributes)
   }
 
   render() {
@@ -33,7 +33,7 @@ export default class AdjustTxnTypeModal extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>Adjust "{this.props.txnType.name}"</ModalHeader>
+        <ModalHeader>Edit "{this.props.txnType.name}"</ModalHeader>
         <ModalBody>
           <form>
             <fieldset disabled={this.isDisabled}>
@@ -60,10 +60,10 @@ export default class AdjustTxnTypeModal extends React.Component {
           </SecondaryButton>
 
           <PrimaryButton
-            onClick={this.adjust.bind(this)}
+            onClick={this.edit.bind(this)}
             disabled={this.isDisabled}
           >
-            Adjust
+            Edit
           </PrimaryButton>
         </ModalFooter>
       </Modal>

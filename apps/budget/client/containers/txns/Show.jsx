@@ -98,11 +98,11 @@ class Show extends React.Component {
 
       let editedTxnTr
 
-      if (this.txn.adjustedTxnGuid) {
+      if (this.txn.editedTxnGuid) {
         editedTxnTr = (
           <tr>
             <th>Edited Transaction</th>
-            <td>{this.txn.adjustedTransactionGuid}</td>
+            <td>{this.txn.editedTransactionGuid}</td>
           </tr>
         )
       }

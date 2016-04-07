@@ -18,10 +18,10 @@ export default function txnTypes(state = initialState, action) {
         },
       }, state)
 
-    case AT.AdjustTxnTypeReceive:
+    case AT.EditTxnTypeReceive:
       return u({
         lastUserAction: {
-          type: 'AdjustTxnType',
+          type: 'EditTxnType',
           txnType: action.txnType,
         },
       }, state)

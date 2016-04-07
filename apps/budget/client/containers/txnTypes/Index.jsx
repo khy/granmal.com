@@ -7,9 +7,9 @@ import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 
 import AddTxnTypeModal from 'budget/client/components/modal/AddTxnType'
-import AdjustTxnTypeModal from 'budget/client/components/modal/AdjustTxnType'
+import EditTxnTypeModal from 'budget/client/components/modal/EditTxnType'
 import {
-  ActionTypes as AT, addTxnType, adjustTxnType
+  ActionTypes as AT, addTxnType, editTxnType
 } from 'budget/client/actions/txnTypes'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 
@@ -25,9 +25,9 @@ class TxnTypes extends React.Component {
     this.props.dispatch(showModal('AddTxnType', {parentGuid: event.target.dataset.guid}))
   }
 
-  showAdjustTxnTypeModal(event) {
+  showEditTxnTypeModal(event) {
     event.preventDefault()
-    this.props.dispatch(showModal('AdjustTxnType', {guid: event.target.dataset.guid}))
+    this.props.dispatch(showModal('EditTxnType', {guid: event.target.dataset.guid}))
   }
 
   hideModal() {
@@ -39,8 +39,8 @@ class TxnTypes extends React.Component {
     this.props.dispatch(addTxnType(newTxnType))
   }
 
-  adjustTxnType(guid, attributes) {
-    this.props.dispatch(adjustTxnType(guid, attributes))
+  editTxnType(guid, attributes) {
+    this.props.dispatch(editTxnType(guid, attributes))
   }
 
   render() {
@@ -58,15 +58,15 @@ class TxnTypes extends React.Component {
           onAdd={this.addTxnType.bind(this)}
           onClose={this.hideModal.bind(this)}
         />
-      } else if (this.props.modal.name === 'AdjustTxnType') {
+    } else if (this.props.modal.name === 'EditTxnType') {
         const txnType = this.props.app.txnTypes.find((txnType) => {
           return txnType.guid === this.props.modal.data.guid
         })
 
-        modal = <AdjustTxnTypeModal {...this.props.modal}
+        modal = <EditTxnTypeModal {...this.props.modal}
           txnType={txnType}
           txnTypes={this.props.app.txnTypes}
-          onAdjust={this.adjustTxnType.bind(this)}
+          onEdit={this.editTxnType.bind(this)}
           onClose={this.hideModal.bind(this)}
         />
       }
@@ -80,8 +80,8 @@ class TxnTypes extends React.Component {
               {h.txnType.name}
             </Link>
 
-            <a onClick={this.showAdjustTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
-              Adjust
+            <a onClick={this.showEditTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
+              Edit
             </a>
             <a onClick={this.showAddTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
               New Child
