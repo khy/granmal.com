@@ -1,11 +1,15 @@
 var moment = require('moment')
 
+export function parseDateInput(raw) {
+  return moment(raw, ["MM|DD|YYYY"])
+}
+
 export function normalizeDateInput(raw) {
-  return moment(raw, ["MM|DD|YYYY"]).format('YYYY-MM-DD')
+  return parseDateInput(raw).format('YYYY-MM-DD')
 }
 
 export function normalizeOptionalDateInput(raw) {
-  (raw.length > 0) ? normalizeDateInput(raw) : undefined
+  return (raw.length > 0) ? normalizeDateInput(raw) : undefined
 }
 
 export function formatDate(momentOrDateString) {

@@ -1,9 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 import _isEmpty from 'lodash/isEmpty'
+import _isNaN from 'lodash/isNaN'
+import _isNumber from 'lodash/isNumber'
+import _isUndefined from 'lodash/isUndefined'
 import _map from 'lodash/map'
+import _toNumber from 'lodash/toNumber'
 
-import { normalizeOptionalDateInput, formatDate } from 'budget/client/lib/date'
+import { parseDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 import { normalizeOptionalFormInput } from 'budget/client/lib/form'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
@@ -44,14 +48,70 @@ export default class AddPlannedTxn extends React.Component {
       errors.txnType = `${this.state.rootTxnType} type is required`
     }
 
+    const rawMinAmount = this.refs.minAmountInput.value
+    let minAmount
+
+    if (rawMinAmount.length > 0) {
+      minAmount = _toNumber(rawMinAmount)
+
+      if (_isNaN(minAmount)) {
+        errors.minAmount = 'Must be a number'
+      }
+    }
+
+    const rawMaxAmount = this.refs.maxAmountInput.value
+    let maxAmount
+
+    if (rawMaxAmount.length > 0) {
+      maxAmount = _toNumber(rawMaxAmount)
+
+      if (_isNaN(maxAmount)) {
+        errors.maxAmount = 'Must be a number'
+      }
+    }
+
+    if (_isNumber(minAmount) && _isNumber(maxAmount)) {
+      if (minAmount > maxAmount) {
+        errors.minAmount = "Must be less than or equal to Max Amount"
+      }
+    }
+
+    const rawMinDate = this.refs.minDateInput.value
+    let minDate
+
+    if (rawMinDate.length > 0) {
+      minDate = parseDateInput(rawMinDate)
+
+      if (!minDate.isValid()) {
+        errors.minDate = "Must have format MM/DD/YY"
+      }
+    }
+
+    const rawMaxDate = this.refs.maxDateInput.value
+    let maxDate
+
+    if (rawMinDate.length > 0) {
+      maxDate = parseDateInput(rawMaxDate)
+
+      if (!maxDate.isValid()) {
+        errors.maxDate = "Must have format MM/DD/YY"
+      }
+    }
+
+    if ((minDate && minDate.isValid()) && (maxDate && maxDate.isValid())) {
+      if (minDate.isAfter(maxDate)) {
+        errors.minDate = "Must be before or equal to Max Date"
+      }
+    }
+
     if (_isEmpty(errors)) {
       const plannedTxn = {
         accountGuid: this.props.accountGuid,
         transactionTypeGuid: this.state.selectedTxnTypeGuid,
-        minAmount: parseFloat(this.refs.minAmountInput.value),
-        maxAmount: parseFloat(this.refs.maxAmountInput.value),
-        minDate: normalizeOptionalDateInput(this.refs.minDateInput.value),
-        maxDate: normalizeOptionalDateInput(this.refs.maxDateInput.value),
+        minAmount: minAmount,
+        maxAmount: maxAmount,
+        minDate: formatDateForModel(minDate),
+        maxDate: formatDateForModel(maxDate),
         name: normalizeOptionalFormInput(this.refs.nameInput.value)
       }
 
@@ -62,10 +122,14 @@ export default class AddPlannedTxn extends React.Component {
   }
 
   render() {
-    let txnTypeError
+    let inlineError = (key) => <span className="text-danger">{this.state.errors[key]}</span>
 
-    if (this.state.errors.txnType) {
-      txnTypeError = <span className="text-danger">{this.state.errors.txnType}</span>
+    let amountInputAddon
+
+    if (this.state.rootTxnType === 'Expense') {
+      amountInputAddon = <span className="input-group-addon text-danger">&#45;</span>
+    } else {
+      amountInputAddon = <span className="input-group-addon text-success">&#43;</span>
     }
 
     return (
@@ -87,20 +151,31 @@ export default class AddPlannedTxn extends React.Component {
                   value={this.state.selectedTxnTypeGuid}
                   onChange={this.selectTxnTypeGuid.bind(this)}
                 />
-                {txnTypeError}
+
+                {inlineError('txnType')}
               </fieldset>
 
               <div className="row">
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Min Amount</label>
-                    <input ref="minAmountInput" className="form-control" type="text" />
+                      <div className="input-group">
+                        {amountInputAddon}
+                        <input ref="minAmountInput" className="form-control" type="text" />
+                      </div>
+
+                      {inlineError('minAmount')}
                   </fieldset>
                 </div>
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Max Amount</label>
-                    <input ref="maxAmountInput" className="form-control" type="text" />
+                      <div className="input-group">
+                        {amountInputAddon}
+                        <input ref="maxAmountInput" className="form-control" type="text" />
+                      </div>
+
+                      {inlineError('maxAmount')}
                   </fieldset>
                 </div>
               </div>
@@ -110,12 +185,16 @@ export default class AddPlannedTxn extends React.Component {
                   <fieldset className="form-group">
                     <label>Min Date</label>
                     <input ref="minDateInput" defaultValue={formatDate(moment())} className="form-control" type="text" />
+
+                    {inlineError('minDate')}
                   </fieldset>
                 </div>
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Max Date</label>
                     <input ref="maxDateInput" type="text" defaultValue={formatDate(moment())} className="form-control" />
+
+                    {inlineError('maxDate')}
                   </fieldset>
                 </div>
               </div>
