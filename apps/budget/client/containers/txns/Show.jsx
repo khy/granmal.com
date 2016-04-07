@@ -91,7 +91,11 @@ class Show extends React.Component {
       let plannedTxnTd
 
       if (this.txn.plannedTransactionGuid) {
-        plannedTxnTd = <td>{this.txn.plannedTransactionGuid}</td>
+        plannedTxnTd = <td>
+          <Link to={`/budget/plannedTransactions/${this.txn.plannedTransactionGuid}`}>
+            {shortenGuid(this.txn.plannedTransactionGuid)}
+          </Link>
+        </td>
       } else {
         plannedTxnTd = <td className="text-danger">Unplanned</td>
       }
