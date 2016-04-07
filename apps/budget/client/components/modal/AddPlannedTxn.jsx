@@ -105,6 +105,15 @@ export default class AddPlannedTxn extends React.Component {
     }
 
     if (_isEmpty(errors)) {
+      minAmount = Math.abs(minAmount)
+      maxAmount = Math.abs(maxAmount)
+
+      if (this.state.rootTxnType === 'Expense') {
+        // Yes, this is reversed on purpose - in UI, "max" / "min" refers to
+        // absolute value; in API, it does not.
+        [minAmount, maxAmount] = [-maxAmount, -minAmount]
+      }
+
       const plannedTxn = {
         accountGuid: this.props.accountGuid,
         transactionTypeGuid: this.state.selectedTxnTypeGuid,
