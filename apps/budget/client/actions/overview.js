@@ -98,7 +98,7 @@ export function fetchProjectionsCard(date, force = false) {
 
     const formattedDate = formatDateForModel(_date)
 
-    budgetClient(getState()).get('/projections?date=' + formattedDate).then((projections) => {
+    budgetClient(getState()).get('/aggregates/projections?date=' + formattedDate).then((projections) => {
       dispatch({ type: AT.ProjectionsCardReceive, projections })
     })
   }
