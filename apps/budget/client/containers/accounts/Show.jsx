@@ -7,7 +7,7 @@ import { Table, Tbody } from 'client/components/bootstrap/table'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import { formatDate } from 'budget/client/lib/date'
 import {
-  ActionTypes as AT, deleteTxn, addPlannedTxn, addTxn,
+  ActionTypes as AT, addPlannedTxn, addTxn,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
@@ -27,10 +27,6 @@ class Account extends React.Component {
     return _find(this.props.app.accounts, (account) => {
       return account.guid === this.props.params.accountGuid
     })
-  }
-
-  deleteTxn(txn) {
-    this.props.dispatch(deleteTxn(txn))
   }
 
   onNewPlannedTxn() {

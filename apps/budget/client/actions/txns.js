@@ -4,6 +4,7 @@ import { budgetClient } from 'budget/client/lib/clients'
 import { hideModal, disableModal } from 'budget/client/actions/modal'
 
 export const ActionTypes = {
+  DeleteTxnReceive: 'DeleteTxnReceive',
   EditTxnReceive: 'EditTxnReceive',
   FetchTxnReceive: 'FetchTxnReceive',
   FetchTxnRequest: 'FetchTxnRequest',
@@ -34,6 +35,21 @@ export function editTxn(oldTxn, attrs) {
         type: AT.EditTxnReceive,
         oldTxn,
         newTxn,
+      })
+      dispatch(hideModal())
+    })
+  }
+}
+
+export function deleteTxn(txn) {
+  return function (dispatch, getState) {
+    dispatch(disableModal())
+
+    budgetClient(getState()).delete('/transactions/' + txn.guid).then(() => {
+      browserHistory.push(`/budget/accounts/${txn.accountGuid}`)
+      dispatch({
+        type: AT.DeleteTxnReceive,
+        txn
       })
       dispatch(hideModal())
     })

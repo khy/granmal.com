@@ -8,6 +8,14 @@ export default function txns(state = initialState, action) {
 
   switch (action.type) {
 
+    case AT.DeleteTxnReceive:
+      return u({
+        lastUserAction: {
+          type: 'DeleteTxn',
+          txn: action.txn,
+        },
+      }, state)
+
     case AT.EditTxnReceive:
       return u({
         lastUserAction: {

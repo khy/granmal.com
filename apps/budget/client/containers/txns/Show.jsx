@@ -11,7 +11,7 @@ import { showModal, hideModal } from 'budget/client/actions/modal'
 import { ButtonGroup, SecondaryButton } from 'client/components/bootstrap/button'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
-import { editTxn, fetchTxn } from 'budget/client/actions/txns'
+import { deleteTxn, editTxn, fetchTxn } from 'budget/client/actions/txns'
 import AddTxnModal from 'budget/client/components/modal/AddTxn'
 
 class Show extends React.Component {
@@ -60,6 +60,10 @@ class Show extends React.Component {
 
   editTxn(attrs) {
     this.props.dispatch(editTxn(this.txn, attrs))
+  }
+
+  deleteTxn(txn) {
+    this.props.dispatch(deleteTxn(this.txn))
   }
 
   hideModal() {
@@ -173,6 +177,7 @@ class Show extends React.Component {
 
           <ButtonGroup className="header-btn-group">
             <SecondaryButton onClick={this.showAddTxnModal.bind(this)}>Edit</SecondaryButton>
+            <SecondaryButton onClick={this.deleteTxn.bind(this)}>Delete</SecondaryButton>
           </ButtonGroup>
 
           <Table>

@@ -25,14 +25,6 @@ export default function account(state = initialState, action) {
         },
       }, state)
 
-    case AT.DeleteTxnReceive:
-      return u({
-        lastUserAction: {
-          type: 'DeleteTxn',
-          txn: action.txn,
-        },
-      }, state)
-
     case AT.PlannedTxnsAddReceive:
       return u({
         lastUserAction: {
