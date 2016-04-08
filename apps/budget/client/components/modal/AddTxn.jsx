@@ -25,11 +25,17 @@ export default class AddTxn extends React.Component {
       _rootTxnType = 'Expense'
     }
 
+    let _amount
+
+    if (this.props.initialAmount) {
+      _amount = Math.abs(parseFloat(this.props.initialAmount))
+    }
+
     this.state = {
       rootTxnType: _rootTxnType,
       accountGuid: (this.props.accountGuid || this.props.initialAccountGuid),
       txnTypeGuid: (this.props.txnTypeGuid || this.props.initialTxnTypeGuid),
-      amount: Math.abs(parseFloat(this.props.initialAmount)),
+      amount: _amount,
       date: formatDate(moment(this.props.initialDate)),
       name: (this.props.initialName),
       errors: {}
