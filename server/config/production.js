@@ -1,4 +1,4 @@
-const uselessBaseUrl = 'http://useless.io'
+const uselessBaseUrl = 'https://useless.io'
 
 module.exports = {
   pg: {
