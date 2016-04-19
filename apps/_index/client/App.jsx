@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { IndexRoute, Router, Route } from 'react-router'
-import createBrowserHistory from 'history/lib/createBrowserHistory'
+import { browserHistory, IndexRoute, Router, Route } from 'react-router'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
@@ -28,7 +27,7 @@ const app = connect((state) => state)(App)
 
 render(
   <Provider store={store}>
-    <Router history={createBrowserHistory()}>
+    <Router history={browserHistory}>
       <Route path="/" component={app}>
         <IndexRoute component={AppList} />
       </Route>
