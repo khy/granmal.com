@@ -149,13 +149,13 @@ export default class AddPlannedTxn extends React.Component {
     return (
       <Modal>
         <ModalHeader>New Planned Transaction</ModalHeader>
-        <ModalBody>
-          <TxnTypeButtonGroup
-            txnType={this.state.rootTxnType}
-            onClick={this.setRootTxnType.bind(this)}
-          />
+        <form onSubmit={this.add.bind(this)}>
+          <ModalBody>
+            <TxnTypeButtonGroup
+              txnType={this.state.rootTxnType}
+              onClick={this.setRootTxnType.bind(this)}
+            />
 
-          <form>
             <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>{this.state.rootTxnType} Type</label>
@@ -173,23 +173,23 @@ export default class AddPlannedTxn extends React.Component {
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Min Amount</label>
-                      <div className="input-group">
-                        {amountInputAddon}
-                        <input ref="minAmountInput" className="form-control" type="text" />
-                      </div>
+                    <div className="input-group">
+                      {amountInputAddon}
+                      <input ref="minAmountInput" className="form-control" type="text" />
+                    </div>
 
-                      {inlineError('minAmount')}
+                    {inlineError('minAmount')}
                   </fieldset>
                 </div>
                 <div className="col-md-6">
                   <fieldset className="form-group">
                     <label>Max Amount</label>
-                      <div className="input-group">
-                        {amountInputAddon}
-                        <input ref="maxAmountInput" className="form-control" type="text" />
-                      </div>
+                    <div className="input-group">
+                      {amountInputAddon}
+                      <input ref="maxAmountInput" className="form-control" type="text" />
+                    </div>
 
-                      {inlineError('maxAmount')}
+                    {inlineError('maxAmount')}
                   </fieldset>
                 </div>
               </div>
@@ -218,23 +218,24 @@ export default class AddPlannedTxn extends React.Component {
                 <input ref="nameInput" className="form-control" type="text" />
               </fieldset>
             </fieldset>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <SecondaryButton
-            onClick={this.close.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Close
-          </SecondaryButton>
+          </ModalBody>
+          <ModalFooter>
+            <SecondaryButton
+              onClick={this.close.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Close
+            </SecondaryButton>
 
-          <PrimaryButton
-            onClick={this.add.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Add
-          </PrimaryButton>
-        </ModalFooter>
+            <PrimaryButton
+              type="submit"
+              onClick={this.add.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Add
+            </PrimaryButton>
+          </ModalFooter>
+        </form>
       </Modal>
     )
   }

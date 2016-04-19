@@ -3,7 +3,7 @@ import React from 'react'
 export function Button(props) {
   return (
     <button {...props}
-      type="button"
+      type={props.type || "button"}
       className={"btn " + props.className}
     >
       {props.children}
