@@ -31,8 +31,8 @@ export default class AddTxnTypeModal extends React.Component {
     return (
       <Modal>
         <ModalHeader>New Transaction Type</ModalHeader>
-        <ModalBody>
-          <form>
+        <form onSubmit={this.add.bind(this)}>
+          <ModalBody>
             <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Parent Transaction Type</label>
@@ -44,23 +44,24 @@ export default class AddTxnTypeModal extends React.Component {
                 <input ref="nameInput" className="form-control" type="text" />
               </fieldset>
             </fieldset>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <SecondaryButton
-            onClick={this.close.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Close
-          </SecondaryButton>
+          </ModalBody>
+          <ModalFooter>
+            <SecondaryButton
+              onClick={this.close.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Close
+            </SecondaryButton>
 
-          <PrimaryButton
-            onClick={this.add.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Add
-          </PrimaryButton>
-        </ModalFooter>
+            <PrimaryButton
+              type="submit"
+              onClick={this.add.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Add
+            </PrimaryButton>
+          </ModalFooter>
+        </form>
       </Modal>
     )
   }
