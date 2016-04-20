@@ -38,7 +38,7 @@ export default class AddAccount extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>New Account</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>New Account</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             <fieldset disabled={this.isDisabled}>

@@ -148,7 +148,7 @@ export default class AddPlannedTxn extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>New Planned Transaction</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>New Planned Transaction</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             <TxnTypeButtonGroup

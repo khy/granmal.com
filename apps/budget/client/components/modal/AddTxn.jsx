@@ -204,7 +204,7 @@ export default class AddTxn extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>New Transaction</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>New Transaction</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             {txnTypeButtonGroup}

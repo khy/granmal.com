@@ -46,7 +46,7 @@ export default class AddContextUser extends React.Component {
   render() {
     return (
       <Modal>
-        <ModalHeader>Add User</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>Add User</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             <fieldset disabled={this.props.modalIsPosting}>

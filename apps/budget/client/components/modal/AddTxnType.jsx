@@ -30,7 +30,7 @@ export default class AddTxnTypeModal extends React.Component {
   render() {
     return (
       <Modal>
-        <ModalHeader>New Transaction Type</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>New Transaction Type</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             <fieldset disabled={this.isDisabled}>

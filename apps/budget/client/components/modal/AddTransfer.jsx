@@ -39,7 +39,7 @@ export default class AddTransferModal extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>New Transfer</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>New Transfer</ModalHeader>
         <form onSubmit={this.add.bind(this)}>
           <ModalBody>
             <fieldset className="form-group">

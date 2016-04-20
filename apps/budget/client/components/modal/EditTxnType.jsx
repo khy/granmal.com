@@ -33,7 +33,7 @@ export default class EditTxnType extends React.Component {
 
     return (
       <Modal>
-        <ModalHeader>Edit "{this.props.txnType.name}"</ModalHeader>
+        <ModalHeader onClose={this.close.bind(this)}>Edit "{this.props.txnType.name}"</ModalHeader>
         <form onSubmit={this.edit.bind(this)}>
           <ModalBody>
             <fieldset disabled={this.isDisabled}>
