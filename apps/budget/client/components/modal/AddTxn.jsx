@@ -205,10 +205,10 @@ export default class AddTxn extends React.Component {
     return (
       <Modal>
         <ModalHeader>New Transaction</ModalHeader>
-        <ModalBody>
-          {txnTypeButtonGroup}
+        <form onSubmit={this.add.bind(this)}>
+          <ModalBody>
+            {txnTypeButtonGroup}
 
-          <form>
             <fieldset disabled={this.isDisabled}>
               {accountFieldset}
 
@@ -234,22 +234,23 @@ export default class AddTxn extends React.Component {
                 <input value={this.state.name} onChange={this.setName.bind(this)} className="form-control" type="text" />
               </fieldset>
             </fieldset>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <SecondaryButton
-            onClick={this.close.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Close
-          </SecondaryButton>
-          <PrimaryButton
-            onClick={this.add.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Add
-          </PrimaryButton>
-        </ModalFooter>
+          </ModalBody>
+          <ModalFooter>
+            <SecondaryButton
+              onClick={this.close.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Close
+            </SecondaryButton>
+            <PrimaryButton
+              type="submit"
+              onClick={this.add.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Add
+            </PrimaryButton>
+          </ModalFooter>
+        </form>
       </Modal>
     )
   }
