@@ -47,8 +47,8 @@ export default class AddContextUser extends React.Component {
     return (
       <Modal>
         <ModalHeader>Add User</ModalHeader>
-        <ModalBody>
-          <form>
+        <form onSubmit={this.add.bind(this)}>
+          <ModalBody>
             <fieldset disabled={this.props.modalIsPosting}>
               <fieldset className="form-group">
                 <Select.Async
@@ -58,23 +58,24 @@ export default class AddContextUser extends React.Component {
                 />
               </fieldset>
             </fieldset>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <SecondaryButton
-            onClick={this.close.bind(this)}
-            disabled={this.props.modalIsPosting}
-          >
-            Close
-          </SecondaryButton>
+          </ModalBody>
+          <ModalFooter>
+            <SecondaryButton
+              onClick={this.close.bind(this)}
+              disabled={this.props.modalIsPosting}
+            >
+              Close
+            </SecondaryButton>
 
-          <PrimaryButton
-            onClick={this.add.bind(this)}
-            disabled={this.props.modalIsPosting}
-          >
-            Add
-          </PrimaryButton>
-        </ModalFooter>
+            <PrimaryButton
+              type="submit"
+              onClick={this.add.bind(this)}
+              disabled={this.props.modalIsPosting}
+            >
+              Add
+            </PrimaryButton>
+          </ModalFooter>
+        </form>
       </Modal>
     )
   }
