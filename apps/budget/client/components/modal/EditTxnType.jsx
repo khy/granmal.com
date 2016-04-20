@@ -34,8 +34,8 @@ export default class EditTxnType extends React.Component {
     return (
       <Modal>
         <ModalHeader>Edit "{this.props.txnType.name}"</ModalHeader>
-        <ModalBody>
-          <form>
+        <form onSubmit={this.edit.bind(this)}>
+          <ModalBody>
             <fieldset disabled={this.isDisabled}>
               <fieldset className="form-group">
                 <label>Parent Transaction Type</label>
@@ -49,23 +49,24 @@ export default class EditTxnType extends React.Component {
                 <input ref="nameInput" defaultValue={this.props.txnType.name} className="form-control" type="text" />
               </fieldset>
             </fieldset>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <SecondaryButton
-            onClick={this.close.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Close
-          </SecondaryButton>
+          </ModalBody>
+          <ModalFooter>
+            <SecondaryButton
+              onClick={this.close.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Close
+            </SecondaryButton>
 
-          <PrimaryButton
-            onClick={this.edit.bind(this)}
-            disabled={this.isDisabled}
-          >
-            Edit
-          </PrimaryButton>
-        </ModalFooter>
+            <PrimaryButton
+              type="submit"
+              onClick={this.edit.bind(this)}
+              disabled={this.isDisabled}
+            >
+              Edit
+            </PrimaryButton>
+          </ModalFooter>
+        </form>
       </Modal>
     )
   }
