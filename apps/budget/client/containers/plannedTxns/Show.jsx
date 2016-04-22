@@ -6,7 +6,7 @@ import _get from 'lodash/get'
 import _pick from 'lodash/pick'
 
 import { formatDate } from 'budget/client/lib/date'
-import { formatCurrency } from 'budget/client/lib/format'
+import { formatCurrency } from 'budget/client/lib/currency'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import { Table, Tbody } from 'client/components/bootstrap/table'

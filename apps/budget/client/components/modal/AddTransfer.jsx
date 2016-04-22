@@ -2,6 +2,7 @@ import React from 'react'
 import _map from 'lodash/map'
 
 import { normalizeDateInput } from 'budget/client/lib/date'
+import { unformatCurrency } from 'budget/client/lib/currency'
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
@@ -22,7 +23,7 @@ export default class AddTransferModal extends React.Component {
     const transfer = {
       fromAccountGuid: this.refs.fromAccountGuidSelect.value,
       toAccountGuid: this.refs.toAccountGuidSelect.value,
-      amount: parseFloat(this.refs.amountInput.value),
+      amount: parseFloat(unformatCurrency(this.refs.amountInput.value)),
       date: normalizeDateInput(this.refs.dateInput.value),
     }
 

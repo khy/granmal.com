@@ -11,6 +11,7 @@ import { parseDateInput, formatDate, formatDateForModel } from 'budget/client/li
 import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
+import { unformatCurrency } from 'budget/client/lib/currency'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 import TxnTypeButtonGroup from 'budget/client/components/modal/TxnTypeButtonGroup'
 
@@ -47,7 +48,7 @@ export default class AddPlannedTxn extends React.Component {
       errors.txnType = `${this.state.rootTxnType} type is required`
     }
 
-    const rawMinAmount = this.refs.minAmountInput.value
+    const rawMinAmount = unformatCurrency(this.refs.minAmountInput.value)
     let minAmount
 
     if (rawMinAmount.length > 0) {
@@ -58,7 +59,7 @@ export default class AddPlannedTxn extends React.Component {
       }
     }
 
-    const rawMaxAmount = this.refs.maxAmountInput.value
+    const rawMaxAmount = unformatCurrency(this.refs.maxAmountInput.value)
     let maxAmount
 
     if (rawMaxAmount.length > 0) {

@@ -9,7 +9,7 @@ import _sum from 'lodash/sum'
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
 
-import { formatCurrency } from 'budget/client/lib/format'
+import { formatCurrency } from 'budget/client/lib/currency'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/months'
 

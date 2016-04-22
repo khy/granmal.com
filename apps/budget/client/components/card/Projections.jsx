@@ -4,7 +4,7 @@ import _map from 'lodash/map'
 
 import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
 
-import { formatCurrency } from 'budget/client/lib/format'
+import { formatCurrency } from 'budget/client/lib/currency'
 import { UserActionTypes } from 'budget/client/actions/overview'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 

@@ -5,3 +5,7 @@ export function formatCurrency(raw) {
   let j = (j = i.length) > 3 ? j % 3 : 0
   return s + (j ? i.substr(0, j) + "," : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + ",") + (2 ? "." + Math.abs(raw - i).toFixed(2).slice(2) : "")
 }
+
+export function unformatCurrency(formatted) {
+  return formatted.replace(',', '')
+}

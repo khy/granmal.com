@@ -4,7 +4,7 @@ import _find from 'lodash/find'
 import { Link } from 'react-router'
 
 import { formatDate } from 'budget/client/lib/date'
-import { formatCurrency } from 'budget/client/lib/format'
+import { formatCurrency } from 'budget/client/lib/currency'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { extractPagerPages } from 'budget/client/lib/pager'
 import { Card, CardHeader, CardHeaderLink } from 'client/components/bootstrap/card'

@@ -8,6 +8,7 @@ import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/butt
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bootstrap/modal'
 
 import { normalizeDateInput, formatDate } from 'budget/client/lib/date'
+import { unformatCurrency } from 'budget/client/lib/currency'
 import { rootTxnType } from 'budget/client/lib/txnType'
 import TxnTypeSelect from 'budget/client/components/TxnTypeSelect'
 import TxnTypeButtonGroup from 'budget/client/components/modal/TxnTypeButtonGroup'
@@ -28,7 +29,7 @@ export default class AddTxn extends React.Component {
     let _amount
 
     if (this.props.initialAmount) {
-      _amount = Math.abs(parseFloat(this.props.initialAmount))
+      _amount = Math.abs(parseFloat(unformatCurrency(this.props.initialAmount)))
     }
 
     this.state = {
@@ -73,7 +74,7 @@ export default class AddTxn extends React.Component {
     }
 
     if (_isEmpty(errors)) {
-      let amount = Math.abs(parseFloat(this.state.amount))
+      let amount = Math.abs(parseFloat(unformatCurrency(this.state.amount)))
 
       if (this.state.rootTxnType === 'Expense') {
         amount = - amount
