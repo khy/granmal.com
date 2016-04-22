@@ -4,6 +4,7 @@ import _find from 'lodash/find'
 import { Link } from 'react-router'
 
 import { formatDate } from 'budget/client/lib/date'
+import { formatCurrency } from 'budget/client/lib/format'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { extractPagerPages } from 'budget/client/lib/pager'
 import { Card, CardHeader, CardHeaderLink } from 'client/components/bootstrap/card'
@@ -68,7 +69,7 @@ export default class TxnsCard extends React.Component {
               </Link>
             </td>
             <td>{formatDate(txn.date)}</td>
-            <td>{txn.amount}</td>
+            <td>{formatCurrency(txn.amount)}</td>
             <td>{txnType.name}</td>
             <td>{txn.name}</td>
             {editRow}

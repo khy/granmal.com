@@ -9,6 +9,7 @@ import _sum from 'lodash/sum'
 import { Card, CardHeader, CardList } from 'client/components/bootstrap/card'
 import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
 
+import { formatCurrency } from 'budget/client/lib/format'
 import { systemTxnType, txnTypeHierarchyArray } from 'budget/client/lib/txnType'
 import { fetchMonthTxnTypeRollup } from 'budget/client/actions/months'
 
@@ -53,13 +54,13 @@ class Month extends React.Component {
 
       const buildRows = (hierarchy) => _map(hierarchy, (h) => {
         const selfAmtTotal = amtTotal(h.txnType.guid)
-        const grandAmtTotal = selfAmtTotal + descAmtTotal(h.txnType.guid)
+        const grandAmtTotal = formatCurrency(selfAmtTotal + descAmtTotal(h.txnType.guid))
 
         if (grandAmtTotal != 0) {
           let selfAmtTotalSpan
 
           if (selfAmtTotal != 0 && selfAmtTotal != grandAmtTotal) {
-            selfAmtTotalSpan = <span className="txn-type-self-amt-total">{selfAmtTotal}</span>
+            selfAmtTotalSpan = <span className="txn-type-self-amt-total">{formatCurrency(selfAmtTotal)}</span>
           }
 
           return (

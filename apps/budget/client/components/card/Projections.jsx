@@ -4,6 +4,7 @@ import _map from 'lodash/map'
 
 import { Table, Tbody, Thead } from 'client/components/bootstrap/table'
 
+import { formatCurrency } from 'budget/client/lib/format'
 import { UserActionTypes } from 'budget/client/actions/overview'
 import { normalizeDateInput, formatDate, formatDateForModel } from 'budget/client/lib/date'
 
@@ -33,9 +34,9 @@ class ProjectionsCard extends React.Component {
         return (
           <tr key={value.account.guid}>
             <td><Link to={"/budget/accounts/" + value.account.guid}>{value.account.name}</Link></td>
-            <td>{value.account.balance}</td>
-            <td>{value.minBalance}</td>
-            <td>{value.maxBalance}</td>
+            <td>{formatCurrency(value.account.balance)}</td>
+            <td>{formatCurrency(value.minBalance)}</td>
+            <td>{formatCurrency(value.maxBalance)}</td>
           </tr>
         )
       })

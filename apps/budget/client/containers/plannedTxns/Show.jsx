@@ -6,6 +6,7 @@ import _get from 'lodash/get'
 import _pick from 'lodash/pick'
 
 import { formatDate } from 'budget/client/lib/date'
+import { formatCurrency } from 'budget/client/lib/format'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import { Table, Tbody } from 'client/components/bootstrap/table'
@@ -117,7 +118,7 @@ class Show extends React.Component {
           </tr>
           <tr>
             <th>Amount</th>
-            <td>{`${this.plannedTxn.minAmount} / ${this.plannedTxn.maxAmount}`}</td>
+            <td>{`${formatCurrency(this.plannedTxn.minAmount)} / ${formatCurrency(this.plannedTxn.maxAmount)}`}</td>
           </tr>
           <tr>
             <th>Created By</th>

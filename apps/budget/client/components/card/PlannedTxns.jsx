@@ -6,6 +6,7 @@ import _sum from 'lodash/sum'
 import moment from 'moment'
 
 import { formatDate } from 'budget/client/lib/date'
+import { formatCurrency } from 'budget/client/lib/format'
 import { shortenGuid } from 'budget/client/lib/guid'
 import { extractPagerPages } from 'budget/client/lib/pager'
 import { Card, CardHeader, CardHeaderLink } from 'client/components/bootstrap/card'
@@ -52,7 +53,8 @@ export default class PlannedTxnsCard extends React.Component {
         const txnCount = plannedTxn.transactions.length
 
         const amount = (plannedTxn.minAmount === plannedTxn.maxAmount) ?
-          plannedTxn.minAmount : plannedTxn.minAmount +  " / " + plannedTxn.maxAmount
+          formatCurrency(plannedTxn.minAmount) :
+          formatCurrency(plannedTxn.minAmount) +  " / " + formatCurrency(plannedTxn.maxAmount)
 
         const rowClass = (moment(plannedTxn.minDate) < moment() && txnCount === 0) ?
           'table-warning' : ''
