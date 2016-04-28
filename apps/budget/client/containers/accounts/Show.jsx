@@ -47,12 +47,17 @@ class Account extends React.Component {
           datasets: [{
             label: 'Last Month',
             data: getData('lastMonthIntervals'),
+            fill: false,
+            backgroundColor: "rgba(85, 85, 85, 0.2)",
+            borderColor: "rgba(85, 85, 85, 0.6)",
           },{
             label: 'This Month',
             data: getData('thisMonthIntervals'),
+            fill: false,
+            backgroundColor: "rgba(2, 117, 216, 0.2)",
+            borderColor: "rgba(2, 117, 216, 0.6)",
           }]
         },
-        options: {},
       })
     }
   }
@@ -133,7 +138,7 @@ class Account extends React.Component {
             </Tbody>
           </Table>
 
-          <canvas ref={this.initializeChart.bind(this)}></canvas>
+          <canvas ref={this.initializeChart.bind(this)} className="top-chart"></canvas>
 
           <PlannedTxns
             plannedTxns={this.props.account.plannedTxns.results}
