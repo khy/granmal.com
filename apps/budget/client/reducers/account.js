@@ -3,6 +3,11 @@ import u from 'updeep'
 import { ActionTypes as AT } from '../actions/account'
 
 export const initialState = {
+  history: {
+    isFetching: false,
+    lastMonthIntervals: [],
+    thisMonthIntervals: [],
+  },
   plannedTxns: {
     isFetching: false,
     results: [],
@@ -24,6 +29,16 @@ export default function account(state = initialState, action) {
           txn: action.txn,
         },
       }, state)
+
+    case AT.HistoryFetchReceive:
+      return u({ history: {
+        isFetching: false,
+        lastMonthIntervals: action.lastMonthIntervals,
+        thisMonthIntervals: action.thisMonthIntervals,
+      }}, state)
+
+    case AT.HistoryFetchRequest:
+      return u({history: {isFetching: true }}, state)
 
     case AT.PlannedTxnsAddReceive:
       return u({

@@ -2,12 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import _find from 'lodash/find'
+import _range from 'lodash/range'
+import Chart from 'chart.js'
 
 import { Table, Tbody } from 'client/components/bootstrap/table'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import { formatDate } from 'budget/client/lib/date'
 import {
-  ActionTypes as AT, addPlannedTxn, addTxn,
+  ActionTypes as AT, addPlannedTxn, addTxn, fetchHistory,
   fetchPlannedTxns, fetchTxns
 } from 'budget/client/actions/account'
 
@@ -19,6 +21,7 @@ import Txns from 'budget/client/components/card/Txns'
 class Account extends React.Component {
 
   componentWillMount() {
+    this.props.dispatch(fetchHistory(this.props.params.accountGuid))
     this.props.dispatch(fetchPlannedTxns(this.props.params.accountGuid, 1))
     this.props.dispatch(fetchTxns(this.props.params.accountGuid, 1))
   }
@@ -27,6 +30,31 @@ class Account extends React.Component {
     return _find(this.props.app.accounts, (account) => {
       return account.guid === this.props.params.accountGuid
     })
+  }
+
+  initializeChart(canvas) {
+    const getData = (intervalsName) => {
+      return this.props.account.history[intervalsName].map( interval => {
+        return interval.initialBalance
+      })
+    }
+
+    if (canvas) {
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: _range(1, 32),
+          datasets: [{
+            label: 'Last Month',
+            data: getData('lastMonthIntervals'),
+          },{
+            label: 'This Month',
+            data: getData('thisMonthIntervals'),
+          }]
+        },
+        options: {},
+      })
+    }
   }
 
   onNewPlannedTxn() {
@@ -104,6 +132,8 @@ class Account extends React.Component {
               </tr>
             </Tbody>
           </Table>
+
+          <canvas ref={this.initializeChart.bind(this)}></canvas>
 
           <PlannedTxns
             plannedTxns={this.props.account.plannedTxns.results}

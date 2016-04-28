@@ -1,11 +1,15 @@
 import _map from 'lodash/map'
+import moment from 'moment'
 
+import { formatDateForModel } from 'budget/client/lib/date'
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { hideModal, disableModal } from 'budget/client/actions/modal'
 import { fetchAccounts } from 'budget/client/actions/app'
 
 export const ActionTypes = {
   AddTxnsReceive: 'AddTxnsReceive',
+  HistoryFetchReceive: 'HistoryFetchReceive',
+  HistoryFetchRequest: 'HistoryFetchRequest',
   PlannedTxnsAddReceive: 'PlannedTxnsAddReceive',
   PlannedTxnsFetchReceive: 'PlannedTxnsFetchReceive',
   PlannedTxnsFetchRequest: 'PlannedTxnsFetchRequest',
@@ -37,11 +41,38 @@ export function addTxn(newTxn) {
     client(getState()).post('/transactions', newTxn).then((txn) => {
       dispatch(fetchTxns(txn.accountGuid))
       dispatch(fetchAccounts())
+      dispatch(fetchHistory(txn.accountGuid))
       dispatch({
         type: AT.AddTxnsReceive,
         txn
       })
       dispatch(hideModal())
+    })
+  }
+}
+
+export function fetchHistory(accountGuid) {
+  return function (dispatch, getState) {
+    dispatch({ type: AT.HistoryFetchRequest })
+
+    const startOfLastMonth = formatDateForModel(moment().subtract(1, 'months').startOf('month'))
+    const startOfThisMonth = formatDateForModel(moment().startOf('month'))
+    const startOfNextMonth = formatDateForModel(moment().add(1, 'months').startOf('month'))
+
+    const _client = client(getState)
+    const baseUrl = '/aggregates/accountHistory/' + accountGuid
+    const lastMonthUrl = baseUrl + `?start=${startOfLastMonth}&end=${startOfThisMonth}`
+    const thisMonthUrl = baseUrl + `?start=${startOfThisMonth}&end=${startOfNextMonth}`
+
+    Promise.all([
+      _client.get(lastMonthUrl),
+      _client.get(thisMonthUrl),
+    ]).then( (results) => {
+      dispatch({
+        type: AT.HistoryFetchReceive,
+        lastMonthIntervals: results[0],
+        thisMonthIntervals: results[1],
+      })
     })
   }
 }
