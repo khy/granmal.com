@@ -57,6 +57,14 @@ class App extends React.Component {
   render() {
     const apps = [
       {
+        key: 'haiku',
+        name: 'Haiku',
+        description: 'Giving everyone the power to create and share ideas and information instantly, without barriers, with haikus.'
+      }
+    ]
+
+    const betaApps = [
+      {
         key: 'budget',
         name: 'Budget',
         description: 'Personal finances for obsessive compulsives.',
@@ -94,7 +102,7 @@ class App extends React.Component {
       </Alert>
     }
 
-    const cards = apps.map( app => {
+    const appCards = (apps) => apps.map( app => {
       return (
         <div className="card-app-link" key={app.key}>
           <div className="card-block">
@@ -113,7 +121,9 @@ class App extends React.Component {
 
         <div className="container">
           {alert}
-          {cards}
+          {appCards(apps)}
+          <h2>Beta</h2>
+          {appCards(betaApps)}
         </div>
 
         {modal}
