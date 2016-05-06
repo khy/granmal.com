@@ -116,7 +116,7 @@ export function fetchTxnTypes() {
 
 export function selectContext(guid) {
   return function (dispatch, getState) {
-    return fetch('/budget/accountAppState', {
+    return fetch('/accountAppState/budget', {
       method: 'PATCH',
       headers: {
         'Accept': 'application/json',

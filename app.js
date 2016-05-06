@@ -8,6 +8,7 @@ var Budget = require('./apps/budget/server/app')
 var Haiku = require('./apps/haiku/server/app')
 var Index = require('./apps/_index/server')
 
+var AccountAppStateRouter = require('./server/routers/accountAppState')
 var AuthRouter = require('./server/routers/auth')
 
 var app = express()
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(authMiddleware)
 
 app.use('/auth', AuthRouter)
+app.use('/accountAppState', AccountAppStateRouter)
 
 app.use('/budget', Budget)
 app.use('/haiku', Haiku)
