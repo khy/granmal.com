@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 class Index extends React.Component {
 
   render() {
-    return <h2>Index</h2>
+    return <div className="container">
+      <h2>Index</h2>
+    </div>
   }
 
 }

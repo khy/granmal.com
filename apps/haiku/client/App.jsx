@@ -11,6 +11,7 @@ import Prestitial from 'client/components/ads/Prestitial'
 import { showModal, hideModal } from 'budget/client/actions/modal'
 import NavMenu from 'budget/client/components/modal/NavMenu'
 
+import Navbar from './components/Navbar'
 import Index from './containers/Index'
 
 require("./app.scss")
@@ -25,7 +26,7 @@ class App extends React.Component {
 
   render() {
     return <div>
-      <h1>Haiku</h1>
+      <Navbar />
       {this.props.children}
     </div>
   }
