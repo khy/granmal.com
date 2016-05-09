@@ -8,16 +8,15 @@ import { connect, Provider } from 'react-redux'
 
 import { showModal, hideModal } from 'client/actions/modal'
 
+import reducer from './reducers'
 import Navbar from './components/Navbar'
 import Index from './containers/Index'
 
 require("./app.scss")
 
-const emptyReducer = (state = {}, action) => state
-
 const store = applyMiddleware(
   thunkMiddleware//, createLogger()
-)(createStore)(emptyReducer, window.__INITIAL_STATE__)
+)(createStore)(reducer, window.__INITIAL_STATE__)
 
 class App extends React.Component {
 
