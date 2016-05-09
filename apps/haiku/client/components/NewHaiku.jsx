@@ -6,16 +6,33 @@ export default class NewHaiku extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      lineOne: '',
+      lineTwo: '',
+      lineThree: '',
+    }
+
+    this.setLineOne = this.setLine.bind(this, 'lineOne')
+    this.setLineTwo = this.setLine.bind(this, 'lineTwo')
+    this.setLineThree = this.setLine.bind(this, 'lineThree')
+
     this.createHaiku = this.createHaiku.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
 
+  setLine(lineKey, event) {
+    let newState = {}
+    newState[lineKey] = event.target.value
+    this.setState(newState)
+  }
+
   createHaiku() {
-    console.log("createHaiku")
+    this.props.onCreate(this.state)
   }
 
   closeModal(event) {
-    console.log("closeModal")
+    this.props.onClose()
   }
 
   render() {
@@ -26,9 +43,22 @@ export default class NewHaiku extends React.Component {
         onSubmit={this.createHaiku}
         onCancel={this.closeModal}
       >
-        <div>Hi</div>
+        <fieldset className="form-group">
+          <input value={this.state.lineOne} onChange={this.setLineOne} className="form-control" type="text" placeholder="5 Syllables"/>
+        </fieldset>
+        <fieldset className="form-group">
+          <input value={this.state.lineTwo} onChange={this.setLineTwo} className="form-control" type="text" placeholder="7 Syllables"/>
+        </fieldset>
+        <fieldset className="form-group">
+          <input value={this.state.lineThree} onChange={this.setLineThree} className="form-control" type="text" placeholder="5 Syllables"/>
+        </fieldset>
       </FormModal>
     )
   }
 
+}
+
+NewHaiku.propTypes = {
+  onCreate: React.PropTypes.func.isRequired,
+  onClose: React.PropTypes.func.isRequired,
 }

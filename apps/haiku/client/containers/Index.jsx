@@ -5,8 +5,27 @@ import NewHaiku from '../components/NewHaiku'
 
 class Index extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.createHaiku = this.createHaiku.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+  }
+
+  createHaiku(newHaiku) {
+    console.log(newHaiku)
+  }
+
+  closeModal() {
+    console.log("closeModal")
+  }
+
   render() {
-    const modal = <NewHaiku />
+    const modal = (
+      <NewHaiku
+        onCreate={this.createHaiku}
+        onClose={this.closeModal}
+      />
+    )
 
     return (
       <div>
