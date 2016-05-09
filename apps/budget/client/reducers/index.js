@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 
 import auth from 'client/reducers/auth'
+import modal from 'client/reducers/modal'
 
 import account from './account'
 import app from './app'
 import contexts from './contexts'
-import modal from './modal'
 import months from './months'
 import overview from './overview'
 import plannedTxns from './plannedTxns'

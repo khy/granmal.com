@@ -6,7 +6,7 @@ import _range from 'lodash/range'
 import Chart from 'chart.js'
 
 import { Table, Tbody } from 'client/components/bootstrap/table'
-import { showModal, hideModal } from 'budget/client/actions/modal'
+import { showModal, hideModal } from 'client/actions/modal'
 import { formatDate } from 'budget/client/lib/date'
 import {
   ActionTypes as AT, addPlannedTxn, addTxn, fetchHistory,

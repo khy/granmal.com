@@ -8,7 +8,7 @@ import _pick from 'lodash/pick'
 import { formatDate } from 'budget/client/lib/date'
 import { formatCurrency } from 'budget/client/lib/currency'
 import { shortenGuid } from 'budget/client/lib/guid'
-import { showModal, hideModal } from 'budget/client/actions/modal'
+import { showModal, hideModal } from 'client/actions/modal'
 import { Table, Tbody } from 'client/components/bootstrap/table'
 
 import Txns from 'budget/client/components/card/Txns'

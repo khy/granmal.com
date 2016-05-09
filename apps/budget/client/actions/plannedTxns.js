@@ -1,7 +1,7 @@
 import _map from 'lodash/map'
 
 import { budgetClient } from 'budget/client/lib/clients'
-import { hideModal, disableModal } from 'budget/client/actions/modal'
+import { hideModal, disableModal } from 'client/actions/modal'
 
 export const ActionTypes = {
   FetchPlannedTxnReceive: 'FetchPlannedTxnReceive',

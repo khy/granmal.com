@@ -6,10 +6,7 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 
-import { FullPageLogIn } from 'client/components/auth/logIn'
-import Prestitial from 'client/components/ads/Prestitial'
-import { showModal, hideModal } from 'budget/client/actions/modal'
-import NavMenu from 'budget/client/components/modal/NavMenu'
+import { showModal, hideModal } from 'client/actions/modal'
 
 import Navbar from './components/Navbar'
 import Index from './containers/Index'

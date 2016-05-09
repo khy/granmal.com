@@ -9,7 +9,7 @@ import u from 'updeep'
 
 import { FullPageLogIn } from 'client/components/auth/logIn'
 import Prestitial from 'client/components/ads/Prestitial'
-import { showModal, hideModal } from 'budget/client/actions/modal'
+import { showModal, hideModal } from 'client/actions/modal'
 import NavMenu from 'budget/client/components/modal/NavMenu'
 
 import reducer from './reducers'

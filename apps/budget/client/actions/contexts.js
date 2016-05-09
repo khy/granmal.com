@@ -2,7 +2,7 @@ import _find from 'lodash/find'
 
 import { budgetClient } from 'budget/client/lib/clients'
 import { fetchContexts } from 'budget/client/actions/app'
-import { hideModal, disableModal } from 'budget/client/actions/modal'
+import { hideModal, disableModal } from 'client/actions/modal'
 
 export const ActionTypes = {
   AddContextUserReceive: 'AddContextUserReceive',

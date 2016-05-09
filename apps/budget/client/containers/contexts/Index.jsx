@@ -8,7 +8,7 @@ import { coreClient } from 'budget/client/lib/clients'
 import { formatDate } from 'budget/client/lib/date'
 import { ActionTypes as AT, addContextUser } from 'budget/client/actions/contexts'
 import { selectContext } from 'budget/client/actions/app'
-import { showModal, hideModal } from 'budget/client/actions/modal'
+import { showModal, hideModal } from 'client/actions/modal'
 import AddContextUserModal from 'budget/client/components/modal/AddContextUser'
 
 class Contexts extends React.Component {

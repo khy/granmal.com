@@ -1,6 +1,6 @@
 import u from 'updeep'
 
-import { ActionTypes as AT } from '../actions/modal'
+import { DisableModal, EnableModal, HideModal, ShowModal } from 'client/actions/modal'
 
 const initialState = {
   name: undefined,
@@ -13,16 +13,16 @@ export default function modal(state = initialState, action) {
 
   switch (action.type) {
 
-    case AT.DisableModal:
+    case DisableModal:
       return u({ isEnabled: false }, state)
 
-    case AT.EnableModal:
+    case EnableModal:
       return u({ isEnabled: true }, state)
 
-    case AT.HideModal:
+    case HideModal:
       return u({ isVisible: false }, state)
 
-    case AT.ShowModal:
+    case ShowModal:
       return u({
         name: action.name,
         isVisible: true,

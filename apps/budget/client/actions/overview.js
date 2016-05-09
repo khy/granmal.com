@@ -3,7 +3,7 @@ import moment from 'moment'
 import { budgetClient } from 'budget/client/lib/clients'
 import { formatDateForModel } from 'budget/client/lib/date'
 import { fetchAccounts } from 'budget/client/actions/app'
-import { hideModal, disableModal } from 'budget/client/actions/modal'
+import { hideModal, disableModal } from 'client/actions/modal'
 
 export const ActionTypes = {
   AddAccountReceive: 'AddAccountReceive',

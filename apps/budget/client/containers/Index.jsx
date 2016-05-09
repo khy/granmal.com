@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import { shortenGuid } from 'budget/client/lib/guid'
-import { showModal, hideModal } from 'budget/client/actions/modal'
+import { showModal, hideModal } from 'client/actions/modal'
 import {
   ActionTypes, UserActionTypes,
   addAccount, addTransfer, addPlannedTxnTxn,
