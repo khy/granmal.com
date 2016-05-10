@@ -1,13 +1,11 @@
 import u from 'updeep'
 
-import { ActionTypes as AT } from '../actions/account'
-
-export const initialState = {
-  alert: undefined
+const initialState = {
+  alert: undefined,
   index: {
     haikus: {
       isPending: false,
-      isInvalidated: false,
+      isInvalidated: true,
       haikus: [],
     }
   }
@@ -26,13 +24,15 @@ export default function app(state = initialState, action) {
       return u({
         index: { haikus: {
           isPending: false,
-          haikus: action.haikus
+          isInvalidated: false,
+          haikus: action.haikus,
         }}
       }, state)
 
     case 'CreateHaikuSuccess':
       return u({
-        alert: { type: 'CreateHaikuSuccess', haiku: action.haiku }
+        alert: { type: 'CreateHaikuSuccess', haiku: action.haiku },
+        index: { haikus: { isInvalidated: true } },
       }, state)
 
     default:

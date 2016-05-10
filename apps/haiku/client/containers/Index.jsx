@@ -4,15 +4,20 @@ import { connect } from 'react-redux'
 import { showModal, hideModal } from 'client/actions/modal'
 
 import NewHaiku from 'haiku/client/components/NewHaiku'
-import { submitNewHaikuModal } from 'haiku/client/actions'
+import { fetchIndexHaikus, submitNewHaikuModal } from 'haiku/client/actions'
 
 class Index extends React.Component {
 
   constructor(props) {
     super(props)
+
     this.createHaiku = this.createHaiku.bind(this)
     this.showNewHaikuModal = this.showNewHaikuModal.bind(this)
     this.hideModal = this.hideModal.bind(this)
+
+    if (props.app.index.haikus.isInvalidated) {
+      props.dispatch(fetchIndexHaikus())
+    }
   }
 
   createHaiku(newHaiku) {
@@ -41,11 +46,23 @@ class Index extends React.Component {
       }
     }
 
+    const haikus = this.props.app.index.haikus.haikus.map((haiku) => {
+      return (
+        <div className="card" key={haiku.guid}>
+          <div className="card-block">
+            <p className="card-text">{haiku.lines[0]}</p>
+            <p className="card-text">{haiku.lines[1]}</p>
+            <p className="card-text">{haiku.lines[2]}</p>
+          </div>
+        </div>
+      )
+    })
+
     return (
       <div>
         <div className="container">
-          <h2>Index</h2>
           <a href='#' onClick={this.showNewHaikuModal}>New Haiku</a>
+          {haikus}
         </div>
 
         {modal}
