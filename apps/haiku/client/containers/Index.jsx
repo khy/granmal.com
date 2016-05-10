@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 
 import { showModal, hideModal } from 'client/actions/modal'
 
-import NewHaiku from '../components/NewHaiku'
+import NewHaiku from 'haiku/client/components/NewHaiku'
+import { submitNewHaikuModal } from 'haiku/client/actions'
 
 class Index extends React.Component {
 
@@ -15,7 +16,7 @@ class Index extends React.Component {
   }
 
   createHaiku(newHaiku) {
-    console.log(newHaiku)
+    this.props.dispatch(submitNewHaikuModal(newHaiku))
   }
 
   showNewHaikuModal() {

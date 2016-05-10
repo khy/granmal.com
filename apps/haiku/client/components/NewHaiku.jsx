@@ -28,7 +28,9 @@ export default class NewHaiku extends React.Component {
   }
 
   createHaiku() {
-    this.props.onCreate(this.state)
+    this.props.onCreate({
+      lines: [this.state.lineOne, this.state.lineTwo, this.state.lineThree]
+    })
   }
 
   closeModal(event) {
