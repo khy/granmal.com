@@ -1,7 +1,7 @@
 import _find from 'lodash/find'
 
 import Client from 'client/lib/Client'
-import { uselessBearerToken } from 'budget/client/lib/authAccount'
+import { uselessBearerToken } from 'common/account'
 
 export function budgetClient(state) { return uselessClient(state, 'budget') }
 export function coreClient(state) { return uselessClient(state, 'core') }

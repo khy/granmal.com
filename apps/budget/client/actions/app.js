@@ -5,9 +5,10 @@ es6Promise.polyfill()
 
 import 'isomorphic-fetch'
 
+import { uselessResourceOwnerId } from 'common/account'
+
 import { budgetClient as client } from 'budget/client/lib/clients'
 import { formatDateForModel } from 'budget/client/lib/date'
-import { uselessResourceOwnerId } from 'budget/client/lib/authAccount'
 
 export const ActionTypes = {
   BootstrapReceived: 'BootstrapReceived',
