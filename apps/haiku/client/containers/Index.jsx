@@ -14,10 +14,14 @@ class Index extends React.Component {
     this.createHaiku = this.createHaiku.bind(this)
     this.showNewHaikuModal = this.showNewHaikuModal.bind(this)
     this.hideModal = this.hideModal.bind(this)
+  }
 
-    if (props.app.index.haikus.isInvalidated) {
-      props.dispatch(fetchIndexHaikus())
-    }
+  componentWillMount() {
+    this.props.dispatch(fetchIndexHaikus())
+  }
+
+  componentWillReceiveProps(newProps) {
+    newProps.dispatch(fetchIndexHaikus())
   }
 
   createHaiku(newHaiku) {

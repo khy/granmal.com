@@ -6,11 +6,16 @@ import { haikuClient } from 'haiku/client/lib/clients'
 
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
-    dispatch({ type: 'FetchIndexHaikusSend' })
+    const state = getState()
+    const indexHaikus = state.app.index.haikus
 
-    haikuClient(getState()).get('/haikus').then((haikus) => {
-      dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
-    })
+    if (indexHaikus.isInvalidated && !indexHaikus.isPending) {
+      dispatch({ type: 'FetchIndexHaikusSend' })
+
+      haikuClient(state).get('/haikus').then((haikus) => {
+        dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
+      })
+    }
   }
 }
 
