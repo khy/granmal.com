@@ -72,7 +72,7 @@ export class FormModal extends React.Component {
           <ModalFooter>
             <SecondaryButton
               onClick={this.cancel}
-              disabled={this.isDisabled}
+              disabled={this.props.disabled}
             >
               {this.props.cancelText}
             </SecondaryButton>
@@ -80,7 +80,7 @@ export class FormModal extends React.Component {
             <PrimaryButton
               type="submit"
               onClick={this.submit}
-              disabled={this.isDisabled}
+              disabled={this.props.disabled}
             >
               {this.props.submitText}
             </PrimaryButton>

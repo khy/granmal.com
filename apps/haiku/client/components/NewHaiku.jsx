@@ -90,6 +90,7 @@ export default class NewHaiku extends React.Component {
       <FormModal
         title="New Haiku"
         submitText="Add"
+        disabled={this.props.disabled}
         onSubmit={this.createHaiku}
         onCancel={this.closeModal}
       >

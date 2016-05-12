@@ -46,6 +46,7 @@ class Index extends React.Component {
           <NewHaiku
             onCreate={this.createHaiku}
             onClose={this.hideModal}
+            disabled={!this.props.modal.isEnabled}
             errors={_get(this.props.modal, 'data.errors', {})}
           />
         )

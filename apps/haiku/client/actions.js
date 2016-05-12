@@ -1,7 +1,7 @@
 import _map from 'lodash/map'
 import moment from 'moment'
 
-import { hideModal, disableModal, updateModal } from 'client/actions/modal'
+import { hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
 import { haikuClient } from 'haiku/client/lib/clients'
 
 export function fetchIndexHaikus() {
@@ -32,6 +32,7 @@ export function submitNewHaikuModal(newHaiku) {
       } else {
         response.json().then((errors) => {
           dispatch(updateModal({ errors }))
+          dispatch(enableModal())
         })
       }
     })
