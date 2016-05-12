@@ -24,6 +24,33 @@ export default class NewHaiku extends React.Component {
     this.closeModal = this.closeModal.bind(this)
   }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({ errors: this.formatServerErrors(newProps.errors)})
+  }
+
+  formatServerErrors(errors) {
+    const formatError = (errors) => {
+      if (errors && errors[0]) {
+        switch (errors[0].key) {
+          case "useless.haiku.error.tooFewSyllables":
+            return "Too few syllables"
+          case "useless.haiku.error.tooManySyllables":
+            return "Too many syllables"
+          default:
+            console.error("Unknown server validation error: " + errors[0].key)
+        }
+      }
+    }
+
+    if (errors) {
+      return ({
+        lineOne: formatError(errors.line1),
+        lineTwo: formatError(errors.line2),
+        lineThree: formatError(errors.line3),
+      })
+    }
+  }
+
   setLine(lineKey, event) {
     let newState = {}
     newState[lineKey] = event.target.value

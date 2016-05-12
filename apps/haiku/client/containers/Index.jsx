@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import _get from 'lodash/get'
 
 import { showModal, hideModal } from 'client/actions/modal'
 
@@ -45,6 +46,7 @@ class Index extends React.Component {
           <NewHaiku
             onCreate={this.createHaiku}
             onClose={this.hideModal}
+            errors={_get(this.props.modal, 'data.errors', {})}
           />
         )
       }

@@ -30,8 +30,8 @@ export default class Client {
     }
   }
 
-  post(path, json) {
-    return fetch(this.url(path), {
+  post(path, json, fullResponse = false) {
+    const response = fetch(this.url(path), {
       method: 'post',
       headers: {
         'Authorization': this.authorization,
@@ -39,9 +39,15 @@ export default class Client {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(json),
-    }).then((response) => {
-      return response.json()
     })
+
+    if (fullResponse) {
+      return response
+    } else {
+      return response.then((response) => {
+        return response.json()
+      })
+    }
   }
 
   delete(path) {

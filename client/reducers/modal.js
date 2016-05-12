@@ -1,6 +1,6 @@
 import u from 'updeep'
 
-import { DisableModal, EnableModal, HideModal, ShowModal } from 'client/actions/modal'
+import { DisableModal, EnableModal, HideModal, ShowModal, UpdateModal } from 'client/actions/modal'
 
 const initialState = {
   name: undefined,
@@ -28,6 +28,11 @@ export default function modal(state = initialState, action) {
         isVisible: true,
         isEnabled: true,
         data: action.data,
+      }, state)
+
+    case UpdateModal:
+      return u({
+        data: u.constant(action.data)
       }, state)
 
     default:

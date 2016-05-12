@@ -1,7 +1,7 @@
 import _map from 'lodash/map'
 import moment from 'moment'
 
-import { hideModal, disableModal } from 'client/actions/modal'
+import { hideModal, disableModal, updateModal } from 'client/actions/modal'
 import { haikuClient } from 'haiku/client/lib/clients'
 
 export function fetchIndexHaikus() {
@@ -23,9 +23,17 @@ export function submitNewHaikuModal(newHaiku) {
   return function (dispatch, getState) {
     dispatch(disableModal())
 
-    haikuClient(getState()).post('/haikus', newHaiku).then((haiku) => {
-      dispatch({ type: 'CreateHaikuSuccess', haiku })
-      dispatch(hideModal())
+    haikuClient(getState()).post('/haikus', newHaiku, true).then((response) => {
+      if (response.ok) {
+        response.json().then((haiku) => {
+          dispatch({ type: 'CreateHaikuSuccess', haiku })
+          dispatch(hideModal())
+        })
+      } else {
+        response.json().then((errors) => {
+          dispatch(updateModal({ errors }))
+        })
+      }
     })
   }
 }
