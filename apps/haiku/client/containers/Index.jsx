@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { formatHaikuListDate } from 'haiku/client/lib/date'
 import { fetchIndexHaikus } from 'haiku/client/actions'
 
 class Index extends React.Component {
@@ -17,10 +18,19 @@ class Index extends React.Component {
     const haikus = this.props.app.index.haikus.haikus.map((haiku) => {
       return (
         <div className="card" key={haiku.guid}>
-          <div className="card-block">
+          <div className="card-header">
+            <a href="#">{haiku.createdBy.name}</a>
+            <small className="text-muted pull-right">{formatHaikuListDate(haiku.createdAt)}</small>
+          </div>
+
+          <div className="card-block haiku-lines">
             <p className="card-text">{haiku.lines[0]}</p>
             <p className="card-text">{haiku.lines[1]}</p>
             <p className="card-text">{haiku.lines[2]}</p>
+          </div>
+
+          <div className="card-block">
+            <a href="#" className="card-link">Reply</a>
           </div>
         </div>
       )
