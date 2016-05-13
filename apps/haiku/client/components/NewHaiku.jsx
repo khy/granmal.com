@@ -1,5 +1,6 @@
 import React from 'react'
 import _isEmpty from 'lodash/isEmpty'
+import _assign from 'lodash/assign'
 
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextInput } from 'client/components/bootstrap/form'
@@ -25,7 +26,8 @@ export default class NewHaiku extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ errors: this.formatServerErrors(newProps.errors)})
+    const errors = _assign(this.state.errors, this.formatServerErrors(newProps.errors))
+    this.setState({ errors })
   }
 
   formatServerErrors(errors) {
@@ -43,11 +45,13 @@ export default class NewHaiku extends React.Component {
     }
 
     if (errors) {
-      return ({
-        lineOne: formatError(errors.line1),
-        lineTwo: formatError(errors.line2),
-        lineThree: formatError(errors.line3),
-      })
+      let _errors = {}
+
+      if (errors.line1) { _errors.lineOne = formatError(errors.line1) }
+      if (errors.line2) { _errors.lineTwo = formatError(errors.line2) }
+      if (errors.line3) { _errors.lineThree = formatError(errors.line3) }
+
+      return _errors
     }
   }
 
@@ -61,15 +65,15 @@ export default class NewHaiku extends React.Component {
     var errors = {}
 
     if (this.state.lineOne.length === 0) {
-      errors.lineOne = 'The first line is required'
+      errors.lineOne = 'Required'
     }
 
     if (this.state.lineTwo.length === 0) {
-      errors.lineTwo = 'The second line is required'
+      errors.lineTwo = 'Required'
     }
 
     if (this.state.lineThree.length === 0) {
-      errors.lineThree = 'The final line is required'
+      errors.lineThree = 'Required'
     }
 
     if (_isEmpty(errors)) {
