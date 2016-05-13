@@ -85,7 +85,7 @@ class App extends React.Component {
 
         return (
           <div>
-            <Navbar onMenuClick={this.showMainMenu.bind(this)} />
+            <Navbar onButtonClick={this.showMainMenu.bind(this)} />
             {this.props.children}
             {modal}
           </div>

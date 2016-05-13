@@ -117,7 +117,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <Navbar title="Gran Mal" titleUrl="/" onMenuClick={this.showNavMenu.bind(this)} />
+        <Navbar title="Gran Mal" titleUrl="/" onButtonClick={this.showNavMenu.bind(this)} />
 
         <div className="container">
           {alert}
