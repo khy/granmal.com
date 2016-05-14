@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchIndexHaikus } from 'haiku/client/actions'
+import { fetchUserHaikus } from 'haiku/client/actions'
 
 class Index extends React.Component {
 
@@ -14,11 +14,7 @@ class Index extends React.Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchIndexHaikus())
-  }
-
-  componentWillReceiveProps(newProps) {
-    newProps.dispatch(fetchIndexHaikus())
+    this.props.dispatch(fetchUserHaikus(this.props.params.handle))
   }
 
   reply(haiku) {
@@ -26,7 +22,9 @@ class Index extends React.Component {
   }
 
   render() {
-    const haikus = this.props.app.index.haikus.haikus.map((haiku) => {
+    const haikus = this.props.app.user.haikus.haikus
+
+    const haikuCards = haikus.map((haiku) => {
       return <HaikuCard
         key={haiku.guid}
         haiku={haiku}
@@ -34,11 +32,13 @@ class Index extends React.Component {
       />
     })
 
+    const title = haikus[0] ? haikus[0].createdBy.name : this.props.params.handle
+
     return (
-      <div>
-        <div className="container">
-          {haikus}
-        </div>
+      <div className="container">
+        <h2 className="user-title">{title}</h2>
+
+        {haikuCards}
       </div>
     )
   }

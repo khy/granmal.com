@@ -19,6 +19,27 @@ export function fetchIndexHaikus() {
   }
 }
 
+export function fetchUserHaikus(handle) {
+  return function (dispatch, getState) {
+    const existingHandle = getState().app.user.handle
+
+    if (handle !== existingHandle) {
+      dispatch({ type: 'UpdateUser', handle })
+    }
+
+    const state = getState()
+    const userHaikus = state.app.user.haikus
+
+    if (userHaikus.isInvalidated && !userHaikus.isPending) {
+      dispatch({ type: 'FetchUserHaikusSend' })
+
+      haikuClient(state).get(`/haikus?user=${handle}`).then((haikus) => {
+        dispatch({ type: 'FetchUserHaikusSuccess', haikus })
+      })
+    }
+  }
+}
+
 export function submitNewHaikuModal(newHaiku) {
   return function (dispatch, getState) {
     dispatch(disableModal())

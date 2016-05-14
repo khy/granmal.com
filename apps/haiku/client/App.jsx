@@ -12,6 +12,7 @@ import { showModal, hideModal } from 'client/actions/modal'
 import reducer from 'haiku/client/reducers'
 import Navbar from 'haiku/client/components/Navbar'
 import Index from 'haiku/client/containers/Index'
+import User from 'haiku/client/containers/User'
 import NewHaiku from 'haiku/client/components/NewHaiku'
 import { submitNewHaikuModal } from 'haiku/client/actions'
 
@@ -79,6 +80,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/haiku" component={ConnectedApp}>
         <IndexRoute component={Index} />
+        <Route path=":handle" component={User} />
       </Route>
     </Router>
   </Provider>,

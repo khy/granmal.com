@@ -8,7 +8,15 @@ const initialState = {
       isInvalidated: true,
       haikus: [],
     }
-  }
+  },
+  user: {
+    handle: undefined,
+    haikus: {
+      isPending: false,
+      isInvalidated: true,
+      haikus: [],
+    }
+  },
 }
 
 export default function app(state = initialState, action) {
@@ -28,6 +36,26 @@ export default function app(state = initialState, action) {
           haikus: action.haikus,
         }}
       }, state)
+
+    case 'FetchUserHaikusSend':
+      return u({
+        user: { haikus: { isPending: true } }
+      }, state)
+
+    case 'FetchUserHaikusSuccess':
+      return u({
+        user: { haikus: {
+          isPending: false,
+          isInvalidated: false,
+          haikus: action.haikus,
+        }}
+      }, state)
+
+    case 'UpdateUser':
+      return u({ user: {
+        handle: action.handle,
+        haikus: { isInvalidated: true, haikus: [] },
+      }}, state)
 
     case 'CreateHaikuSuccess':
       return u({
