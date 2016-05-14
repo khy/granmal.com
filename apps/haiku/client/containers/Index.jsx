@@ -16,7 +16,8 @@ class Index extends React.Component {
     newProps.dispatch(fetchIndexHaikus())
   }
 
-  reply(haiku) {
+  reply(haiku, event) {
+    event.preventDefault()
     this.props.dispatch(showModal('NewHaiku', { inResponseTo: haiku }))
   }
 
