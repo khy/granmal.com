@@ -78,7 +78,8 @@ export default class NewHaiku extends React.Component {
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
-        lines: [this.state.lineOne, this.state.lineTwo, this.state.lineThree]
+        lines: [this.state.lineOne, this.state.lineTwo, this.state.lineThree],
+        inResponseToGuid: this.props.inResponseTo.guid,
       })
     } else {
       this.setState({ errors })
@@ -90,14 +91,29 @@ export default class NewHaiku extends React.Component {
   }
 
   render() {
+    const inResponseTo = this.props.inResponseTo
+    let inResponseToBlockquote
+
+    if (inResponseTo) {
+      inResponseToBlockquote = (
+        <blockquote className="blockquote in-response-to">
+          <p>{inResponseTo.lines[0]}</p>
+          <p>{inResponseTo.lines[1]}</p>
+          <p>{inResponseTo.lines[2]}</p>
+        </blockquote>
+      )
+    }
+
     return (
       <FormModal
-        title="New Haiku"
+        title={inResponseTo ? `Reply to ${inResponseTo.createdBy.name}` : 'New Haiku'}
         submitText="Add"
         disabled={this.props.disabled}
         onSubmit={this.createHaiku}
         onCancel={this.closeModal}
       >
+        {inResponseToBlockquote}
+
         <FormGroup error={this.state.errors.lineOne}>
           <TextInput value={this.state.lineOne} onChange={this.setLineOne} placeholder="5 Syllables" />
         </FormGroup>
@@ -118,4 +134,5 @@ export default class NewHaiku extends React.Component {
 NewHaiku.propTypes = {
   onCreate: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
+  inResponseTo: React.PropTypes.object,
 }

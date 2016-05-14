@@ -9,3 +9,13 @@ h2 { color: #555 }
   margin-bottom: 0;
   font-size: 1.5rem;
 }
+
+blockquote.blockquote.in-response-to {
+  margin-bottom: 1.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  color: #777;
+  font-size: 1rem;
+
+  p { margin-bottom: 0; }
+}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { showModal } from 'client/actions/modal'
+
 import { formatHaikuListDate } from 'haiku/client/lib/date'
 import { fetchIndexHaikus } from 'haiku/client/actions'
 
@@ -12,6 +14,10 @@ class Index extends React.Component {
 
   componentWillReceiveProps(newProps) {
     newProps.dispatch(fetchIndexHaikus())
+  }
+
+  reply(haiku) {
+    this.props.dispatch(showModal('NewHaiku', { inResponseTo: haiku }))
   }
 
   render() {
@@ -30,7 +36,7 @@ class Index extends React.Component {
           </div>
 
           <div className="card-block">
-            <a href="#" className="card-link">Reply</a>
+            <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">Reply</a>
           </div>
         </div>
       )

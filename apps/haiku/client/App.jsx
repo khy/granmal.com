@@ -49,11 +49,10 @@ class App extends React.Component {
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'NewHaiku') {
         modal = (
-          <NewHaiku
+          <NewHaiku {...this.props.modal.data}
             onCreate={this.createHaiku}
             onClose={this.hideModal}
             disabled={!this.props.modal.isEnabled}
-            errors={_get(this.props.modal, 'data.errors', {})}
           />
         )
       }
