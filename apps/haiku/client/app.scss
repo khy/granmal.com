@@ -10,6 +10,10 @@ h2 { color: #555 }
   font-size: 1.5rem;
 }
 
+.card-block.haiku-actions {
+  border-top: 1px solid $gray-lighter;
+}
+
 blockquote.blockquote.in-response-to {
   margin-bottom: 1.5rem;
   padding-top: 0.25rem;

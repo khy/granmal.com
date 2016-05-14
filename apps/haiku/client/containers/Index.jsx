@@ -35,7 +35,7 @@ class Index extends React.Component {
             <p className="card-text">{haiku.lines[2]}</p>
           </div>
 
-          <div className="card-block">
+          <div className="card-block haiku-actions">
             <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">Reply</a>
           </div>
         </div>
