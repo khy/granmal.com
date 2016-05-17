@@ -18,7 +18,6 @@ const initialState = {
     },
   },
   show: {
-    guid: undefined,
     isPending: false,
     haiku: undefined,
   },
@@ -27,6 +26,11 @@ const initialState = {
 export default function app(state = initialState, action) {
 
   switch (action.type) {
+
+    case 'ClearShowHaiku':
+      return u({
+        show: { haiku: undefined }
+      }, state)
 
     case 'FetchShowHaikuSend':
       return u({

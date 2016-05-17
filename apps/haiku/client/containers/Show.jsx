@@ -14,7 +14,12 @@ class Show extends React.Component {
   }
 
   componentWillMount() {
+    this.props.dispatch({ type: 'ClearShowHaiku' })
     this.props.dispatch(fetchHaiku(this.props.params.guid))
+  }
+
+  componentWillReceiveProps(newProps) {
+    newProps.dispatch(fetchHaiku(newProps.params.guid))
   }
 
   reply(haiku) {

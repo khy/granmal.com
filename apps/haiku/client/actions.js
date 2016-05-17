@@ -9,7 +9,7 @@ export function fetchHaiku(guid) {
     const state = getState()
     const show = state.app.show
 
-    if (!show.isPending) {
+    if (!show.haiku || show.haiku.guid !== guid) {
       dispatch({ type: 'FetchShowHaikuSend' })
 
       haikuClient(state).get(`/haikus?guid=${guid}`).then((haikus) => {
