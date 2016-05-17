@@ -4,6 +4,21 @@ import moment from 'moment'
 import { hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
 import { haikuClient } from 'haiku/client/lib/clients'
 
+export function fetchHaiku(guid) {
+  return function (dispatch, getState) {
+    const state = getState()
+    const show = state.app.show
+
+    if (!show.isPending) {
+      dispatch({ type: 'FetchShowHaikuSend' })
+
+      haikuClient(state).get(`/haikus?guid=${guid}`).then((haikus) => {
+        dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
+      })
+    }
+  }
+}
+
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
     const state = getState()

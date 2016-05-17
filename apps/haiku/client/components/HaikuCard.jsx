@@ -16,7 +16,7 @@ export default class HaikuCard extends React.Component {
     return (
       <div className="card">
         <div className="card-header">
-          <Link to={`/haiku/${haiku.createdBy.handle}`}>{haiku.createdBy.name}</Link>
+          <Link to={`/haiku/user/${haiku.createdBy.handle}`}>{haiku.createdBy.name}</Link>
           <small className="text-muted pull-right">{formatHaikuListDate(haiku.createdAt)}</small>
         </div>
 
@@ -28,6 +28,7 @@ export default class HaikuCard extends React.Component {
 
         <div className="card-block haiku-actions">
           <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">Reply</a>
+          <Link to={`/haiku/${haiku.guid}`} className="card-link">Show</Link>
         </div>
       </div>
     )

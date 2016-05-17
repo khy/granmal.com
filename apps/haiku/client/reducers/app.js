@@ -7,7 +7,7 @@ const initialState = {
       isPending: false,
       isInvalidated: true,
       haikus: [],
-    }
+    },
   },
   user: {
     handle: undefined,
@@ -15,13 +15,29 @@ const initialState = {
       isPending: false,
       isInvalidated: true,
       haikus: [],
-    }
+    },
+  },
+  show: {
+    guid: undefined,
+    isPending: false,
+    haiku: undefined,
   },
 }
 
 export default function app(state = initialState, action) {
 
   switch (action.type) {
+
+    case 'FetchShowHaikuSend':
+      return u({
+        show: { isPending: true }
+      }, state)
+
+    case 'FetchShowHaikuSuccess':
+      return u({ show: {
+        isPending: false,
+        haiku: u.constant(action.haiku),
+      }}, state)
 
     case 'FetchIndexHaikusSend':
       return u({
@@ -33,7 +49,7 @@ export default function app(state = initialState, action) {
         index: { haikus: {
           isPending: false,
           isInvalidated: false,
-          haikus: action.haikus,
+          haikus: u.constant(action.haikus),
         }}
       }, state)
 
@@ -47,14 +63,14 @@ export default function app(state = initialState, action) {
         user: { haikus: {
           isPending: false,
           isInvalidated: false,
-          haikus: action.haikus,
+          haikus: u.constant(action.haikus),
         }}
       }, state)
 
     case 'UpdateUser':
       return u({ user: {
         handle: action.handle,
-        haikus: { isInvalidated: true, haikus: [] },
+        haikus: { isInvalidated: true, haikus: u.constant([]) },
       }}, state)
 
     case 'CreateHaikuSuccess':

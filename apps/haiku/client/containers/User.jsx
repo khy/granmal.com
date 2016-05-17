@@ -6,7 +6,7 @@ import { showModal } from 'client/actions/modal'
 import HaikuCard from 'haiku/client/components/HaikuCard'
 import { fetchUserHaikus } from 'haiku/client/actions'
 
-class Index extends React.Component {
+class User extends React.Component {
 
   constructor(props) {
     super(props)
@@ -45,4 +45,4 @@ class Index extends React.Component {
 
 }
 
-export default connect(state => state)(Index)
+export default connect(state => state)(User)
