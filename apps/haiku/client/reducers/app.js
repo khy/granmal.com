@@ -19,6 +19,7 @@ const initialState = {
   },
   show: {
     isPending: false,
+    isInvalidated: true,
     haiku: undefined,
   },
 }
@@ -40,6 +41,7 @@ export default function app(state = initialState, action) {
     case 'FetchShowHaikuSuccess':
       return u({ show: {
         isPending: false,
+        isInvalidated: false,
         haiku: u.constant(action.haiku),
       }}, state)
 
@@ -81,6 +83,8 @@ export default function app(state = initialState, action) {
       return u({
         alert: { type: 'CreateHaikuSuccess', haiku: action.haiku },
         index: { haikus: { isInvalidated: true } },
+        user: { haikus: { isInvalidated: true } },
+        show: { isInvalidated: true },
       }, state)
 
     default:
