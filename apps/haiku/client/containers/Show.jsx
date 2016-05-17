@@ -41,7 +41,7 @@ class Show extends React.Component {
     let inResponseToSection
 
     if (haiku && haiku.inResponseTo) {
-      inResponseToSection = <div>
+      inResponseToSection = <div className="show-section">
         <h4>Replying To</h4>
         <HaikuCard
           key={haiku.inResponseTo.guid}
@@ -62,7 +62,7 @@ class Show extends React.Component {
         />
       })
 
-      responsesSection = <div>
+      responsesSection = <div className="show-section">
         <h4>Replies</h4>
         {responses}
       </div>
