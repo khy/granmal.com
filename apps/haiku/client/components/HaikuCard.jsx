@@ -10,6 +10,20 @@ export default class HaikuCard extends React.Component {
     this.props.onReply(haiku)
   }
 
+  get replyCount() {
+    const haiku = this.props.haiku
+
+    if (haiku) {
+      if (haiku.responses) {
+        return haiku.responses.length
+      } else if (haiku.responseGuids) {
+        return haiku.responseGuids.length
+      }
+    }
+
+    return 0
+  }
+
   render() {
     const haiku = this.props.haiku
 
@@ -27,7 +41,7 @@ export default class HaikuCard extends React.Component {
         </div>
 
         <div className="card-block haiku-actions">
-          <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">Reply</a>
+          <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">{`Reply (${this.replyCount})`}</a>
           <Link to={`/haiku/${haiku.guid}`} className="card-link">Show</Link>
         </div>
       </div>
