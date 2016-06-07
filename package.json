@@ -48,7 +48,7 @@
     "karma-jasmine": "0.3.6",
     "karma-sourcemap-loader": "0.3.6",
     "karma-webpack": "1.7.0",
-    "node-sass": "3.3.3",
+    "node-sass": "3.7.0",
     "sass-loader": "3.0.0",
     "style-loader": "0.13.0",
     "webpack": "1.12.2"
