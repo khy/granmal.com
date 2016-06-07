@@ -13,7 +13,7 @@
   "author": "Kevin Hyland",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "0.8.5",
+    "bcrypt": "0.8.6",
     "body-parser": "1.14.1",
     "chart.js": "2.0.2",
     "continuation-local-storage": "3.1.4",
