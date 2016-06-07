@@ -80,10 +80,10 @@ class TxnTypes extends React.Component {
               {h.txnType.name}
             </Link>
 
-            <a onClick={this.showEditTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
+            <a onClick={this.showEditTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-xs-right" href="#">
               Edit
             </a>
-            <a onClick={this.showAddTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-right" href="#">
+            <a onClick={this.showAddTxnTypeModal.bind(this)} data-guid={h.txnType.guid} className="pull-xs-right" href="#">
               New Child
             </a>
           </li>

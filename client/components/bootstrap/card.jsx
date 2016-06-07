@@ -6,7 +6,7 @@ export const CardHeader = (props) => <div className="card-header">{props.childre
 
 export const CardHeaderLink = (props) => {
   return(
-    <a {...props} className={"pull-right " + props.className} href={props.href || "#"}>
+    <a {...props} className={"pull-xs-right " + props.className} href={props.href || "#"}>
       {props.children}
     </a>
   )

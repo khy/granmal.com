@@ -69,11 +69,11 @@ class ProjectionsCard extends React.Component {
         <div className="card-header">
           Projections
 
-          <a className="pull-right" onClick={this.onNewTransfer.bind(this)} href="#">
+          <a className="pull-xs-right" onClick={this.onNewTransfer.bind(this)} href="#">
             New Transfer
           </a>
 
-          <a className="pull-right" onClick={this.onNewAccount.bind(this)} href="#">
+          <a className="pull-xs-right" onClick={this.onNewAccount.bind(this)} href="#">
             New Account
           </a>
         </div>
