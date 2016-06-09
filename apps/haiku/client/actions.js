@@ -65,7 +65,9 @@ export function fetchIndexHaikus() {
       dispatch({ type: 'FetchIndexHaikusSend' })
 
       haikuClient(state).get('/haikus').then((haikus) => {
-        dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
+        })
       })
     }
   }
@@ -86,7 +88,9 @@ export function fetchUserHaikus(handle) {
       dispatch({ type: 'FetchUserHaikusSend' })
 
       haikuClient(state).get(`/haikus?user=${handle}`).then((haikus) => {
-        dispatch({ type: 'FetchUserHaikusSuccess', haikus })
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({ type: 'FetchUserHaikusSuccess', haikus })
+        })
       })
     }
   }
