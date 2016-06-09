@@ -1,8 +1,39 @@
+import es6Promise from 'es6-promise'
 import _map from 'lodash/map'
 import moment from 'moment'
+import u from 'updeep'
 
+import { uselessResourceOwnerId } from 'common/account'
 import { hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
-import { haikuClient } from 'haiku/client/lib/clients'
+import { coreClient, haikuClient } from 'haiku/client/lib/clients'
+
+es6Promise.polyfill()
+
+function decorateHaikus(haikus, state) {
+  if (haikus.length === 0) { return Promise.resolve([]) }
+
+  const qsResourceId = haikus.map((haiku) => `resourceId=${haiku.guid}`).join('&')
+  const likeAggQs = `resourceApi=haiku&resourceType=haiku&${qsResourceId}`
+  const accountGuid = uselessResourceOwnerId(state.auth.account)
+  const likeQs = likeAggQs + `&accountGuid=${accountGuid}`
+
+  return Promise.all([
+    coreClient(state).get(`/social/likes?${likeQs}`),
+    coreClient(state).get(`/social/likes/aggregates?${likeAggQs}`),
+  ]).then((results) => {
+    const [likes, likeAggs] = results
+
+    return haikus.map((haiku) => {
+      const like = likes.find((like) => like.resourceId === haiku.guid)
+      const likeAgg = likeAggs.find((likeAgg) => likeAgg.resourceId === haiku.guid)
+
+      return u({
+        likeCount: (likeAgg ? likeAgg.count : 0),
+        likedByUser: (like !== undefined),
+      }, haiku)
+    })
+  })
+}
 
 export function fetchHaiku(guid) {
   return function (dispatch, getState) {
@@ -17,7 +48,9 @@ export function fetchHaiku(guid) {
       dispatch({ type: 'FetchShowHaikuSend' })
 
       haikuClient(state).get(`/haikus?guid=${guid}`).then((haikus) => {
-        dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
+        })
       })
     }
   }
@@ -75,6 +108,14 @@ export function submitNewHaikuModal(newHaiku) {
           dispatch(enableModal())
         })
       }
+    })
+  }
+}
+
+export function likeHaiku(haiku) {
+  return function (dispatch, getState) {
+    coreClient(getState()).put(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
+      console.log(response)
     })
   }
 }

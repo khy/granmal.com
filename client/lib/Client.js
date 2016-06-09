@@ -50,6 +50,31 @@ export default class Client {
     }
   }
 
+  put(path, json, fullResponse = false) {
+    let params = {
+      method: 'put',
+      headers: {
+        'Authorization': this.authorization,
+        'Accept': 'application/json',
+      },
+    }
+
+    if (json) {
+      params.body = JSON.stringify(json)
+      params.header['Content-Type'] = 'application/json'
+    }
+
+    const response = fetch(this.url(path), params)
+
+    if (fullResponse) {
+      return response
+    } else {
+      return response.then((response) => {
+        return response.json()
+      })
+    }
+  }
+
   delete(path) {
     return fetch(this.url(path), {
       method: 'delete',
