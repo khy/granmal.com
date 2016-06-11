@@ -42,11 +42,19 @@ export default class HaikuCard extends React.Component {
 
     if (haiku.likedByUser) {
       likeLink = (
-        <a href="#" onClick={this.unlike.bind(this, haiku)} className="card-link">{`Liked! (${likeCount})`}</a>
+        <a href="#" onClick={this.unlike.bind(this, haiku)} className="card-link">
+          <i className="fa fa-heart card-link-action" aria-hidden="true"></i>
+          <span className="sr-only card-link-action">Like</span>
+          <span className="reply-count">{`(${likeCount})`}</span>
+        </a>
       )
     } else {
       likeLink = (
-        <a href="#" onClick={this.like.bind(this, haiku)} className="card-link">{`Like (${likeCount})`}</a>
+        <a href="#" onClick={this.like.bind(this, haiku)} className="card-link">
+          <i className="fa fa-heart-o card-link-action" aria-hidden="true"></i>
+          <span className="sr-only card-link-action">Like</span>
+          <span className="reply-count">{`(${likeCount})`}</span>
+        </a>
       )
     }
 
@@ -64,9 +72,16 @@ export default class HaikuCard extends React.Component {
         </div>
 
         <div className="card-block haiku-actions">
-          <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">{`Reply (${this.replyCount})`}</a>
+          <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">
+            <i className="fa fa-reply card-link-action" aria-hidden="true"></i>
+            <span className="sr-only card-link-action">Reply</span>
+            <span className="reply-count">{`(${this.replyCount})`}</span>
+          </a>
           {likeLink}
-          <Link to={`/haiku/${haiku.guid}`} className="card-link">Show</Link>
+          <Link to={`/haiku/${haiku.guid}`} className="card-link">
+            <i className="fa fa-arrow-right card-link-action" aria-hidden="true"></i>
+            <span className="sr-only card-link-action">Show</span>
+          </Link>
         </div>
       </div>
     )
