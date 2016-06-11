@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchUserHaikus, likeHaiku } from 'haiku/client/actions'
+import { fetchUserHaikus, likeHaiku, unlikeHaiku } from 'haiku/client/actions'
 
 class User extends React.Component {
 
@@ -12,6 +12,7 @@ class User extends React.Component {
     super(props)
     this.reply = this.reply.bind(this)
     this.like = this.like.bind(this)
+    this.unlike = this.unlike.bind(this)
   }
 
   componentWillMount() {
@@ -30,6 +31,10 @@ class User extends React.Component {
     this.props.dispatch(likeHaiku(haiku))
   }
 
+  unlike(haiku) {
+    this.props.dispatch(unlikeHaiku(haiku))
+  }
+
   render() {
     const haikus = this.props.app.user.haikus.haikus
 
@@ -39,6 +44,7 @@ class User extends React.Component {
         haiku={haiku}
         onReply={this.reply}
         onLike={this.like}
+        onUnlike={this.unlike}
       />
     })
 

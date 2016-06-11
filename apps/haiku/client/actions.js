@@ -123,3 +123,11 @@ export function likeHaiku(haiku) {
     })
   }
 }
+
+export function unlikeHaiku(haiku) {
+  return function (dispatch, getState) {
+    coreClient(getState()).delete(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
+      dispatch({ type: 'UnlikeHaikuSuccess', haiku})
+    })
+  }
+}

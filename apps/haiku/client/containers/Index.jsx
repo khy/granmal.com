@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchIndexHaikus, likeHaiku } from 'haiku/client/actions'
+import { fetchIndexHaikus, likeHaiku, unlikeHaiku } from 'haiku/client/actions'
 
 class Index extends React.Component {
 
@@ -12,6 +12,7 @@ class Index extends React.Component {
     super(props)
     this.reply = this.reply.bind(this)
     this.like = this.like.bind(this)
+    this.unlike = this.unlike.bind(this)
   }
 
   componentWillMount() {
@@ -30,6 +31,10 @@ class Index extends React.Component {
     this.props.dispatch(likeHaiku(haiku))
   }
 
+  unlike(haiku) {
+    this.props.dispatch(unlikeHaiku(haiku))
+  }
+
   render() {
     const haikus = this.props.app.index.haikus.haikus.map((haiku) => {
       return <HaikuCard
@@ -37,6 +42,7 @@ class Index extends React.Component {
         haiku={haiku}
         onReply={this.reply}
         onLike={this.like}
+        onUnlike={this.unlike}
       />
     })
 

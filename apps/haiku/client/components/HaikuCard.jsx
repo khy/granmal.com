@@ -29,6 +29,11 @@ export default class HaikuCard extends React.Component {
     this.props.onLike(haiku)
   }
 
+  unlike(haiku, event) {
+    event.preventDefault()
+    this.props.onUnlike(haiku)
+  }
+
   render() {
     const haiku = this.props.haiku
     const likeCount = (haiku && haiku.likeCount) ? haiku.likeCount : 0
@@ -37,7 +42,7 @@ export default class HaikuCard extends React.Component {
 
     if (haiku.likedByUser) {
       likeLink = (
-        <span className="text-muted card-link">{`Liked! (${likeCount})`}</span>
+        <a href="#" onClick={this.unlike.bind(this, haiku)} className="card-link">{`Liked! (${likeCount})`}</a>
       )
     } else {
       likeLink = (
@@ -72,5 +77,6 @@ export default class HaikuCard extends React.Component {
 HaikuCard.propTypes = {
   onReply: React.PropTypes.func.isRequired,
   onLike: React.PropTypes.func.isRequired,
+  onUnlike: React.PropTypes.func.isRequired,
   haiku: React.PropTypes.object,
 }

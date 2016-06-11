@@ -94,6 +94,13 @@ export default function app(state = initialState, action) {
         show: { isInvalidated: true },
       }, state)
 
+    case 'UnlikeHaikuSuccess':
+      return u({
+        index: { haikus: { isInvalidated: true } },
+        user: { haikus: { isInvalidated: true } },
+        show: { isInvalidated: true },
+      }, state)
+
     default:
       return state
 
