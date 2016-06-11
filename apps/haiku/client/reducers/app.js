@@ -79,22 +79,7 @@ export default function app(state = initialState, action) {
         haikus: { isInvalidated: true, haikus: u.constant([]) },
       }}, state)
 
-    case 'CreateHaikuSuccess':
-      return u({
-        alert: { type: 'CreateHaikuSuccess', haiku: action.haiku },
-        index: { haikus: { isInvalidated: true } },
-        user: { haikus: { isInvalidated: true } },
-        show: { isInvalidated: true },
-      }, state)
-
-    case 'LikeHaikuSuccess':
-      return u({
-        index: { haikus: { isInvalidated: true } },
-        user: { haikus: { isInvalidated: true } },
-        show: { isInvalidated: true },
-      }, state)
-
-    case 'UnlikeHaikuSuccess':
+    case 'ReloadApp':
       return u({
         index: { haikus: { isInvalidated: true } },
         user: { haikus: { isInvalidated: true } },

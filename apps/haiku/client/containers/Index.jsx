@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchIndexHaikus, likeHaiku, unlikeHaiku } from 'haiku/client/actions'
+import { fetchIndexHaikus, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
 
 class Index extends React.Component {
 
@@ -24,7 +24,7 @@ class Index extends React.Component {
   }
 
   reply(haiku) {
-    this.props.dispatch(showModal('NewHaiku', { inResponseTo: haiku }))
+    this.props.dispatch(showNewHaikuModal(haiku))
   }
 
   like(haiku) {

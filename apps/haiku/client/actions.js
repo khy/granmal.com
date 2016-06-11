@@ -4,7 +4,7 @@ import moment from 'moment'
 import u from 'updeep'
 
 import { uselessResourceOwnerId } from 'common/account'
-import { hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
+import { showModal, hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
 import { coreClient, haikuClient } from 'haiku/client/lib/clients'
 
 es6Promise.polyfill()
@@ -14,11 +14,19 @@ function decorateHaikus(haikus, state) {
 
   const qsResourceId = haikus.map((haiku) => `resourceId=${haiku.guid}`).join('&')
   const likeAggQs = `resourceApi=haiku&resourceType=haiku&${qsResourceId}`
+
   const accountGuid = uselessResourceOwnerId(state.auth.account)
-  const likeQs = likeAggQs + `&accountGuid=${accountGuid}`
+  let likesPromise
+
+  if (accountGuid) {
+    const likeQs = likeAggQs + `&accountGuid=${accountGuid}`
+    likesPromise = coreClient(state).get(`/social/likes?${likeQs}`)
+  } else {
+    likesPromise = Promise.resolve([])
+  }
 
   return Promise.all([
-    coreClient(state).get(`/social/likes?${likeQs}`),
+    likesPromise,
     coreClient(state).get(`/social/likes/aggregates?${likeAggQs}`),
   ]).then((results) => {
     const [likes, likeAggs] = results
@@ -96,6 +104,22 @@ export function fetchUserHaikus(handle) {
   }
 }
 
+export function showNewHaikuModal(inResponseTo) {
+  return function (dispatch, getState) {
+    const state = getState()
+
+    if (state.auth.account) {
+      dispatch(showModal('NewHaiku', { inResponseTo }))
+    } else {
+      const message = inResponseTo ?
+        'You must log in to reply to a haiku.' :
+        'You must log in to add a haiku.'
+
+      dispatch(showModal('LogInModal', { message }))
+    }
+  }
+}
+
 export function submitNewHaikuModal(newHaiku) {
   return function (dispatch, getState) {
     dispatch(disableModal())
@@ -103,7 +127,7 @@ export function submitNewHaikuModal(newHaiku) {
     haikuClient(getState()).post('/haikus', newHaiku, true).then((response) => {
       if (response.ok) {
         response.json().then((haiku) => {
-          dispatch({ type: 'CreateHaikuSuccess', haiku })
+          dispatch({ type: 'ReloadApp' })
           dispatch(hideModal())
         })
       } else {
@@ -118,16 +142,22 @@ export function submitNewHaikuModal(newHaiku) {
 
 export function likeHaiku(haiku) {
   return function (dispatch, getState) {
-    coreClient(getState()).put(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
-      dispatch({ type: 'LikeHaikuSuccess', haiku})
-    })
+    const state = getState()
+
+    if (state.auth.account) {
+      coreClient(state).put(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
+        dispatch({ type: 'ReloadApp' })
+      })
+    } else {
+      dispatch(showModal('LogInModal', {message: 'You must log in to like a haiku.'}))
+    }
   }
 }
 
 export function unlikeHaiku(haiku) {
   return function (dispatch, getState) {
     coreClient(getState()).delete(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
-      dispatch({ type: 'UnlikeHaikuSuccess', haiku})
+      dispatch({ type: 'ReloadApp' })
     })
   }
 }
