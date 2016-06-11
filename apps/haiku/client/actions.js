@@ -119,7 +119,7 @@ export function submitNewHaikuModal(newHaiku) {
 export function likeHaiku(haiku) {
   return function (dispatch, getState) {
     coreClient(getState()).put(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
-      console.log(response)
+      dispatch({ type: 'LikeHaikuSuccess', haiku})
     })
   }
 }

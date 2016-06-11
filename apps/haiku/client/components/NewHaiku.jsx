@@ -1,4 +1,5 @@
 import React from 'react'
+import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _assign from 'lodash/assign'
 
@@ -79,7 +80,7 @@ export default class NewHaiku extends React.Component {
     if (_isEmpty(errors)) {
       this.props.onCreate({
         lines: [this.state.lineOne, this.state.lineTwo, this.state.lineThree],
-        inResponseToGuid: this.props.inResponseTo.guid,
+        inResponseToGuid: _get(this.props, 'inResponseTo.guid'),
       })
     } else {
       this.setState({ errors })

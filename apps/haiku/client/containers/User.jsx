@@ -18,6 +18,10 @@ class User extends React.Component {
     this.props.dispatch(fetchUserHaikus(this.props.params.handle))
   }
 
+  componentWillReceiveProps(newProps) {
+    newProps.dispatch(fetchUserHaikus(newProps.params.handle))
+  }
+
   reply(haiku) {
     this.props.dispatch(showModal('NewHaiku', { inResponseTo: haiku }))
   }
