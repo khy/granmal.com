@@ -60,6 +60,7 @@ class Show extends React.Component {
           haiku={haiku.inResponseTo}
           onReply={this.reply}
           onLike={this.like}
+          onUnlike={this.unlike}
         />
       </div>
     }
@@ -73,6 +74,7 @@ class Show extends React.Component {
           haiku={response}
           onReply={this.reply}
           onLike={this.like}
+          onUnlike={this.unlike}
         />
       })
 
