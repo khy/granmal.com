@@ -5,9 +5,16 @@ h2 { color: #555 }
 
 .navbar { margin-bottom: 1rem; }
 
-.card-block.haiku-lines .card-text {
-  margin-bottom: 0;
-  font-size: 1.5rem;
+.card-block.haiku-lines {
+  &:hover {
+    background-color: $gray-lightest;
+    cursor: pointer;
+  }
+
+  .card-text {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+  }
 }
 
 .card-block.haiku-actions {

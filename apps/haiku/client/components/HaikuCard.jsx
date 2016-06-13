@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 import { formatHaikuListDate } from 'haiku/client/lib/date'
 
@@ -34,6 +34,11 @@ export default class HaikuCard extends React.Component {
     this.props.onUnlike(haiku)
   }
 
+  show(haiku, event) {
+    event.preventDefault()
+    browserHistory.push(`/haiku/${haiku.guid}`)
+  }
+
   render() {
     const haiku = this.props.haiku
     const likeCount = (haiku && haiku.likeCount) ? haiku.likeCount : 0
@@ -65,7 +70,7 @@ export default class HaikuCard extends React.Component {
           <small className="text-muted pull-xs-right">{formatHaikuListDate(haiku.createdAt)}</small>
         </div>
 
-        <div className="card-block haiku-lines">
+        <div className="card-block haiku-lines" onClick={this.show.bind(this, haiku)}>
           <p className="card-text">{haiku.lines[0]}</p>
           <p className="card-text">{haiku.lines[1]}</p>
           <p className="card-text">{haiku.lines[2]}</p>
@@ -78,10 +83,6 @@ export default class HaikuCard extends React.Component {
             <span className="reply-count">{`(${this.replyCount})`}</span>
           </a>
           {likeLink}
-          <Link to={`/haiku/${haiku.guid}`} className="card-link">
-            <i className="fa fa-arrow-right card-link-action" aria-hidden="true"></i>
-            <span className="sr-only card-link-action">Show</span>
-          </Link>
         </div>
       </div>
     )
