@@ -1,8 +1,14 @@
 import React from 'react'
 
-export const Card = (props) => <div className="card">{props.children}</div>
+export const Card = (props) => (
+  <div {...props} className={"card " + props.className}>
+    {props.children}
+  </div>
+)
 
 export const CardHeader = (props) => <div className="card-header">{props.children}</div>
+
+export const CardBlock = (props) => <div className="card-block">{props.children}</div>
 
 export const CardHeaderLink = (props) => {
   return(

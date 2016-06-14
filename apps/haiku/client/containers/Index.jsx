@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { showModal } from 'client/actions/modal'
+import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
 import { fetchIndexHaikus, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
@@ -36,15 +37,25 @@ class Index extends React.Component {
   }
 
   render() {
-    const haikus = this.props.app.index.haikus.haikus.map((haiku) => {
-      return <HaikuCard
-        key={haiku.guid}
-        haiku={haiku}
-        onReply={this.reply}
-        onLike={this.like}
-        onUnlike={this.unlike}
-      />
-    })
+    let haikus
+
+    if (this.props.app.index.haikus.isPending && this.props.app.index.haikus.haikus.length == 0) {
+      haikus = <div>
+        <DummyCard key="dummyCard1" />
+        <DummyCard key="dummyCard2" />
+        <DummyCard key="dummyCard3" />
+      </div>
+    } else {
+      haikus = this.props.app.index.haikus.haikus.map((haiku) => {
+        return <HaikuCard
+          key={haiku.guid}
+          haiku={haiku}
+          onReply={this.reply}
+          onLike={this.like}
+          onUnlike={this.unlike}
+        />
+      })
+    }
 
     return (
       <div>

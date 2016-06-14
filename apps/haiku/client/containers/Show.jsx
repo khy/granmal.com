@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { showModal } from 'client/actions/modal'
+import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
 import { fetchHaiku, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
@@ -40,7 +41,9 @@ class Show extends React.Component {
     const haiku = this.props.app.show.haiku
     let card
 
-    if (haiku) {
+    if (this.props.app.show.isPending && !haiku) {
+      card = <DummyCard />
+    } else if (haiku) {
       card = <HaikuCard
         key={haiku.guid}
         haiku={haiku}

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { showModal } from 'client/actions/modal'
+import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
 import { fetchUserHaikus, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
@@ -37,16 +38,25 @@ class User extends React.Component {
 
   render() {
     const haikus = this.props.app.user.haikus.haikus
+    let haikuCards
 
-    const haikuCards = haikus.map((haiku) => {
-      return <HaikuCard
-        key={haiku.guid}
-        haiku={haiku}
-        onReply={this.reply}
-        onLike={this.like}
-        onUnlike={this.unlike}
-      />
-    })
+    if (this.props.app.user.haikus.isPending && this.props.app.user.haikus.haikus.length == 0) {
+      haikuCards = <div>
+        <DummyCard key="dummyCard1" />
+        <DummyCard key="dummyCard2" />
+        <DummyCard key="dummyCard3" />
+      </div>
+    } else {
+      haikuCards = haikus.map((haiku) => {
+        return <HaikuCard
+          key={haiku.guid}
+          haiku={haiku}
+          onReply={this.reply}
+          onLike={this.like}
+          onUnlike={this.unlike}
+        />
+      })
+    }
 
     const title = haikus[0] ? haikus[0].createdBy.name : this.props.params.handle
 
