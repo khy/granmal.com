@@ -3,9 +3,13 @@ import { connect } from 'react-redux'
 
 import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
+import { SecondaryButton } from 'client/components/bootstrap/button'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchUserHaikus, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
+import {
+  fetchUserHaikus, fetchMoreUserHaikus, likeHaiku, unlikeHaiku,
+  showNewHaikuModal
+} from 'haiku/client/actions'
 
 class User extends React.Component {
 
@@ -14,6 +18,7 @@ class User extends React.Component {
     this.reply = this.reply.bind(this)
     this.like = this.like.bind(this)
     this.unlike = this.unlike.bind(this)
+    this.fetchMore = this.fetchMore.bind(this)
   }
 
   componentWillMount() {
@@ -36,18 +41,22 @@ class User extends React.Component {
     this.props.dispatch(unlikeHaiku(haiku))
   }
 
+  fetchMore() {
+    this.props.dispatch(fetchMoreUserHaikus())
+  }
+
   render() {
-    const haikus = this.props.app.user.haikus.haikus
+    const haikus = this.props.app.user.haikus
     let haikuCards
 
-    if (this.props.app.user.haikus.isPending && this.props.app.user.haikus.haikus.length == 0) {
+    if (haikus.isPending && haikus.haikus.length == 0) {
       haikuCards = <div>
         <DummyCard key="dummyCard1" />
         <DummyCard key="dummyCard2" />
         <DummyCard key="dummyCard3" />
       </div>
     } else {
-      haikuCards = haikus.map((haiku) => {
+      haikuCards = haikus.haikus.map((haiku) => {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
@@ -58,13 +67,30 @@ class User extends React.Component {
       })
     }
 
-    const title = haikus[0] ? haikus[0].createdBy.name : this.props.params.handle
+    let moreButton
+
+    if (haikus.isPending && haikus.haikus.length > 0) {
+      moreButton = <SecondaryButton className="btn-lg btn-block" disabled={true}>
+        <i className="fa fa-refresh fa-spin fa-fw"></i>
+        <span className="sr-only">Loading...</span>
+      </SecondaryButton>
+    } else if (!haikus.isLastPage) {
+      moreButton = <SecondaryButton
+        className="btn-lg btn-block"
+        onClick={this.fetchMore.bind(this)}
+      >
+        More
+      </SecondaryButton>
+    }
+
+    const title = haikus.haikus[0] ? haikus.haikus[0].createdBy.name : this.props.params.handle
 
     return (
       <div className="container">
         <h2 className="user-title">{title}</h2>
 
         {haikuCards}
+        {moreButton}
       </div>
     )
   }

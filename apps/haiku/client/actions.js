@@ -1,4 +1,6 @@
 import es6Promise from 'es6-promise'
+import _concat from 'lodash/concat'
+import _last from 'lodash/last'
 import _map from 'lodash/map'
 import moment from 'moment'
 import u from 'updeep'
@@ -64,6 +66,8 @@ export function fetchHaiku(guid) {
   }
 }
 
+const HaikuPageLimit = 20
+
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
     const state = getState()
@@ -95,9 +99,35 @@ export function fetchUserHaikus(handle) {
     if (userHaikus.isInvalidated && !userHaikus.isPending) {
       dispatch({ type: 'FetchUserHaikusSend' })
 
-      haikuClient(state).get(`/haikus?user=${handle}`).then((haikus) => {
+      haikuClient(state).get(`/haikus?user=${handle}&p.limit=${HaikuPageLimit}`).then((haikus) => {
         decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({ type: 'FetchUserHaikusSuccess', haikus })
+          dispatch({
+            type: 'FetchUserHaikusSuccess', haikus,
+            isLastPage: (haikus.length < HaikuPageLimit),
+          })
+        })
+      })
+    }
+  }
+}
+
+export function fetchMoreUserHaikus() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const handle = state.app.user.handle
+    const currentHaikus = state.app.user.haikus.haikus
+
+    if (currentHaikus.length > 0) {
+      dispatch({ type: 'FetchUserHaikusSend' })
+      const lastGuid = _last(currentHaikus).guid
+
+      haikuClient(state).get(`/haikus?user=${handle}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({
+            type: 'FetchUserHaikusSuccess',
+            haikus: _concat(currentHaikus, haikus),
+            isLastPage: (haikus.length < HaikuPageLimit),
+          })
         })
       })
     }
