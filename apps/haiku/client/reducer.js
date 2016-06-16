@@ -24,7 +24,7 @@ const initialState = {
   },
 }
 
-export default function app(state = initialState, action) {
+function app(state = initialState, action) {
 
   switch (action.type) {
 
@@ -92,3 +92,15 @@ export default function app(state = initialState, action) {
   }
 
 }
+
+import { combineReducers } from 'redux'
+
+import auth from 'client/reducers/auth'
+import modal from 'client/reducers/modal'
+
+const emptyReducer = (state = {}, action) => state
+const config = emptyReducer
+
+export default combineReducers({
+  app, auth, config, modal
+})

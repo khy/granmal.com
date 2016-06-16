@@ -11,7 +11,7 @@ import { LogInModal } from 'client/components/auth/logIn'
 import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
 
-import reducer from 'haiku/client/reducers'
+import reducer from 'haiku/client/reducer'
 import Navbar from 'haiku/client/components/Navbar'
 import Index from 'haiku/client/containers/Index'
 import Show from 'haiku/client/containers/Show'
