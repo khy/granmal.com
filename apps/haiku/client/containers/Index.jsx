@@ -4,8 +4,13 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
+import {
+  fetchIndexHaikus, fetchMoreIndexHaikus, likeHaiku, unlikeHaiku,
+  showNewHaikuModal
+} from 'haiku/client/actions'
+
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchIndexHaikus, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
+import { MoreButton, LoadingMoreButton } from 'haiku/client/components/moreButton'
 
 class Index extends React.Component {
 
@@ -36,17 +41,22 @@ class Index extends React.Component {
     this.props.dispatch(unlikeHaiku(haiku))
   }
 
-  render() {
-    let haikus
+  fetchMore() {
+    this.props.dispatch(fetchMoreIndexHaikus())
+  }
 
-    if (this.props.app.index.haikus.isPending && this.props.app.index.haikus.haikus.length == 0) {
-      haikus = <div>
+  render() {
+    const haikus = this.props.app.index.haikus
+    let haikuCards
+
+    if (haikus.isPending && haikus.haikus.length == 0) {
+      haikuCards = <div>
         <DummyCard key="dummyCard1" />
         <DummyCard key="dummyCard2" />
         <DummyCard key="dummyCard3" />
       </div>
     } else {
-      haikus = this.props.app.index.haikus.haikus.map((haiku) => {
+      haikuCards = haikus.haikus.map((haiku) => {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
@@ -57,10 +67,19 @@ class Index extends React.Component {
       })
     }
 
+    let moreButton
+
+    if (haikus.isPending && haikus.haikus.length > 0) {
+      moreButton = <LoadingMoreButton />
+    } else if (!haikus.isLastPage) {
+      moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
+    }
+
     return (
       <div>
         <div className="container">
-          {haikus}
+          {haikuCards}
+          {moreButton}
         </div>
       </div>
     )

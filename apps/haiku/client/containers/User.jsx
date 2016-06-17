@@ -5,11 +5,13 @@ import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 
-import HaikuCard from 'haiku/client/components/HaikuCard'
 import {
   fetchUserHaikus, fetchMoreUserHaikus, likeHaiku, unlikeHaiku,
   showNewHaikuModal
 } from 'haiku/client/actions'
+
+import HaikuCard from 'haiku/client/components/HaikuCard'
+import { MoreButton, LoadingMoreButton } from 'haiku/client/components/moreButton'
 
 class User extends React.Component {
 
@@ -70,17 +72,9 @@ class User extends React.Component {
     let moreButton
 
     if (haikus.isPending && haikus.haikus.length > 0) {
-      moreButton = <SecondaryButton className="btn-lg btn-block" disabled={true}>
-        <i className="fa fa-refresh fa-spin fa-fw"></i>
-        <span className="sr-only">Loading...</span>
-      </SecondaryButton>
+      moreButton = <LoadingMoreButton />
     } else if (!haikus.isLastPage) {
-      moreButton = <SecondaryButton
-        className="btn-lg btn-block"
-        onClick={this.fetchMore.bind(this)}
-      >
-        More
-      </SecondaryButton>
+      moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
     }
 
     const title = haikus.haikus[0] ? haikus.haikus[0].createdBy.name : this.props.params.handle

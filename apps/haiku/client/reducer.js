@@ -6,6 +6,7 @@ const initialState = {
     haikus: {
       isPending: false,
       isInvalidated: true,
+      isLastPage: false,
       haikus: [],
     },
   },
@@ -56,6 +57,7 @@ function app(state = initialState, action) {
         index: { haikus: {
           isPending: false,
           isInvalidated: false,
+          isLastPage: action.isLastPage,
           haikus: u.constant(action.haikus),
         }}
       }, state)

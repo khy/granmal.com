@@ -76,9 +76,31 @@ export function fetchIndexHaikus() {
     if (indexHaikus.isInvalidated && !indexHaikus.isPending) {
       dispatch({ type: 'FetchIndexHaikusSend' })
 
-      haikuClient(state).get('/haikus').then((haikus) => {
+      haikuClient(state).get(`/haikus?p.limit=${HaikuPageLimit}`).then((haikus) => {
         decorateHaikus(haikus, state).then((haikus) => {
           dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
+        })
+      })
+    }
+  }
+}
+
+export function fetchMoreIndexHaikus() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const currentHaikus = state.app.index.haikus.haikus
+
+    if (currentHaikus.length > 0) {
+      dispatch({ type: 'FetchIndexHaikusSend' })
+      const lastGuid = _last(currentHaikus).guid
+
+      haikuClient(state).get(`/haikus?p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({
+            type: 'FetchIndexHaikusSuccess',
+            haikus: _concat(currentHaikus, haikus),
+            isLastPage: (haikus.length < HaikuPageLimit),
+          })
         })
       })
     }
