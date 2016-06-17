@@ -23,6 +23,12 @@ const initialState = {
     isPending: false,
     isInvalidated: true,
     haiku: undefined,
+    responses: {
+      isPending: false,
+      isInvalidated: true,
+      isLastPage: false,
+      haikus: [],
+    },
   },
 }
 
@@ -32,7 +38,15 @@ function app(state = initialState, action) {
 
     case 'ClearShowHaiku':
       return u({
-        show: { haiku: undefined }
+        show: {
+          haiku: undefined,
+          responses: {
+            isPending: false,
+            isInvalidated: true,
+            isLastPage: false,
+            haikus: u.constant([]),
+          }
+        }
       }, state)
 
     case 'FetchShowHaikuSend':
@@ -46,6 +60,19 @@ function app(state = initialState, action) {
         isInvalidated: false,
         haiku: u.constant(action.haiku),
       }}, state)
+
+    case 'FetchShowHaikuResponsesSend':
+      return u({
+        show: { responses: { isPending: true } }
+      }, state)
+
+    case 'FetchShowHaikuResponsesSuccess':
+      return u({ show: { responses: {
+        isPending: false,
+        isInvalidated: false,
+        isLastPage: action.isLastPage,
+        haikus: u.constant(action.haikus),
+      }}}, state)
 
     case 'FetchIndexHaikusSend':
       return u({

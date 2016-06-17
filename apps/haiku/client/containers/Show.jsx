@@ -4,8 +4,11 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
+import {
+  fetchHaiku, fetchHaikuResponses, likeHaiku, unlikeHaiku, showNewHaikuModal
+} from 'haiku/client/actions'
+
 import HaikuCard from 'haiku/client/components/HaikuCard'
-import { fetchHaiku, likeHaiku, unlikeHaiku, showNewHaikuModal } from 'haiku/client/actions'
 
 class Show extends React.Component {
 
@@ -19,10 +22,12 @@ class Show extends React.Component {
   componentWillMount() {
     this.props.dispatch({ type: 'ClearShowHaiku' })
     this.props.dispatch(fetchHaiku(this.props.params.guid))
+    this.props.dispatch(fetchHaikuResponses(this.props.params.guid))
   }
 
   componentWillReceiveProps(newProps) {
     newProps.dispatch(fetchHaiku(newProps.params.guid))
+    newProps.dispatch(fetchHaikuResponses(this.props.params.guid))
   }
 
   reply(haiku) {
@@ -38,10 +43,11 @@ class Show extends React.Component {
   }
 
   render() {
-    const haiku = this.props.app.show.haiku
+    const show = this.props.app.show
+    const haiku = show.haiku
     let card
 
-    if (this.props.app.show.isPending && !haiku) {
+    if (show.isPending && !haiku) {
       card = <DummyCard />
     } else if (haiku) {
       card = <HaikuCard
@@ -70,8 +76,8 @@ class Show extends React.Component {
 
     let responsesSection
 
-    if (haiku && haiku.responses.length > 0) {
-      const responses = haiku.responses.map((response) => {
+    if (show.responses.haikus.length > 0) {
+      const responses = show.responses.haikus.map((response) => {
         return <HaikuCard
           key={response.guid}
           haiku={response}

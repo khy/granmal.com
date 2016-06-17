@@ -68,6 +68,23 @@ export function fetchHaiku(guid) {
 
 const HaikuPageLimit = 20
 
+export function fetchHaikuResponses(guid) {
+  return function (dispatch, getState) {
+    const state = getState()
+    const responses = state.app.show.responses
+
+    if (responses.isInvalidated && !responses.isPending) {
+      dispatch({ type: 'FetchShowHaikuResponsesSend' })
+
+      haikuClient(state).get(`/haikus?inResponseTo=${guid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({ type: 'FetchShowHaikuResponsesSuccess', haikus: haikus })
+        })
+      })
+    }
+  }
+}
+
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
     const state = getState()
