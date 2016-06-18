@@ -1,5 +1,7 @@
 import es6Promise from 'es6-promise'
+import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
+import _get from 'lodash/get'
 import _last from 'lodash/last'
 import _map from 'lodash/map'
 import moment from 'moment'
@@ -14,7 +16,11 @@ es6Promise.polyfill()
 function decorateHaikus(haikus, state) {
   if (haikus.length === 0) { return Promise.resolve([]) }
 
-  const qsResourceId = haikus.map((haiku) => `resourceId=${haiku.guid}`).join('&')
+  const haikuGuids = haikus.map((haiku) => haiku.guid)
+  const inResponseToGuids = haikus.map((haiku) => _get(haiku, 'inResponseTo.guid'))
+  const allGuids = _compact(_concat(haikuGuids, inResponseToGuids))
+
+  const qsResourceId = allGuids.map((guid) => `resourceId=${guid}`).join('&')
   const likeAggQs = `resourceApi=haiku&resourceType=haiku&${qsResourceId}`
 
   const accountGuid = uselessResourceOwnerId(state.auth.account)
@@ -33,14 +39,25 @@ function decorateHaikus(haikus, state) {
   ]).then((results) => {
     const [likes, likeAggs] = results
 
-    return haikus.map((haiku) => {
+    const decorateHaiku = (haiku, inResponseTo) => {
       const like = likes.find((like) => like.resourceId === haiku.guid)
       const likeAgg = likeAggs.find((likeAgg) => likeAgg.resourceId === haiku.guid)
 
       return u({
         likeCount: (likeAgg ? likeAgg.count : 0),
         likedByUser: (like !== undefined),
+        inResponseTo: inResponseTo
       }, haiku)
+    }
+
+    return haikus.map((haiku) => {
+      let inResponseTo
+
+      if (haiku.inResponseTo) {
+        inResponseTo = decorateHaiku(haiku.inResponseTo)
+      }
+
+      return decorateHaiku(haiku, inResponseTo)
     })
   })
 }
