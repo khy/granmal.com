@@ -32,7 +32,7 @@ export default function modal(state = initialState, action) {
 
     case UpdateModal:
       return u({
-        data: u.constant(action.data)
+        data: action.data
       }, state)
 
     default:

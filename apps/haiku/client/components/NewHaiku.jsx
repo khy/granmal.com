@@ -32,15 +32,18 @@ export default class NewHaiku extends React.Component {
   }
 
   formatServerErrors(errors) {
-    const formatError = (errors) => {
-      if (errors && errors[0]) {
-        switch (errors[0].key) {
+    const formatError = (errors, key) => {
+      const keyErrors = errors.find((error) => error.key === key)
+      const message = _get(keyErrors, 'messages[0]')
+
+      if (message) {
+        switch (message.key) {
           case "useless.haiku.error.tooFewSyllables":
             return "Too few syllables"
           case "useless.haiku.error.tooManySyllables":
             return "Too many syllables"
           default:
-            console.error("Unknown server validation error: " + errors[0].key)
+            console.error("Unknown server validation message key: " + message.key)
         }
       }
     }
@@ -48,9 +51,9 @@ export default class NewHaiku extends React.Component {
     if (errors) {
       let _errors = {}
 
-      if (errors.line1) { _errors.lineOne = formatError(errors.line1) }
-      if (errors.line2) { _errors.lineTwo = formatError(errors.line2) }
-      if (errors.line3) { _errors.lineThree = formatError(errors.line3) }
+      _errors.lineOne = formatError(errors, "line1")
+      _errors.lineTwo = formatError(errors, "line2")
+      _errors.lineThree = formatError(errors, "line3")
 
       return _errors
     }
