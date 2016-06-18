@@ -39,13 +39,8 @@ function app(state = initialState, action) {
     case 'ClearShowHaiku':
       return u({
         show: {
+          isInvalidated: true,
           haiku: undefined,
-          responses: {
-            isPending: false,
-            isInvalidated: true,
-            isLastPage: false,
-            haikus: u.constant([]),
-          }
         }
       }, state)
 

@@ -5,7 +5,7 @@ import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
 import {
-  fetchHaiku, fetchHaikuResponses, likeHaiku, unlikeHaiku, showNewHaikuModal
+  fetchHaiku, likeHaiku, unlikeHaiku, showNewHaikuModal
 } from 'haiku/client/actions'
 
 import HaikuCard from 'haiku/client/components/HaikuCard'
@@ -22,12 +22,10 @@ class Show extends React.Component {
   componentWillMount() {
     this.props.dispatch({ type: 'ClearShowHaiku' })
     this.props.dispatch(fetchHaiku(this.props.params.guid))
-    this.props.dispatch(fetchHaikuResponses(this.props.params.guid))
   }
 
   componentWillReceiveProps(newProps) {
     newProps.dispatch(fetchHaiku(newProps.params.guid))
-    newProps.dispatch(fetchHaikuResponses(this.props.params.guid))
   }
 
   reply(haiku) {

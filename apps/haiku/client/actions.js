@@ -45,6 +45,8 @@ function decorateHaikus(haikus, state) {
   })
 }
 
+const HaikuPageLimit = 20
+
 export function fetchHaiku(guid) {
   return function (dispatch, getState) {
     const state = getState()
@@ -56,34 +58,28 @@ export function fetchHaiku(guid) {
       (show.isInvalidated && !show.isPending)
     ) {
       dispatch({ type: 'FetchShowHaikuSend' })
-
-      haikuClient(state).get(`/haikus?guid=${guid}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
-        })
-      })
-    }
-  }
-}
-
-const HaikuPageLimit = 20
-
-export function fetchHaikuResponses(guid) {
-  return function (dispatch, getState) {
-    const state = getState()
-    const responses = state.app.show.responses
-
-    if (responses.isInvalidated && !responses.isPending) {
       dispatch({ type: 'FetchShowHaikuResponsesSend' })
 
-      haikuClient(state).get(`/haikus?inResponseTo=${guid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({ type: 'FetchShowHaikuResponsesSuccess', haikus: haikus })
+      return Promise.all([
+        haikuClient(state).get(`/haikus?guid=${guid}`),
+        haikuClient(state).get(`/haikus?inResponseTo=${guid}&p.limit=${HaikuPageLimit}`)
+      ]).then((results) => {
+        const [haikus, responses] = results
+
+        Promise.all([
+          decorateHaikus(haikus, state),
+          decorateHaikus(responses, state)
+        ]).then((results) => {
+          const [haikus, responses] = results
+
+          dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
+          dispatch({ type: 'FetchShowHaikuResponsesSuccess', haikus: responses })
         })
       })
     }
   }
 }
+
 
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
