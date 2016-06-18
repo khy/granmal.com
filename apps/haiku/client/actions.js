@@ -90,13 +90,39 @@ export function fetchHaiku(guid) {
           const [haikus, responses] = results
 
           dispatch({ type: 'FetchShowHaikuSuccess', haiku: haikus[0] })
-          dispatch({ type: 'FetchShowHaikuResponsesSuccess', haikus: responses })
+          dispatch({
+            type: 'FetchShowHaikuResponsesSuccess',
+            haikus: responses,
+            isLastPage: (responses.length < HaikuPageLimit),
+          })
         })
       })
     }
   }
 }
 
+export function fetchMoreHaikuResponses() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const haiku = state.app.show.haiku
+    const currentResponses = state.app.show.responses.haikus
+
+    if (haiku && currentResponses.length > 0) {
+      dispatch({ type: 'FetchShowHaikuResponsesSend' })
+      const lastGuid = _last(currentResponses).guid
+
+      haikuClient(state).get(`/haikus?inResponseTo=${haiku.guid}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
+        decorateHaikus(haikus, state).then((haikus) => {
+          dispatch({
+            type: 'FetchShowHaikuResponsesSuccess',
+            haikus: _concat(currentResponses, haikus),
+            isLastPage: (haikus.length < HaikuPageLimit),
+          })
+        })
+      })
+    }
+  }
+}
 
 export function fetchIndexHaikus() {
   return function (dispatch, getState) {
