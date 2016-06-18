@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
+import _get from 'lodash/get'
 
 import { formatHaikuListDate } from 'haiku/client/lib/date'
 
@@ -8,20 +9,6 @@ export default class HaikuCard extends React.Component {
   reply(haiku, event) {
     event.preventDefault()
     this.props.onReply(haiku)
-  }
-
-  get replyCount() {
-    const haiku = this.props.haiku
-
-    if (haiku) {
-      if (haiku.responses) {
-        return haiku.responses.length
-      } else if (haiku.responseGuids) {
-        return haiku.responseGuids.length
-      }
-    }
-
-    return 0
   }
 
   like(haiku, event) {
@@ -80,7 +67,7 @@ export default class HaikuCard extends React.Component {
           <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">
             <i className="fa fa-reply card-link-action" aria-hidden="true"></i>
             <span className="sr-only card-link-action">Reply</span>
-            <span className="reply-count">{`(${this.replyCount})`}</span>
+            <span className="reply-count">{`(${_get(this.props.haiku, 'responseCount', 0)})`}</span>
           </a>
           {likeLink}
         </div>
