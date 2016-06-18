@@ -71,8 +71,10 @@ class User extends React.Component {
 
     let moreButton
 
-    if (haikus.isPending && haikus.haikus.length > 0) {
-      moreButton = <LoadingMoreButton />
+    if (haikus.isPending) {
+      if (haikus.haikus.length > 0) {
+        moreButton = <LoadingMoreButton />
+      }
     } else if (!haikus.isLastPage) {
       moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
     }
