@@ -79,10 +79,8 @@ class Index extends React.Component {
 
     return (
       <div>
-        <div className="container">
-          {haikuCards}
-          {moreButton}
-        </div>
+        {haikuCards}
+        {moreButton}
       </div>
     )
   }

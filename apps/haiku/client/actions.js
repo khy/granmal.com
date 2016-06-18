@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router'
 import es6Promise from 'es6-promise'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
@@ -237,6 +238,8 @@ export function submitNewHaikuModal(newHaiku) {
         response.json().then((haiku) => {
           dispatch({ type: 'ReloadApp' })
           dispatch(hideModal())
+          dispatch(showAlert({ type: 'alertPosted' }))
+          browserHistory.push(`/haiku/${haiku.guid}`)
         })
       } else {
         response.json().then((errors) => {
@@ -267,5 +270,12 @@ export function unlikeHaiku(haiku) {
     coreClient(getState()).delete(`/social/likes/haiku/haiku/${haiku.guid}`).then((response) => {
       dispatch({ type: 'ReloadApp' })
     })
+  }
+}
+
+export function showAlert(alert) {
+  return function (dispatch, getState) {
+    dispatch({ type: 'ShowAlert', alert })
+    setTimeout(() => dispatch({ type: 'HideAlert' }), 5000)
   }
 }

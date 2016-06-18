@@ -106,7 +106,7 @@ class Show extends React.Component {
     }
 
     return (
-      <div className="container">
+      <div>
         {card}
         {inResponseToSection}
         {responsesSection}

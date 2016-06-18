@@ -82,7 +82,7 @@ class User extends React.Component {
     const title = haikus.haikus[0] ? haikus.haikus[0].createdBy.name : this.props.params.handle
 
     return (
-      <div className="container">
+      <div>
         <h2 className="user-title">{title}</h2>
 
         {haikuCards}

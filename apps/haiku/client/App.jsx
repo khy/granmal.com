@@ -8,6 +8,7 @@ import { connect, Provider } from 'react-redux'
 import _get from 'lodash/get'
 
 import { LogInModal } from 'client/components/auth/logIn'
+import { AlertSuccess } from 'client/components/bootstrap/alert'
 import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
 
@@ -89,12 +90,24 @@ class App extends React.Component {
       }
     }
 
+    let alert
+
+    if (this.props.app.alert) {
+      switch (this.props.app.alert.type) {
+        case 'alertPosted':
+          alert = <AlertSuccess>Your haiku has been posted!</AlertSuccess>
+      }
+    }
+
     return <div>
       <Navbar
         onButtonClick={this.showNavMenu.bind(this)}
       />
 
-      {this.props.children}
+      <div className="container">
+        {alert}
+        {this.props.children}
+      </div>
 
       {modal}
     </div>

@@ -112,6 +112,16 @@ function app(state = initialState, action) {
         show: { isInvalidated: true },
       }, state)
 
+    case 'ShowAlert':
+      return u({
+        alert: action.alert
+      }, state)
+
+    case 'HideAlert':
+      return u({
+        alert: undefined
+      }, state)
+
     default:
       return state
 
