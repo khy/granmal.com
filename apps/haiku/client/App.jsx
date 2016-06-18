@@ -13,6 +13,7 @@ import { showModal, hideModal } from 'client/actions/modal'
 
 import reducer from 'haiku/client/reducer'
 import Navbar from 'haiku/client/components/Navbar'
+import NavMenu from 'haiku/client/components/NavMenu'
 import Index from 'haiku/client/containers/Index'
 import Show from 'haiku/client/containers/Show'
 import User from 'haiku/client/containers/User'
@@ -34,6 +35,10 @@ class App extends React.Component {
     this.showNewHaikuModal = this.showNewHaikuModal.bind(this)
     this.logIn = this.logIn.bind(this)
     this.hideModal = this.hideModal.bind(this)
+  }
+
+  showNavMenu() {
+    this.props.dispatch(showModal('NavMenu'))
   }
 
   showNewHaikuModal() {
@@ -67,6 +72,13 @@ class App extends React.Component {
             disabled={!this.props.modal.isEnabled}
           />
         )
+      } else if (this.props.modal.name === 'NavMenu') {
+        modal = (
+          <NavMenu
+            onNewHaiku={this.showNewHaikuModal}
+            onClose={this.hideModal}
+          />
+        )
       } else if (this.props.modal.name === 'LogInModal') {
         modal = (
           <LogInModal {...this.props.modal.data}
@@ -79,8 +91,7 @@ class App extends React.Component {
 
     return <div>
       <Navbar
-        onButtonClick={this.showNewHaikuModal}
-        buttonContent={'\u002B'}
+        onButtonClick={this.showNavMenu.bind(this)}
       />
 
       {this.props.children}
