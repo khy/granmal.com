@@ -221,7 +221,7 @@ export function showNewHaikuModal(inResponseTo) {
       dispatch(showModal('NewHaiku', { inResponseTo }))
     } else {
       const message = inResponseTo ?
-        'You must log in to reply to a haiku.' :
+        'You must log in to respond to a haiku.' :
         'You must log in to add a haiku.'
 
       dispatch(showModal('LogInModal', { message }))

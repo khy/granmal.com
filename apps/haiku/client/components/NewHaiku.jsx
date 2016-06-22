@@ -110,7 +110,7 @@ export default class NewHaiku extends React.Component {
 
     return (
       <FormModal
-        title={inResponseTo ? `Reply to ${inResponseTo.createdBy.name}` : 'New Haiku'}
+        title={inResponseTo ? `Respond to ${inResponseTo.createdBy.name}` : 'New Haiku'}
         submitText="Add"
         disabled={this.props.disabled}
         onSubmit={this.createHaiku}

@@ -16,7 +16,7 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props)
-    this.reply = this.reply.bind(this)
+    this.respond = this.respond.bind(this)
     this.like = this.like.bind(this)
     this.unlike = this.unlike.bind(this)
   }
@@ -29,7 +29,7 @@ class Index extends React.Component {
     newProps.dispatch(fetchIndexHaikus())
   }
 
-  reply(haiku) {
+  respond(haiku) {
     this.props.dispatch(showNewHaikuModal(haiku))
   }
 
@@ -60,7 +60,7 @@ class Index extends React.Component {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
-          onReply={this.reply}
+          onRespond={this.respond}
           onLike={this.like}
           onUnlike={this.unlike}
         />

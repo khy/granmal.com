@@ -17,7 +17,7 @@ class User extends React.Component {
 
   constructor(props) {
     super(props)
-    this.reply = this.reply.bind(this)
+    this.respond = this.respond.bind(this)
     this.like = this.like.bind(this)
     this.unlike = this.unlike.bind(this)
     this.fetchMore = this.fetchMore.bind(this)
@@ -31,7 +31,7 @@ class User extends React.Component {
     newProps.dispatch(fetchUserHaikus(newProps.params.handle))
   }
 
-  reply(haiku) {
+  respond(haiku) {
     this.props.dispatch(showNewHaikuModal(haiku))
   }
 
@@ -62,7 +62,7 @@ class User extends React.Component {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
-          onReply={this.reply}
+          onRespond={this.respond}
           onLike={this.like}
           onUnlike={this.unlike}
         />

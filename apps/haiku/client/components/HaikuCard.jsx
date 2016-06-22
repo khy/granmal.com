@@ -6,9 +6,9 @@ import { formatHaikuListDate } from 'haiku/client/lib/date'
 
 export default class HaikuCard extends React.Component {
 
-  reply(haiku, event) {
+  respond(haiku, event) {
     event.preventDefault()
-    this.props.onReply(haiku)
+    this.props.onRespond(haiku)
   }
 
   like(haiku, event) {
@@ -37,7 +37,7 @@ export default class HaikuCard extends React.Component {
         <a href="#" onClick={this.unlike.bind(this, haiku)} className="card-link">
           <i className="fa fa-heart card-link-action" aria-hidden="true"></i>
           <span className="sr-only card-link-action">Like</span>
-          <span className="reply-count">{`(${likeCount})`}</span>
+          <span>{`(${likeCount})`}</span>
         </a>
       )
     } else {
@@ -45,7 +45,7 @@ export default class HaikuCard extends React.Component {
         <a href="#" onClick={this.like.bind(this, haiku)} className="card-link">
           <i className="fa fa-heart-o card-link-action" aria-hidden="true"></i>
           <span className="sr-only card-link-action">Like</span>
-          <span className="reply-count">{`(${likeCount})`}</span>
+          <span>{`(${likeCount})`}</span>
         </a>
       )
     }
@@ -64,10 +64,10 @@ export default class HaikuCard extends React.Component {
         </div>
 
         <div className="card-block haiku-actions">
-          <a href="#" onClick={this.reply.bind(this, haiku)} className="card-link">
+          <a href="#" onClick={this.respond.bind(this, haiku)} className="card-link">
             <i className="fa fa-reply card-link-action" aria-hidden="true"></i>
-            <span className="sr-only card-link-action">Reply</span>
-            <span className="reply-count">{`(${_get(this.props.haiku, 'responseCount', 0)})`}</span>
+            <span className="sr-only card-link-action">Respond</span>
+            <span>{`(${_get(this.props.haiku, 'responseCount', 0)})`}</span>
           </a>
           {likeLink}
         </div>
@@ -78,7 +78,7 @@ export default class HaikuCard extends React.Component {
 }
 
 HaikuCard.propTypes = {
-  onReply: React.PropTypes.func.isRequired,
+  onRespond: React.PropTypes.func.isRequired,
   onLike: React.PropTypes.func.isRequired,
   onUnlike: React.PropTypes.func.isRequired,
   haiku: React.PropTypes.object,

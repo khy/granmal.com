@@ -15,7 +15,7 @@ class Show extends React.Component {
 
   constructor(props) {
     super(props)
-    this.reply = this.reply.bind(this)
+    this.respond = this.respond.bind(this)
     this.like = this.like.bind(this)
     this.unlike = this.unlike.bind(this)
   }
@@ -29,7 +29,7 @@ class Show extends React.Component {
     newProps.dispatch(fetchHaiku(newProps.params.guid))
   }
 
-  reply(haiku) {
+  respond(haiku) {
     this.props.dispatch(showNewHaikuModal(haiku))
   }
 
@@ -56,7 +56,7 @@ class Show extends React.Component {
       card = <HaikuCard
         key={haiku.guid}
         haiku={haiku}
-        onReply={this.reply}
+        onRespond={this.respond}
         onLike={this.like}
         onUnlike={this.unlike}
       />
@@ -66,11 +66,11 @@ class Show extends React.Component {
 
     if (haiku && haiku.inResponseTo) {
       inResponseToSection = <div className="show-section">
-        <h4>Replying To</h4>
+        <h4>Responding To</h4>
         <HaikuCard
           key={haiku.inResponseTo.guid}
           haiku={haiku.inResponseTo}
-          onReply={this.reply}
+          onRespond={this.respond}
           onLike={this.like}
           onUnlike={this.unlike}
         />
@@ -84,7 +84,7 @@ class Show extends React.Component {
         return <HaikuCard
           key={response.guid}
           haiku={response}
-          onReply={this.reply}
+          onRespond={this.respond}
           onLike={this.like}
           onUnlike={this.unlike}
         />
@@ -99,7 +99,7 @@ class Show extends React.Component {
       }
 
       responsesSection = <div className="show-section">
-        <h4>Replies</h4>
+        <h4>Responses</h4>
         {responseCards}
         {moreButton}
       </div>
