@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -9,6 +10,12 @@ module.exports = function(grunt) {
       options: {
         updateConfigs: ['pkg'],
         pushTo: 'origin',
+      },
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
       },
     },
     shell: {
@@ -31,6 +38,11 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.registerTask('release', ['bump:patch', 'shell:buildDocker', 'shell:pushDocker'])
+  grunt.registerTask('release', [
+    'karma:unit',
+    'bump:patch',
+    'shell:buildDocker',
+    'shell:pushDocker',
+  ]);
 
 };
