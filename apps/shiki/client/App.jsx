@@ -122,7 +122,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/shiki" component={ConnectedApp}>
         <IndexRoute component={Index} />
-        <Route path=":guid" component={Show} />
+        <Route path="haiku/:guid" component={Show} />
         <Route path="user/:handle" component={User} />
       </Route>
     </Router>

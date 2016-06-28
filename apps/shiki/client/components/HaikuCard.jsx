@@ -23,7 +23,7 @@ export default class HaikuCard extends React.Component {
 
   show(haiku, event) {
     event.preventDefault()
-    browserHistory.push(`/shiki/${haiku.guid}`)
+    browserHistory.push(`/shiki/haiku/${haiku.guid}`)
   }
 
   render() {
