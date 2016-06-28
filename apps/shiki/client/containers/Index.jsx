@@ -7,10 +7,10 @@ import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import {
   fetchIndexHaikus, fetchMoreIndexHaikus, likeHaiku, unlikeHaiku,
   showNewHaikuModal
-} from 'haiku/client/actions'
+} from 'shiki/client/actions'
 
-import HaikuCard from 'haiku/client/components/HaikuCard'
-import { MoreButton, LoadingMoreButton } from 'haiku/client/components/moreButton'
+import HaikuCard from 'shiki/client/components/HaikuCard'
+import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButton'
 
 class Index extends React.Component {
 

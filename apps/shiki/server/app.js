@@ -16,8 +16,8 @@ router.get('*', (req, res) => {
   }
 
   res.render('appBase', {
-    key: 'haiku',
-    title: 'Haiku',
+    key: 'shiki',
+    title: 'Shiki',
     initialState,
   })
 })

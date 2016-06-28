@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     budget: './apps/budget/client/App.jsx',
-    haiku: './apps/haiku/client/App.jsx',
+    shiki: './apps/shiki/client/App.jsx',
     index: './apps/_index/client/App.jsx'
   },
   output: {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, browserHistory } from 'react-router'
 import _get from 'lodash/get'
 
-import { formatHaikuListDate } from 'haiku/client/lib/date'
+import { formatHaikuListDate } from 'shiki/client/lib/date'
 
 export default class HaikuCard extends React.Component {
 
@@ -23,7 +23,7 @@ export default class HaikuCard extends React.Component {
 
   show(haiku, event) {
     event.preventDefault()
-    browserHistory.push(`/haiku/${haiku.guid}`)
+    browserHistory.push(`/shiki/${haiku.guid}`)
   }
 
   render() {
@@ -53,7 +53,7 @@ export default class HaikuCard extends React.Component {
     return (
       <div className="card">
         <div className="card-header">
-          <Link to={`/haiku/user/${haiku.createdBy.handle}`}>{haiku.createdBy.name}</Link>
+          <Link to={`/shiki/user/${haiku.createdBy.handle}`}>{haiku.createdBy.name}</Link>
           <small className="text-muted pull-xs-right">{formatHaikuListDate(haiku.createdAt)}</small>
         </div>
 

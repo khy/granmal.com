@@ -57,8 +57,8 @@ class App extends React.Component {
   render() {
     const apps = [
       {
-        key: 'haiku',
-        name: 'Haiku',
+        key: 'shiki',
+        name: 'Shiki',
         description: 'Giving everyone the power to create and share ideas and information instantly, without barriers, with haikus.'
       }
     ]

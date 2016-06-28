@@ -12,14 +12,14 @@ import { AlertSuccess } from 'client/components/bootstrap/alert'
 import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
 
-import reducer from 'haiku/client/reducer'
-import Navbar from 'haiku/client/components/Navbar'
-import NavMenu from 'haiku/client/components/NavMenu'
-import Index from 'haiku/client/containers/Index'
-import Show from 'haiku/client/containers/Show'
-import User from 'haiku/client/containers/User'
-import NewHaiku from 'haiku/client/components/NewHaiku'
-import { submitNewHaikuModal, showNewHaikuModal } from 'haiku/client/actions'
+import reducer from 'shiki/client/reducer'
+import Navbar from 'shiki/client/components/Navbar'
+import NavMenu from 'shiki/client/components/NavMenu'
+import Index from 'shiki/client/containers/Index'
+import Show from 'shiki/client/containers/Show'
+import User from 'shiki/client/containers/User'
+import NewHaiku from 'shiki/client/components/NewHaiku'
+import { submitNewHaikuModal, showNewHaikuModal } from 'shiki/client/actions'
 
 require("./app.scss")
 
@@ -120,7 +120,7 @@ const ConnectedApp = connect(state => state)(App)
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/haiku" component={ConnectedApp}>
+      <Route path="/shiki" component={ConnectedApp}>
         <IndexRoute component={Index} />
         <Route path=":guid" component={Show} />
         <Route path="user/:handle" component={User} />

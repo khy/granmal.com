@@ -10,7 +10,7 @@ import u from 'updeep'
 
 import { uselessResourceOwnerId } from 'common/account'
 import { showModal, hideModal, enableModal, disableModal, updateModal } from 'client/actions/modal'
-import { coreClient, haikuClient } from 'haiku/client/lib/clients'
+import { coreClient, haikuClient } from 'shiki/client/lib/clients'
 
 es6Promise.polyfill()
 

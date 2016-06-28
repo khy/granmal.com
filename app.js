@@ -5,7 +5,7 @@ var bodyParser = require('body-parser')
 var authMiddleware = require('./server/middleware/auth')
 
 var Budget = require('./apps/budget/server/app')
-var Haiku = require('./apps/haiku/server/app')
+var Shiki = require('./apps/shiki/server/app')
 var Index = require('./apps/_index/server')
 
 var AccountAppStateRouter = require('./server/routers/accountAppState')
@@ -26,7 +26,7 @@ app.use('/auth', AuthRouter)
 app.use('/accountAppState', AccountAppStateRouter)
 
 app.use('/budget', Budget)
-app.use('/haiku', Haiku)
+app.use('/shiki', Shiki)
 app.use('/', Index)
 
 app.listen(3000, err => {
