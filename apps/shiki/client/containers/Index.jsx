@@ -4,13 +4,10 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
-import {
-  fetchIndexHaikus, fetchMoreIndexHaikus, likeHaiku, unlikeHaiku,
-  showNewHaikuModal
-} from 'shiki/client/actions'
-
+import { fetchIndexHaikus, fetchMoreIndexHaikus } from 'shiki/client/actions'
 import HaikuCard from 'shiki/client/components/HaikuCard'
 import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButton'
+import { baseMapDispatchToProps } from 'shiki/client/containers/lib'
 
 class Index extends React.Component {
 
@@ -67,14 +64,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = baseMapDispatchToProps((dispatch) => {
   return {
     onFetch: () => { dispatch(fetchIndexHaikus()) },
     onFetchMore: () => { dispatch(fetchMoreIndexHaikus()) },
-    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
-    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
-    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
   }
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index)

@@ -5,13 +5,10 @@ import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 
-import {
-  fetchUserHaikus, fetchMoreUserHaikus, likeHaiku, unlikeHaiku,
-  showNewHaikuModal
-} from 'shiki/client/actions'
-
+import { fetchUserHaikus, fetchMoreUserHaikus } from 'shiki/client/actions'
 import HaikuCard from 'shiki/client/components/HaikuCard'
 import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButton'
+import { baseMapDispatchToProps } from 'shiki/client/containers/lib'
 
 class User extends React.Component {
 
@@ -72,14 +69,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = baseMapDispatchToProps((dispatch) => {
   return {
     onFetch: (handle) => { dispatch(fetchUserHaikus(handle)) },
     onFetchMore: () => { dispatch(fetchMoreUserHaikus()) },
-    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
-    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
-    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
   }
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

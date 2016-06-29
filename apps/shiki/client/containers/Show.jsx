@@ -4,12 +4,10 @@ import { connect } from 'react-redux'
 import { showModal } from 'client/actions/modal'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
-import {
-  fetchHaiku, likeHaiku, unlikeHaiku, showNewHaikuModal, fetchMoreHaikuResponses
-} from 'shiki/client/actions'
-
+import { fetchHaiku, fetchMoreHaikuResponses } from 'shiki/client/actions'
 import HaikuCard from 'shiki/client/components/HaikuCard'
 import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButton'
+import { baseMapDispatchToProps } from 'shiki/client/containers/lib'
 
 class Show extends React.Component {
 
@@ -89,17 +87,14 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = baseMapDispatchToProps((dispatch) => {
   return {
     onFetch: (guid, clear) => {
       if (clear) { dispatch({ type: 'ClearShowHaiku' }) }
       dispatch(fetchHaiku(guid))
     },
     onFetchMore: () => { dispatch(fetchMoreHaikuResponses()) },
-    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
-    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
-    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
   }
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Show)
