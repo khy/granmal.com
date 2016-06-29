@@ -29,12 +29,9 @@ class Show extends React.Component {
     if (show.isPending && !haiku) {
       card = <DummyCard />
     } else if (haiku) {
-      card = <HaikuCard
+      card = <HaikuCard {...this.props}
         key={haiku.guid}
         haiku={haiku}
-        onRespond={this.props.onRespond}
-        onLike={this.props.onLike}
-        onUnlike={this.props.onUnlike}
       />
     }
 
@@ -43,12 +40,9 @@ class Show extends React.Component {
     if (haiku && haiku.inResponseTo) {
       inResponseToSection = <div className="show-section">
         <h4>Responding To</h4>
-        <HaikuCard
+        <HaikuCard  {...this.props}
           key={haiku.inResponseTo.guid}
           haiku={haiku.inResponseTo}
-          onRespond={this.props.onRespond}
-          onLike={this.props.onLike}
-          onUnlike={this.props.onUnlike}
         />
       </div>
     }
@@ -57,12 +51,9 @@ class Show extends React.Component {
 
     if (show.responses.haikus.length > 0) {
       const responseCards = show.responses.haikus.map((response) => {
-        return <HaikuCard
+        return <HaikuCard  {...this.props}
           key={response.guid}
           haiku={response}
-          onRespond={this.props.onRespond}
-          onLike={this.props.onLike}
-          onUnlike={this.props.onUnlike}
         />
       })
 

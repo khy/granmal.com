@@ -35,12 +35,9 @@ class User extends React.Component {
       </div>
     } else {
       haikuCards = haikus.haikus.map((haiku) => {
-        return <HaikuCard
+        return <HaikuCard  {...this.props}
           key={haiku.guid}
           haiku={haiku}
-          onRespond={this.props.onRespond}
-          onLike={this.props.onLike}
-          onUnlike={this.props.onUnlike}
         />
       })
     }
