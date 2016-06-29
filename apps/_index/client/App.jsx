@@ -14,9 +14,9 @@ import { Alert } from 'client/components/bootstrap/alert'
 import config from 'client/config'
 
 import reducer from '_index/client/reducer'
+import { alertSuccess, alertWarning } from '_index/client/actions'
 import AppList from '_index/client/components/AppList'
 import NavMenu from '_index/client/components/NavMenu'
-import { alertSuccess, alertWarning } from '_index/client/actions'
 
 require('./app.scss')
 
