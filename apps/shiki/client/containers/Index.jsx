@@ -14,35 +14,12 @@ import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButto
 
 class Index extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.respond = this.respond.bind(this)
-    this.like = this.like.bind(this)
-    this.unlike = this.unlike.bind(this)
-  }
-
   componentWillMount() {
-    this.props.dispatch(fetchIndexHaikus())
+    this.props.onFetch()
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.dispatch(fetchIndexHaikus())
-  }
-
-  respond(haiku) {
-    this.props.dispatch(showNewHaikuModal(haiku))
-  }
-
-  like(haiku) {
-    this.props.dispatch(likeHaiku(haiku))
-  }
-
-  unlike(haiku) {
-    this.props.dispatch(unlikeHaiku(haiku))
-  }
-
-  fetchMore() {
-    this.props.dispatch(fetchMoreIndexHaikus())
+    newProps.onFetch()
   }
 
   render() {
@@ -60,9 +37,9 @@ class Index extends React.Component {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
-          onRespond={this.respond}
-          onLike={this.like}
-          onUnlike={this.unlike}
+          onRespond={this.props.onRespond}
+          onLike={this.props.onLike}
+          onUnlike={this.props.onUnlike}
         />
       })
     }
@@ -74,7 +51,7 @@ class Index extends React.Component {
         moreButton = <LoadingMoreButton />
       }
     } else if (!haikus.isLastPage) {
-      moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
+      moreButton = <MoreButton onClick={this.props.onFetchMore} />
     }
 
     return (
@@ -93,4 +70,14 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Index)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetch: () => { dispatch(fetchIndexHaikus()) },
+    onFetchMore: () => { dispatch(fetchMoreIndexHaikus()) },
+    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
+    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
+    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index)

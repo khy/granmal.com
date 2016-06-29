@@ -15,36 +15,12 @@ import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButto
 
 class User extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.respond = this.respond.bind(this)
-    this.like = this.like.bind(this)
-    this.unlike = this.unlike.bind(this)
-    this.fetchMore = this.fetchMore.bind(this)
-  }
-
   componentWillMount() {
-    this.props.dispatch(fetchUserHaikus(this.props.params.handle))
+    this.props.onFetch(this.props.params.handle)
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.dispatch(fetchUserHaikus(newProps.params.handle))
-  }
-
-  respond(haiku) {
-    this.props.dispatch(showNewHaikuModal(haiku))
-  }
-
-  like(haiku) {
-    this.props.dispatch(likeHaiku(haiku))
-  }
-
-  unlike(haiku) {
-    this.props.dispatch(unlikeHaiku(haiku))
-  }
-
-  fetchMore() {
-    this.props.dispatch(fetchMoreUserHaikus())
+    newProps.onFetch(newProps.params.handle)
   }
 
   render() {
@@ -62,9 +38,9 @@ class User extends React.Component {
         return <HaikuCard
           key={haiku.guid}
           haiku={haiku}
-          onRespond={this.respond}
-          onLike={this.like}
-          onUnlike={this.unlike}
+          onRespond={this.props.onRespond}
+          onLike={this.props.onLike}
+          onUnlike={this.props.onUnlike}
         />
       })
     }
@@ -76,7 +52,7 @@ class User extends React.Component {
         moreButton = <LoadingMoreButton />
       }
     } else if (!haikus.isLastPage) {
-      moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
+      moreButton = <MoreButton onClick={this.props.onFetchMore} />
     }
 
     const title = haikus.haikus[0] ? haikus.haikus[0].createdBy.name : this.props.params.handle
@@ -99,4 +75,14 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(User)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetch: (handle) => { dispatch(fetchUserHaikus(handle)) },
+    onFetchMore: () => { dispatch(fetchMoreUserHaikus()) },
+    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
+    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
+    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)

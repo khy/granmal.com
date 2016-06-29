@@ -13,36 +13,12 @@ import { MoreButton, LoadingMoreButton } from 'shiki/client/components/moreButto
 
 class Show extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.respond = this.respond.bind(this)
-    this.like = this.like.bind(this)
-    this.unlike = this.unlike.bind(this)
-  }
-
   componentWillMount() {
-    this.props.dispatch({ type: 'ClearShowHaiku' })
-    this.props.dispatch(fetchHaiku(this.props.params.guid))
+    this.props.onFetch(this.props.params.guid, true)
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.dispatch(fetchHaiku(newProps.params.guid))
-  }
-
-  respond(haiku) {
-    this.props.dispatch(showNewHaikuModal(haiku))
-  }
-
-  like(haiku) {
-    this.props.dispatch(likeHaiku(haiku))
-  }
-
-  unlike(haiku) {
-    this.props.dispatch(unlikeHaiku(haiku))
-  }
-
-  fetchMore() {
-    this.props.dispatch(fetchMoreHaikuResponses())
+    newProps.onFetch(newProps.params.guid, false)
   }
 
   render() {
@@ -56,9 +32,9 @@ class Show extends React.Component {
       card = <HaikuCard
         key={haiku.guid}
         haiku={haiku}
-        onRespond={this.respond}
-        onLike={this.like}
-        onUnlike={this.unlike}
+        onRespond={this.props.onRespond}
+        onLike={this.props.onLike}
+        onUnlike={this.props.onUnlike}
       />
     }
 
@@ -70,9 +46,9 @@ class Show extends React.Component {
         <HaikuCard
           key={haiku.inResponseTo.guid}
           haiku={haiku.inResponseTo}
-          onRespond={this.respond}
-          onLike={this.like}
-          onUnlike={this.unlike}
+          onRespond={this.props.onRespond}
+          onLike={this.props.onLike}
+          onUnlike={this.props.onUnlike}
         />
       </div>
     }
@@ -84,9 +60,9 @@ class Show extends React.Component {
         return <HaikuCard
           key={response.guid}
           haiku={response}
-          onRespond={this.respond}
-          onLike={this.like}
-          onUnlike={this.unlike}
+          onRespond={this.props.onRespond}
+          onLike={this.props.onLike}
+          onUnlike={this.props.onUnlike}
         />
       })
 
@@ -95,7 +71,7 @@ class Show extends React.Component {
       if (show.responses.isPending) {
         moreButton = <LoadingMoreButton />
       } else if (!show.responses.isLastPage) {
-        moreButton = <MoreButton onClick={this.fetchMore.bind(this)} />
+        moreButton = <MoreButton onClick={this.props.onFetchMore} />
       }
 
       responsesSection = <div className="show-section">
@@ -122,4 +98,17 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Show)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetch: (guid, clear) => {
+      if (clear) { dispatch({ type: 'ClearShowHaiku' }) }
+      dispatch(fetchHaiku(guid))
+    },
+    onFetchMore: () => { dispatch(fetchMoreHaikuResponses()) },
+    onLike: (haiku) => { dispatch(likeHaiku(haiku)) },
+    onRespond: (haiku) => { dispatch(showNewHaikuModal(haiku)) },
+    onUnlike: (haiku) => { dispatch(unlikeHaiku(haiku)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Show)
