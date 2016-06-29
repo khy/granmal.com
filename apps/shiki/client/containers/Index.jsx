@@ -46,7 +46,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const haikus = this.props.app.index.haikus
+    const haikus = this.props.haikus
     let haikuCards
 
     if (haikus.isPending && haikus.haikus.length == 0) {
@@ -87,4 +87,10 @@ class Index extends React.Component {
 
 }
 
-export default connect(state => state)(Index)
+const mapStateToProps = (state) => {
+  return {
+    haikus: state.app.index.haikus
+  }
+}
+
+export default connect(mapStateToProps)(Index)

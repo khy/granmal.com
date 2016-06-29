@@ -48,7 +48,7 @@ class User extends React.Component {
   }
 
   render() {
-    const haikus = this.props.app.user.haikus
+    const haikus = this.props.haikus
     let haikuCards
 
     if (haikus.isPending && haikus.haikus.length == 0) {
@@ -93,4 +93,10 @@ class User extends React.Component {
 
 }
 
-export default connect(state => state)(User)
+const mapStateToProps = (state) => {
+  return {
+    haikus: state.app.user.haikus
+  }
+}
+
+export default connect(mapStateToProps)(User)

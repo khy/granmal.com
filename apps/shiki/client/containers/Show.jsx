@@ -46,7 +46,7 @@ class Show extends React.Component {
   }
 
   render() {
-    const show = this.props.app.show
+    const show = this.props.show
     const haiku = show.haiku
     let card
 
@@ -116,4 +116,10 @@ class Show extends React.Component {
 
 }
 
-export default connect(state => state)(Show)
+const mapStateToProps = (state) => {
+  return {
+    show: state.app.show
+  }
+}
+
+export default connect(mapStateToProps)(Show)
