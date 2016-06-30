@@ -4,34 +4,32 @@ import { apps, betaApps } from '_index/client/app'
 
 export default class AppList extends React.Component {
 
+  goToApp(key) {
+    window.location = "/" + key
+  }
+
   render() {
-    const appCards = (apps, header) => apps.map( app => {
-      let headerTag
-
-      if (apps.length > 0 && header) {
-        headerTag = <h2>{header}</h2>
-      }
-
+    const appCards = (apps) => apps.map( app => {
       return (
-        <div>
-          {headerTag}
-
-          <div className="card-app-link" key={app.key}>
-            <div className="card-block">
-              <a href={"/" + app.key}>
-                <h5 className="card-title">{app.name}</h5>
-                <p className="card-subtitle text-muted">{app.description}</p>
-              </a>
-            </div>
+        <div className="card-app-link" onClick={this.goToApp.bind(this, app.key)} key={app.key}>
+          <div className="card-block">
+            <h4 className="card-title">{app.name}</h4>
+            <p className="card-text">{app.description}</p>
           </div>
         </div>
       )
     })
 
     return (
-      <div>
+      <div className="card-columns">
+        <div className="card text-xs-center" key="title">
+          <img className="card-img img-fluid" src="bad-ass.jpg" />
+          <div className="card-img-overlay">
+            <h2 className="card-title text-uppercase font-weight-normal">Gran Mal</h2>
+          </div>
+        </div>
+
         {appCards(apps)}
-        {appCards(betaApps, 'Beta')}
       </div>
     )
   }

@@ -5,7 +5,8 @@
 .card-app-link {
   @extend .card;
 
-  .card-title { color: $gray-dark; }
-  a:hover { text-decoration: none; }
-  &:hover { background-color: $gray-lightest; }
+  &:hover {
+    cursor: pointer;
+    background-color: $gray-lightest;
+  }
 }
