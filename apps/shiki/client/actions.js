@@ -63,6 +63,12 @@ function decorateHaikus(haikus, state) {
   })
 }
 
+const fetchDecoratedHaikus = (state, url) => {
+  return haikuClient(state).get(url).then((haikus) => {
+    return decorateHaikus(haikus, state)
+  })
+}
+
 const HaikuPageLimit = 20
 
 export function fetchHaiku(guid) {
@@ -112,13 +118,12 @@ export function fetchMoreHaikuResponses() {
       dispatch({ type: 'FetchShowHaikuResponsesSend' })
       const lastGuid = _last(currentResponses).guid
 
-      haikuClient(state).get(`/haikus?inResponseTo=${haiku.guid}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({
-            type: 'FetchShowHaikuResponsesSuccess',
-            haikus: _concat(currentResponses, haikus),
-            isLastPage: (haikus.length < HaikuPageLimit),
-          })
+      const url = `/haikus?inResponseTo=${haiku.guid}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`
+      fetchDecoratedHaikus(state, url).then((haikus) => {
+        dispatch({
+          type: 'FetchShowHaikuResponsesSuccess',
+          haikus: _concat(currentResponses, haikus),
+          isLastPage: (haikus.length < HaikuPageLimit),
         })
       })
     }
@@ -133,10 +138,8 @@ export function fetchIndexHaikus() {
     if (indexHaikus.isInvalidated && !indexHaikus.isPending) {
       dispatch({ type: 'FetchIndexHaikusSend' })
 
-      haikuClient(state).get(`/haikus?p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
-        })
+      fetchDecoratedHaikus(state, `/haikus?p.limit=${HaikuPageLimit}`).then((haikus) => {
+        dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
       })
     }
   }
@@ -151,13 +154,12 @@ export function fetchMoreIndexHaikus() {
       dispatch({ type: 'FetchIndexHaikusSend' })
       const lastGuid = _last(currentHaikus).guid
 
-      haikuClient(state).get(`/haikus?p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({
-            type: 'FetchIndexHaikusSuccess',
-            haikus: _concat(currentHaikus, haikus),
-            isLastPage: (haikus.length < HaikuPageLimit),
-          })
+      const url = `/haikus?p.after=${lastGuid}&p.limit=${HaikuPageLimit}`
+      fetchDecoratedHaikus(state, url).then((haikus) => {
+        dispatch({
+          type: 'FetchIndexHaikusSuccess',
+          haikus: _concat(currentHaikus, haikus),
+          isLastPage: (haikus.length < HaikuPageLimit),
         })
       })
     }
@@ -178,12 +180,11 @@ export function fetchUserHaikus(handle) {
     if (userHaikus.isInvalidated && !userHaikus.isPending) {
       dispatch({ type: 'FetchUserHaikusSend' })
 
-      haikuClient(state).get(`/haikus?user=${handle}&p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({
-            type: 'FetchUserHaikusSuccess', haikus,
-            isLastPage: (haikus.length < HaikuPageLimit),
-          })
+      const url = `/haikus?user=${handle}&p.limit=${HaikuPageLimit}`
+      fetchDecoratedHaikus(state, url).then((haikus) => {
+        dispatch({
+          type: 'FetchUserHaikusSuccess', haikus,
+          isLastPage: (haikus.length < HaikuPageLimit),
         })
       })
     }
@@ -200,13 +201,12 @@ export function fetchMoreUserHaikus() {
       dispatch({ type: 'FetchUserHaikusSend' })
       const lastGuid = _last(currentHaikus).guid
 
-      haikuClient(state).get(`/haikus?user=${handle}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`).then((haikus) => {
-        decorateHaikus(haikus, state).then((haikus) => {
-          dispatch({
-            type: 'FetchUserHaikusSuccess',
-            haikus: _concat(currentHaikus, haikus),
-            isLastPage: (haikus.length < HaikuPageLimit),
-          })
+      const url = `/haikus?user=${handle}&p.after=${lastGuid}&p.limit=${HaikuPageLimit}`
+      fetchDecoratedHaikus(state, url).then((haikus) => {
+        dispatch({
+          type: 'FetchUserHaikusSuccess',
+          haikus: _concat(currentHaikus, haikus),
+          isLastPage: (haikus.length < HaikuPageLimit),
         })
       })
     }
