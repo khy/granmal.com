@@ -24,9 +24,7 @@ export default class AppList extends React.Component {
       <div className="card-columns">
         <div className="card text-xs-center" key="title">
           <img className="card-img img-fluid" src="bad-ass.jpg" />
-          <div className="card-img-overlay">
-            <h2 className="card-title text-uppercase font-weight-normal">Gran Mal</h2>
-          </div>
+          <div className="card-img-overlay"></div>
         </div>
 
         {appCards(apps)}
