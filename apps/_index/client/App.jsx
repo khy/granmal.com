@@ -15,7 +15,7 @@ import config from 'client/config'
 
 import reducer from '_index/client/reducer'
 import { alertSuccess, alertWarning } from '_index/client/actions'
-import AppList from '_index/client/components/AppList'
+import CardLayout from '_index/client/components/CardLayout'
 import NavMenu from '_index/client/components/NavMenu'
 
 require('./app.scss')
@@ -122,7 +122,7 @@ render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={app}>
-        <IndexRoute component={AppList} />
+        <IndexRoute component={CardLayout} />
       </Route>
     </Router>
   </Provider>,
