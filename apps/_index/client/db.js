@@ -3,13 +3,13 @@ export const apps = [
     key: 'shiki',
     name: 'Shiki',
     description: 'Giving everyone the power to create and share ideas and information instantly, without barriers. With haikus.',
-    betaAt: new Date(2016, 7, 1)
+    betaAt: new Date(2016, 6, 1)
   },
   {
     key: 'budget',
     name: 'Budget',
     description: 'Personal finances for obsessive compulsives.',
-    alphaAt: new Date(2016, 3, 15)
+    alphaAt: new Date(2016, 2, 15)
   },
 ]
 
