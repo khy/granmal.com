@@ -6,14 +6,14 @@ export default class AppCard extends React.Component {
   render() {
     let label, date
 
-    if (this.props.betaAt) {
+    if (this.props.releasedAt) {
+      date = this.props.releasedAt
+    } else if (this.props.betaAt) {
       date = this.props.betaAt
       label = <span className="label label-warning">{'\u03B2'}</span>
     } else if (this.props.alphaAt) {
       date = this.props.alphaAt
       label = <span className="label label-danger">{'\u03B1'}</span>
-    } else {
-      date = this.props.releasedAt
     }
 
     const displayDate = moment(date).format('MMMM Do, YYYY')
