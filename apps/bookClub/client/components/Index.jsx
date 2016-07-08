@@ -1,8 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Remarkable from 'remarkable'
 
 import { fetchIndexMain } from 'bookClub/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
+
+const md = new Remarkable
 
 class Index extends React.Component {
 
@@ -17,9 +20,11 @@ class Index extends React.Component {
   render() {
 
     const cards = this.props.main.notes.map((note) => {
-      return <Card key={note.guid}>
+      const markup = { __html: md.render(note.content) }
+
+      return <Card key={note.guid} className="note-card">
         <CardBlock>
-          {note.content}
+          <span dangerouslySetInnerHTML={markup} />
         </CardBlock>
       </Card>
     })

@@ -35,6 +35,7 @@
     "redux": "3.5.2",
     "redux-logger": "2.6.1",
     "redux-thunk": "2.1.0",
+    "remarkable": "1.6.2",
     "request-promise": "3.0.0",
     "updeep": "0.16.0"
   },

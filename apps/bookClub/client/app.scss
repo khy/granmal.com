@@ -3,3 +3,14 @@
 @import "../../../client/css/base.scss";
 
 .navbar { margin-bottom: 1rem; }
+
+.note-card {
+  blockquote {
+    padding: ($spacer / 2) $spacer;
+    border-left: .25rem solid $blockquote-border-color;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
