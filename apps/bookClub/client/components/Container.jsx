@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { showModal, hideModal } from 'client/actions/modal'
+
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 
 class Container extends React.Component {
