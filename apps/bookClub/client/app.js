@@ -6,7 +6,7 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 
-import reducer from 'shiki/client/reducer'
+import reducer from 'bookClub/client/reducer'
 import Container from 'bookClub/client/components/Container'
 import Index from 'bookClub/client/components/Index'
 
