@@ -26,7 +26,7 @@ app.use(authMiddleware)
 app.use('/auth', AuthRouter)
 app.use('/accountAppState', AccountAppStateRouter)
 
-app.use('/bookClub', BookClub)
+app.use('/book-club', BookClub)
 app.use('/budget', Budget)
 app.use('/shiki', Shiki)
 app.use('/', Index)

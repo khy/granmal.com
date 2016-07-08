@@ -16,7 +16,7 @@ router.get('*', (req, res) => {
   }
 
   res.render('appBase', {
-    key: 'bookClub',
+    key: 'book-club',
     title: 'Book Club',
     initialState,
   })

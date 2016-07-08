@@ -19,7 +19,7 @@ const store = applyMiddleware(
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/bookClub" component={Container}>
+      <Route path="/book-club" component={Container}>
         <IndexRoute component={Index} />
       </Route>
     </Router>
