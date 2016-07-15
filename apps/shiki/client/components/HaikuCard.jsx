@@ -50,6 +50,12 @@ export default class HaikuCard extends React.Component {
       )
     }
 
+    let attribution
+
+    if (haiku.attribution) {
+      attribution = <p className="attribution">- {haiku.attribution}</p>
+    }
+
     return (
       <div className="card">
         <div className="card-header">
@@ -61,7 +67,8 @@ export default class HaikuCard extends React.Component {
           <p className="card-text">{haiku.lines[0]}</p>
           <p className="card-text">{haiku.lines[1]}</p>
           <p className="card-text">{haiku.lines[2]}</p>
-        </div>
+          {attribution}
+      </div>
 
         <div className="card-block haiku-actions">
           <a href="#" onClick={this.respond.bind(this, haiku)} className="card-link">

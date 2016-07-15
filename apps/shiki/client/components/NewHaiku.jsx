@@ -15,12 +15,15 @@ export default class NewHaiku extends React.Component {
       lineOne: '',
       lineTwo: '',
       lineThree: '',
+      showAttribution: false,
       errors: {}
     }
 
     this.setLineOne = this.setLine.bind(this, 'lineOne')
     this.setLineTwo = this.setLine.bind(this, 'lineTwo')
     this.setLineThree = this.setLine.bind(this, 'lineThree')
+    this.toggleShowAtribution = this.toggleShowAtribution.bind(this)
+    this.setAttribution = this.setAttribution.bind(this)
 
     this.createHaiku = this.createHaiku.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -65,6 +68,18 @@ export default class NewHaiku extends React.Component {
     this.setState(newState)
   }
 
+  toggleShowAtribution(event) {
+    this.setState({showAttribution: !this.state.showAttribution})
+  }
+
+  setAttribution(event) {
+    const attribution = event.target.value.trim()
+
+    if (attribution.length > 0) {
+      this.setState({ attribution })
+    }
+  }
+
   createHaiku() {
     var errors = {}
 
@@ -83,6 +98,7 @@ export default class NewHaiku extends React.Component {
     if (_isEmpty(errors)) {
       this.props.onCreate({
         lines: [this.state.lineOne, this.state.lineTwo, this.state.lineThree],
+        attribution: this.state.attribution,
         inResponseToGuid: _get(this.props, 'inResponseTo.guid'),
       })
     } else {
@@ -96,16 +112,33 @@ export default class NewHaiku extends React.Component {
 
   render() {
     const inResponseTo = this.props.inResponseTo
-    let inResponseToBlockquote
+    let inResponseToBlockquote, attributionElement
 
     if (inResponseTo) {
+      let attributionFooter
+
+      if (inResponseTo.attribution) {
+        attributionFooter = <footer className="blockquote-footer">{inResponseTo.attribution}</footer>
+      }
+
       inResponseToBlockquote = (
         <blockquote className="blockquote in-response-to">
           <p>{inResponseTo.lines[0]}</p>
           <p>{inResponseTo.lines[1]}</p>
           <p>{inResponseTo.lines[2]}</p>
+          {attributionFooter}
         </blockquote>
       )
+    }
+
+    if (this.state.showAttribution) {
+      attributionElement = (
+        <FormGroup error={this.state.errors.attribution}>
+          <TextInput value={(this.state.attribution || '')} onChange={this.setAttribution} placeholder="Attribution" />
+        </FormGroup>
+      )
+    } else {
+      attributionElement = <a href="#" onClick={this.toggleShowAtribution}><small>Add Attribution</small></a>
     }
 
     return (
@@ -129,6 +162,8 @@ export default class NewHaiku extends React.Component {
         <FormGroup error={this.state.errors.lineThree}>
           <TextInput value={this.state.lineThree} onChange={this.setLineThree} placeholder="5 Syllables" />
         </FormGroup>
+
+        {attributionElement}
       </FormModal>
     )
   }

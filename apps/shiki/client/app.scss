@@ -16,6 +16,12 @@ h2 { color: #555 }
     margin-bottom: 0;
     font-size: 1.5rem;
   }
+
+  .attribution {
+    margin: 1rem 0 0;
+    font-size: 1rem;
+    color: $gray-light;
+  }
 }
 
 .card-block.haiku-actions {
@@ -34,6 +40,7 @@ blockquote.blockquote.in-response-to {
   font-size: 1rem;
 
   p { margin-bottom: 0; }
+  .blockquote-footer { margin-top: 0.5rem; }
 }
 
 h2.user-title {
