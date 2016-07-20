@@ -1,9 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { LogInModal } from 'client/components/auth/logIn'
+import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
 
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
+import NewNote from 'bookClub/client/components/NewNote'
+import { showNewNoteModal } from 'bookClub/client/actions'
 
 class Container extends React.Component {
 
@@ -13,8 +17,21 @@ class Container extends React.Component {
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'NavMenu') {
         modal = <NavMenu
+          onNewNote={this.props.onShowNewNoteModal}
           onClose={this.props.onHideModal}
         />
+      } else if (this.props.modal.name === 'NewNote') {
+        modal = <NewNote
+          onCreate={this.props.onCreateNote}
+          onClose={this.props.onHideModal}
+        />
+      } else if (this.props.modal.name === 'LogIn') {
+        modal = (
+          <LogInModal {...this.props.modal.data}
+            onLogIn={this.props.onLogIn}
+            onClose={this.props.onHideModal}
+          />
+        )
       }
     }
 
@@ -41,8 +58,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onShowNavMenu: () => { dispatch(showModal('NavMenu')) },
+    onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
     onHideModal: () => { dispatch(hideModal()) },
+    onLogIn: (email, password) => {
+      dispatch(logIn(email, password)).then(() => {
+        dispatch(hideModal())
+      })
+    },
+    onShowNavMenu: () => { dispatch(showModal('NavMenu')) },
+    onShowNewNoteModal: () => { dispatch(showNewNoteModal()) },
   }
 }
 
