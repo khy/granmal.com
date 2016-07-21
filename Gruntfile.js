@@ -27,6 +27,21 @@ module.exports = function(grunt) {
           },
         },
       },
+      ensureDockerMachine: {
+        command: 'docker-machine active',
+        options: {
+          stdout: false,
+          stderr: false,
+          callback: function (err, stdout, stderr, cb) {
+            if (err) {
+              grunt.fail.warn('docker-machine is not active.');
+            }
+
+            grunt.log.writeln('docker-machine is configured properly.');
+            cb();
+          }
+        }
+      },
       pushDocker: {
         command: 'docker push khyland/granmal.com:<%= pkg.version %>',
         options: {
@@ -39,6 +54,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('release', [
+    'shell:ensureDockerMachine',
     'karma:unit',
     'bump:patch',
     'shell:buildDocker',
