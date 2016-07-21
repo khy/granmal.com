@@ -139,7 +139,11 @@ export function fetchIndexHaikus() {
       dispatch({ type: 'FetchIndexHaikusSend' })
 
       fetchDecoratedHaikus(state, `/haikus?p.limit=${HaikuPageLimit}`).then((haikus) => {
-        dispatch({ type: 'FetchIndexHaikusSuccess', haikus })
+        dispatch({
+          type: 'FetchIndexHaikusSuccess',
+          haikus: haikus,
+          isLastPage: (haikus.length < HaikuPageLimit)
+        })
       })
     }
   }
