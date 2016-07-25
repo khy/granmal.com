@@ -6,6 +6,11 @@ import auth from 'client/reducers/auth'
 import modal from 'client/reducers/modal'
 
 const initialState = {
+  books: {
+    isPending: false,
+    isInvalidated: true,
+    records: []
+  },
   index: {
     main: {
       isPending: false,
@@ -19,6 +24,18 @@ const initialState = {
 function app(state = initialState, action) {
 
   switch (action.type) {
+
+    case 'books.fetch.send':
+      return u({
+        books: { isPending: true }
+      }, state)
+
+    case 'books.fetch.success':
+      return u({ books: {
+        isPending: false,
+        isInvalidated: false,
+        records: action.books,
+      }}, state)
 
     case 'indexMain.fetch.send':
       return u({

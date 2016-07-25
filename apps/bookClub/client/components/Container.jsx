@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import _get from 'lodash/get'
+import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 
 import { showAdHocAlert } from 'client/actions/alert'
@@ -10,7 +12,7 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
-import { showNewNoteModal } from 'bookClub/client/actions'
+import { fetchBooks, showNewNoteModal } from 'bookClub/client/actions'
 
 class Container extends React.Component {
 
@@ -25,8 +27,10 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name === 'NewNote') {
         modal = <NewNote
+          books={this.props.books}
           onCreate={this.props.onCreateNote}
           onClose={this.props.onHideModal}
+          onFetchBooks={this.props.onFetchBooks}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
@@ -66,12 +70,15 @@ class Container extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return _pick(state, ['alert', 'modal'])
+  return _merge(_pick(state, ['alert', 'modal']), {
+    books: _get(state, 'app.books.records', [])
+  })
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
+    onFetchBooks: () => { dispatch(fetchBooks()) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
       dispatch(logIn(email, password)).then(() => {

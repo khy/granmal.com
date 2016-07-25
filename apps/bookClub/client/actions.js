@@ -6,6 +6,21 @@ export function createNote(newNote) {
   console.log('createNote')
 }
 
+export function fetchBooks() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const books = state.app.books
+
+    if (books.isInvalidated && !books.isPending) {
+      dispatch({ type: 'books.fetch.send' })
+
+      booksClient(state).get('/books').then((books) => {
+        dispatch({ type: 'books.fetch.success', books })
+      })
+    }
+  }
+}
+
 export function fetchIndexMain() {
   return function (dispatch, getState) {
     const state = getState()
