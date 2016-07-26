@@ -12,7 +12,7 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
-import { fetchBooks, showNewNoteModal } from 'bookClub/client/actions'
+import { createNote, fetchBooks, showNewNoteModal } from 'bookClub/client/actions'
 
 class Container extends React.Component {
 

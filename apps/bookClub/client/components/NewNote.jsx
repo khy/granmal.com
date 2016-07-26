@@ -1,11 +1,9 @@
 import React from 'react'
 import Select from 'react-select'
-import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
-import _assign from 'lodash/assign'
 
 import { FormModal } from 'client/components/bootstrap/modal'
-import { FormGroup, TextInput } from 'client/components/bootstrap/form'
+import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
 export default class NewNote extends React.Component {
 
@@ -19,12 +17,33 @@ export default class NewNote extends React.Component {
   }
 
   createNote() {
-    this.props.onCreate()
+    var errors = {}
+
+    if (_isEmpty(errors)) {
+      this.props.onCreate({
+        bookGuid: this.state.bookGuid,
+        pageNumber: parseInt(this.state.pageNumber),
+        pageCount: parseInt(this.state.pageCount),
+        content: this.state.content,
+      })
+    } else {
+      this.setState({ errors })
+    }
   }
 
   selectBook(option) {
     if (option) {
       this.setState({bookGuid: option.value})
+    }
+  }
+
+  setAttribute(key, event) {
+    let value = event.target.value.trim()
+
+    if (value.length > 0) {
+      let newState = {}
+      newState[key] = value
+      this.setState(newState)
     }
   }
 
@@ -45,9 +64,36 @@ export default class NewNote extends React.Component {
         <FormGroup>
           <Select
             placeholder='Book'
-            value={this.state.bookGuid}
+            value={this.state.bookGuid || ''}
             options={bookOptions}
             onChange={this.selectBook.bind(this)}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <div className="row">
+            <div className="col-xs-6">
+              <TextInput
+                placeholder="Page"
+                value={this.state.pageNumber || ''}
+                onChange={this.setAttribute.bind(this, 'pageNumber')}
+              />
+            </div>
+            <div className="col-xs-6">
+              <TextInput
+                placeholder="Total"
+                value={this.state.pageCount || ''}
+                onChange={this.setAttribute.bind(this, 'pageCount')}
+              />
+            </div>
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <TextArea
+            value={this.state.content || ''}
+            onChange={this.setAttribute.bind(this, 'content')}
+            rows="5"
           />
         </FormGroup>
 

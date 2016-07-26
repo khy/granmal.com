@@ -3,7 +3,40 @@ import { showModal } from 'client/actions/modal'
 import { booksClient } from 'bookClub/client/clients'
 
 export function createNote(newNote) {
-  console.log('createNote')
+  return function (dispatch, getState) {
+    dispatch({ type: 'notes.create.send' })
+
+    const state = getState()
+
+    const book = state.app.books.records.find((book) => {
+      return book.guid === newNote.bookGuid
+    })
+
+    const edition = book.editions.find((edition) => {
+      return edition.pageCount === newNote.pageCount
+    })
+
+    let editionPromise
+
+    if (edition) {
+      editionPromise = Promise.resolve(edition)
+    } else {
+      editionPromise = booksClient(state).post('/editions', {
+        bookGuid: newNote.bookGuid,
+        pageCount: newNote.pageCount,
+      })
+    }
+
+    editionPromise.then((edition) => {
+      booksClient(state).post('/notes', {
+        editionGuid: edition.guid,
+        pageNumber: newNote.pageNumber,
+        content: newNote.content,
+      }).then((note) => {
+        dispatch({ type: 'notes.create.success', note })
+      })
+    })
+  }
 }
 
 export function fetchBooks() {
