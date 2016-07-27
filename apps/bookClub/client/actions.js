@@ -2,6 +2,12 @@ import { showModal } from 'client/actions/modal'
 
 import { booksClient } from 'bookClub/client/clients'
 
+export function createBook(newBook) {
+  return function (dispatch, getState) {
+    console.log('createBook', newBook)
+  }
+}
+
 export function createNote(newNote) {
   return function (dispatch, getState) {
     dispatch({ type: 'notes.create.send' })
@@ -36,6 +42,12 @@ export function createNote(newNote) {
         dispatch({ type: 'notes.create.success', note })
       })
     })
+  }
+}
+
+export function fetchAuthorsForModal(name) {
+  return function (dispatch, getState) {
+    console.log('fetchAuthorsForModal', name)
   }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import _isEmpty from 'lodash/isEmpty'
+import _pick from 'lodash/pick'
 
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
@@ -11,13 +12,10 @@ export default class NewNote extends React.Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
       currentModal: 'note'
     }
-  }
-
-  componentWillMount() {
-    this.props.onFetchBooks()
   }
 
   createNote() {
@@ -61,7 +59,7 @@ export default class NewNote extends React.Component {
   }
 
   render() {
-    const bookOptions = this.props.books.map((book) => {
+    const bookOptions = this.props.bookOptions.map((book) => {
       return { label: book.title, value: book.guid }
     })
 
@@ -117,7 +115,9 @@ export default class NewNote extends React.Component {
     if (this.state.currentModal === 'note') {
       modal = noteModal
     } else if (this.state.currentModal === 'book') {
-      modal = <NewBook
+      const bookProps = _pick(this.props, ['authorOptions', 'authorOptionsLoading', 'onFetchAuthors'])
+
+      modal = <NewBook {...bookProps}
         onCreate={this.props.onCreateBook}
         onClose={this.showNewNote.bind(this)}
       />
@@ -129,8 +129,18 @@ export default class NewNote extends React.Component {
 }
 
 NewNote.propTypes = {
-  books: React.PropTypes.arrayOf(React.PropTypes.object),
+  authorOptions: React.PropTypes.arrayOf(React.PropTypes.object),
+  authorOptionsLoading: React.PropTypes.bool.isRequired,
+  bookOptions: React.PropTypes.arrayOf(React.PropTypes.object),
+  bookOptionsLoading: React.PropTypes.bool.isRequired,
   onCreate: React.PropTypes.func.isRequired,
+  onCreateBook: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
-  onFetchBooks: React.PropTypes.func.isRequired
+  onFetchAuthors: React.PropTypes.func.isRequired,
+  onFetchBooks: React.PropTypes.func.isRequired,
+}
+
+NewNote.defaultProps = {
+  authorOptionsLoading: false,
+  bookOptionsLoading: false,
 }

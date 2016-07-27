@@ -11,6 +11,16 @@ const initialState = {
     isInvalidated: true,
     records: []
   },
+  newBook: {
+    authors: {
+      isPending: false,
+      records: [],
+    },
+    books: {
+      isPending: false,
+      records: [],
+    },
+  },
   index: {
     main: {
       isPending: false,

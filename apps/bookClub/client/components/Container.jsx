@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
-import _merge from 'lodash/merge'
-import _pick from 'lodash/pick'
 
 import { showAdHocAlert } from 'client/actions/alert'
 import { logIn } from 'client/actions/auth'
@@ -12,7 +10,9 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
-import { createNote, fetchBooks, showNewNoteModal } from 'bookClub/client/actions'
+import {
+  createBook, createNote, fetchAuthorsForModal, fetchBooks, showNewNoteModal,
+} from 'bookClub/client/actions'
 
 class Container extends React.Component {
 
@@ -27,9 +27,14 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name === 'NewNote') {
         modal = <NewNote
-          books={this.props.books}
+          authorOptions={this.props.newBook.authors.records}
+          authorOptionLoading={this.props.newBook.authors.isPending}
+          bookOptions={this.props.newBook.books.records}
+          bookOptionLoading={this.props.newBook.books.isPending}
           onCreate={this.props.onCreateNote}
+          onCreateBook={this.props.onCreateBook}
           onClose={this.props.onHideModal}
+          onFetchAuthors={this.props.onFetchAuthors}
           onFetchBooks={this.props.onFetchBooks}
         />
       } else if (this.props.modal.name === 'LogIn') {
@@ -70,14 +75,18 @@ class Container extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return _merge(_pick(state, ['alert', 'modal']), {
-    books: _get(state, 'app.books.records', [])
-  })
+  return {
+    alert: state.alert,
+    newBook: _get(state, 'app.newBook'),
+    modal: state.modal
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onCreateBook: (newBook) => { dispatch(createBook(newBook)) },
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
+    onFetchAuthors: (name) => { dispatch(fetchAuthorsForModal(name)) },
     onFetchBooks: () => { dispatch(fetchBooks()) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
