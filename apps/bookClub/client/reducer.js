@@ -59,6 +59,17 @@ function app(state = initialState, action) {
         notes: action.notes,
       }}}, state)
 
+    case 'newBookAuthors.fetch.send':
+      return u({
+        newBook: { authors: { isPending: true } }
+      }, state)
+
+    case 'newBookAuthors.fetch.success':
+      return u({ newBook: { authors: {
+        isPending: false,
+        records: action.authors,
+      }}}, state)
+
     default:
       return state
 

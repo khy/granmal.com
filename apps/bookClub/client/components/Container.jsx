@@ -28,9 +28,9 @@ class Container extends React.Component {
       } else if (this.props.modal.name === 'NewNote') {
         modal = <NewNote
           authorOptions={this.props.newBook.authors.records}
-          authorOptionLoading={this.props.newBook.authors.isPending}
+          authorOptionsLoading={this.props.newBook.authors.isPending}
           bookOptions={this.props.newBook.books.records}
-          bookOptionLoading={this.props.newBook.books.isPending}
+          bookOptionsLoading={this.props.newBook.books.isPending}
           onCreate={this.props.onCreateNote}
           onCreateBook={this.props.onCreateBook}
           onClose={this.props.onHideModal}

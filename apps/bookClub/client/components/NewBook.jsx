@@ -43,7 +43,9 @@ export default class NewBook extends React.Component {
   }
 
   render() {
-    const authorOptions = []
+    const authorOptions = this.props.authorOptions.map((author) => {
+      return { label: author.name, value: author.guid }
+    })
 
     return (
       <FormModal
@@ -66,7 +68,8 @@ export default class NewBook extends React.Component {
             placeholder='Author'
             value={this.state.authorGuid || ''}
             onChange={this.selectAuthor.bind(this)}
-            options={this.props.authorOptions}
+            onInputChange={this.props.onFetchAuthors}
+            options={authorOptions}
             isLoading={this.props.authorOptionsLoading}
           />
         </FormGroup>

@@ -47,7 +47,15 @@ export function createNote(newNote) {
 
 export function fetchAuthorsForModal(name) {
   return function (dispatch, getState) {
-    console.log('fetchAuthorsForModal', name)
+    const state = getState()
+
+    if (!state.app.newBook.authors.isPending) {
+      dispatch({ type: 'newBookAuthors.fetch.send' })
+
+      booksClient(state).get(`/authors?name=${name}`).then((authors) => {
+        dispatch({ type: 'newBookAuthors.fetch.success', authors })
+      })
+    }
   }
 }
 
