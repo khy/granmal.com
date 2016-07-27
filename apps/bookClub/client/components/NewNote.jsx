@@ -5,11 +5,15 @@ import _isEmpty from 'lodash/isEmpty'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
+import NewBook from 'bookClub/client/components/NewBook'
+
 export default class NewNote extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      currentModal: 'note'
+    }
   }
 
   componentWillMount() {
@@ -47,12 +51,21 @@ export default class NewNote extends React.Component {
     }
   }
 
+  showNewBook(event) {
+    event.preventDefault();
+    this.setState({currentModal: 'book'})
+  }
+
+  showNewNote() {
+    this.setState({currentModal: 'note'})
+  }
+
   render() {
     const bookOptions = this.props.books.map((book) => {
       return { label: book.title, value: book.guid }
     })
 
-    return (
+    const noteModal = (
       <FormModal
         title='New Note'
         submitText='Add'
@@ -60,7 +73,6 @@ export default class NewNote extends React.Component {
         onSubmit={this.createNote.bind(this)}
         onCancel={this.props.onClose}
       >
-
         <FormGroup>
           <Select
             placeholder='Book'
@@ -68,6 +80,7 @@ export default class NewNote extends React.Component {
             options={bookOptions}
             onChange={this.selectBook.bind(this)}
           />
+          <a href="#" onClick={this.showNewBook.bind(this)}>New Book</a>
         </FormGroup>
 
         <FormGroup>
@@ -96,9 +109,21 @@ export default class NewNote extends React.Component {
             rows="5"
           />
         </FormGroup>
-
       </FormModal>
     )
+
+    let modal
+
+    if (this.state.currentModal === 'note') {
+      modal = noteModal
+    } else if (this.state.currentModal === 'book') {
+      modal = <NewBook
+        onCreate={this.props.onCreateBook}
+        onClose={this.showNewNote.bind(this)}
+      />
+    }
+
+    return modal
   }
 
 }
