@@ -14,7 +14,7 @@ export function createNote(newNote) {
 
     const state = getState()
 
-    const book = state.app.books.records.find((book) => {
+    const book = state.app.newNote.books.records.find((book) => {
       return book.guid === newNote.bookGuid
     })
 
@@ -45,30 +45,29 @@ export function createNote(newNote) {
   }
 }
 
-export function fetchAuthorsForModal(name) {
+export function fetchAuthorsForNewBook(name) {
   return function (dispatch, getState) {
     const state = getState()
 
     if (!state.app.newBook.authors.isPending) {
-      dispatch({ type: 'newBookAuthors.fetch.send' })
+      dispatch({ type: 'newBook.authors.fetch.send' })
 
       booksClient(state).get(`/authors?name=${name}`).then((authors) => {
-        dispatch({ type: 'newBookAuthors.fetch.success', authors })
+        dispatch({ type: 'newBook.authors.fetch.success', authors })
       })
     }
   }
 }
 
-export function fetchBooks() {
+export function fetchBooksForNewNote(title) {
   return function (dispatch, getState) {
     const state = getState()
-    const books = state.app.books
 
-    if (books.isInvalidated && !books.isPending) {
-      dispatch({ type: 'books.fetch.send' })
+    if (!state.app.newNote.books.isPending) {
+      dispatch({ type: 'newNote.books.fetch.send' })
 
-      booksClient(state).get('/books').then((books) => {
-        dispatch({ type: 'books.fetch.success', books })
+      booksClient(state).get(`/books?title=${title}`).then((books) => {
+        dispatch({ type: 'newNote.books.fetch.success', books })
       })
     }
   }

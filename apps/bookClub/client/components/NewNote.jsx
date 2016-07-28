@@ -75,8 +75,10 @@ export default class NewNote extends React.Component {
           <Select
             placeholder='Book'
             value={this.state.bookGuid || ''}
-            options={bookOptions}
             onChange={this.selectBook.bind(this)}
+            onInputChange={this.props.onFetchBooks}
+            options={bookOptions}
+            isLoading={this.props.bookOptionsLoading}
           />
           <a href="#" onClick={this.showNewBook.bind(this)}>New Book</a>
         </FormGroup>

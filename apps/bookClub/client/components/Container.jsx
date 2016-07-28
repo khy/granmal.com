@@ -11,7 +11,8 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
 import {
-  createBook, createNote, fetchAuthorsForModal, fetchBooks, showNewNoteModal,
+  createBook, createNote, fetchAuthorsForNewBook, fetchBooksForNewNote,
+  showNewNoteModal,
 } from 'bookClub/client/actions'
 
 class Container extends React.Component {
@@ -29,8 +30,8 @@ class Container extends React.Component {
         modal = <NewNote
           authorOptions={this.props.newBook.authors.records}
           authorOptionsLoading={this.props.newBook.authors.isPending}
-          bookOptions={this.props.newBook.books.records}
-          bookOptionsLoading={this.props.newBook.books.isPending}
+          bookOptions={this.props.newNote.books.records}
+          bookOptionsLoading={this.props.newNote.books.isPending}
           onCreate={this.props.onCreateNote}
           onCreateBook={this.props.onCreateBook}
           onClose={this.props.onHideModal}
@@ -77,8 +78,9 @@ class Container extends React.Component {
 const mapStateToProps = (state) => {
   return {
     alert: state.alert,
+    modal: state.modal,
     newBook: _get(state, 'app.newBook'),
-    modal: state.modal
+    newNote: _get(state, 'app.newNote'),
   }
 }
 
@@ -86,8 +88,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onCreateBook: (newBook) => { dispatch(createBook(newBook)) },
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
-    onFetchAuthors: (name) => { dispatch(fetchAuthorsForModal(name)) },
-    onFetchBooks: () => { dispatch(fetchBooks()) },
+    onFetchAuthors: (name) => { dispatch(fetchAuthorsForNewBook(name)) },
+    onFetchBooks: (title) => { dispatch(fetchBooksForNewNote(title)) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
       dispatch(logIn(email, password)).then(() => {
