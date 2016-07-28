@@ -67,15 +67,7 @@ export default class NewNote extends React.Component {
   }
 
   render() {
-    let _bookOptions
-
-    if (this.props.selectedBook) {
-      _bookOptions = [this.props.selectedBook]
-    } else {
-      _bookOptions = this.props.bookOptions
-    }
-
-    const bookOptions = _bookOptions.map((book) => {
+    const bookOptions = this.props.bookOptions.map((book) => {
       return { label: book.title, value: book.guid }
     })
 

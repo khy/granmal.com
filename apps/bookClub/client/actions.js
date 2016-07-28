@@ -2,9 +2,9 @@ import { showModal } from 'client/actions/modal'
 
 import { booksClient } from 'bookClub/client/clients'
 
-export function createBook(newBook) {
+export function createBookForNewNote(newBook) {
   return function (dispatch, getState) {
-    dispatch({ type: 'books.create.send' })
+    dispatch({ type: 'newNote.books.create.send' })
 
     const state = getState()
 
@@ -16,7 +16,7 @@ export function createBook(newBook) {
       authorGuid: author.guid,
       title: newBook.title,
     }).then((book) => {
-      dispatch({ type: 'books.create.success', book })
+      dispatch({ type: 'newNote.books.create.success', book })
     })
   }
 }

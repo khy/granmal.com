@@ -34,19 +34,6 @@ function app(state = initialState, action) {
 
   switch (action.type) {
 
-    case 'books.create.send':
-      return u({
-        newBook: { isPending: true }
-      }, state)
-
-    case 'books.create.success':
-      return u({
-        newBook: {
-          isPending: false,
-          lastCreated: action.book,
-        },
-      }, state)
-
     case 'indexMain.fetch.send':
       return u({
         index: { main: { isPending: true } }
@@ -70,6 +57,23 @@ function app(state = initialState, action) {
         records: action.authors,
       }}}, state)
 
+    case 'newNote.books.create.send':
+      return u({
+        newBook: { isPending: true }
+      }, state)
+
+    case 'newNote.books.create.success':
+      return u({
+        newBook: { isPending: false },
+        newNote: {
+          selectedBook: action.book,
+          books: {
+            isPending: false,
+            records: [action.book],
+          }
+        }
+      }, state)
+
     case 'newNote.books.fetch.send':
       return u({
         newNote: { books: { isPending: true } }
@@ -78,7 +82,6 @@ function app(state = initialState, action) {
     case 'newNote.books.fetch.success':
       return u({ newNote: { books: {
         isPending: false,
-        isInvalidated: false,
         records: action.books,
       }}}, state)
 

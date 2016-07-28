@@ -11,7 +11,7 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
 import {
-  createBook, createNote, fetchAuthorsForNewBook, fetchBooksForNewNote,
+  createBookForNewNote, createNote, fetchAuthorsForNewBook, fetchBooksForNewNote,
   showNewNoteModal,
 } from 'bookClub/client/actions'
 
@@ -38,7 +38,7 @@ class Container extends React.Component {
           onClose={this.props.onHideModal}
           onFetchAuthors={this.props.onFetchAuthors}
           onFetchBooks={this.props.onFetchBooks}
-          selectedBook={_get(this.props, 'newBook.lastCreated')}
+          selectedBook={this.props.newNote.selectedBook}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateBook: (newBook) => { dispatch(createBook(newBook)) },
+    onCreateBook: (newBook) => { dispatch(createBookForNewNote(newBook)) },
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
     onFetchAuthors: (name) => { dispatch(fetchAuthorsForNewBook(name)) },
     onFetchBooks: (title) => { dispatch(fetchBooksForNewNote(title)) },
