@@ -15,8 +15,8 @@ export function createBook(newBook) {
     booksClient(state).post('/books', {
       authorGuid: author.guid,
       title: newBook.title,
-    }).then((author) => {
-      dispatch({ type: 'books.create.success', author })
+    }).then((book) => {
+      dispatch({ type: 'books.create.success', book })
     })
   }
 }

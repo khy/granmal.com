@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 
@@ -14,7 +15,14 @@ export default class NewNote extends React.Component {
     super(props)
 
     this.state = {
-      currentModal: 'note'
+      bookGuid: _get(props, 'selectedBook.guid')
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.selectedBook) {
+      this.removeOverlay()
+      this.setState({bookGuid: newProps.selectedBook.guid})
     }
   }
 
@@ -49,17 +57,25 @@ export default class NewNote extends React.Component {
     }
   }
 
-  showNewBook(event) {
+  overlayNewBook(event) {
     event.preventDefault();
-    this.setState({currentModal: 'book'})
+    this.setState({overlay: 'newBook'})
   }
 
-  showNewNote() {
-    this.setState({currentModal: 'note'})
+  removeOverlay() {
+    this.setState({overlay: undefined})
   }
 
   render() {
-    const bookOptions = this.props.bookOptions.map((book) => {
+    let _bookOptions
+
+    if (this.props.selectedBook) {
+      _bookOptions = [this.props.selectedBook]
+    } else {
+      _bookOptions = this.props.bookOptions
+    }
+
+    const bookOptions = _bookOptions.map((book) => {
       return { label: book.title, value: book.guid }
     })
 
@@ -80,7 +96,7 @@ export default class NewNote extends React.Component {
             options={bookOptions}
             isLoading={this.props.bookOptionsLoading}
           />
-          <a href="#" onClick={this.showNewBook.bind(this)}>New Book</a>
+          <a href="#" onClick={this.overlayNewBook.bind(this)}>New Book</a>
         </FormGroup>
 
         <FormGroup>
@@ -114,17 +130,17 @@ export default class NewNote extends React.Component {
 
     let modal
 
-    if (this.state.currentModal === 'note') {
-      modal = noteModal
-    } else if (this.state.currentModal === 'book') {
+    if (this.state.overlay === 'newBook') {
       const newBookProps = _pick(this.props, [
         'authorOptions', 'authorOptionsLoading', 'disabled', 'onFetchAuthors'
       ])
 
       modal = <NewBook {...newBookProps}
         onCreate={this.props.onCreateBook}
-        onClose={this.showNewNote.bind(this)}
+        onClose={this.removeOverlay.bind(this)}
       />
+    } else {
+      modal = noteModal
     }
 
     return modal
@@ -143,6 +159,7 @@ NewNote.propTypes = {
   onClose: React.PropTypes.func.isRequired,
   onFetchAuthors: React.PropTypes.func.isRequired,
   onFetchBooks: React.PropTypes.func.isRequired,
+  selectedBook: React.PropTypes.object,
 }
 
 NewNote.defaultProps = {
@@ -150,5 +167,5 @@ NewNote.defaultProps = {
   authorOptionsLoading: false,
   bookOptions: [],
   bookOptionsLoading: false,
-  disabled: false
+  disabled: false,
 }

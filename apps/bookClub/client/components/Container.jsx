@@ -38,6 +38,7 @@ class Container extends React.Component {
           onClose={this.props.onHideModal}
           onFetchAuthors={this.props.onFetchAuthors}
           onFetchBooks={this.props.onFetchBooks}
+          selectedBook={_get(this.props, 'newBook.lastCreated')}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
