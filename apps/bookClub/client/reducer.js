@@ -7,12 +7,14 @@ import modal from 'client/reducers/modal'
 
 const initialState = {
   newBook: {
+    isPending: false,
     authors: {
       isPending: false,
       records: [],
     },
   },
   newNote: {
+    isPending: false,
     books: {
       isPending: false,
       records: [],
@@ -31,6 +33,19 @@ const initialState = {
 function app(state = initialState, action) {
 
   switch (action.type) {
+
+    case 'books.create.send':
+      return u({
+        newBook: { isPending: true }
+      }, state)
+
+    case 'books.create.success':
+      return u({
+        newBook: {
+          isPending: false,
+          lastCreated: action.book,
+        },
+      }, state)
 
     case 'indexMain.fetch.send':
       return u({

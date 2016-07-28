@@ -4,7 +4,20 @@ import { booksClient } from 'bookClub/client/clients'
 
 export function createBook(newBook) {
   return function (dispatch, getState) {
-    console.log('createBook', newBook)
+    dispatch({ type: 'books.create.send' })
+
+    const state = getState()
+
+    const author = state.app.newBook.authors.records.find((author) => {
+      return author.guid === newBook.authorGuid
+    })
+
+    booksClient(state).post('/books', {
+      authorGuid: author.guid,
+      title: newBook.title,
+    }).then((author) => {
+      dispatch({ type: 'books.create.success', author })
+    })
   }
 }
 

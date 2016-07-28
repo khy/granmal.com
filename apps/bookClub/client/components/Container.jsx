@@ -32,6 +32,7 @@ class Container extends React.Component {
           authorOptionsLoading={this.props.newBook.authors.isPending}
           bookOptions={this.props.newNote.books.records}
           bookOptionsLoading={this.props.newNote.books.isPending}
+          disabled={this.props.newBook.isPending || this.props.newNote.isPending}
           onCreate={this.props.onCreateNote}
           onCreateBook={this.props.onCreateBook}
           onClose={this.props.onHideModal}

@@ -117,9 +117,11 @@ export default class NewNote extends React.Component {
     if (this.state.currentModal === 'note') {
       modal = noteModal
     } else if (this.state.currentModal === 'book') {
-      const bookProps = _pick(this.props, ['authorOptions', 'authorOptionsLoading', 'onFetchAuthors'])
+      const newBookProps = _pick(this.props, [
+        'authorOptions', 'authorOptionsLoading', 'disabled', 'onFetchAuthors'
+      ])
 
-      modal = <NewBook {...bookProps}
+      modal = <NewBook {...newBookProps}
         onCreate={this.props.onCreateBook}
         onClose={this.showNewNote.bind(this)}
       />
@@ -132,9 +134,10 @@ export default class NewNote extends React.Component {
 
 NewNote.propTypes = {
   authorOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  authorOptionsLoading: React.PropTypes.bool.isRequired,
+  authorOptionsLoading: React.PropTypes.bool,
   bookOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  bookOptionsLoading: React.PropTypes.bool.isRequired,
+  bookOptionsLoading: React.PropTypes.bool,
+  disabled: React.PropTypes.bool,
   onCreate: React.PropTypes.func.isRequired,
   onCreateBook: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
@@ -143,6 +146,9 @@ NewNote.propTypes = {
 }
 
 NewNote.defaultProps = {
+  authorOptions: [],
   authorOptionsLoading: false,
+  bookOptions: [],
   bookOptionsLoading: false,
+  disabled: false
 }

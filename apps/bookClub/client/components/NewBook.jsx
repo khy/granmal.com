@@ -81,12 +81,15 @@ export default class NewBook extends React.Component {
 
 NewBook.propTypes = {
   authorOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  authorOptionsLoading: React.PropTypes.bool.isRequired,
+  authorOptionsLoading: React.PropTypes.bool,
+  disabled: React.PropTypes.bool,
   onCreate: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
   onFetchAuthors: React.PropTypes.func.isRequired,
 }
 
 NewBook.defaultProps = {
+  authorOptions: [],
   authorOptionsLoading: false,
+  disabled: false,
 }
