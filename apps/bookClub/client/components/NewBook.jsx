@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
 
 import { FormModal } from 'client/components/bootstrap/modal'
@@ -9,6 +10,10 @@ export default class NewBook extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.debouncedOnFetchAuthors = _debounce(this.props.onFetchAuthors, 300, {
+      maxWait: 800
+    })
 
     this.state = {
       title: props.initialTitle,
@@ -55,7 +60,7 @@ export default class NewBook extends React.Component {
   }
 
   handleSelectInput(name) {
-    this.props.onFetchAuthors(name)
+    this.debouncedOnFetchAuthors(name)
     this.setState({selectInput: name})
   }
 

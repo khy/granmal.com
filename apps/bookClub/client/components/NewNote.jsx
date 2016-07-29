@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import _debounce from 'lodash/debounce'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
@@ -13,6 +14,10 @@ export default class NewNote extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.debouncedOnFetchBooks = _debounce(this.props.onFetchBooks, 300, {
+      maxWait: 800
+    })
 
     this.state = {
       bookGuid: _get(props, 'selectedBook.guid')
@@ -74,7 +79,7 @@ export default class NewNote extends React.Component {
   }
 
   handleSelectInput(title) {
-    this.props.onFetchBooks(title)
+    this.debouncedOnFetchBooks(title)
     this.setState({selectInput: title})
   }
 

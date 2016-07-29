@@ -74,7 +74,7 @@ export function fetchAuthorsForNewBook(name) {
   return function (dispatch, getState) {
     const state = getState()
 
-    if (!state.app.newBook.authors.isPending) {
+    if (name && !state.app.newBook.authors.isPending) {
       dispatch({ type: 'newBook.authors.fetch.send' })
 
       booksClient(state).get(`/authors?name=${name}`).then((authors) => {
@@ -88,7 +88,7 @@ export function fetchBooksForNewNote(title) {
   return function (dispatch, getState) {
     const state = getState()
 
-    if (!state.app.newNote.books.isPending) {
+    if (title && !state.app.newNote.books.isPending) {
       dispatch({ type: 'newNote.books.fetch.send' })
 
       booksClient(state).get(`/books?title=${title}`).then((books) => {
