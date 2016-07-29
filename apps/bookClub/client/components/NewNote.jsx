@@ -20,7 +20,7 @@ export default class NewNote extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.selectedBook) {
+    if (newProps.selectedBook && newProps.selectedBook !== this.props.selectedBook) {
       this.removeOverlay()
       this.setState({bookGuid: newProps.selectedBook.guid})
     }

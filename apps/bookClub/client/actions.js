@@ -8,15 +8,27 @@ export function createBookForNewNote(newBook) {
 
     const state = getState()
 
-    const author = state.app.newBook.authors.records.find((author) => {
-      return author.guid === newBook.authorGuid
-    })
+    let authorPromise
 
-    booksClient(state).post('/books', {
-      authorGuid: author.guid,
-      title: newBook.title,
-    }).then((book) => {
-      dispatch({ type: 'newNote.books.create.success', book })
+    if (newBook.authorGuid) {
+      const author = state.app.newBook.authors.records.find((author) => {
+        return author.guid === newBook.authorGuid
+      })
+
+      authorPromise = Promise.resolve(author)
+    } else {
+      authorPromise = booksClient(state).post('/authors', {
+        name: newBook.authorName,
+      })
+    }
+
+    authorPromise.then((author) => {
+      booksClient(state).post('/books', {
+        authorGuid: author.guid,
+        title: newBook.title,
+      }).then((book) => {
+        dispatch({ type: 'newNote.books.create.success', book })
+      })
     })
   }
 }

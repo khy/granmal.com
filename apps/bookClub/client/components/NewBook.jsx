@@ -18,14 +18,19 @@ export default class NewBook extends React.Component {
   createBook() {
     var errors = {}
 
-    if (this.state.title.length < 1) {
+    if (!this.state.title) {
       errors.title = 'Required'
+    }
+
+    if (!this.state.authorGuid && !this.state.authorName) {
+      errors.author = 'Required'
     }
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
         title: this.state.title,
-        authorGuid: this.state.authorGuid
+        authorGuid: this.state.authorGuid,
+        authorName: this.state.authorName,
       })
     } else {
       this.setState({ errors })
@@ -38,14 +43,29 @@ export default class NewBook extends React.Component {
 
   selectAuthor(option) {
     if (option) {
-      this.setState({authorGuid: option.value})
+      this.setState({selectValue: option.value})
+
+      if (option.value === 'new') {
+        this.setState({authorName: option.label, authorGuid: undefined})
+      } else {
+        this.setState({authorGuid: option.value, authorName: undefined})
+      }
     }
+  }
+
+  handleSelectInput(name) {
+    this.props.onFetchAuthors(name)
+    this.setState({selectInput: name})
   }
 
   render() {
     const authorOptions = this.props.authorOptions.map((author) => {
       return { label: author.name, value: author.guid }
     })
+
+    if (this.state.selectInput) {
+      authorOptions.push({label: this.state.selectInput, value: 'new'})
+    }
 
     return (
       <FormModal
@@ -66,9 +86,9 @@ export default class NewBook extends React.Component {
         <FormGroup error={this.state.errors.author}>
           <Select
             placeholder='Author'
-            value={this.state.authorGuid || ''}
+            value={this.state.selectValue || ''}
             onChange={this.selectAuthor.bind(this)}
-            onInputChange={this.props.onFetchAuthors}
+            onInputChange={this.handleSelectInput.bind(this)}
             options={authorOptions}
             isLoading={this.props.authorOptionsLoading}
           />
