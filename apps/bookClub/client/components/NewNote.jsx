@@ -54,13 +54,9 @@ export default class NewNote extends React.Component {
   }
 
   setAttribute(key, event) {
-    let value = event.target.value.trim()
-
-    if (value.length > 0) {
-      let newState = {}
-      newState[key] = value
-      this.setState(newState)
-    }
+    let newState = {}
+    newState[key] = event.target.value
+    this.setState(newState)
   }
 
   removeOverlay() {
