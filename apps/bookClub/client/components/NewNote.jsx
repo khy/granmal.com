@@ -69,7 +69,6 @@ export default class NewNote extends React.Component {
 
   handleSelectChange(option) {
     if (option) {
-      console.log(option.value)
       if (option.value === 'new') {
         this.setState({overlay: 'newBook'})
       } else {

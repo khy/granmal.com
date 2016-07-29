@@ -22,21 +22,28 @@ export default class NewBook extends React.Component {
   }
 
   createBook() {
-    var errors = {}
+    let errors = {}
+    let authorGuid, authorName
+
+    if (this.state.selectValue === 'new') {
+      authorName = this.state.selectInput
+    } else {
+      authorGuid = this.state.selectValue
+    }
 
     if (!this.state.title) {
       errors.title = 'Required'
     }
 
-    if (!this.state.authorGuid && !this.state.authorName) {
+    if (!authorGuid && !authorName) {
       errors.author = 'Required'
     }
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
         title: this.state.title,
-        authorGuid: this.state.authorGuid,
-        authorName: this.state.authorName,
+        authorGuid: authorGuid,
+        authorName: authorName,
       })
     } else {
       this.setState({ errors })
@@ -50,12 +57,6 @@ export default class NewBook extends React.Component {
   selectAuthor(option) {
     if (option) {
       this.setState({selectValue: option.value})
-
-      if (option.value === 'new') {
-        this.setState({authorName: option.label, authorGuid: undefined})
-      } else {
-        this.setState({authorGuid: option.value, authorName: undefined})
-      }
     }
   }
 
