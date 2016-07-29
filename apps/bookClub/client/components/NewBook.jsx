@@ -11,7 +11,8 @@ export default class NewBook extends React.Component {
     super(props)
 
     this.state = {
-      errors: {}
+      title: props.initialTitle,
+      errors: {},
     }
   }
 
@@ -64,7 +65,7 @@ export default class NewBook extends React.Component {
     })
 
     if (this.state.selectInput) {
-      authorOptions.push({label: this.state.selectInput, value: 'new'})
+      authorOptions.push({label: `Add "${this.state.selectInput}"`, value: 'new'})
     }
 
     return (
@@ -103,6 +104,7 @@ NewBook.propTypes = {
   authorOptions: React.PropTypes.arrayOf(React.PropTypes.object),
   authorOptionsLoading: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
+  initialTitle: React.PropTypes.string,
   onCreate: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
   onFetchAuthors: React.PropTypes.func.isRequired,

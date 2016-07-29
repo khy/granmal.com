@@ -22,7 +22,7 @@ export default class NewNote extends React.Component {
   componentWillReceiveProps(newProps) {
     if (newProps.selectedBook && newProps.selectedBook !== this.props.selectedBook) {
       this.removeOverlay()
-      this.setState({bookGuid: newProps.selectedBook.guid})
+      this.selectBook(newProps.selectedBook.guid)
     }
   }
 
@@ -41,10 +41,11 @@ export default class NewNote extends React.Component {
     }
   }
 
-  selectBook(option) {
-    if (option) {
-      this.setState({bookGuid: option.value})
-    }
+  selectBook(guid) {
+    this.setState({
+      bookGuid: guid,
+      selectInput: undefined,
+    })
   }
 
   setAttribute(key, event) {
@@ -57,19 +58,34 @@ export default class NewNote extends React.Component {
     }
   }
 
-  overlayNewBook(event) {
-    event.preventDefault();
-    this.setState({overlay: 'newBook'})
-  }
-
   removeOverlay() {
     this.setState({overlay: undefined})
+  }
+
+  handleSelectChange(option) {
+    if (option) {
+      console.log(option.value)
+      if (option.value === 'new') {
+        this.setState({overlay: 'newBook'})
+      } else {
+        this.selectBook(option.value)
+      }
+    }
+  }
+
+  handleSelectInput(title) {
+    this.props.onFetchBooks(title)
+    this.setState({selectInput: title})
   }
 
   render() {
     const bookOptions = this.props.bookOptions.map((book) => {
       return { label: book.title, value: book.guid }
     })
+
+    if (this.state.selectInput) {
+      bookOptions.push({label: `Add "${this.state.selectInput}"`, value: 'new'})
+    }
 
     const noteModal = (
       <FormModal
@@ -83,12 +99,11 @@ export default class NewNote extends React.Component {
           <Select
             placeholder='Book'
             value={this.state.bookGuid || ''}
-            onChange={this.selectBook.bind(this)}
-            onInputChange={this.props.onFetchBooks}
+            onChange={this.handleSelectChange.bind(this)}
+            onInputChange={this.handleSelectInput.bind(this)}
             options={bookOptions}
             isLoading={this.props.bookOptionsLoading}
           />
-          <a href="#" onClick={this.overlayNewBook.bind(this)}>New Book</a>
         </FormGroup>
 
         <FormGroup>
@@ -128,6 +143,7 @@ export default class NewNote extends React.Component {
       ])
 
       modal = <NewBook {...newBookProps}
+        initialTitle={this.state.selectInput}
         onCreate={this.props.onCreateBook}
         onClose={this.removeOverlay.bind(this)}
       />
