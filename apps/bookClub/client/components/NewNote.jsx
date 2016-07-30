@@ -80,11 +80,27 @@ export default class NewNote extends React.Component {
 
   render() {
     const bookOptions = this.props.bookOptions.map((book) => {
-      return { label: book.title, value: book.guid }
+      return {
+        label: book.title,
+        authorName: book.author.name,
+        value: book.guid,
+      }
     })
 
     if (this.state.selectInput) {
-      bookOptions.push({label: `Add "${this.state.selectInput}"`, value: 'new'})
+      bookOptions.push({
+        label: `Add "${this.state.selectInput}"`,
+        input: this.state.selectInput,
+        value: 'new',
+      })
+    }
+
+    const selectRenderer = (option) => {
+      if (option.input) {
+        return <span>{option.label}</span>
+      } else {
+        return <span>{option.label} by {option.authorName}</span>
+      }
     }
 
     const noteModal = (
@@ -103,6 +119,8 @@ export default class NewNote extends React.Component {
             onInputChange={this.handleSelectInput.bind(this)}
             options={bookOptions}
             isLoading={this.props.bookOptionsLoading}
+            optionRenderer={selectRenderer}
+            valueRenderer={selectRenderer}
           />
         </FormGroup>
 
