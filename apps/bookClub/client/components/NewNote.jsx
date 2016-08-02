@@ -5,6 +5,7 @@ import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 
+import { TextEditor } from 'client/components/TextEditor'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
@@ -143,13 +144,7 @@ export default class NewNote extends React.Component {
           </div>
         </FormGroup>
 
-        <FormGroup>
-          <TextArea
-            value={this.state.content || ''}
-            onChange={this.setAttribute.bind(this, 'content')}
-            rows="5"
-          />
-        </FormGroup>
+        <TextEditor />
       </FormModal>
     )
 
