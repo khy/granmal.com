@@ -8,8 +8,10 @@ export class TextEditor extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {editorState: EditorState.createEmpty()}
-    this.onChange = (editorState) => this.setState({editorState})
+
+    this.state = {
+      editorState: EditorState.createEmpty()
+    }
   }
 
   handleKeyCommand(command) {
@@ -23,12 +25,20 @@ export class TextEditor extends React.Component {
     return false
   }
 
-  _onBoldClick() {
+  onChange(editorState) {
+    this.setState({ editorState })
+  }
+
+  onBoldClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
-  _onItalicClick() {
+  onItalicClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
+  }
+
+  onBlockquote() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'blockquote'));
   }
 
   render() {
@@ -37,15 +47,16 @@ export class TextEditor extends React.Component {
     return (
       <div className="text-editor">
         <div className="btn-group btn-group-sm" role="group">
-          <button type="button" className="btn btn-secondary" onClick={this._onBoldClick.bind(this)}>Bold</button>
-          <button type="button" className="btn btn-secondary" onClick={this._onItalicClick.bind(this)}>Italic</button>
+          <button type="button" className="btn btn-secondary" onClick={this.onBoldClick.bind(this)}>Bold</button>
+          <button type="button" className="btn btn-secondary" onClick={this.onItalicClick.bind(this)}>Italic</button>
+          <button type="button" className="btn btn-secondary" onClick={this.onBlockquote.bind(this)}>Blockquote</button>
         </div>
 
         <div className="form-control">
           <Editor
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand.bind(this)}
-            onChange={this.onChange}
+            onChange={this.onChange.bind(this)}
           />
         </div>
       </div>

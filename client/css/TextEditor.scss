@@ -1,8 +1,13 @@
 @import "../../node_modules/draft-js/dist/Draft";
 @import "../../node_modules/bootstrap/scss/_variables";
+@import "_markdown";
 
 .text-editor {
   .btn-group {
     margin-bottom: 0.5em;
+  }
+
+  .form-control {
+    @include markdown-container();
   }
 }

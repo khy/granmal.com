@@ -1,0 +1,12 @@
+@import "../../node_modules/bootstrap/scss/_variables";
+
+@mixin markdown-container() {
+  blockquote {
+    padding: ($spacer / 2) $spacer;
+    border-left: .25rem solid $blockquote-border-color;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

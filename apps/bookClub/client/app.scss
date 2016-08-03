@@ -1,16 +1,10 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap-flex";
 @import "../../../node_modules/react-select/scss/default";
-@import "../../../client/css/base.scss";
+@import "../../../client/css/base";
+@import "../../../client/css/_markdown";
 
 .navbar { margin-bottom: 1rem; }
 
 .note-card {
-  blockquote {
-    padding: ($spacer / 2) $spacer;
-    border-left: .25rem solid $blockquote-border-color;
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
+  @include markdown-container();
 }
