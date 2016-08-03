@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, browserHistory } from 'react-router'
 import _get from 'lodash/get'
 
+import { Icon } from 'client/components/fontAwesome'
 import { formatHaikuListDate } from 'shiki/client/lib/date'
 
 export default class HaikuCard extends React.Component {
@@ -35,16 +36,14 @@ export default class HaikuCard extends React.Component {
     if (haiku.likedByUser) {
       likeLink = (
         <a href="#" onClick={this.unlike.bind(this, haiku)} className="card-link">
-          <i className="fa fa-heart card-link-action" aria-hidden="true"></i>
-          <span className="sr-only card-link-action">Like</span>
+          <Icon name="heart" srText="Like" className="card-link-action" />
           <span>{`(${likeCount})`}</span>
         </a>
       )
     } else {
       likeLink = (
         <a href="#" onClick={this.like.bind(this, haiku)} className="card-link">
-          <i className="fa fa-heart-o card-link-action" aria-hidden="true"></i>
-          <span className="sr-only card-link-action">Like</span>
+          <Icon name="heart-o" srText="Unlike" className="card-link-action" />
           <span>{`(${likeCount})`}</span>
         </a>
       )
@@ -72,8 +71,7 @@ export default class HaikuCard extends React.Component {
 
         <div className="card-block haiku-actions">
           <a href="#" onClick={this.respond.bind(this, haiku)} className="card-link">
-            <i className="fa fa-reply card-link-action" aria-hidden="true"></i>
-            <span className="sr-only card-link-action">Respond</span>
+            <Icon name="reply" srText="Respond" className="card-link-action" />
             <span>{`(${_get(this.props.haiku, 'responseCount', 0)})`}</span>
           </a>
           {likeLink}
