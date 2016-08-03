@@ -4,8 +4,10 @@ import _debounce from 'lodash/debounce'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
+import { EditorState } from 'draft-js'
+import { stateToMarkdown } from 'draft-js-export-markdown';
 
-import { TextEditor } from 'client/components/TextEditor'
+import { Editor } from 'client/components/draftJs'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
@@ -21,7 +23,8 @@ export default class NewNote extends React.Component {
     })
 
     this.state = {
-      bookGuid: _get(props, 'selectedBook.guid')
+      bookGuid: _get(props, 'selectedBook.guid'),
+      editorState: EditorState.createEmpty(),
     }
   }
 
@@ -35,12 +38,15 @@ export default class NewNote extends React.Component {
   createNote() {
     var errors = {}
 
+    const contentState = this.state.editorState.getCurrentContent()
+    const content = stateToMarkdown(contentState)
+
     if (_isEmpty(errors)) {
       this.props.onCreate({
         bookGuid: this.state.bookGuid,
         pageNumber: parseInt(this.state.pageNumber),
         pageCount: parseInt(this.state.pageCount),
-        content: this.state.content,
+        content,
       })
     } else {
       this.setState({ errors })
@@ -77,6 +83,10 @@ export default class NewNote extends React.Component {
   handleSelectInput(title) {
     this.debouncedOnFetchBooks(title)
     this.setState({selectInput: title})
+  }
+
+  handleEditorChange(editorState) {
+    this.setState({ editorState })
   }
 
   render() {
@@ -144,7 +154,10 @@ export default class NewNote extends React.Component {
           </div>
         </FormGroup>
 
-        <TextEditor />
+        <Editor
+          value={this.state.editorState}
+          onChange={this.handleEditorChange.bind(this)}
+        />
       </FormModal>
     )
 

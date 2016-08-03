@@ -1,20 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Editor, EditorState, RichUtils} from 'draft-js'
+import { Editor as DraftJsEditor, EditorState, RichUtils } from 'draft-js'
+import { stateFromMarkdown } from 'draft-js-import-markdown';
+import { stateToMarkdown } from 'draft-js-export-markdown';
 
 import { Icon } from 'client/components/fontAwesome'
 import { ButtonGroup, SecondaryButton } from 'client/components/bootstrap/button'
 
 import 'client/css/TextEditor.scss'
 
-export class TextEditor extends React.Component {
+export class Editor extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      editorState: EditorState.createEmpty()
-    }
+    this.state = { editorState: props.value }
   }
 
   handleKeyCommand(command) {
@@ -29,6 +28,7 @@ export class TextEditor extends React.Component {
   }
 
   onChange(editorState) {
+    this.props.onChange(editorState)
     this.setState({ editorState })
   }
 
@@ -45,8 +45,6 @@ export class TextEditor extends React.Component {
   }
 
   render() {
-    const {editorState} = this.state
-
     return (
       <div className="text-editor">
         <ButtonGroup className="btn-group-sm">
@@ -62,8 +60,8 @@ export class TextEditor extends React.Component {
         </ButtonGroup>
 
         <div className="form-control">
-          <Editor
-            editorState={editorState}
+          <DraftJsEditor
+            editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand.bind(this)}
             onChange={this.onChange.bind(this)}
           />
