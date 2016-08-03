@@ -20,5 +20,5 @@ export function SecondaryButton(props) {
 }
 
 export function ButtonGroup(props) {
-  return <div className={"btn-group " + props.className}>{props.children}</div>
+  return <div className={"btn-group " + props.className} role="group">{props.children}</div>
 }

@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Editor, EditorState, RichUtils} from 'draft-js'
 
+import { Icon } from 'client/components/fontAwesome'
+import { ButtonGroup, SecondaryButton } from 'client/components/bootstrap/button'
+
 import 'client/css/TextEditor.scss'
 
 export class TextEditor extends React.Component {
@@ -46,11 +49,17 @@ export class TextEditor extends React.Component {
 
     return (
       <div className="text-editor">
-        <div className="btn-group btn-group-sm" role="group">
-          <button type="button" className="btn btn-secondary" onClick={this.onBoldClick.bind(this)}>Bold</button>
-          <button type="button" className="btn btn-secondary" onClick={this.onItalicClick.bind(this)}>Italic</button>
-          <button type="button" className="btn btn-secondary" onClick={this.onBlockquote.bind(this)}>Blockquote</button>
-        </div>
+        <ButtonGroup className="btn-group-sm">
+          <SecondaryButton onClick={this.onBoldClick.bind(this)}>
+            <Icon name="bold" />
+          </SecondaryButton>
+          <SecondaryButton onClick={this.onItalicClick.bind(this)}>
+            <Icon name="italic" />
+          </SecondaryButton>
+          <SecondaryButton onClick={this.onBlockquote.bind(this)}>
+            <Icon name="quote-left" srText="blockquote" />
+          </SecondaryButton>
+        </ButtonGroup>
 
         <div className="form-control">
           <Editor
