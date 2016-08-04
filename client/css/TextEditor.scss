@@ -8,6 +8,10 @@
   }
 
   .form-control {
-    @include markdown-container();
+    .public-DraftEditor-content {
+      @include markdown-container();
+
+      min-height: 10rem;
+    }
   }
 }

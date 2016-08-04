@@ -10,7 +10,8 @@ export function Navbar(props) {
 
 export class NavMenu extends React.Component {
 
-  onNewNote() {
+  onNewNote(event) {
+    event.preventDefault()
     this.props.onClose()
     this.props.onNewNote()
   }
@@ -18,7 +19,7 @@ export class NavMenu extends React.Component {
   render() {
     return (
       <BaseNavMenu onClose={this.props.onClose}>
-        <a onClick={this.onNewNote.bind(this)} className="list-group-item">New Note</a>
+        <a onClick={this.onNewNote.bind(this)} className="list-group-item" href="#">New Note</a>
         <NavMenuLink to={"/book-club"} onClick={this.props.onClose}>Book Club Home</NavMenuLink>
         <a href="/" className="list-group-item">Gran Mal</a>
       </BaseNavMenu>
