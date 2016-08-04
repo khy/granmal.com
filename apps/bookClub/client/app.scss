@@ -7,4 +7,13 @@
 
 .note-card {
   @include markdown-container();
+
+  .note-details {
+    color: $text-muted;
+    border-top: 1px solid $gray-lighter;
+
+    b {
+      color: $gray-dark;
+    }
+  }
 }

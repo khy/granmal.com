@@ -8,7 +8,13 @@ export const Card = (props) => (
 
 export const CardHeader = (props) => <div className="card-header">{props.children}</div>
 
-export const CardBlock = (props) => <div className="card-block">{props.children}</div>
+export const CardBlock = (props) => {
+  return(
+    <div {...props} className={"card-block " + props.className}>
+      {props.children}
+    </div>
+  )
+}
 
 export const CardHeaderLink = (props) => {
   return(

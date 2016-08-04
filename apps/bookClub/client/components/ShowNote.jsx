@@ -30,6 +30,9 @@ class ShowNote extends React.Component {
         <CardBlock>
           <span dangerouslySetInnerHTML={markup} />
         </CardBlock>
+        <CardBlock className="note-details">
+          <a href="#">{note.createdBy.user.name}</a> on <b>p.{note.pageNumber} (of {note.edition.pageCount})</b> of <a href="#">{note.book.title}</a> by <b>{note.book.author.name}</b>
+        </CardBlock>
       </Card>
     } else {
       card = <DummyCard />
