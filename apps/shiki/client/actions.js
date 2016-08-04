@@ -243,7 +243,7 @@ export function submitNewHaikuModal(newHaiku) {
           dispatch({ type: 'ReloadApp' })
           dispatch(hideModal())
           dispatch(showAlert({ type: 'alertPosted' }))
-          browserHistory.push(`/haiku/${haiku.guid}`)
+          browserHistory.push(`/shiki/haiku/${haiku.guid}`)
         })
       } else {
         response.json().then((errors) => {
