@@ -9,6 +9,7 @@ import { connect, Provider } from 'react-redux'
 import reducer from 'bookClub/client/reducer'
 import Container from 'bookClub/client/components/Container'
 import Index from 'bookClub/client/components/Index'
+import ShowNote from 'bookClub/client/components/ShowNote'
 
 require("./app.scss")
 
@@ -21,6 +22,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/book-club" component={Container}>
         <IndexRoute component={Index} />
+        <Route path="notes/:guid" component={ShowNote} />
       </Route>
     </Router>
   </Provider>,

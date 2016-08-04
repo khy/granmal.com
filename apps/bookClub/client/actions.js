@@ -1,4 +1,6 @@
-import { showModal } from 'client/actions/modal'
+import { browserHistory } from 'react-router'
+
+import { showModal, hideModal } from 'client/actions/modal'
 
 import { booksClient } from 'bookClub/client/clients'
 
@@ -64,6 +66,8 @@ export function createNote(newNote) {
         pageNumber: newNote.pageNumber,
         content: newNote.content,
       }).then((note) => {
+        browserHistory.push(`/book-club/notes/${note.guid}`)
+        dispatch(hideModal())
         dispatch({ type: 'notes.create.success', note })
       })
     })
