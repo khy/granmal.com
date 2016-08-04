@@ -117,6 +117,21 @@ export function fetchIndexMain() {
   }
 }
 
+export function fetchNoteForShowNote(guid) {
+  return function (dispatch, getState) {
+    const state = getState()
+    const note = state.app.showNote.note
+
+    if (note.isInvalidated && !note.isPending) {
+      dispatch({ type: 'showNote.fetch.send' })
+
+      booksClient(state).get(`/notes?guid=${guid}`).then((notes) => {
+        dispatch({ type: 'showNote.fetch.success', note: notes[0] })
+      })
+    }
+  }
+}
+
 export function showNewNoteModal() {
   return function (dispatch, getState) {
     const state = getState()
