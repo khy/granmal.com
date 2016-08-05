@@ -28,13 +28,20 @@ const initialState = {
       notes: [],
     },
   },
+  showBook: {
+    book: {
+      isPending: false,
+      isInvalidated: true,
+      record: undefined,
+    }
+  },
   showNote: {
     note: {
       isPending: false,
       isInvalidated: true,
       record: undefined,
     }
-  }
+  },
 }
 
 function app(state = initialState, action) {
@@ -90,6 +97,18 @@ function app(state = initialState, action) {
       return u({ newNote: { books: {
         isPending: false,
         records: action.books,
+      }}}, state)
+
+    case 'showBook.book.fetch.send':
+      return u({
+        showBook: { book: { isPending: true } }
+      }, state)
+
+    case 'showBook.book.fetch.success':
+      return u({ showBook: { book: {
+        isPending: false,
+        isInvalidated: false,
+        record: action.book,
       }}}, state)
 
     case 'showNote.fetch.send':

@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import Remarkable from 'remarkable'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
@@ -31,7 +32,7 @@ class ShowNote extends React.Component {
           <span dangerouslySetInnerHTML={markup} />
         </CardBlock>
         <CardBlock className="note-details">
-          <a href="#">{note.createdBy.user.name}</a> on <b>p.{note.pageNumber} (of {note.edition.pageCount})</b> of <a href="#">{note.book.title}</a> by <b>{note.book.author.name}</b>
+          <a href="#">{note.createdBy.user.name}</a> on <b>p.{note.pageNumber} (of {note.edition.pageCount})</b> of <Link to={`/book-club/books/${note.book.guid}`}>{note.book.title}</Link> by <b>{note.book.author.name}</b>
         </CardBlock>
       </Card>
     } else {

@@ -102,6 +102,21 @@ export function fetchBooksForNewNote(title) {
   }
 }
 
+export function fetchBookForShowBook(guid) {
+  return function (dispatch, getState) {
+    const state = getState()
+    const book = state.app.showBook.book
+
+    if (book.isInvalidated && !book.isPending) {
+      dispatch({ type: 'showBook.book.fetch.send' })
+
+      booksClient(state).get(`/books?guid=${guid}`).then((books) => {
+        dispatch({ type: 'showBook.book.fetch.success', book: books[0] })
+      })
+    }
+  }
+}
+
 export function fetchIndexMain() {
   return function (dispatch, getState) {
     const state = getState()
