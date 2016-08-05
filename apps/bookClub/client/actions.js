@@ -102,6 +102,21 @@ export function fetchBooksForNewNote(title) {
   }
 }
 
+export function fetchBooksForIndex() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const books = state.app.index.books
+
+    if (books.isInvalidated && !books.isPending) {
+      dispatch({ type: 'index.books.fetch.send' })
+
+      booksClient(state).get(`/books?p.limit=20`).then((books) => {
+        dispatch({ type: 'index.books.fetch.success', books })
+      })
+    }
+  }
+}
+
 export function fetchBookForShowBook(guid) {
   return function (dispatch, getState) {
     const state = getState()
@@ -112,21 +127,6 @@ export function fetchBookForShowBook(guid) {
 
       booksClient(state).get(`/books?guid=${guid}`).then((books) => {
         dispatch({ type: 'showBook.book.fetch.success', book: books[0] })
-      })
-    }
-  }
-}
-
-export function fetchIndexMain() {
-  return function (dispatch, getState) {
-    const state = getState()
-    const indexMain = state.app.index.main
-
-    if (indexMain.isInvalidated && !indexMain.isPending) {
-      dispatch({ type: 'indexMain.fetch.send' })
-
-      booksClient(state).get(`/notes?p.limit=20`).then((notes) => {
-        dispatch({ type: 'indexMain.fetch.success', notes })
       })
     }
   }

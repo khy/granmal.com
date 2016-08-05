@@ -21,11 +21,10 @@ const initialState = {
     },
   },
   index: {
-    main: {
+    books: {
       isPending: false,
       isInvalidated: true,
-      isLastPage: false,
-      notes: [],
+      records: [],
     },
   },
   showBook: {
@@ -33,7 +32,7 @@ const initialState = {
       isPending: false,
       isInvalidated: true,
       record: undefined,
-    }
+    },
   },
   showNote: {
     note: {
@@ -48,16 +47,16 @@ function app(state = initialState, action) {
 
   switch (action.type) {
 
-    case 'indexMain.fetch.send':
+    case 'index.books.fetch.send':
       return u({
-        index: { main: { isPending: true } }
+        index: { books: { isPending: true } }
       }, state)
 
-    case 'indexMain.fetch.success':
-      return u({ index: { main: {
+    case 'index.books.fetch.success':
+      return u({ index: { books: {
         isPending: false,
         isInvalidated: false,
-        notes: action.notes,
+        records: action.books,
       }}}, state)
 
     case 'newBook.authors.fetch.send':

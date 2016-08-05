@@ -1,36 +1,45 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Remarkable from 'remarkable'
+import { browserHistory, Link } from 'react-router'
+import _chunk from 'lodash/chunk'
 
-import { fetchIndexMain } from 'bookClub/client/actions'
+import { fetchBooksForIndex } from 'bookClub/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-
-const md = new Remarkable
 
 class Index extends React.Component {
 
   componentWillMount() {
-    this.props.onFetchMain()
+    this.props.fetchBooks()
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.onFetchMain()
+    newProps.fetchBooks()
+  }
+
+  showBook(guid, event) {
+    event.preventDefault()
+    browserHistory.push(`/book-club/books/${guid}`)
   }
 
   render() {
+    const decks = _chunk(this.props.books.records, 3).map((chunk) => {
+      const cards = chunk.map((book) => {
+        return (
+          <Card key={book.guid} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
+            <img className="card-img-top img-fluid" src="http://dummyimage.com/600/eee/aaa" />
+            <CardBlock>
+              <h4 className="card-title">{book.title}</h4>
+              <h6 className="card-subtitle text-muted">{book.author.name}</h6>
+            </CardBlock>
+          </Card>
+        )
+      })
 
-    const cards = this.props.main.notes.map((note) => {
-      const markup = { __html: md.render(note.content) }
-
-      return <Card key={note.guid} className="note-card">
-        <CardBlock>
-          <span dangerouslySetInnerHTML={markup} />
-        </CardBlock>
-      </Card>
+      return <div className="card-deck">{cards}</div>
     })
 
     return (
-      <div>{cards}</div>
+      <div>{decks}</div>
     )
   }
 
@@ -42,7 +51,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMain: () => { dispatch(fetchIndexMain()) },
+    fetchBooks: () => { dispatch(fetchBooksForIndex()) },
   }
 }
 
