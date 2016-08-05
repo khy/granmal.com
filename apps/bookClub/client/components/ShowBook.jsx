@@ -8,6 +8,7 @@ import { Card, CardBlock } from 'client/components/bootstrap/card'
 class ShowBook extends React.Component {
 
   componentWillMount() {
+    this.props.clearBook()
     this.props.fetchBook(this.props.params.guid)
   }
 
@@ -41,6 +42,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    clearBook: () => { dispatch({ type: 'showBook.book.clear' }) },
     fetchBook: (guid) => {
       dispatch(fetchBookForShowBook(guid))
     },

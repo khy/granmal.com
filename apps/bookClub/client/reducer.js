@@ -110,6 +110,12 @@ function app(state = initialState, action) {
         record: action.book,
       }}}, state)
 
+    case 'showBook.book.clear':
+      return u({ showBook: { book: {
+        isInvalidated: true,
+        record: undefined,
+      }}}, state)
+
     case 'showNote.fetch.send':
       return u({
         showNote: { note: { isPending: true } }
