@@ -35,7 +35,9 @@ class Index extends React.Component {
         )
       })
 
-      return <div className="card-deck">{cards}</div>
+      const key = chunk.map((book) => book.guid).join('-')
+
+      return <div className="card-deck" key={key}>{cards}</div>
     })
 
     return (
