@@ -15,7 +15,7 @@ const initialState = {
   },
   newNote: {
     isPending: false,
-    books: {
+    externalBooks: {
       isPending: false,
       records: [],
     },
@@ -87,15 +87,15 @@ function app(state = initialState, action) {
         }
       }, state)
 
-    case 'newNote.books.fetch.send':
+    case 'newNote.externalBooks.fetch.send':
       return u({
-        newNote: { books: { isPending: true } }
+        newNote: { externalBooks: { isPending: true } }
       }, state)
 
-    case 'newNote.books.fetch.success':
-      return u({ newNote: { books: {
+    case 'newNote.externalBooks.fetch.success':
+      return u({ newNote: { externalBooks: {
         isPending: false,
-        records: action.books,
+        records: action.externalBooks,
       }}}, state)
 
     case 'showBook.book.fetch.send':

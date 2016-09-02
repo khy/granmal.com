@@ -92,11 +92,11 @@ export function fetchBooksForNewNote(title) {
   return function (dispatch, getState) {
     const state = getState()
 
-    if (title && !state.app.newNote.books.isPending) {
-      dispatch({ type: 'newNote.books.fetch.send' })
+    if (title && !state.app.newNote.externalBooks.isPending) {
+      dispatch({ type: 'newNote.externalBooks.fetch.send' })
 
-      booksClient(state).get(`/books?title=${title}`).then((books) => {
-        dispatch({ type: 'newNote.books.fetch.success', books })
+      booksClient(state).get(`/editions?title=${title}`).then((externalBooks) => {
+        dispatch({ type: 'newNote.externalBooks.fetch.success', externalBooks })
       })
     }
   }

@@ -30,15 +30,14 @@ class Container extends React.Component {
         modal = <NewNote
           authorOptions={this.props.newBook.authors.records}
           authorOptionsLoading={this.props.newBook.authors.isPending}
-          bookOptions={this.props.newNote.books.records}
-          bookOptionsLoading={this.props.newNote.books.isPending}
+          editionOptions={this.props.newNote.externalBooks.records}
+          editionOptionsLoading={this.props.newNote.externalBooks.isPending}
           disabled={this.props.newBook.isPending || this.props.newNote.isPending}
           onCreate={this.props.onCreateNote}
-          onCreateBook={this.props.onCreateBook}
           onClose={this.props.onHideModal}
           onFetchAuthors={this.props.onFetchAuthors}
-          onFetchBooks={this.props.onFetchBooks}
-          selectedBook={this.props.newNote.selectedBook}
+          onFetchEditions={this.props.onFetchBooks}
+          selectedEdition={this.props.newNote.selectedBook}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
@@ -88,9 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateBook: (newBook) => { dispatch(createBookForNewNote(newBook)) },
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
-    onFetchAuthors: (name) => { dispatch(fetchAuthorsForNewBook(name)) },
     onFetchBooks: (title) => { dispatch(fetchBooksForNewNote(title)) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {

@@ -48,13 +48,13 @@ export class Editor extends React.Component {
     return (
       <div className="text-editor">
         <ButtonGroup className="btn-group-sm">
-          <SecondaryButton onClick={this.onBoldClick.bind(this)}>
+          <SecondaryButton onClick={this.onBoldClick.bind(this)} tabIndex="-1">
             <Icon name="bold" />
           </SecondaryButton>
-          <SecondaryButton onClick={this.onItalicClick.bind(this)}>
+          <SecondaryButton onClick={this.onItalicClick.bind(this)} tabIndex="-1">
             <Icon name="italic" />
           </SecondaryButton>
-          <SecondaryButton onClick={this.onBlockquote.bind(this)}>
+          <SecondaryButton onClick={this.onBlockquote.bind(this)} tabIndex="-1">
             <Icon name="quote-left" srText="blockquote" />
           </SecondaryButton>
         </ButtonGroup>

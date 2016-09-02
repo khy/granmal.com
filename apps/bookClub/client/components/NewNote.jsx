@@ -2,6 +2,7 @@ import React from 'react'
 import Select from 'react-select'
 import _debounce from 'lodash/debounce'
 import _get from 'lodash/get'
+import _identity from 'lodash/identity'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
 import { EditorState } from 'draft-js'
@@ -18,20 +19,22 @@ export default class NewNote extends React.Component {
   constructor(props) {
     super(props)
 
-    this.debouncedOnFetchBooks = _debounce(this.props.onFetchBooks, 300, {
+    this.debouncedOnFetchBooks = _debounce(this.props.onFetchEditions, 300, {
       maxWait: 800
     })
 
     this.state = {
-      bookGuid: _get(props, 'selectedBook.guid'),
+      isbn: _get(props, 'selectedEdition.isbn'),
       editorState: EditorState.createEmpty(),
     }
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.selectedBook && newProps.selectedBook !== this.props.selectedBook) {
-      this.removeOverlay()
-      this.selectBook(newProps.selectedBook.guid)
+    if (
+      newProps.selectedEdition &&
+      newProps.selectedEdition.isbn !== this.props.selectedEdition.isbn
+    ) {
+      this.selectEdition(newProps.selectedEdition.isbn, newProps.selectedEdition.pageCount)
     }
   }
 
@@ -43,7 +46,7 @@ export default class NewNote extends React.Component {
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
-        bookGuid: this.state.bookGuid,
+        isbn: this.state.isbn,
         pageNumber: parseInt(this.state.pageNumber),
         pageCount: parseInt(this.state.pageCount),
         content,
@@ -53,9 +56,10 @@ export default class NewNote extends React.Component {
     }
   }
 
-  selectBook(guid) {
+  selectEdition(isbn, pageCount) {
     this.setState({
-      bookGuid: guid,
+      isbn: isbn,
+      pageCount: pageCount,
       selectInput: undefined,
     })
   }
@@ -66,17 +70,9 @@ export default class NewNote extends React.Component {
     this.setState(newState)
   }
 
-  removeOverlay() {
-    this.setState({overlay: undefined})
-  }
-
   handleSelectChange(option) {
     if (option) {
-      if (option.value === 'new') {
-        this.setState({overlay: 'newBook'})
-      } else {
-        this.selectBook(option.value)
-      }
+      this.selectEdition(option.isbn, option.pageCount)
     }
   }
 
@@ -90,31 +86,38 @@ export default class NewNote extends React.Component {
   }
 
   render() {
-    const bookOptions = this.props.bookOptions.map((book) => {
+    const editionOptions = this.props.editionOptions.map((edition) => {
       return {
-        label: book.title,
-        authorName: book.author.name,
-        value: book.guid,
+        value: edition.isbn,
+        isbn: edition.isbn,
+        label: edition.title,
+        authorName: edition.authors[0],
+        pageCount: edition.pageCount,
       }
     })
 
-    if (this.state.selectInput) {
-      bookOptions.push({
-        label: `Add "${this.state.selectInput}"`,
-        input: this.state.selectInput,
-        value: 'new',
-      })
-    }
-
     const selectRenderer = (option) => {
-      if (option.input) {
-        return <span>{option.label}</span>
-      } else {
-        return <span>{option.label} by {option.authorName}</span>
-      }
+      return <span>{option.label} by {option.authorName}</span>
     }
 
-    const noteModal = (
+    let pageInput = (
+      <TextInput
+        id='newNotePageInput'
+        value={this.state.pageNumber || ''}
+        onChange={this.setAttribute.bind(this, 'pageNumber')}
+      />
+    )
+
+    if (this.state.pageCount) {
+      pageInput = (
+        <div className="input-group">
+          {pageInput}
+          <span className="input-group-addon">of {this.state.pageCount}</span>
+        </div>
+      )
+    }
+
+    return (
       <FormModal
         title='New Note'
         submitText='Add'
@@ -123,12 +126,15 @@ export default class NewNote extends React.Component {
         onCancel={this.props.onClose}
       >
         <FormGroup>
+          <label htmlFor='newNoteEditionSelect'>Book</label>
           <Select
-            placeholder='Book'
-            value={this.state.bookGuid || ''}
+            id='newNoteEditionSelect'
+            placeholder=''
+            value={this.state.isbn || ''}
             onChange={this.handleSelectChange.bind(this)}
             onInputChange={this.handleSelectInput.bind(this)}
-            options={bookOptions}
+            options={editionOptions}
+            filterOptions={_identity}
             isLoading={this.props.bookOptionsLoading}
             optionRenderer={selectRenderer}
             valueRenderer={selectRenderer}
@@ -138,18 +144,8 @@ export default class NewNote extends React.Component {
         <FormGroup>
           <div className="row">
             <div className="col-xs-6">
-              <TextInput
-                placeholder="Page"
-                value={this.state.pageNumber || ''}
-                onChange={this.setAttribute.bind(this, 'pageNumber')}
-              />
-            </div>
-            <div className="col-xs-6">
-              <TextInput
-                placeholder="Total"
-                value={this.state.pageCount || ''}
-                onChange={this.setAttribute.bind(this, 'pageCount')}
-              />
+              <label htmlFor='newNotePageInput'>Page</label>
+              {pageInput}
             </div>
           </div>
         </FormGroup>
@@ -160,46 +156,22 @@ export default class NewNote extends React.Component {
         />
       </FormModal>
     )
-
-    let modal
-
-    if (this.state.overlay === 'newBook') {
-      const newBookProps = _pick(this.props, [
-        'authorOptions', 'authorOptionsLoading', 'disabled', 'onFetchAuthors'
-      ])
-
-      modal = <NewBook {...newBookProps}
-        initialTitle={this.state.selectInput}
-        onCreate={this.props.onCreateBook}
-        onClose={this.removeOverlay.bind(this)}
-      />
-    } else {
-      modal = noteModal
-    }
-
-    return modal
   }
 
 }
 
 NewNote.propTypes = {
-  authorOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  authorOptionsLoading: React.PropTypes.bool,
-  bookOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  bookOptionsLoading: React.PropTypes.bool,
+  editionOptions: React.PropTypes.arrayOf(React.PropTypes.object),
+  editionOptionsLoading: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
   onCreate: React.PropTypes.func.isRequired,
-  onCreateBook: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
-  onFetchAuthors: React.PropTypes.func.isRequired,
-  onFetchBooks: React.PropTypes.func.isRequired,
-  selectedBook: React.PropTypes.object,
+  onFetchEditions: React.PropTypes.func.isRequired,
+  selectedEdition: React.PropTypes.object,
 }
 
 NewNote.defaultProps = {
-  authorOptions: [],
-  authorOptionsLoading: false,
-  bookOptions: [],
-  bookOptionsLoading: false,
+  editionOptions: [],
+  editionOptionsLoading: false,
   disabled: false,
 }
