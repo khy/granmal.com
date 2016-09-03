@@ -6,16 +6,9 @@ import auth from 'client/reducers/auth'
 import modal from 'client/reducers/modal'
 
 const initialState = {
-  newBook: {
-    isPending: false,
-    authors: {
-      isPending: false,
-      records: [],
-    },
-  },
   newNote: {
     isPending: false,
-    externalBooks: {
+    editions: {
       isPending: false,
       records: [],
     },
@@ -87,15 +80,15 @@ function app(state = initialState, action) {
         }
       }, state)
 
-    case 'newNote.externalBooks.fetch.send':
+    case 'newNote.editions.fetch.send':
       return u({
-        newNote: { externalBooks: { isPending: true } }
+        newNote: { editions: { isPending: true } }
       }, state)
 
-    case 'newNote.externalBooks.fetch.success':
-      return u({ newNote: { externalBooks: {
+    case 'newNote.editions.fetch.success':
+      return u({ newNote: { editions: {
         isPending: false,
-        records: action.externalBooks,
+        records: action.editions,
       }}}, state)
 
     case 'showBook.book.fetch.send':

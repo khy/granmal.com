@@ -11,8 +11,7 @@ import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
 import NewNote from 'bookClub/client/components/NewNote'
 import {
-  createBookForNewNote, createNote, fetchAuthorsForNewBook, fetchBooksForNewNote,
-  showNewNoteModal,
+  createNote, fetchEditionsForNewNote, showNewNoteModal,
 } from 'bookClub/client/actions'
 
 class Container extends React.Component {
@@ -28,15 +27,12 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name === 'NewNote') {
         modal = <NewNote
-          authorOptions={this.props.newBook.authors.records}
-          authorOptionsLoading={this.props.newBook.authors.isPending}
-          editionOptions={this.props.newNote.externalBooks.records}
-          editionOptionsLoading={this.props.newNote.externalBooks.isPending}
-          disabled={this.props.newBook.isPending || this.props.newNote.isPending}
+          editionOptions={this.props.newNote.editions.records}
+          editionOptionsLoading={this.props.newNote.editions.isPending}
+          disabled={this.props.newNote.isPending}
           onCreate={this.props.onCreateNote}
           onClose={this.props.onHideModal}
-          onFetchAuthors={this.props.onFetchAuthors}
-          onFetchEditions={this.props.onFetchBooks}
+          onFetchEditions={this.props.onFetchEditions}
           selectedEdition={this.props.newNote.selectedBook}
         />
       } else if (this.props.modal.name === 'LogIn') {
@@ -80,7 +76,6 @@ const mapStateToProps = (state) => {
   return {
     alert: state.alert,
     modal: state.modal,
-    newBook: _get(state, 'app.newBook'),
     newNote: _get(state, 'app.newNote'),
   }
 }
@@ -88,7 +83,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
-    onFetchBooks: (title) => { dispatch(fetchBooksForNewNote(title)) },
+    onFetchEditions: (title) => { dispatch(fetchEditionsForNewNote(title)) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
       dispatch(logIn(email, password)).then(() => {

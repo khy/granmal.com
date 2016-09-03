@@ -4,37 +4,6 @@ import { showModal, hideModal } from 'client/actions/modal'
 
 import { booksClient } from 'bookClub/client/clients'
 
-export function createBookForNewNote(newBook) {
-  return function (dispatch, getState) {
-    dispatch({ type: 'newNote.books.create.send' })
-
-    const state = getState()
-
-    let authorPromise
-
-    if (newBook.authorGuid) {
-      const author = state.app.newBook.authors.records.find((author) => {
-        return author.guid === newBook.authorGuid
-      })
-
-      authorPromise = Promise.resolve(author)
-    } else {
-      authorPromise = booksClient(state).post('/authors', {
-        name: newBook.authorName,
-      })
-    }
-
-    authorPromise.then((author) => {
-      booksClient(state).post('/books', {
-        authorGuid: author.guid,
-        title: newBook.title,
-      }).then((book) => {
-        dispatch({ type: 'newNote.books.create.success', book })
-      })
-    })
-  }
-}
-
 export function createNote(newNote) {
   return function (dispatch, getState) {
     dispatch({ type: 'notes.create.send' })
@@ -74,29 +43,15 @@ export function createNote(newNote) {
   }
 }
 
-export function fetchAuthorsForNewBook(name) {
+export function fetchEditionsForNewNote(title) {
   return function (dispatch, getState) {
     const state = getState()
 
-    if (name && !state.app.newBook.authors.isPending) {
-      dispatch({ type: 'newBook.authors.fetch.send' })
+    if (title && !state.app.newNote.editions.isPending) {
+      dispatch({ type: 'newNote.editions.fetch.send' })
 
-      booksClient(state).get(`/authors?name=${name}`).then((authors) => {
-        dispatch({ type: 'newBook.authors.fetch.success', authors })
-      })
-    }
-  }
-}
-
-export function fetchBooksForNewNote(title) {
-  return function (dispatch, getState) {
-    const state = getState()
-
-    if (title && !state.app.newNote.externalBooks.isPending) {
-      dispatch({ type: 'newNote.externalBooks.fetch.send' })
-
-      booksClient(state).get(`/editions?title=${title}`).then((externalBooks) => {
-        dispatch({ type: 'newNote.externalBooks.fetch.success', externalBooks })
+      booksClient(state).get(`/editions?title=${title}`).then((editions) => {
+        dispatch({ type: 'newNote.editions.fetch.success', editions })
       })
     }
   }

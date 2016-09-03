@@ -12,8 +12,6 @@ import { Editor } from 'client/components/draftJs'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
-import NewBook from 'bookClub/client/components/NewBook'
-
 export default class NewNote extends React.Component {
 
   constructor(props) {
