@@ -10,35 +10,18 @@ export function createNote(newNote) {
 
     const state = getState()
 
-    const book = state.app.newNote.books.records.find((book) => {
-      return book.guid === newNote.bookGuid
+    const edition = state.app.newNote.editions.records.find((edition) => {
+      return edition.isbn === newNote.isbn
     })
 
-    const edition = book.editions.find((edition) => {
-      return edition.pageCount === newNote.pageCount
-    })
-
-    let editionPromise
-
-    if (edition) {
-      editionPromise = Promise.resolve(edition)
-    } else {
-      editionPromise = booksClient(state).post('/editions', {
-        bookGuid: newNote.bookGuid,
-        pageCount: newNote.pageCount,
-      })
-    }
-
-    editionPromise.then((edition) => {
-      booksClient(state).post('/notes', {
-        editionGuid: edition.guid,
-        pageNumber: newNote.pageNumber,
-        content: newNote.content,
-      }).then((note) => {
-        browserHistory.push(`/book-club/notes/${note.guid}`)
-        dispatch(hideModal())
-        dispatch({ type: 'notes.create.success', note })
-      })
+    booksClient(state).post('/notes', {
+      isbn: edition.isbn,
+      pageNumber: newNote.pageNumber,
+      content: newNote.content,
+    }).then((note) => {
+      browserHistory.push(`/book-club/notes/${note.guid}`)
+      dispatch(hideModal())
+      dispatch({ type: 'notes.create.success', note })
     })
   }
 }
