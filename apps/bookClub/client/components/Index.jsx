@@ -25,11 +25,11 @@ class Index extends React.Component {
     const decks = _chunk(this.props.books.records, 3).map((chunk) => {
       const cards = chunk.map((book) => {
         return (
-          <Card key={book.guid} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
-            <img className="card-img-top img-fluid" src="http://dummyimage.com/600/eee/aaa" />
+          <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
+            <img className="card-img-top img-fluid" src={book.largeImageUrl} />
             <CardBlock>
               <h4 className="card-title">{book.title}</h4>
-              <h6 className="card-subtitle text-muted">{book.author.name}</h6>
+              <h6 className="card-subtitle text-muted">{book.authors[0]}</h6>
             </CardBlock>
           </Card>
         )
