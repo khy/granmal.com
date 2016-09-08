@@ -21,9 +21,6 @@
 .book-card {
   &:hover {
     cursor: pointer;
-
-    .card-block {
-      background-color: $gray-lightest;
-    }
+    background-color: $gray-lightest;
   }
 }

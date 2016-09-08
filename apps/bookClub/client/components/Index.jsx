@@ -22,26 +22,20 @@ class Index extends React.Component {
   }
 
   render() {
-    const decks = _chunk(this.props.books.records, 3).map((chunk) => {
-      const cards = chunk.map((book) => {
-        return (
-          <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
-            <img className="card-img-top img-fluid" src={book.largeImageUrl} />
-            <CardBlock>
-              <h4 className="card-title">{book.title}</h4>
-              <h6 className="card-subtitle text-muted">{book.authors[0]}</h6>
-            </CardBlock>
-          </Card>
-        )
-      })
-
-      const key = chunk.map((book) => book.guid).join('-')
-
-      return <div className="card-deck" key={key}>{cards}</div>
+    const kards = this.props.books.records.map((book) => {
+      return (
+        <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
+          <img className="card-img-top img-fluid" src={book.largeImageUrl} />
+          <CardBlock>
+            <h4 className="card-title">{book.title}</h4>
+            <p className="card-subtitle text-muted">{book.authors[0]}</p>
+          </CardBlock>
+        </Card>
+      )
     })
 
     return (
-      <div>{decks}</div>
+      <div className="card-columns">{kards}</div>
     )
   }
 
