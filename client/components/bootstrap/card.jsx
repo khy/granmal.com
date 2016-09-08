@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const Card = (props) => (
-  <div {...props} className={"card " + props.className}>
+  <div {...props} className={['card', props.className].join(' ')}>
     {props.children}
   </div>
 )
@@ -10,7 +10,7 @@ export const CardHeader = (props) => <div className="card-header">{props.childre
 
 export const CardBlock = (props) => {
   return(
-    <div {...props} className={"card-block " + props.className}>
+    <div {...props} className={['card-block', props.className].join(' ')}>
       {props.children}
     </div>
   )
@@ -18,7 +18,7 @@ export const CardBlock = (props) => {
 
 export const CardHeaderLink = (props) => {
   return(
-    <a {...props} className={"pull-xs-right " + props.className} href={props.href || "#"}>
+    <a {...props} className={['pull-xs-right', props.className].join(' ')} href={props.href || "#"}>
       {props.children}
     </a>
   )
