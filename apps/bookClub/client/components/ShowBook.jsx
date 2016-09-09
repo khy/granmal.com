@@ -9,11 +9,11 @@ class ShowBook extends React.Component {
 
   componentWillMount() {
     this.props.clearBook()
-    this.props.fetchBook(this.props.params.guid)
+    this.props.fetchBook(this.props.params.title)
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.fetchBook(newProps.params.guid)
+    newProps.fetchBook(newProps.params.title)
   }
 
   render() {
@@ -43,8 +43,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     clearBook: () => { dispatch({ type: 'showBook.book.clear' }) },
-    fetchBook: (guid) => {
-      dispatch(fetchBookForShowBook(guid))
+    fetchBook: (title) => {
+      dispatch(fetchBookForShowBook(title))
     },
   }
 }

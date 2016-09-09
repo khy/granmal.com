@@ -23,7 +23,7 @@ render(
     <Router history={browserHistory}>
       <Route path="/book-club" component={Container}>
         <IndexRoute component={Index} />
-        <Route path="books/:guid" component={ShowBook} />
+        <Route path="books/:title" component={ShowBook} />
         <Route path="notes/:guid" component={ShowNote} />
       </Route>
     </Router>

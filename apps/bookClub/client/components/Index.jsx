@@ -16,15 +16,15 @@ class Index extends React.Component {
     newProps.fetchBooks()
   }
 
-  showBook(guid, event) {
+  showBook(title, event) {
     event.preventDefault()
-    browserHistory.push(`/book-club/books/${guid}`)
+    browserHistory.push(`/book-club/books/${title}`)
   }
 
   render() {
     const kards = this.props.books.records.map((book) => {
       return (
-        <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.guid)}>
+        <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.title)}>
           <img className="card-img-top img-fluid" src={book.largeImageUrl} />
           <CardBlock>
             <h4 className="card-title">{book.title}</h4>

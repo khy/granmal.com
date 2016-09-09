@@ -55,7 +55,7 @@ export function fetchBooksForIndex() {
   }
 }
 
-export function fetchBookForShowBook(guid) {
+export function fetchBookForShowBook(title) {
   return function (dispatch, getState) {
     const state = getState()
     const book = state.app.showBook.book
@@ -63,7 +63,7 @@ export function fetchBookForShowBook(guid) {
     if (book.isInvalidated && !book.isPending) {
       dispatch({ type: 'showBook.book.fetch.send' })
 
-      booksClient(state).get(`/books?guid=${guid}`).then((books) => {
+      booksClient(state).get(`/books?title=${title}`).then((books) => {
         dispatch({ type: 'showBook.book.fetch.success', book: books[0] })
       })
     }
