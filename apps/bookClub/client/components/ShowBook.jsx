@@ -49,7 +49,7 @@ class ShowBook extends React.Component {
 
     if (!notesMeta.isPending) {
       noteCards = notes.map((note) => (
-        <NoteCard key={note.guid} note={note} book={book} />
+        <NoteCard key={note.guid} note={note} book={book} clickable={true} />
       ))
     }
 

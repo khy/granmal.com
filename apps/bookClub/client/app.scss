@@ -16,11 +16,14 @@
       color: $gray-dark;
     }
   }
-}
 
-.book-card {
-  &:hover {
+  &.note-card-clickable:hover {
     cursor: pointer;
     background-color: $gray-lightest;
   }
+}
+
+.book-card:hover {
+  cursor: pointer;
+  background-color: $gray-lightest;
 }

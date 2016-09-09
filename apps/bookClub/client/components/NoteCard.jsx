@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import Remarkable from 'remarkable'
 
 import { Card, CardBlock } from 'client/components/bootstrap/card'
@@ -22,12 +22,25 @@ export default function NoteCard(props) {
   if (!props.book) {
     bookDetail = (
       <span>
-        of <Link to={`/book-club/books/${note.edition.title}`}>{note.edition.title}</Link> by <b>{note.edition.authors[0]}</b>
+        <span> of</span> <Link to={`/book-club/books/${note.edition.title}`}>{note.edition.title}</Link> by <b>{note.edition.authors[0]}</b>
       </span>
     )
   }
 
-  return <Card className="note-card">
+  let clickableClass
+
+  if (props.clickable) {
+    clickableClass = "note-card-clickable"
+  }
+
+  function onClick(event) {
+    if (props.clickable) {
+      event.preventDefault()
+      browserHistory.push(`/book-club/notes/${note.guid}`)
+    }
+  }
+
+  return <Card className={["note-card", clickableClass].join(" ")} onClick={onClick}>
     <CardBlock>
       <span dangerouslySetInnerHTML={markup} />
     </CardBlock>
