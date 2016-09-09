@@ -70,6 +70,21 @@ export function fetchBookForShowBook(title) {
   }
 }
 
+export function fetchNotesForShowBook(title) {
+  return function (dispatch, getState) {
+    const state = getState()
+    const notes = state.app.showBook.notes
+
+    if (notes.isInvalidated && !notes.isPending) {
+      dispatch({ type: 'showBook.notes.fetch.send' })
+
+      booksClient(state).get(`/notes?bookTitle=${title}`).then((notes) => {
+        dispatch({ type: 'showBook.notes.fetch.success', notes: notes })
+      })
+    }
+  }
+}
+
 export function fetchNoteForShowNote(guid) {
   return function (dispatch, getState) {
     const state = getState()

@@ -26,6 +26,11 @@ const initialState = {
       isInvalidated: true,
       record: undefined,
     },
+    notes: {
+      isPending: false,
+      isInvalidated: true,
+      records: [],
+    },
   },
   showNote: {
     note: {
@@ -107,6 +112,18 @@ function app(state = initialState, action) {
       return u({ showBook: { book: {
         isInvalidated: true,
         record: undefined,
+      }}}, state)
+
+    case 'showBook.notes.fetch.send':
+      return u({
+        showBook: { notes: { isPending: true } }
+      }, state)
+
+    case 'showBook.notes.fetch.success':
+      return u({ showBook: { notes: {
+        isPending: false,
+        isInvalidated: false,
+        records: action.notes,
       }}}, state)
 
     case 'showNote.fetch.send':

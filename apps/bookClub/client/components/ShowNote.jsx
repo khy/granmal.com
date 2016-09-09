@@ -1,13 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
-import Remarkable from 'remarkable'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
-import { fetchNoteForShowNote } from 'bookClub/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-
-const md = new Remarkable
+import { fetchNoteForShowNote } from 'bookClub/client/actions'
+import NoteCard from 'bookClub/client/components/NoteCard'
 
 class ShowNote extends React.Component {
 
@@ -25,16 +22,7 @@ class ShowNote extends React.Component {
     let card
 
     if (note) {
-      const markup = { __html: md.render(note.content) }
-
-      card = <Card key={note.guid} className="note-card">
-        <CardBlock>
-          <span dangerouslySetInnerHTML={markup} />
-        </CardBlock>
-        <CardBlock className="note-details">
-          <a href="#">{note.createdBy.user.name}</a> on <b>p.{note.pageNumber} (of {note.edition.pageCount})</b> of <Link to={`/book-club/books/${note.edition.title}`}>{note.edition.title}</Link> by <b>{note.edition.authors[0]}</b>
-        </CardBlock>
-      </Card>
+      card = <NoteCard key={note.guid} note={note} />
     } else {
       card = <DummyCard />
     }
