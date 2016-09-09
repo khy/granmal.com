@@ -73,7 +73,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearBook: () => { dispatch({ type: 'showBook.book.clear' }) },
+    clearBook: () => {
+      dispatch({ type: 'showBook.clear' })
+    },
     fetchBook: (title) => {
       dispatch(fetchBookForShowBook(title))
     },

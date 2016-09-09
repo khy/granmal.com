@@ -108,11 +108,17 @@ function app(state = initialState, action) {
         record: action.book,
       }}}, state)
 
-    case 'showBook.book.clear':
-      return u({ showBook: { book: {
-        isInvalidated: true,
-        record: undefined,
-      }}}, state)
+    case 'showBook.clear':
+      return u({ showBook: {
+        book: {
+          isInvalidated: true,
+          record: undefined,
+        },
+        notes: {
+          isInvalidated: true,
+          records: [],
+        },
+      }}, state)
 
     case 'showBook.notes.fetch.send':
       return u({
