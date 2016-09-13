@@ -6,7 +6,7 @@ import auth from 'client/reducers/auth'
 import modal from 'client/reducers/modal'
 
 const initialState = {
-  newNote: {
+  newDogEar: {
     isPending: false,
     editions: {
       isPending: false,
@@ -26,14 +26,14 @@ const initialState = {
       isInvalidated: true,
       record: undefined,
     },
-    notes: {
+    dogEars: {
       isPending: false,
       isInvalidated: true,
       records: [],
     },
   },
-  showNote: {
-    note: {
+  showDogEar: {
+    dogEar: {
       isPending: false,
       isInvalidated: true,
       record: undefined,
@@ -57,41 +57,13 @@ function app(state = initialState, action) {
         records: action.books,
       }}}, state)
 
-    case 'newBook.authors.fetch.send':
+    case 'newDogEar.editions.fetch.send':
       return u({
-        newBook: { authors: { isPending: true } }
+        newDogEar: { editions: { isPending: true } }
       }, state)
 
-    case 'newBook.authors.fetch.success':
-      return u({ newBook: { authors: {
-        isPending: false,
-        records: action.authors,
-      }}}, state)
-
-    case 'newNote.books.create.send':
-      return u({
-        newBook: { isPending: true }
-      }, state)
-
-    case 'newNote.books.create.success':
-      return u({
-        newBook: { isPending: false },
-        newNote: {
-          selectedBook: action.book,
-          books: {
-            isPending: false,
-            records: [action.book],
-          }
-        }
-      }, state)
-
-    case 'newNote.editions.fetch.send':
-      return u({
-        newNote: { editions: { isPending: true } }
-      }, state)
-
-    case 'newNote.editions.fetch.success':
-      return u({ newNote: { editions: {
+    case 'newDogEar.editions.fetch.success':
+      return u({ newDogEar: { editions: {
         isPending: false,
         records: action.editions,
       }}}, state)
@@ -114,34 +86,34 @@ function app(state = initialState, action) {
           isInvalidated: true,
           record: undefined,
         },
-        notes: {
+        dogEars: {
           isInvalidated: true,
           records: [],
         },
       }}, state)
 
-    case 'showBook.notes.fetch.send':
+    case 'showBook.dogEars.fetch.send':
       return u({
-        showBook: { notes: { isPending: true } }
+        showBook: { dogEars: { isPending: true } }
       }, state)
 
-    case 'showBook.notes.fetch.success':
-      return u({ showBook: { notes: {
+    case 'showBook.dogEars.fetch.success':
+      return u({ showBook: { dogEars: {
         isPending: false,
         isInvalidated: false,
-        records: action.notes,
+        records: action.dogEars,
       }}}, state)
 
-    case 'showNote.fetch.send':
+    case 'showDogEar.fetch.send':
       return u({
-        showNote: { note: { isPending: true } }
+        showDogEar: { dogEar: { isPending: true } }
       }, state)
 
-    case 'showNote.fetch.success':
-      return u({ showNote: { note: {
+    case 'showDogEar.fetch.success':
+      return u({ showDogEar: { dogEar: {
         isPending: false,
         isInvalidated: false,
-        record: action.note,
+        record: action.dogEar,
       }}}, state)
 
     default:

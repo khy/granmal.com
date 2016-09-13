@@ -12,7 +12,7 @@ import { Editor } from 'client/components/draftJs'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
-export default class NewNote extends React.Component {
+export default class NewDogEar extends React.Component {
 
   constructor(props) {
     super(props)
@@ -36,18 +36,17 @@ export default class NewNote extends React.Component {
     }
   }
 
-  createNote() {
+  createDogEar() {
     var errors = {}
 
-    const contentState = this.state.editorState.getCurrentContent()
-    const content = stateToMarkdown(contentState)
+    const noteContentState = this.state.editorState.getCurrentContent()
+    const note = stateToMarkdown(noteContentState)
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
         isbn: this.state.isbn,
         pageNumber: parseInt(this.state.pageNumber),
-        pageCount: parseInt(this.state.pageCount),
-        content,
+        note,
       })
     } else {
       this.setState({ errors })
@@ -100,7 +99,7 @@ export default class NewNote extends React.Component {
 
     let pageInput = (
       <TextInput
-        id='newNotePageInput'
+        id='newDogEarPageInput'
         value={this.state.pageNumber || ''}
         onChange={this.setAttribute.bind(this, 'pageNumber')}
       />
@@ -117,16 +116,16 @@ export default class NewNote extends React.Component {
 
     return (
       <FormModal
-        title='New Note'
+        title='New Dog Ear'
         submitText='Add'
         disabled={this.props.disabled}
-        onSubmit={this.createNote.bind(this)}
+        onSubmit={this.createDogEar.bind(this)}
         onCancel={this.props.onClose}
       >
         <FormGroup>
-          <label htmlFor='newNoteEditionSelect'>Book</label>
+          <label htmlFor='newDogEarEditionSelect'>Book</label>
           <Select
-            id='newNoteEditionSelect'
+            id='newDogEarEditionSelect'
             placeholder=''
             value={this.state.isbn || ''}
             onChange={this.handleSelectChange.bind(this)}
@@ -142,7 +141,7 @@ export default class NewNote extends React.Component {
         <FormGroup>
           <div className="row">
             <div className="col-xs-6">
-              <label htmlFor='newNotePageInput'>Page</label>
+              <label htmlFor='newDogEarPageInput'>Page</label>
               {pageInput}
             </div>
           </div>
@@ -158,7 +157,7 @@ export default class NewNote extends React.Component {
 
 }
 
-NewNote.propTypes = {
+NewDogEar.propTypes = {
   editionOptions: React.PropTypes.arrayOf(React.PropTypes.object),
   editionOptionsLoading: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
@@ -168,7 +167,7 @@ NewNote.propTypes = {
   selectedEdition: React.PropTypes.object,
 }
 
-NewNote.defaultProps = {
+NewDogEar.defaultProps = {
   editionOptions: [],
   editionOptionsLoading: false,
   disabled: false,

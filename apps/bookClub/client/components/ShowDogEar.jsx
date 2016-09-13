@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-import { fetchNoteForShowNote } from 'bookClub/client/actions'
-import NoteCard from 'bookClub/client/components/NoteCard'
+import { fetchDogEarForShowDogEar } from 'bookClub/client/actions'
+import DogEarCard from 'bookClub/client/components/DogEarCard'
 
-class ShowNote extends React.Component {
+class ShowDogEar extends React.Component {
 
   componentWillMount() {
     this.props.onFetch(this.props.params.guid)
@@ -17,12 +17,12 @@ class ShowNote extends React.Component {
   }
 
   render() {
-    const noteMeta = this.props.note
-    const note = noteMeta.record
+    const dogEarMeta = this.props.dogEar
+    const dogEar = dogEarMeta.record
     let card
 
-    if (note) {
-      card = <NoteCard key={note.guid} note={note} />
+    if (dogEar) {
+      card = <DogEarCard key={dogEar.guid} dogEar={dogEar} />
     } else {
       card = <DummyCard />
     }
@@ -33,15 +33,15 @@ class ShowNote extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return state.app.showNote
+  return state.app.showDogEar
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetch: (guid) => {
-      dispatch(fetchNoteForShowNote(guid))
+      dispatch(fetchDogEarForShowDogEar(guid))
     },
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowNote)
+export default connect(mapStateToProps, mapDispatchToProps)(ShowDogEar)

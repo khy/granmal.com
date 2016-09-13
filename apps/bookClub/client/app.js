@@ -10,7 +10,7 @@ import reducer from 'bookClub/client/reducer'
 import Container from 'bookClub/client/components/Container'
 import Index from 'bookClub/client/components/Index'
 import ShowBook from 'bookClub/client/components/ShowBook'
-import ShowNote from 'bookClub/client/components/ShowNote'
+import ShowDogEar from 'bookClub/client/components/ShowDogEar'
 
 require("./app.scss")
 
@@ -24,7 +24,7 @@ render(
       <Route path="/book-club" component={Container}>
         <IndexRoute component={Index} />
         <Route path="books/:title" component={ShowBook} />
-        <Route path="notes/:guid" component={ShowNote} />
+        <Route path="dogEars/:guid" component={ShowDogEar} />
       </Route>
     </Router>
   </Provider>,

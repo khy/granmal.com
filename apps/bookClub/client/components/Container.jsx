@@ -9,9 +9,9 @@ import { LogInModal } from 'client/components/auth/logIn'
 import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 
 import { Navbar, NavMenu } from 'bookClub/client/components/nav'
-import NewNote from 'bookClub/client/components/NewNote'
+import NewDogEar from 'bookClub/client/components/NewDogEar'
 import {
-  createNote, fetchEditionsForNewNote, showNewNoteModal,
+  createDogEar, fetchEditionsForNewDogEar, showNewDogEarModal,
 } from 'bookClub/client/actions'
 
 class Container extends React.Component {
@@ -22,18 +22,18 @@ class Container extends React.Component {
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'NavMenu') {
         modal = <NavMenu
-          onNewNote={this.props.onShowNewNoteModal}
+          onNewDogEar={this.props.onShowNewDogEarModal}
           onClose={this.props.onHideModal}
         />
-      } else if (this.props.modal.name === 'NewNote') {
-        modal = <NewNote
-          editionOptions={this.props.newNote.editions.records}
-          editionOptionsLoading={this.props.newNote.editions.isPending}
-          disabled={this.props.newNote.isPending}
-          onCreate={this.props.onCreateNote}
+      } else if (this.props.modal.name === 'NewDogEar') {
+        modal = <NewDogEar
+          editionOptions={this.props.newDogEar.editions.records}
+          editionOptionsLoading={this.props.newDogEar.editions.isPending}
+          disabled={this.props.newDogEar.isPending}
+          onCreate={this.props.onCreateDogEar}
           onClose={this.props.onHideModal}
           onFetchEditions={this.props.onFetchEditions}
-          selectedEdition={this.props.newNote.selectedBook}
+          selectedEdition={this.props.newDogEar.selectedBook}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
@@ -76,14 +76,14 @@ const mapStateToProps = (state) => {
   return {
     alert: state.alert,
     modal: state.modal,
-    newNote: _get(state, 'app.newNote'),
+    newDogEar: _get(state, 'app.newDogEar'),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCreateNote: (newNote) => { dispatch(createNote(newNote)) },
-    onFetchEditions: (title) => { dispatch(fetchEditionsForNewNote(title)) },
+    onCreateDogEar: (newDogEar) => { dispatch(createDogEar(newDogEar)) },
+    onFetchEditions: (title) => { dispatch(fetchEditionsForNewDogEar(title)) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
       dispatch(logIn(email, password)).then(() => {
@@ -92,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
       })
     },
     onShowNavMenu: () => { dispatch(showModal('NavMenu')) },
-    onShowNewNoteModal: () => { dispatch(showNewNoteModal()) },
+    onShowNewDogEarModal: () => { dispatch(showNewDogEarModal()) },
   }
 }
 

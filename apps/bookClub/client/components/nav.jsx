@@ -10,16 +10,16 @@ export function Navbar(props) {
 
 export class NavMenu extends React.Component {
 
-  onNewNote(event) {
+  onNewDogEar(event) {
     event.preventDefault()
     this.props.onClose()
-    this.props.onNewNote()
+    this.props.onNewDogEar()
   }
 
   render() {
     return (
       <BaseNavMenu onClose={this.props.onClose}>
-        <a onClick={this.onNewNote.bind(this)} className="list-group-item" href="#">New Note</a>
+        <a onClick={this.onNewDogEar.bind(this)} className="list-group-item" href="#">New Dog Ear</a>
         <NavMenuLink to={"/book-club"} onClick={this.props.onClose}>Book Club Home</NavMenuLink>
         <a href="/" className="list-group-item">Gran Mal</a>
       </BaseNavMenu>
@@ -29,6 +29,6 @@ export class NavMenu extends React.Component {
 }
 
 NavMenu.propTypes = {
-  onNewNote: React.PropTypes.func.isRequired,
+  onNewDogEar: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
 }

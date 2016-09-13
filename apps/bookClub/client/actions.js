@@ -4,37 +4,31 @@ import { showModal, hideModal } from 'client/actions/modal'
 
 import { booksClient } from 'bookClub/client/clients'
 
-export function createNote(newNote) {
+export function createDogEar(newDogEar) {
   return function (dispatch, getState) {
-    dispatch({ type: 'notes.create.send' })
+    dispatch({ type: 'dogEars.create.send' })
 
-    const state = getState()
-
-    const edition = state.app.newNote.editions.records.find((edition) => {
-      return edition.isbn === newNote.isbn
-    })
-
-    booksClient(state).post('/notes', {
-      isbn: edition.isbn,
-      pageNumber: newNote.pageNumber,
-      content: newNote.content,
-    }).then((note) => {
-      browserHistory.push(`/book-club/notes/${note.guid}`)
+    booksClient(getState()).post('/dogEars', {
+      isbn: newDogEar.isbn,
+      pageNumber: newDogEar.pageNumber,
+      note: newDogEar.note,
+    }).then((dogEar) => {
+      browserHistory.push(`/book-club/dogEars/${dogEar.guid}`)
       dispatch(hideModal())
-      dispatch({ type: 'notes.create.success', note })
+      dispatch({ type: 'dogEars.create.success', dogEar })
     })
   }
 }
 
-export function fetchEditionsForNewNote(title) {
+export function fetchEditionsForNewDogEar(title) {
   return function (dispatch, getState) {
     const state = getState()
 
-    if (title && !state.app.newNote.editions.isPending) {
-      dispatch({ type: 'newNote.editions.fetch.send' })
+    if (title && !state.app.newDogEar.editions.isPending) {
+      dispatch({ type: 'newDogEar.editions.fetch.send' })
 
       booksClient(state).get(`/editions?title=${title}`).then((editions) => {
-        dispatch({ type: 'newNote.editions.fetch.success', editions })
+        dispatch({ type: 'newDogEar.editions.fetch.success', editions })
       })
     }
   }
@@ -70,45 +64,45 @@ export function fetchBookForShowBook(title) {
   }
 }
 
-export function fetchNotesForShowBook(title) {
+export function fetchDogEarsForShowBook(title) {
   return function (dispatch, getState) {
     const state = getState()
-    const notes = state.app.showBook.notes
+    const dogEars = state.app.showBook.dogEars
 
-    if (notes.isInvalidated && !notes.isPending) {
-      dispatch({ type: 'showBook.notes.fetch.send' })
+    if (dogEars.isInvalidated && !dogEars.isPending) {
+      dispatch({ type: 'showBook.dogEars.fetch.send' })
 
-      booksClient(state).get(`/notes?bookTitle=${title}`).then((notes) => {
-        dispatch({ type: 'showBook.notes.fetch.success', notes: notes })
+      booksClient(state).get(`/dogEars?bookTitle=${title}`).then((dogEars) => {
+        dispatch({ type: 'showBook.dogEars.fetch.success', dogEars })
       })
     }
   }
 }
 
-export function fetchNoteForShowNote(guid) {
+export function fetchDogEarForShowDogEar(guid) {
   return function (dispatch, getState) {
     const state = getState()
-    const note = state.app.showNote.note
+    const dogEar = state.app.showDogEar.dogEar
 
-    if (note.isInvalidated && !note.isPending) {
-      dispatch({ type: 'showNote.fetch.send' })
+    if (dogEar.isInvalidated && !dogEar.isPending) {
+      dispatch({ type: 'showDogEar.fetch.send' })
 
-      booksClient(state).get(`/notes?guid=${guid}`).then((notes) => {
-        dispatch({ type: 'showNote.fetch.success', note: notes[0] })
+      booksClient(state).get(`/dogEars?guid=${guid}`).then((dogEars) => {
+        dispatch({ type: 'showDogEar.fetch.success', dogEar: dogEars[0] })
       })
     }
   }
 }
 
-export function showNewNoteModal() {
+export function showNewDogEarModal() {
   return function (dispatch, getState) {
     const state = getState()
 
     if (state.auth.account) {
-      dispatch(showModal('NewNote', {}))
+      dispatch(showModal('NewDogEar', {}))
     } else {
       dispatch(showModal('LogIn', {
-        message: 'You must log in to add a note'
+        message: 'You must log in to add a dog ear'
       }))
     }
   }

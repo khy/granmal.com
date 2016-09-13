@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-import { fetchBookForShowBook, fetchNotesForShowBook } from 'bookClub/client/actions'
-import NoteCard from 'bookClub/client/components/NoteCard'
+import { fetchBookForShowBook, fetchDogEarsForShowBook } from 'bookClub/client/actions'
+import DogEarCard from 'bookClub/client/components/DogEarCard'
 
 class ShowBook extends React.Component {
 
@@ -19,7 +19,7 @@ class ShowBook extends React.Component {
 
   load(props) {
     props.fetchBook(props.params.title)
-    props.fetchNotes(props.params.title)
+    props.fetchDogEars(props.params.title)
   }
 
   render() {
@@ -42,14 +42,14 @@ class ShowBook extends React.Component {
       bookCard = <DummyCard />
     }
 
-    const notesMeta = this.props.notes
-    const notes = notesMeta.records
+    const dogEarsMeta = this.props.dogEars
+    const dogEars = dogEarsMeta.records
 
-    let noteCards
+    let dogEarCards
 
-    if (!notesMeta.isPending) {
-      noteCards = notes.map((note) => (
-        <NoteCard key={note.guid} note={note} book={book} clickable={true} />
+    if (!dogEarsMeta.isPending) {
+      dogEarCards = dogEars.map((dogEar) => (
+        <DogEarCard key={dogEar.guid} dogEar={dogEar} book={book} clickable={true} />
       ))
     }
 
@@ -59,7 +59,7 @@ class ShowBook extends React.Component {
           {bookCard}
         </div>
         <div className="col-xs-12 col-sm-9">
-          {noteCards}
+          {dogEarCards}
         </div>
       </div>
     )
@@ -79,8 +79,8 @@ const mapDispatchToProps = (dispatch) => {
     fetchBook: (title) => {
       dispatch(fetchBookForShowBook(title))
     },
-    fetchNotes: (title) => {
-      dispatch(fetchNotesForShowBook(title))
+    fetchDogEars: (title) => {
+      dispatch(fetchDogEarsForShowBook(title))
     }
   }
 }

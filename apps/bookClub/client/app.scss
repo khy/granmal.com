@@ -5,10 +5,10 @@
 
 .navbar { margin-bottom: 1rem; }
 
-.note-card {
+.dog-ear-card {
   @include markdown-container();
 
-  .note-details {
+  .dog-ear-details {
     color: $text-muted;
     border-top: 1px solid $gray-lighter;
 
@@ -17,7 +17,7 @@
     }
   }
 
-  &.note-card-clickable:hover {
+  &.dog-ear-card-clickable:hover {
     cursor: pointer;
     background-color: $gray-lightest;
   }
