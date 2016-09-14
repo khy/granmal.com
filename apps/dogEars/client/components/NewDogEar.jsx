@@ -5,10 +5,12 @@ import _get from 'lodash/get'
 import _identity from 'lodash/identity'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
+import _trim from 'lodash/trim'
 import { EditorState } from 'draft-js'
 import { stateToMarkdown } from 'draft-js-export-markdown';
 
 import { Editor } from 'client/components/draftJs'
+import { Icon } from 'client/components/fontAwesome'
 import { FormModal } from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
 
@@ -23,6 +25,7 @@ export default class NewDogEar extends React.Component {
 
     this.state = {
       isbn: _get(props, 'selectedEdition.isbn'),
+      showNote: false,
       editorState: EditorState.createEmpty(),
     }
   }
@@ -39,14 +42,20 @@ export default class NewDogEar extends React.Component {
   createDogEar() {
     var errors = {}
 
+    let note
     const noteContentState = this.state.editorState.getCurrentContent()
-    const note = stateToMarkdown(noteContentState)
+
+    if (noteContentState.hasText()) {
+      note = stateToMarkdown(noteContentState)
+    }
+
+    console.log(note)
 
     if (_isEmpty(errors)) {
       this.props.onCreate({
         isbn: this.state.isbn,
         pageNumber: parseInt(this.state.pageNumber),
-        note,
+        note
       })
     } else {
       this.setState({ errors })
@@ -82,6 +91,10 @@ export default class NewDogEar extends React.Component {
     this.setState({ editorState })
   }
 
+  showNote() {
+    this.setState({showNote: true})
+  }
+
   render() {
     const editionOptions = this.props.editionOptions.map((edition) => {
       return {
@@ -111,6 +124,27 @@ export default class NewDogEar extends React.Component {
           {pageInput}
           <span className="input-group-addon">of {this.state.pageCount}</span>
         </div>
+      )
+    }
+
+    let showNoteLink, noteFormGroup
+
+    if (this.state.showNote) {
+      noteFormGroup = (
+        <FormGroup>
+          <label htmlFor='newDogEarNoteInput'>Note</label>
+          <Editor
+            value={this.state.editorState}
+            onChange={this.handleEditorChange.bind(this)}
+          />
+        </FormGroup>
+      )
+    } else {
+      showNoteLink = (
+        <button onClick={this.showNote.bind(this)} className="btn btn-secondary" type="button">
+          <Icon name="pencil-square-o" />
+          <span> Add Note</span>
+        </button>
       )
     }
 
@@ -147,10 +181,8 @@ export default class NewDogEar extends React.Component {
           </div>
         </FormGroup>
 
-        <Editor
-          value={this.state.editorState}
-          onChange={this.handleEditorChange.bind(this)}
-        />
+        {showNoteLink}
+        {noteFormGroup}
       </FormModal>
     )
   }
