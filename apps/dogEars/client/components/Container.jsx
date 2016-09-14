@@ -8,11 +8,11 @@ import { showModal, hideModal } from 'client/actions/modal'
 import { LogInModal } from 'client/components/auth/logIn'
 import { Alert, AlertContext } from 'client/components/bootstrap/alert'
 
-import { Navbar, NavMenu } from 'bookClub/client/components/nav'
-import NewDogEar from 'bookClub/client/components/NewDogEar'
+import { Navbar, NavMenu } from 'dogEars/client/components/nav'
+import NewDogEar from 'dogEars/client/components/NewDogEar'
 import {
   createDogEar, fetchEditionsForNewDogEar, showNewDogEarModal,
-} from 'bookClub/client/actions'
+} from 'dogEars/client/actions'
 
 class Container extends React.Component {
 

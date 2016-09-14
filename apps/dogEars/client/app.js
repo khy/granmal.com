@@ -6,11 +6,11 @@ import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { connect, Provider } from 'react-redux'
 
-import reducer from 'bookClub/client/reducer'
-import Container from 'bookClub/client/components/Container'
-import Index from 'bookClub/client/components/Index'
-import ShowBook from 'bookClub/client/components/ShowBook'
-import ShowDogEar from 'bookClub/client/components/ShowDogEar'
+import reducer from 'dogEars/client/reducer'
+import Container from 'dogEars/client/components/Container'
+import Index from 'dogEars/client/components/Index'
+import ShowBook from 'dogEars/client/components/ShowBook'
+import ShowDogEar from 'dogEars/client/components/ShowDogEar'
 
 require("./app.scss")
 
@@ -21,7 +21,7 @@ const store = applyMiddleware(
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/book-club" component={Container}>
+      <Route path="/dogEars" component={Container}>
         <IndexRoute component={Index} />
         <Route path="books/:title" component={ShowBook} />
         <Route path="dogEars/:guid" component={ShowDogEar} />

@@ -22,7 +22,7 @@ export default function DogEarCard(props) {
   if (!props.book) {
     bookDetail = (
       <span>
-        <span> of</span> <Link to={`/book-club/books/${dogEar.edition.title}`}>{dogEar.edition.title}</Link> by <b>{dogEar.edition.authors[0]}</b>
+        <span> of</span> <Link to={`/dogEars/books/${dogEar.edition.title}`}>{dogEar.edition.title}</Link> by <b>{dogEar.edition.authors[0]}</b>
       </span>
     )
   }
@@ -36,7 +36,7 @@ export default function DogEarCard(props) {
   function onClick(event) {
     if (props.clickable) {
       event.preventDefault()
-      browserHistory.push(`/book-club/dogEars/${dogEar.guid}`)
+      browserHistory.push(`/dogEars/dogEars/${dogEar.guid}`)
     }
   }
 

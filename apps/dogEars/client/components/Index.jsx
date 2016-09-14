@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { browserHistory, Link } from 'react-router'
 import _chunk from 'lodash/chunk'
 
-import { fetchBooksForIndex } from 'bookClub/client/actions'
+import { fetchBooksForIndex } from 'dogEars/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
 
 class Index extends React.Component {
@@ -18,7 +18,7 @@ class Index extends React.Component {
 
   showBook(title, event) {
     event.preventDefault()
-    browserHistory.push(`/book-club/books/${title}`)
+    browserHistory.push(`/dogEars/books/${title}`)
   }
 
   render() {

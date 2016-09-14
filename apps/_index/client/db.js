@@ -1,16 +1,22 @@
 export const apps = [
   {
+    key: 'budget',
+    name: 'Budget',
+    description: 'Personal finances for obsessive compulsives.',
+    alphaAt: new Date(2016, 2, 15)
+  },
+  {
+    key: 'dogEars',
+    name: 'Dog Ears',
+    description: 'A book club.',
+    betaAt: new Date(2016, 9, 15)
+  },
+  {
     key: 'shiki',
     name: 'Shiki',
     description: 'Giving everyone the power to create and share ideas and information instantly, without barriers. With haikus.',
     releasedAt: new Date(2016, 6, 4),
     betaAt: new Date(2016, 6, 1)
-  },
-  {
-    key: 'budget',
-    name: 'Budget',
-    description: 'Personal finances for obsessive compulsives.',
-    alphaAt: new Date(2016, 2, 15)
   },
 ]
 
@@ -27,6 +33,7 @@ export const layouts = [
     mainImageKey: 'badAss',
     items: [
       { type: 'app', key: 'shiki' },
+      { type: 'app', key: 'dogEars' },
     ]
   }
 ]

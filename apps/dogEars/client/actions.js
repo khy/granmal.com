@@ -2,7 +2,7 @@ import { browserHistory } from 'react-router'
 
 import { showModal, hideModal } from 'client/actions/modal'
 
-import { booksClient } from 'bookClub/client/clients'
+import { booksClient } from 'dogEars/client/clients'
 
 export function createDogEar(newDogEar) {
   return function (dispatch, getState) {
@@ -13,7 +13,7 @@ export function createDogEar(newDogEar) {
       pageNumber: newDogEar.pageNumber,
       note: newDogEar.note,
     }).then((dogEar) => {
-      browserHistory.push(`/book-club/dogEars/${dogEar.guid}`)
+      browserHistory.push(`/dogEars/dogEars/${dogEar.guid}`)
       dispatch(hideModal())
       dispatch({ type: 'dogEars.create.success', dogEar })
     })

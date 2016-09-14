@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-import { fetchDogEarForShowDogEar } from 'bookClub/client/actions'
-import DogEarCard from 'bookClub/client/components/DogEarCard'
+import { fetchDogEarForShowDogEar } from 'dogEars/client/actions'
+import DogEarCard from 'dogEars/client/components/DogEarCard'
 
 class ShowDogEar extends React.Component {
 

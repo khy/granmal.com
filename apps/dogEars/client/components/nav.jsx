@@ -5,7 +5,7 @@ import BaseNavbar from 'client/components/nav/Navbar'
 import { NavMenu as BaseNavMenu, NavMenuLink } from 'client/components/nav/navMenu'
 
 export function Navbar(props) {
-  return <BaseNavbar {...props} title="Book Club" titleUrl="/book-club" />
+  return <BaseNavbar {...props} title="Dog Ears" titleUrl="/dogEars" />
 }
 
 export class NavMenu extends React.Component {
@@ -20,7 +20,7 @@ export class NavMenu extends React.Component {
     return (
       <BaseNavMenu onClose={this.props.onClose}>
         <a onClick={this.onNewDogEar.bind(this)} className="list-group-item" href="#">New Dog Ear</a>
-        <NavMenuLink to={"/book-club"} onClick={this.props.onClose}>Book Club Home</NavMenuLink>
+        <NavMenuLink to={"/dogEars"} onClick={this.props.onClose}>Dog Ears Home</NavMenuLink>
         <a href="/" className="list-group-item">Gran Mal</a>
       </BaseNavMenu>
     )
