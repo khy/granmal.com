@@ -49,8 +49,6 @@ export default class NewDogEar extends React.Component {
       note = stateToMarkdown(noteContentState)
     }
 
-    console.log(note)
-
     if (_isEmpty(errors)) {
       this.props.onCreate({
         isbn: this.state.isbn,

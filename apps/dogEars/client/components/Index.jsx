@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { browserHistory, Link } from 'react-router'
 import _chunk from 'lodash/chunk'
 
-import { fetchBooksForIndex } from 'dogEars/client/actions'
+import { fetchBooksForIndex, fetchDogEarsForIndex } from 'dogEars/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
+import DogEarCard from 'dogEars/client/components/DogEarCard'
 
 class Index extends React.Component {
 
   componentWillMount() {
-    this.props.fetchBooks()
+    this.props.fetchDogEars()
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.fetchBooks()
+    newProps.fetchDogEars()
   }
 
   showBook(title, event) {
@@ -22,20 +23,16 @@ class Index extends React.Component {
   }
 
   render() {
-    const kards = this.props.books.records.map((book) => {
+    const dogEarCards = this.props.dogEars.records.map((dogEar) => {
       return (
-        <Card key={book.title} className="book-card" onClick={this.showBook.bind(this, book.title)}>
-          <img className="card-img-top img-fluid" src={book.largeImageUrl} />
-          <CardBlock>
-            <h4 className="card-title">{book.title}</h4>
-            <p className="card-subtitle text-muted">{book.authors[0]}</p>
-          </CardBlock>
-        </Card>
+        <DogEarCard key={dogEar.guid} dogEar={dogEar} clickable={true} />
       )
     })
 
     return (
-      <div className="card-columns">{kards}</div>
+      <div className="card-columns">
+        {dogEarCards}
+      </div>
     )
   }
 
@@ -48,6 +45,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchBooks: () => { dispatch(fetchBooksForIndex()) },
+    fetchDogEars: () => { dispatch(fetchDogEarsForIndex()) },
   }
 }
 

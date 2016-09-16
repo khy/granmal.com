@@ -19,6 +19,11 @@ const initialState = {
       isInvalidated: true,
       records: [],
     },
+    dogEars: {
+      isPending: false,
+      isInvalidated: true,
+      records: [],
+    },
   },
   showBook: {
     book: {
@@ -55,6 +60,18 @@ function app(state = initialState, action) {
         isPending: false,
         isInvalidated: false,
         records: action.books,
+      }}}, state)
+
+    case 'index.dogEars.fetch.send':
+      return u({
+        index: { dogEars: { isPending: true } }
+      }, state)
+
+    case 'index.dogEars.fetch.success':
+      return u({ index: { dogEars: {
+        isPending: false,
+        isInvalidated: false,
+        records: action.dogEars,
       }}}, state)
 
     case 'newDogEar.editions.fetch.send':

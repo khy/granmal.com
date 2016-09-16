@@ -49,6 +49,21 @@ export function fetchBooksForIndex() {
   }
 }
 
+export function fetchDogEarsForIndex() {
+  return function (dispatch, getState) {
+    const state = getState()
+    const dogEars = state.app.index.dogEars
+
+    if (dogEars.isInvalidated && !dogEars.isPending) {
+      dispatch({ type: 'index.dogEars.fetch.send' })
+
+      booksClient(state).get(`/dogEars?p.limit=20`).then((dogEars) => {
+        dispatch({ type: 'index.dogEars.fetch.success', dogEars })
+      })
+    }
+  }
+}
+
 export function fetchBookForShowBook(title) {
   return function (dispatch, getState) {
     const state = getState()
