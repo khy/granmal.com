@@ -2,10 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { browserHistory, Link } from 'react-router'
 import _chunk from 'lodash/chunk'
+import _groupBy from 'lodash/groupBy'
+import _map from 'lodash/map'
 
 import { fetchBooksForIndex, fetchDogEarsForIndex } from 'dogEars/client/actions'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
-import DogEarCard from 'dogEars/client/components/DogEarCard'
+import DogEarListCard from 'dogEars/client/components/DogEarListCard'
 
 class Index extends React.Component {
 
@@ -23,15 +25,23 @@ class Index extends React.Component {
   }
 
   render() {
-    const dogEarCards = this.props.dogEars.records.map((dogEar) => {
+    const groupedNotes = _groupBy(this.props.dogEars.records, (dogEar) => {
+      return dogEar.edition.title
+    })
+
+    const dogEarListCards = _map(groupedNotes, (dogEars) => {
       return (
-        <DogEarCard key={dogEar.guid} dogEar={dogEar} clickable={true} />
+        <DogEarListCard
+          key={dogEars[0].edition.title}
+          dogEars={dogEars}
+          clickable={true}
+        />
       )
     })
 
     return (
-      <div className="card-columns">
-        {dogEarCards}
+      <div>
+        {dogEarListCards}
       </div>
     )
   }

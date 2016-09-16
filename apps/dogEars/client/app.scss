@@ -15,6 +15,15 @@
     b {
       color: $gray-dark;
     }
+
+    i {
+      margin-right: ($spacer-x * .5);
+    }
+
+    &.dog-ear-card-block-clickable:hover {
+      cursor: pointer;
+      background-color: $gray-lightest;
+    }
   }
 
   &.dog-ear-card-clickable:hover {
