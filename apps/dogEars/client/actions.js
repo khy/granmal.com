@@ -94,16 +94,16 @@ export function fetchDogEarsForShowBook(title) {
   }
 }
 
-export function fetchDogEarForShowDogEar(guid) {
+export function fetchDogEarForShowNote(guid) {
   return function (dispatch, getState) {
     const state = getState()
-    const dogEar = state.app.showDogEar.dogEar
+    const dogEar = state.app.showNote.dogEar
 
     if (dogEar.isInvalidated && !dogEar.isPending) {
-      dispatch({ type: 'showDogEar.fetch.send' })
+      dispatch({ type: 'showNote.dogEar.fetch.send' })
 
       booksClient(state).get(`/dogEars?guid=${guid}`).then((dogEars) => {
-        dispatch({ type: 'showDogEar.fetch.success', dogEar: dogEars[0] })
+        dispatch({ type: 'showNote.dogEar.fetch.success', dogEar: dogEars[0] })
       })
     }
   }

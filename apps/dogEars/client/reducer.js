@@ -37,7 +37,7 @@ const initialState = {
       records: [],
     },
   },
-  showDogEar: {
+  showNote: {
     dogEar: {
       isPending: false,
       isInvalidated: true,
@@ -121,13 +121,19 @@ function app(state = initialState, action) {
         records: action.dogEars,
       }}}, state)
 
-    case 'showDogEar.fetch.send':
+    case 'showNote.clear':
+      return u({ showNote: { dogEar: {
+        isInvalidated: true,
+        record: undefined,
+      }}}, state)
+
+    case 'showNote.dogEar.fetch.send':
       return u({
-        showDogEar: { dogEar: { isPending: true } }
+        showNote: { dogEar: { isPending: true } }
       }, state)
 
-    case 'showDogEar.fetch.success':
-      return u({ showDogEar: { dogEar: {
+    case 'showNote.dogEar.fetch.success':
+      return u({ showNote: { dogEar: {
         isPending: false,
         isInvalidated: false,
         record: action.dogEar,

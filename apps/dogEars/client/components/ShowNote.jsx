@@ -5,7 +5,7 @@ import Remarkable from 'remarkable'
 
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { Card, CardBlock, CardHeader } from 'client/components/bootstrap/card'
-import { fetchDogEarForShowDogEar } from 'dogEars/client/actions'
+import { fetchDogEarForShowNote } from 'dogEars/client/actions'
 import DogEarCardBlock from 'dogEars/client/components/DogEarCardBlock'
 
 const md = new Remarkable
@@ -13,11 +13,12 @@ const md = new Remarkable
 class ShowNote extends React.Component {
 
   componentWillMount() {
-    this.props.onFetch(this.props.params.guid)
+    this.props.clearDogEar()
+    this.props.fetchDogEar(this.props.params.guid)
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.onFetch(newProps.params.guid)
+    newProps.fetchDogEar(newProps.params.guid)
   }
 
   render() {
@@ -50,13 +51,16 @@ class ShowNote extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return state.app.showDogEar
+  return state.app.showNote
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetch: (guid) => {
-      dispatch(fetchDogEarForShowDogEar(guid))
+    clearDogEar: () => {
+      dispatch({ type: 'showNote.clear' })
+    },
+    fetchDogEar: (guid) => {
+      dispatch(fetchDogEarForShowNote(guid))
     },
   }
 }
