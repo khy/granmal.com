@@ -43,10 +43,11 @@ export default function DogEarListCard(props) {
 
     return (
       <CardBlock onClick={onClick} className={["dog-ear-details", clickableClass].join(" ")} key={dogEar.guid}>
-         {dogEarDetail}
-         <p className="card-text"><small className="text-muted">
-           {moment(dogEar.createdAt).format('MMM Do h:mm A')}
-         </small></p>
+        <progress className="progress" value={dogEar.pageNumber} max={dogEar.edition.pageCount}></progress>
+        {dogEarDetail}
+        <p className="card-text"><small className="text-muted">
+          {moment(dogEar.createdAt).format('MMM Do h:mm A')}
+        </small></p>
       </CardBlock>
     )
   })
