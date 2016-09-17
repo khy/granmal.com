@@ -74,6 +74,30 @@ function app(state = initialState, action) {
         records: action.dogEars,
       }}}, state)
 
+    case 'newDogEar.create.send':
+      return u({
+        newDogEar: { isPending: true }
+      }, state)
+
+    case 'newDogEar.create.success':
+      return u({
+        newDogEar: {
+          isPending: false,
+        },
+        index: { dogEars: {
+          isPending: false,
+          isInvalidated: true,
+        }},
+        showBook: { dogEars: {
+          isPending: false,
+          isInvalidated: true,
+        }},
+        showNote: { dogEar: {
+          isPending: false,
+          isInvalidated: true,
+        }},
+      }, state)
+
     case 'newDogEar.editions.fetch.send':
       return u({
         newDogEar: { editions: { isPending: true } }

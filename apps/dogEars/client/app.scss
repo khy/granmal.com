@@ -9,6 +9,12 @@
   @include markdown-container();
 }
 
+.alert {
+  i {
+    margin-right: ($spacer-x * .5);
+  }
+}
+
 .dog-ear-details {
   color: $text-muted;
   border-top: 1px solid $gray-lighter;

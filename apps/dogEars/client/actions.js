@@ -1,21 +1,27 @@
 import { browserHistory } from 'react-router'
 
 import { showModal, hideModal } from 'client/actions/modal'
+import { showAdHocAlert, showNamedAlert } from 'client/actions/alert'
+import { AlertContext } from 'client/components/bootstrap/alert'
 
 import { booksClient } from 'dogEars/client/clients'
 
 export function createDogEar(newDogEar) {
   return function (dispatch, getState) {
-    dispatch({ type: 'dogEars.create.send' })
+    dispatch({ type: 'newDogEar.create.send' })
 
     booksClient(getState()).post('/dogEars', {
       isbn: newDogEar.isbn,
       pageNumber: newDogEar.pageNumber,
       note: newDogEar.note,
     }).then((dogEar) => {
-      browserHistory.push(`/dogEars/dogEars/${dogEar.guid}`)
+      dispatch({ type: 'newDogEar.create.success', dogEar })
       dispatch(hideModal())
-      dispatch({ type: 'dogEars.create.success', dogEar })
+      dispatch(showNamedAlert('dogEarAdded', { dogEar }))
+
+      if (dogEar.note) {
+        browserHistory.push(`/dogEars/notes/${dogEar.guid}`)
+      }
     })
   }
 }

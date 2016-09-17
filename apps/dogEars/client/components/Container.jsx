@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _get from 'lodash/get'
+import { Link } from 'react-router'
 
 import { showAdHocAlert } from 'client/actions/alert'
 import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
+import { Icon } from 'client/components/fontAwesome'
 import { LogInModal } from 'client/components/auth/logIn'
-import { Alert, AlertContext } from 'client/components/bootstrap/alert'
+import { Alert, AlertContext, AlertSuccess } from 'client/components/bootstrap/alert'
 
 import { Navbar, NavMenu } from 'dogEars/client/components/nav'
 import NewDogEar from 'dogEars/client/components/NewDogEar'
@@ -49,6 +51,27 @@ class Container extends React.Component {
 
     if (this.props.alert.isVisible) {
       switch (this.props.alert.name) {
+        case 'dogEarAdded':
+          const dogEar = this.props.alert.data.dogEar
+
+          if (dogEar.note) {
+            alert = <AlertSuccess>
+              <Icon name="book" />
+              <span>You left </span>
+              <Link to={`/dogEars/notes/${dogEar.guid}`} className="alert-link">a note</Link>
+              <span> on page {dogEar.pageNumber} of </span>
+              <Link to={`/dogEars/books/${dogEar.edition.title}`} className="alert-link">{dogEar.edition.title}</Link>
+            </AlertSuccess>
+          } else {
+            alert = <AlertSuccess>
+              <Icon name="pencil-square-o" />
+              <span>You read to page {dogEar.pageNumber} of </span>
+              <Link to={`/dogEars/books/${dogEar.edition.title}`} className="alert-link">{dogEar.edition.title}</Link>
+            </AlertSuccess>
+          }
+
+          break
+
         default:
           alert = <Alert context={this.props.alert.context}>
             {this.props.alert.text}

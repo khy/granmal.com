@@ -18,7 +18,10 @@ class ShowNote extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    newProps.fetchDogEar(newProps.params.guid)
+    if (this.props.params.guid !== newProps.params.guid) {
+      this.props.clearDogEar()
+      newProps.fetchDogEar(newProps.params.guid)
+    }
   }
 
   render() {
