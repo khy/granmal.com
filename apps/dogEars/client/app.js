@@ -10,7 +10,7 @@ import reducer from 'dogEars/client/reducer'
 import Container from 'dogEars/client/components/Container'
 import Index from 'dogEars/client/components/Index'
 import ShowBook from 'dogEars/client/components/ShowBook'
-import ShowDogEar from 'dogEars/client/components/ShowDogEar'
+import ShowNote from 'dogEars/client/components/ShowNote'
 
 require("./app.scss")
 
@@ -24,7 +24,7 @@ render(
       <Route path="/dogEars" component={Container}>
         <IndexRoute component={Index} />
         <Route path="books/:title" component={ShowBook} />
-        <Route path="dogEars/:guid" component={ShowDogEar} />
+        <Route path="notes/:guid" component={ShowNote} />
       </Route>
     </Router>
   </Provider>,

@@ -5,28 +5,23 @@
 
 .navbar { margin-bottom: 1rem; }
 
-.dog-ear-card {
+.markdown-container {
   @include markdown-container();
+}
 
-  .dog-ear-details {
-    color: $text-muted;
-    border-top: 1px solid $gray-lighter;
+.dog-ear-details {
+  color: $text-muted;
+  border-top: 1px solid $gray-lighter;
 
-    b {
-      color: $gray-dark;
-    }
-
-    i {
-      margin-right: ($spacer-x * .5);
-    }
-
-    &.dog-ear-card-block-clickable:hover {
-      cursor: pointer;
-      background-color: $gray-lightest;
-    }
+  b {
+    color: $gray-dark;
   }
 
-  &.dog-ear-card-clickable:hover {
+  i {
+    margin-right: ($spacer-x * .5);
+  }
+
+  &.dog-ear-card-block-clickable:hover {
     cursor: pointer;
     background-color: $gray-lightest;
   }

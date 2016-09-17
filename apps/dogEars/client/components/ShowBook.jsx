@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { DummyCard } from 'client/components/bootstrap/dummyCard'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
 import { fetchBookForShowBook, fetchDogEarsForShowBook } from 'dogEars/client/actions'
-import DogEarCard from 'dogEars/client/components/DogEarCard'
+import DogEarCardBlock from 'dogEars/client/components/DogEarCardBlock'
 
 class ShowBook extends React.Component {
 
@@ -49,7 +49,9 @@ class ShowBook extends React.Component {
 
     if (!dogEarsMeta.isPending) {
       dogEarCards = dogEars.map((dogEar) => (
-        <DogEarCard key={dogEar.guid} dogEar={dogEar} book={book} clickable={true} />
+        <Card key={dogEar.guid}>
+          <DogEarCardBlock dogEar={dogEar} clickable={true} />
+        </Card>
       ))
     }
 

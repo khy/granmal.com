@@ -6,8 +6,8 @@ import _groupBy from 'lodash/groupBy'
 import _map from 'lodash/map'
 
 import { fetchBooksForIndex, fetchDogEarsForIndex } from 'dogEars/client/actions'
-import { Card, CardBlock } from 'client/components/bootstrap/card'
-import DogEarListCard from 'dogEars/client/components/DogEarListCard'
+import { Card, CardBlock, CardHeader } from 'client/components/bootstrap/card'
+import DogEarCardBlock from 'dogEars/client/components/DogEarCardBlock'
 
 class Index extends React.Component {
 
@@ -29,19 +29,26 @@ class Index extends React.Component {
       return dogEar.edition.title
     })
 
-    const dogEarListCards = _map(groupedNotes, (dogEars) => {
+    const bookDogEarsCards = _map(groupedNotes, (dogEars) => {
+      const cardBlocks = dogEars.map((dogEar) => {
+        return <DogEarCardBlock dogEar={dogEar} clickable={true} key={dogEar.guid} />
+      })
+
+      const edition = dogEars[0].edition
+
       return (
-        <DogEarListCard
-          key={dogEars[0].edition.title}
-          dogEars={dogEars}
-          clickable={true}
-        />
+        <Card key={edition.title}>
+          <CardHeader>
+            <Link to={`/dogEars/books/${edition.title}`}>{edition.title}</Link> by {edition.authors[0]}
+          </CardHeader>
+          {cardBlocks}
+        </Card>
       )
     })
 
     return (
       <div>
-        {dogEarListCards}
+        {bookDogEarsCards}
       </div>
     )
   }
