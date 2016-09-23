@@ -13,13 +13,13 @@ export default function DogEarCardBlock(props) {
   if (dogEar.note) {
     dogEarDetail = <span>
       <Icon name="pencil-square-o" />
-      <a href="#">{dogEar.createdBy.user.name}</a> left a note on <b>p.{dogEar.pageNumber}</b>
+      <b>{dogEar.createdBy.user.name}</b> left a note on p.{dogEar.pageNumber}
     </span>
     canClick = props.clickable
   } else {
     dogEarDetail = <span>
       <Icon name="book" />
-      <a href="#">{dogEar.createdBy.user.name}</a> read to page <b>p.{dogEar.pageNumber}</b>
+      <b>{dogEar.createdBy.user.name}</b> read to page p.{dogEar.pageNumber}
     </span>
     canClick = false
   }
