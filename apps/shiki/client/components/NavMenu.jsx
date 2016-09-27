@@ -13,7 +13,7 @@ export default class NavMenu extends React.Component {
   render() {
     return (
       <BaseNavMenu onClose={this.props.onClose}>
-        <a onClick={this.onNewHaiku.bind(this)} className="list-group-item">New Haiku</a>
+        <a onClick={this.onNewHaiku.bind(this)} className="list-group-item" href="#">New Haiku</a>
         <NavMenuLink to={"/shiki"} onClick={this.props.onClose}>Shiki Home</NavMenuLink>
         <a href="/" className="list-group-item">Gran Mal</a>
       </BaseNavMenu>

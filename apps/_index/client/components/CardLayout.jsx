@@ -1,4 +1,5 @@
 import React from 'react'
+import _filter from 'lodash/filter'
 import _find from 'lodash/find'
 
 import { apps, mainImages, layouts } from '_index/client/db'
@@ -24,16 +25,33 @@ export default class CardLayout extends React.Component {
       }
     })
 
+    var leftCards = _filter(cards, (card, index) => index % 2 === 0)
+    var rightCards = _filter(cards, (card, index) => index % 2 === 1)
+
     const mainImage = _find(mainImages, (mi) => mi.key === layout.mainImageKey)
 
     return (
-      <div className="card-columns">
-        <div className="card text-xs-center" key="title">
-          <img className="card-img img-fluid" src={mainImage.url} />
-          <div className="card-img-overlay"></div>
+      <div>
+        <div className="row hidden-md-down">
+          <div className="col-lg">
+            <div className="card">
+              <img className="card-img img-fluid" src={mainImage.url} />
+            </div>
+          </div>
+          <div className="col-lg">
+            {leftCards}
+          </div>
+          <div className="col-lg">
+            {rightCards}
+          </div>
         </div>
 
-        {cards}
+        <div className="hidden-lg-up">
+          <div className="card">
+            <img className="card-img img-fluid" src={mainImage.url} />
+          </div>
+          {cards}
+        </div>
       </div>
     )
   }
