@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
   entry: {
     dogEars: './apps/dogEars/client/app.js',
@@ -29,5 +31,12 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      '$': 'jquery',
+      jQuery: 'jquery',
+      'window.Tether': 'tether'
+    }),
+  ],
   devtool: 'source-map'
 }

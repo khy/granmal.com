@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import 'bootstrap'
+
 export class Modal extends React.Component {
 
   componentDidMount() {
-    console.log("MOUNT")
-
     $(ReactDOM.findDOMNode(this)).on('hidden.bs.modal', this.props.onClose)
     $(ReactDOM.findDOMNode(this)).modal('show')
   }
@@ -13,7 +13,6 @@ export class Modal extends React.Component {
   componentWillUnmount() {
     // It is important to unbind the event because otherwise, if the modal
     // gets replaced, the underlying DOM node will be re-used.
-    console.log("UNMOUNT")
     $(ReactDOM.findDOMNode(this)).off('hidden.bs.modal')
     $(ReactDOM.findDOMNode(this)).modal('hide')
   }
