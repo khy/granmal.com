@@ -13,7 +13,7 @@ export class NavMenu extends React.Component {
 
   render() {
     return (
-      <Modal>
+      <Modal onClose={this.props.onClose}>
         <div className="modal-header"></div>
         <div className="list-group list-group-flush">
           {this.props.children}

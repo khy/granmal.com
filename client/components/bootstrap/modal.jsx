@@ -1,21 +1,29 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 export class Modal extends React.Component {
 
-  close(event) {
-    event.preventDefault()
-    this.props.onClose()
+  componentDidMount() {
+    console.log("MOUNT")
+
+    $(ReactDOM.findDOMNode(this)).on('hidden.bs.modal', this.props.onClose)
+    $(ReactDOM.findDOMNode(this)).modal('show')
+  }
+
+  componentWillUnmount() {
+    // It is important to unbind the event because otherwise, if the modal
+    // gets replaced, the underlying DOM node will be re-used.
+    console.log("UNMOUNT")
+    $(ReactDOM.findDOMNode(this)).off('hidden.bs.modal')
+    $(ReactDOM.findDOMNode(this)).modal('hide')
   }
 
   render() {
     return (
-      <div>
-        <div className="modal-backdrop in" onClick={this.close.bind(this)}></div>
-        <div className="modal" style={{display: 'block', paddingLeft: '0px'}}>
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              {this.props.children}
-            </div>
+      <div className="modal">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            {this.props.children}
           </div>
         </div>
       </div>
@@ -61,7 +69,7 @@ export class FormModal extends React.Component {
 
   render() {
     return (
-      <Modal>
+      <Modal onClose={this.props.onCancel}>
         <ModalHeader onClose={this.cancel}>{this.props.title}</ModalHeader>
         <form onSubmit={this.submit}>
           <ModalBody>
