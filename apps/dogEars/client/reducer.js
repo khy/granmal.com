@@ -6,6 +6,9 @@ import auth from 'client/reducers/auth'
 import modal from 'client/reducers/modal'
 
 const initialState = {
+  initialization: {
+    isPending: true,
+  },
   newDogEar: {
     isPending: false,
     editions: {
@@ -24,6 +27,11 @@ const initialState = {
       isInvalidated: true,
       records: [],
     },
+  },
+  recentEditions: {
+    isPending: false,
+    isInvalidated: true,
+    records: [],
   },
   showBook: {
     book: {
@@ -74,6 +82,11 @@ function app(state = initialState, action) {
         records: action.dogEars,
       }}}, state)
 
+    case 'initialization.fetch.success':
+      return u({ initialization: {
+        isPending: false,
+      }}, state)
+
     case 'newDogEar.create.send':
       return u({
         newDogEar: { isPending: true }
@@ -108,6 +121,17 @@ function app(state = initialState, action) {
         isPending: false,
         records: action.editions,
       }}}, state)
+
+    case 'recentEditions.fetch.send':
+      return u(
+        { recentEditions: { isPending: true }
+      }, state)
+
+    case 'recentEditions.fetch.success':
+      return u({ recentEditions: {
+        isPending: false,
+        records: action.editions,
+      }}, state)
 
     case 'showBook.book.fetch.send':
       return u({

@@ -115,6 +115,35 @@ export function fetchDogEarForShowNote(guid) {
   }
 }
 
+function fetchRecentEditionsThunk(dispatch, getState) {
+  const state = getState()
+  const recentEditions = state.app.recentEditions
+
+  if (recentEditions.isInvalidated && !recentEditions.isPending) {
+    dispatch({ type: 'recentEditions.fetch.send' })
+
+    const url = `/userEditions?user=${state.auth.account.guid}`
+    return booksClient(state).get(url).then((userEditions) => {
+      dispatch({
+        type: 'recentEditions.fetch.success',
+        editions: userEditions.map((ue) => ue.edition)
+      })
+    })
+  } else {
+    return Promise.resolve()
+  }
+}
+
+export function initializeApp() {
+  return function (dispatch, getState) {
+    Promise.all([
+      fetchRecentEditionsThunk(dispatch, getState)
+    ]).then(() => {
+      dispatch({ type: 'initialization.fetch.success'})
+    })
+  }
+}
+
 export function showNewDogEarModal() {
   return function (dispatch, getState) {
     const state = getState()

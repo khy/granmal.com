@@ -9,14 +9,19 @@ import { showModal, hideModal } from 'client/actions/modal'
 import { Icon } from 'client/components/fontAwesome'
 import { LogInModal } from 'client/components/auth/logIn'
 import { Alert, AlertContext, AlertSuccess } from 'client/components/bootstrap/alert'
+import { DummyCard } from 'client/components/bootstrap/dummyCard'
 
 import { Navbar, NavMenu } from 'dogEars/client/components/nav'
 import NewDogEar from 'dogEars/client/components/NewDogEar'
 import {
-  createDogEar, fetchEditionsForNewDogEar, showNewDogEarModal,
+  createDogEar, fetchEditionsForNewDogEar, initializeApp, showNewDogEarModal,
 } from 'dogEars/client/actions'
 
 class Container extends React.Component {
+
+  componentWillMount() {
+    this.props.initializeApp()
+  }
 
   render() {
     let modal
@@ -79,18 +84,33 @@ class Container extends React.Component {
       }
     }
 
-    return <div>
-      <Navbar
-        onButtonClick={this.props.onShowNavMenu}
-      />
+    if (!this.props.initialization.isPending) {
+      return (
+        <div>
+          <Navbar
+            onButtonClick={this.props.onShowNavMenu}
+          />
 
-      <div className="container">
-        {alert}
-        {this.props.children}
-      </div>
+          <div className="container">
+            {alert}
+            {this.props.children}
+          </div>
 
-      {modal}
-    </div>
+          {modal}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <Navbar />
+
+          <div className="container">
+            <DummyCard />
+          </div>
+        </div>
+      )
+    }
+
   }
 
 }
@@ -98,6 +118,7 @@ class Container extends React.Component {
 const mapStateToProps = (state) => {
   return {
     alert: state.alert,
+    initialization: state.app.initialization,
     modal: state.modal,
     newDogEar: _get(state, 'app.newDogEar'),
   }
@@ -105,6 +126,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    initializeApp: () => { dispatch(initializeApp()) },
     onCreateDogEar: (newDogEar) => { dispatch(createDogEar(newDogEar)) },
     onFetchEditions: (title) => { dispatch(fetchEditionsForNewDogEar(title)) },
     onHideModal: () => { dispatch(hideModal()) },
