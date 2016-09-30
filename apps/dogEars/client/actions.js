@@ -1,5 +1,6 @@
 import { browserHistory } from 'react-router'
 
+import { uselessResourceOwnerId } from 'common/account'
 import { showModal, hideModal } from 'client/actions/modal'
 import { showAdHocAlert, showNamedAlert } from 'client/actions/alert'
 import { AlertContext } from 'client/components/bootstrap/alert'
@@ -122,7 +123,8 @@ function fetchRecentEditionsThunk(dispatch, getState) {
   if (recentEditions.isInvalidated && !recentEditions.isPending) {
     dispatch({ type: 'recentEditions.fetch.send' })
 
-    const url = `/userEditions?user=${state.auth.account.guid}`
+    const accountGuid = uselessResourceOwnerId(state.auth.account)
+    const url = `/userEditions?userGuid=${accountGuid}`
     return booksClient(state).get(url).then((userEditions) => {
       dispatch({
         type: 'recentEditions.fetch.success',
