@@ -34,13 +34,14 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name === 'NewDogEar') {
         modal = <NewDogEar
-          editionOptions={this.props.newDogEar.editions.records}
-          editionOptionsLoading={this.props.newDogEar.editions.isPending}
           disabled={this.props.newDogEar.isPending}
-          onCreate={this.props.onCreateDogEar}
+          existingEditionOptions={this.props.recentEditions}
+          newEditionOptions={this.props.newDogEar.editions.records}
+          newEditionOptionsLoading={this.props.newDogEar.editions.isPending}
           onClose={this.props.onHideModal}
-          onFetchEditions={this.props.onFetchEditions}
-          selectedEdition={this.props.newDogEar.selectedBook}
+          onCreate={this.props.onCreateDogEar}
+          onFetchNewEditions={this.props.onFetchEditions}
+          selectedEdition={this.props.recentEditions[0]}
         />
       } else if (this.props.modal.name === 'LogIn') {
         modal = (
@@ -120,7 +121,8 @@ const mapStateToProps = (state) => {
     alert: state.alert,
     initialization: state.app.initialization,
     modal: state.modal,
-    newDogEar: _get(state, 'app.newDogEar'),
+    newDogEar: state.app.newDogEar,
+    recentEditions: state.app.recentEditions.records,
   }
 }
 

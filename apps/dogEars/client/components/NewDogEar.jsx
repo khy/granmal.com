@@ -19,7 +19,7 @@ export default class NewDogEar extends React.Component {
   constructor(props) {
     super(props)
 
-    this.debouncedOnFetchBooks = _debounce(this.props.onFetchEditions, 300, {
+    this.debouncedOnFetchBooks = _debounce(this.props.onFetchNewEditions, 300, {
       maxWait: 800
     })
 
@@ -94,7 +94,7 @@ export default class NewDogEar extends React.Component {
   }
 
   render() {
-    const editionOptions = this.props.editionOptions.map((edition) => {
+    const editionOptions = this.props.existingEditionOptions.map((edition) => {
       return {
         value: edition.isbn,
         isbn: edition.isbn,
@@ -155,16 +155,13 @@ export default class NewDogEar extends React.Component {
         onCancel={this.props.onClose}
       >
         <FormGroup>
-          <label htmlFor='newDogEarEditionSelect'>Book</label>
+          <label htmlFor='dogEarEditionSelect'>Book</label>
           <Select
-            id='newDogEarEditionSelect'
+            id='dogEarEditionSelect'
             placeholder=''
             value={this.state.isbn || ''}
             onChange={this.handleSelectChange.bind(this)}
-            onInputChange={this.handleSelectInput.bind(this)}
             options={editionOptions}
-            filterOptions={_identity}
-            isLoading={this.props.bookOptionsLoading}
             optionRenderer={selectRenderer}
             valueRenderer={selectRenderer}
           />
@@ -188,17 +185,19 @@ export default class NewDogEar extends React.Component {
 }
 
 NewDogEar.propTypes = {
-  editionOptions: React.PropTypes.arrayOf(React.PropTypes.object),
-  editionOptionsLoading: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
+  existingEditionOptions: React.PropTypes.arrayOf(React.PropTypes.object),
+  newEditionOptions: React.PropTypes.arrayOf(React.PropTypes.object),
+  newEditionOptionsLoading: React.PropTypes.bool,
   onCreate: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired,
-  onFetchEditions: React.PropTypes.func.isRequired,
+  onFetchNewEditions: React.PropTypes.func.isRequired,
   selectedEdition: React.PropTypes.object,
 }
 
 NewDogEar.defaultProps = {
-  editionOptions: [],
-  editionOptionsLoading: false,
   disabled: false,
+  existingEditionOptions: [],
+  newEditionOptions: [],
+  newEditionOptionsLoading: false,
 }

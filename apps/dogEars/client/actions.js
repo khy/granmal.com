@@ -136,6 +136,10 @@ function fetchRecentEditionsThunk(dispatch, getState) {
   }
 }
 
+export function fetchRecentEditions() {
+  return fetchRecentEditionsThunk
+}
+
 export function initializeApp() {
   return function (dispatch, getState) {
     Promise.all([
