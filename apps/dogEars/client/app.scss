@@ -37,3 +37,18 @@
   cursor: pointer;
   background-color: $gray-lightest;
 }
+
+.edition-search-option {
+  &:hover {
+    cursor: pointer;
+    background-color: $gray-lightest;
+  }
+
+  .edition-search-authors {
+    margin-bottom: 0;
+  }
+
+  .edition-search-details {
+    color: $text-muted;
+  }
+}

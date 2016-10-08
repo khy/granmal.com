@@ -11,20 +11,21 @@ import { stateToMarkdown } from 'draft-js-export-markdown';
 
 import { Editor } from 'client/components/draftJs'
 import { Icon } from 'client/components/fontAwesome'
-import { FormModal } from 'client/components/bootstrap/modal'
+import {
+  FormModal, Modal, ModalBody, ModalHeader, ModalFooter
+} from 'client/components/bootstrap/modal'
 import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
+import { SecondaryButton } from 'client/components/bootstrap/button'
 
 export default class NewDogEar extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.debouncedOnFetchBooks = _debounce(this.props.onFetchNewEditions, 300, {
-      maxWait: 800
-    })
-
     this.state = {
+      editionOptions: (this.props.existingEditionOptions || []),
       isbn: _get(props, 'selectedEdition.isbn'),
+      showNewBook: false,
       showNote: false,
       editorState: EditorState.createEmpty(),
     }
@@ -80,13 +81,25 @@ export default class NewDogEar extends React.Component {
     }
   }
 
-  handleSelectInput(title) {
-    this.debouncedOnFetchBooks(title)
-    this.setState({selectInput: title})
-  }
-
   handleEditorChange(editorState) {
     this.setState({ editorState })
+  }
+
+  selectNewEdition(option) {
+    this.hideNewBook()
+    this.setState({
+      editionOptions: [option].concat(this.state.editionOptions),
+    })
+    this.selectEdition(option.isbn, option.pageCount)
+  }
+
+  showNewBook(event) {
+    event.preventDefault()
+    this.setState({showNewBook: true})
+  }
+
+  hideNewBook() {
+    this.setState({showNewBook: false})
   }
 
   showNote() {
@@ -94,7 +107,7 @@ export default class NewDogEar extends React.Component {
   }
 
   render() {
-    const editionOptions = this.props.existingEditionOptions.map((edition) => {
+    const editionOptions = this.state.editionOptions.map((edition) => {
       return {
         value: edition.isbn,
         isbn: edition.isbn,
@@ -146,7 +159,7 @@ export default class NewDogEar extends React.Component {
       )
     }
 
-    return (
+    const form = (
       <FormModal
         title='New Dog Ear'
         submitText='Add'
@@ -165,6 +178,7 @@ export default class NewDogEar extends React.Component {
             optionRenderer={selectRenderer}
             valueRenderer={selectRenderer}
           />
+        <p className='form-text'><a href='#' onClick={this.showNewBook.bind(this)}>Start New Book</a></p>
         </FormGroup>
 
         <FormGroup>
@@ -180,6 +194,21 @@ export default class NewDogEar extends React.Component {
         {noteFormGroup}
       </FormModal>
     )
+
+    if (this.state.showNewBook) {
+      return (
+        <NewEditionSearch
+          onClose={this.props.onClose}
+          onCancel={this.hideNewBook.bind(this)}
+          onSearch={this.props.onFetchNewEditions}
+          onSelect={this.selectNewEdition.bind(this)}
+          options={this.props.newEditionOptions}
+          disabled={this.props.newEditionOptionsLoading}
+        />
+      )
+    } else {
+      return form
+    }
   }
 
 }
@@ -200,4 +229,103 @@ NewDogEar.defaultProps = {
   existingEditionOptions: [],
   newEditionOptions: [],
   newEditionOptionsLoading: false,
+}
+
+class NewEditionSearch extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  setSearchTerm(event) {
+    this.setState({searchTerm: event.target.value})
+  }
+
+  selectOption(option) {
+    this.props.onSelect(option)
+  }
+
+  onSearch(event) {
+    if (event) { event.preventDefault() }
+    this.props.onSearch(this.state.searchTerm)
+  }
+
+  render() {
+    let searchResults
+
+    if (this.props.options.length > 0 && !this.props.disabled) {
+      const mediaList = this.props.options.map((option) => {
+        return (
+          <li className="list-group-item edition-search-option" onClick={this.selectOption.bind(this, option)} key={option.isbn}>
+            <div className="media">
+              <a className="media-left" >
+                <img className="media-object" src={option.smallImageUrl} width="64" />
+              </a>
+              <div className="media-body">
+                <h4 className="media-heading">{option.title}</h4>
+                <p className="edition-search-authors">{option.authors.join(', ')}</p>
+                <p className="edition-search-details">{option.pageCount} pages / {option.publisher} / {option.publishedAt}</p>
+              </div>
+            </div>
+          </li>
+        )
+      })
+
+      searchResults = (
+        <ModalBody>
+          <ul className="list-group">
+            {mediaList}
+          </ul>
+        </ModalBody>
+      )
+    }
+
+    return (
+      <Modal onClose={this.props.onClose}>
+        <ModalHeader onClose={this.props.onClose}>New Dog Ear</ModalHeader>
+        <ModalBody>
+          <form onSubmit={this.onSearch.bind(this)}>
+            <div className="input-group">
+              <TextInput
+                onChange={this.setSearchTerm.bind(this)}
+                placeholder="Find edition..."
+                disabled={this.props.disabled}
+              />
+              <span className="input-group-btn">
+                <SecondaryButton
+                  onClick={this.onSearch.bind(this)}
+                  disabled={this.props.disabled}
+                >
+                  Search
+                </SecondaryButton>
+              </span>
+            </div>
+          </form>
+        </ModalBody>
+        {searchResults}
+        <ModalFooter>
+          <SecondaryButton
+            onClick={this.props.onCancel}
+          >
+            Cancel
+          </SecondaryButton>
+        </ModalFooter>
+      </Modal>
+    )
+  }
+
+}
+
+NewEditionSearch.propTypes = {
+  onCancel: React.PropTypes.func.isRequired,
+  onClose: React.PropTypes.func.isRequired,
+  onSearch: React.PropTypes.func.isRequired,
+  onSelect: React.PropTypes.func.isRequired,
+  options: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  disabled: React.PropTypes.bool
+}
+
+NewEditionSearch.defaultProps = {
+  disabled: false
 }
