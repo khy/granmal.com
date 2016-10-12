@@ -1,0 +1,6 @@
+.modal-footer {
+  button {
+    margin-right: 5px;
+    &:last-child { margin-right: 0; }
+  }
+}
