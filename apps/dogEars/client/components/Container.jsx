@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _get from 'lodash/get'
 import { Link } from 'react-router'
 
-import { showAdHocAlert } from 'client/actions/alert'
+import { hideAlert, showAdHocAlert } from 'client/actions/alert'
 import { logIn } from 'client/actions/auth'
 import { showModal, hideModal } from 'client/actions/modal'
 import { Icon } from 'client/components/fontAwesome'
@@ -19,8 +19,26 @@ import {
 
 class Container extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      alertWasDisplayed: false
+    }
+  }
+
   componentWillMount() {
     this.props.initializeApp()
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.alert.isVisible) {
+      if (this.state.alertWasDisplayed) {
+        props.onHideAlert()
+        this.setState({alertWasDisplayed: false})
+      } else {
+        this.setState({alertWasDisplayed: true})
+      }
+    }
   }
 
   render() {
@@ -131,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
     initializeApp: () => { dispatch(initializeApp()) },
     onCreateDogEar: (newDogEar) => { dispatch(createDogEar(newDogEar)) },
     onFetchEditions: (title) => { dispatch(fetchEditionsForNewDogEar(title)) },
+    onHideAlert: () => { dispatch(hideAlert()) },
     onHideModal: () => { dispatch(hideModal()) },
     onLogIn: (email, password) => {
       dispatch(logIn(email, password)).then(() => {
