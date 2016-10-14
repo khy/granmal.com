@@ -152,10 +152,10 @@ export default class NewDogEar extends React.Component {
       )
     } else {
       showNoteLink = (
-        <button onClick={this.showNote.bind(this)} className="btn btn-secondary" type="button">
+        <SecondaryButton onClick={this.showNote.bind(this)} className="add-note-button">
           <Icon name="pencil-square-o" />
           <span> Add Note</span>
-        </button>
+        </SecondaryButton>
       )
     }
 
