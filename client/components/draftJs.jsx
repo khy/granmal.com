@@ -32,29 +32,43 @@ export class Editor extends React.Component {
     this.setState({ editorState })
   }
 
-  onBoldClick() {
+  onBoldToggle(e) {
+    e.preventDefault()
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
-  onItalicClick() {
+  onItalicToggle(e) {
+    e.preventDefault()
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
   }
 
-  onBlockquote() {
+  onBlockquoteToggle(e) {
+    e.preventDefault()
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'blockquote'));
   }
 
   render() {
+    const inlineStyle = this.state.editorState.getCurrentInlineStyle()
+    const selection = this.state.editorState.getSelection()
+    const blockStyle = this.state.editorState.
+      getCurrentContent().
+      getBlockForKey(selection.getStartKey()).
+      getType()
+
+    const boldActiveClass = inlineStyle.has('BOLD') ? 'active' : ''
+    const italicActiveClass = inlineStyle.has('ITALIC') ? 'active' : ''
+    const blockquoteActiveClass = (blockStyle === 'blockquote') ? 'active' : ''
+
     return (
       <div className="text-editor">
-        <ButtonGroup className="btn-group-sm">
-          <SecondaryButton onClick={this.onBoldClick.bind(this)} tabIndex="-1">
+        <ButtonGroup className="btn-group">
+          <SecondaryButton onMouseDown={this.onBoldToggle.bind(this)} className={boldActiveClass} tabIndex="-1">
             <Icon name="bold" />
           </SecondaryButton>
-          <SecondaryButton onClick={this.onItalicClick.bind(this)} tabIndex="-1">
+          <SecondaryButton onMouseDown={this.onItalicToggle.bind(this)} className={italicActiveClass} tabIndex="-1">
             <Icon name="italic" />
           </SecondaryButton>
-          <SecondaryButton onClick={this.onBlockquote.bind(this)} tabIndex="-1">
+          <SecondaryButton onMouseDown={this.onBlockquoteToggle.bind(this)} className={blockquoteActiveClass} tabIndex="-1">
             <Icon name="quote-left" srText="blockquote" />
           </SecondaryButton>
         </ButtonGroup>
