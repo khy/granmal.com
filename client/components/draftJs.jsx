@@ -58,6 +58,14 @@ export class Editor extends React.Component {
     }
   }
 
+  blockStyleFn(contentBlock) {
+    const type = contentBlock.getType()
+
+    if (type === 'unstyled') {
+      return 'draft-js-unstyled-block';
+    }
+  }
+
   render() {
     const inlineStyle = this.state.editorState.getCurrentInlineStyle()
     const selection = this.state.editorState.getSelection()
@@ -90,6 +98,7 @@ export class Editor extends React.Component {
             handleKeyCommand={this.handleKeyCommand.bind(this)}
             onChange={this.onChange.bind(this)}
             ref={(editor) => this.editor = editor}
+            blockStyleFn={this.blockStyleFn}
           />
         </div>
       </div>

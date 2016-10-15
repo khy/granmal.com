@@ -12,6 +12,10 @@
       @include markdown-container();
 
       min-height: 10rem;
+
+      .draft-js-unstyled-block {
+        margin-bottom: 0.75rem;
+      }
     }
   }
 }
