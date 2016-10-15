@@ -25,6 +25,7 @@ export default class NewDogEar extends React.Component {
     this.state = {
       editionOptions: (this.props.existingEditionOptions || []),
       isbn: _get(props, 'selectedEdition.isbn'),
+      pageCount: _get(props, 'selectedEdition.pageCount'),
       showNewBook: false,
       showNote: false,
       editorState: EditorState.createEmpty(),
@@ -185,7 +186,7 @@ export default class NewDogEar extends React.Component {
 
         <FormGroup>
           <div className="row">
-            <div className="col-xs-6">
+            <div className="col-sm-6">
               <label htmlFor='newDogEarPageInput'>Page</label>
               {pageInput}
             </div>
