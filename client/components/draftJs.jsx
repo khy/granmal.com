@@ -99,6 +99,7 @@ export class Editor extends React.Component {
             onChange={this.onChange.bind(this)}
             ref={(editor) => this.editor = editor}
             blockStyleFn={this.blockStyleFn}
+            spellCheck={true}
           />
         </div>
       </div>
