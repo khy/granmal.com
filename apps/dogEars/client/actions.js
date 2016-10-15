@@ -94,7 +94,7 @@ export function fetchDogEarsForShowBook(title) {
     if (dogEars.isInvalidated && !dogEars.isPending) {
       dispatch({ type: 'showBook.dogEars.fetch.send' })
 
-      booksClient(state).get(`/dogEars?bookTitle=${title}`).then((dogEars) => {
+      booksClient(state).get(`/dogEars?bookTitle=${title}&p.order=pageNumber`).then((dogEars) => {
         dispatch({ type: 'showBook.dogEars.fetch.success', dogEars })
       })
     }
