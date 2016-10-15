@@ -139,6 +139,7 @@ export default class NewDogEar extends React.Component {
         id='newDogEarPageInput'
         value={this.state.pageNumber || ''}
         onChange={this.setAttribute.bind(this, 'pageNumber')}
+        disabled={this.props.disabled}
         autoComplete="off"
       />
     )
@@ -161,6 +162,7 @@ export default class NewDogEar extends React.Component {
           <Editor
             value={this.state.editorState}
             onChange={this.handleEditorChange.bind(this)}
+            disabled={this.props.disabled}
           />
         </FormGroup>
       )

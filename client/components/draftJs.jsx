@@ -81,13 +81,13 @@ export class Editor extends React.Component {
     return (
       <div className="text-editor">
         <ButtonGroup className="btn-group">
-          <SecondaryButton onMouseDown={this.onBoldToggle.bind(this)} className={boldActiveClass} tabIndex="-1">
+          <SecondaryButton onMouseDown={this.onBoldToggle.bind(this)} className={boldActiveClass} tabIndex="-1" disabled={this.props.disabled}>
             <Icon name="bold" />
           </SecondaryButton>
-          <SecondaryButton onMouseDown={this.onItalicToggle.bind(this)} className={italicActiveClass} tabIndex="-1">
+          <SecondaryButton onMouseDown={this.onItalicToggle.bind(this)} className={italicActiveClass} tabIndex="-1" disabled={this.props.disabled}>
             <Icon name="italic" />
           </SecondaryButton>
-          <SecondaryButton onMouseDown={this.onBlockquoteToggle.bind(this)} className={blockquoteActiveClass} tabIndex="-1">
+          <SecondaryButton onMouseDown={this.onBlockquoteToggle.bind(this)} className={blockquoteActiveClass} tabIndex="-1" disabled={this.props.disabled}>
             <Icon name="quote-left" srText="blockquote" />
           </SecondaryButton>
         </ButtonGroup>
@@ -100,6 +100,7 @@ export class Editor extends React.Component {
             ref={(editor) => this.editor = editor}
             blockStyleFn={this.blockStyleFn}
             spellCheck={true}
+            readOnly={this.props.disabled}
           />
         </div>
       </div>
