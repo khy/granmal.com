@@ -34,17 +34,28 @@ export class Editor extends React.Component {
 
   onBoldToggle(e) {
     e.preventDefault()
+    this.focusEditor()
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
   onItalicToggle(e) {
     e.preventDefault()
+    this.focusEditor()
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
   }
 
   onBlockquoteToggle(e) {
     e.preventDefault()
+    this.focusEditor()
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'blockquote'));
+  }
+
+  focusEditor() {
+    if (this.editor) {
+      this.editor.focus()
+      const newEditorState = EditorState.moveSelectionToEnd(this.state.editorState)
+      this.setState({ editorState: newEditorState })
+    }
   }
 
   render() {
@@ -78,6 +89,7 @@ export class Editor extends React.Component {
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand.bind(this)}
             onChange={this.onChange.bind(this)}
+            ref={(editor) => this.editor = editor}
           />
         </div>
       </div>
