@@ -15,8 +15,12 @@ export function FormGroup(props) {
   )
 }
 
+export function Input(props) {
+  return <input {...props} className="form-control" type={props.type} />
+}
+
 export function TextInput(props) {
-  return <input {...props} className="form-control" type="text" />
+  return <Input {...props} type="text"/>
 }
 
 export function TextArea(props) {

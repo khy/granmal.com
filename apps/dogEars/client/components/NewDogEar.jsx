@@ -14,7 +14,7 @@ import { Icon } from 'client/components/fontAwesome'
 import {
   FormModal, Modal, ModalBody, ModalHeader, ModalFooter
 } from 'client/components/bootstrap/modal'
-import { FormGroup, TextArea, TextInput } from 'client/components/bootstrap/form'
+import { FormGroup, Input, TextArea, TextInput } from 'client/components/bootstrap/form'
 import { SecondaryButton } from 'client/components/bootstrap/button'
 
 export default class NewDogEar extends React.Component {
@@ -122,10 +122,12 @@ export default class NewDogEar extends React.Component {
     }
 
     let pageInput = (
-      <TextInput
+      <Input
+        type='number'
         id='newDogEarPageInput'
         value={this.state.pageNumber || ''}
         onChange={this.setAttribute.bind(this, 'pageNumber')}
+        autoComplete="off"
       />
     )
 
