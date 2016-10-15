@@ -1,14 +1,15 @@
 import React from 'react'
 
 export function FormGroup(props) {
-  var error
+  var context, error
 
   if (props.error) {
-    error = <span className="text-danger">{props.error}</span>
+    context = "has-danger"
+    error = <span className="form-control-feedback">{props.error}</span>
   }
 
   return (
-    <fieldset className="form-group">
+    <fieldset className={"form-group " + context}>
       {props.children}
       {error}
     </fieldset>

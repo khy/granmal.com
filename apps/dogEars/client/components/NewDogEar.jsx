@@ -29,6 +29,7 @@ export default class NewDogEar extends React.Component {
       showNewBook: false,
       showNote: false,
       editorState: EditorState.createEmpty(),
+      errors: {}
     }
   }
 
@@ -51,10 +52,20 @@ export default class NewDogEar extends React.Component {
       note = stateToMarkdown(noteContentState)
     }
 
+    const pageNumber = parseFloat(this.state.pageNumber)
+
+    if (pageNumber < 0) {
+      errors.pageNumber = "Must be greater than or equal to zero"
+    } else if ((pageNumber % 1) !== 0) {
+      errors.pageNumber = "Must be a whole number"
+    } else if (pageNumber > this.state.pageCount) {
+      errors.pageNumber = `Must be less than ${this.state.pageCount}`
+    }
+
     if (_isEmpty(errors)) {
       this.props.onCreate({
         isbn: this.state.isbn,
-        pageNumber: parseInt(this.state.pageNumber),
+        pageNumber,
         note
       })
     } else {
@@ -184,7 +195,7 @@ export default class NewDogEar extends React.Component {
         <p className='form-text'><a href='#' onClick={this.showNewBook.bind(this)}>Start New Book</a></p>
         </FormGroup>
 
-        <FormGroup>
+        <FormGroup error={this.state.errors.pageNumber}>
           <div className="row">
             <div className="col-sm-6">
               <label htmlFor='newDogEarPageInput'>Page</label>
