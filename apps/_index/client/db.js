@@ -14,7 +14,7 @@ export const apps = [
   {
     key: 'shiki',
     name: 'Shiki',
-    description: 'Giving everyone the power to create and share ideas and information instantly, without barriers. With haikus.',
+    description: 'A social network with haikus.',
     releasedAt: new Date(2016, 6, 4),
     betaAt: new Date(2016, 6, 1)
   },
