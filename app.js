@@ -4,8 +4,9 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var authMiddleware = require('./server/middleware/auth')
 
-var DogEars = require('./apps/dogEars/server/app')
 var Budget = require('./apps/budget/server/app')
+var DogEars = require('./apps/dogEars/server/app')
+var Fran = require('./apps/fran/server/app')
 var Shiki = require('./apps/shiki/server/app')
 var Index = require('./apps/_index/server')
 
@@ -26,8 +27,9 @@ app.use(authMiddleware)
 app.use('/auth', AuthRouter)
 app.use('/accountAppState', AccountAppStateRouter)
 
-app.use('/dogEars', DogEars)
 app.use('/budget', Budget)
+app.use('/dogEars', DogEars)
+app.use('/fran', Fran)
 app.use('/shiki', Shiki)
 app.use('/', Index)
 

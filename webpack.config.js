@@ -2,8 +2,9 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    dogEars: './apps/dogEars/client/app.js',
     budget: './apps/budget/client/App.jsx',
+    dogEars: './apps/dogEars/client/app.js',
+    fran: './apps/fran/client/app.js',
     shiki: './apps/shiki/client/App.jsx',
     index: './apps/_index/client/App.jsx'
   },
