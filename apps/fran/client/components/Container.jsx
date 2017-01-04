@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 
 import { showModal, hideModal } from 'client/actions/modal'
 
+import { addMovement } from 'fran/client/actions'
 import { Navbar, NavMenu } from 'fran/client/components/nav'
+import NewMovement from 'fran/client/components/NewMovement'
 
 class Container extends React.Component {
 
@@ -13,6 +15,11 @@ class Container extends React.Component {
     if (this.props.modal.isVisible) {
       if (this.props.modal.name === 'NavMenu') {
         modal = <NavMenu
+          onClose={this.props.onHideModal}
+        />
+      } else if (this.props.modal.name == 'NewMovement') {
+        modal = <NewMovement
+          onAdd={this.props.onAddMovement}
           onClose={this.props.onHideModal}
         />
       }
@@ -43,6 +50,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onAddMovement: (newMovement) => { dispatch(addMovement(newMovement)) },
     onHideModal: () => { dispatch(hideModal()) },
     onShowNavMenu: () => { dispatch(showModal('NavMenu')) },
   }
