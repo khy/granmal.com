@@ -59,7 +59,7 @@ export default class HaikuCard extends React.Component {
       <div className="card">
         <div className="card-header">
           <Link to={`/shiki/user/${haiku.createdBy.handle}`}>{haiku.createdBy.name}</Link>
-          <small className="text-muted pull-xs-right">{formatHaikuListDate(haiku.createdAt)}</small>
+          <small className="text-muted float-xs-right">{formatHaikuListDate(haiku.createdAt)}</small>
         </div>
 
         <div className="card-block haiku-lines" onClick={this.show.bind(this, haiku)}>

@@ -18,7 +18,7 @@ export const CardBlock = (props) => {
 
 export const CardHeaderLink = (props) => {
   return(
-    <a {...props} className={['pull-xs-right', props.className].join(' ')} href={props.href || "#"}>
+    <a {...props} className={['float-xs-right', props.className].join(' ')} href={props.href || "#"}>
       {props.children}
     </a>
   )
