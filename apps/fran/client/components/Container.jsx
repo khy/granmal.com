@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import { showModal, hideModal } from 'client/actions/modal'
 import { showNamedAlert } from 'client/actions/alert'
+import { Icon } from 'client/components/fontAwesome'
+import { Alert, AlertContext, AlertSuccess } from 'client/components/bootstrap/alert'
 
 import { workoutsClient } from 'fran/client/clients'
 import { Navbar, NavMenu } from 'fran/client/components/nav'
@@ -35,8 +37,8 @@ class Container extends React.Component {
           const movement = this.props.alert.data.movement
 
           alert = <AlertSuccess>
-            <Icon name="pencil-square-o" />
-            <span>New movement created</span>
+            <Icon name="plus" />
+            <span>Created movement "{movement.name}"</span>
           </AlertSuccess>
 
           break
@@ -55,6 +57,7 @@ class Container extends React.Component {
         />
 
         <div className="container">
+          {alert}
           {this.props.children}
         </div>
 
@@ -77,7 +80,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onAddMovement: (newMovement) => {
       dispatch(function (dispatch, getState) {
-        console.log(newMovement)
         dispatch({ type: 'newMovement.add.send' })
 
         workoutsClient(getState()).post('/movements', newMovement).then((movement) => {
