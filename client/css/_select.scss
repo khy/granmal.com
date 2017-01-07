@@ -1,0 +1,11 @@
+fieldset.has-success .Select-control {
+  border-color: $alert-success-border;
+}
+
+fieldset.has-warning .Select-control {
+  border-color: $alert-warning-border;
+}
+
+fieldset.has-danger .Select-control {
+  border-color: $brand-danger;
+}

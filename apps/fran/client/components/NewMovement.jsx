@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import _isEmpty from 'lodash/isEmpty'
 
 import { Icon } from 'client/components/fontAwesome'
 import { FormModal } from 'client/components/bootstrap/modal'
@@ -12,12 +13,43 @@ export default class NewMovement extends React.Component {
     super(props)
 
     this.state = {
-      variables: []
+      errors: {},
+      variables: [],
     }
   }
 
   addMovement() {
-    this.props.onAdd(this.state)
+    var errors = {}
+
+    if (_isEmpty(this.state.name)) {
+      errors.name = 'Cannot be blank'
+    }
+
+    this.state.variables.forEach((variable, index) => {
+      var varErrs = {}
+
+      if (_isEmpty(variable.name)) {
+        varErrs.name = 'Cannot be blank'
+      }
+
+      if (_isEmpty(variable.dimension)) {
+        varErrs.dimension = 'Must be selected'
+      }
+
+      if (!_isEmpty(varErrs)) {
+        if (!errors.variables) {
+          errors.variables = []
+        }
+
+        errors.variables[index] = varErrs
+      }
+    })
+
+    if (_isEmpty(errors)) {
+      this.props.onAdd(this.state)
+    } else {
+      this.setState({ errors })
+    }
   }
 
   addVariable() {
@@ -53,10 +85,12 @@ export default class NewMovement extends React.Component {
 
   render() {
     const variableFields = this.state.variables.map((variable, index) => {
+      const errors = this.state.errors.variables ? this.state.errors.variables[index] || {} : {}
+
       return (
         <div className='row' key={`variable${index}`}>
           <div className='col-sm-6'>
-            <FormGroup>
+            <FormGroup error={errors.name}>
               <TextInput
                 onChange={this.setVariableName.bind(this, index)}
                 disabled={this.props.disabled}
@@ -65,7 +99,7 @@ export default class NewMovement extends React.Component {
             </FormGroup>
           </div>
           <div className='col-sm-6'>
-            <FormGroup>
+            <FormGroup error={errors.dimension}>
               <Select
                 placeholder='Dimension'
                 value={variable.dimension || ''}
@@ -76,7 +110,6 @@ export default class NewMovement extends React.Component {
           </div>
         </div>
       )
-      return <div>Variable!</div>
     })
 
     return (
@@ -87,7 +120,7 @@ export default class NewMovement extends React.Component {
         onSubmit={this.addMovement.bind(this)}
         onCancel={this.props.onClose}
       >
-        <FormGroup>
+        <FormGroup error={this.state.errors.name}>
           <label htmlFor='newMovementName'>Name</label>
           <TextInput
             id='newMovementName'
