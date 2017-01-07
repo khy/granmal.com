@@ -7,11 +7,16 @@ export class FullPageLogIn extends React.Component {
 
   onLogIn(event) {
     event.preventDefault()
-
     this.props.onLogIn(
-      this.refs.email.inputValue,
-      this.refs.password.inputValue
+      this.state.email,
+      this.state.password
     )
+  }
+
+  setAttribute(key, event) {
+    let newState = {}
+    newState[key] = event.target.value
+    this.setState(newState)
   }
 
   render() {
@@ -27,8 +32,8 @@ export class FullPageLogIn extends React.Component {
       <div className="container">
         {alert}
         <form onSubmit={this.onLogIn.bind(this)}>
-          <EmailFieldSet ref="email" />
-          <PasswordFieldSet ref="password" />
+          <EmailFieldSet onChange={this.setAttribute.bind(this, 'email')} />
+          <PasswordFieldSet onChange={this.setAttribute.bind(this, 'password')} />
 
           <button type="submit" className="btn btn-primary">Log In</button>
         </form>
@@ -42,16 +47,21 @@ export class LogInModal extends React.Component {
 
   onLogIn(event) {
     event.preventDefault()
-
     this.props.onLogIn(
-      this.refs.email.inputValue,
-      this.refs.password.inputValue
+      this.state.email,
+      this.state.password
     )
   }
 
   onClose(event) {
     event.preventDefault()
     this.props.onClose()
+  }
+
+  setAttribute(key, event) {
+    let newState = {}
+    newState[key] = event.target.value
+    this.setState(newState)
   }
 
   render() {
@@ -68,8 +78,8 @@ export class LogInModal extends React.Component {
           <fieldset disabled={this.props.isFetching}>
             <ModalBody>
               {alert}
-              <EmailFieldSet ref="email" />
-              <PasswordFieldSet ref="password" />
+              <EmailFieldSet onChange={this.setAttribute.bind(this, 'email')} />
+              <PasswordFieldSet onChange={this.setAttribute.bind(this, 'password')} />
             </ModalBody>
             <ModalFooter>
               <SecondaryButton
@@ -96,13 +106,11 @@ export class LogInModal extends React.Component {
 
 class EmailFieldSet extends React.Component {
 
-  get inputValue() { return this.refs.emailInput.value }
-
   render() {
     return (
       <fieldset className="form-group">
         <label>Email</label>
-        <input ref="emailInput" className="form-control" type="email" />
+        <input onChange={this.props.onChange} className="form-control" type="email" />
       </fieldset>
     )
   }
@@ -111,13 +119,11 @@ class EmailFieldSet extends React.Component {
 
 class PasswordFieldSet extends React.Component {
 
-  get inputValue() { return this.refs.passwordInput.value }
-
   render() {
     return (
       <fieldset className="form-group">
         <label>Password</label>
-        <input ref="passwordInput" className="form-control" type="password" />
+        <input onChange={this.props.onChange} className="form-control" type="password" />
       </fieldset>
     )
   }

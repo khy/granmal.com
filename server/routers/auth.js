@@ -13,24 +13,30 @@ router.post('/session', (req, res) => {
       done()
       const account = result.rows[0]
 
-      bcrypt.compare(req.body.password, account.password_hash, (err, match) => {
-        if (match) {
-          client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
-            account.access_tokens = result.rows
+      if (account) {
+        bcrypt.compare(req.body.password, account.password_hash, (err, match) => {
+          if (match) {
+            client.query('select * from access_tokens where account_id = $1', [account.id], (err, result) => {
+              account.access_tokens = result.rows
 
-            ensureUselessAccessToken(account, (account) => {
-              res.
-                cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
-                status(201).
-                send(account)
+              ensureUselessAccessToken(account, (account) => {
+                res.
+                  cookie('GRANMAL_ACCOUNT_GUID', account.guid, { httpOnly: true }).
+                  status(201).
+                  send(account)
+              })
             })
-          })
-        } else {
-          res.
-            status(401).
-            send("Invalid email / password combination")
-        }
-      });
+          } else {
+            res.
+              status(401).
+              send("Invalid email / password combination")
+          }
+        });
+      } else {
+        res.
+          status(401).
+          send("Invalid email / password combination")
+      }
     })
   })
 })

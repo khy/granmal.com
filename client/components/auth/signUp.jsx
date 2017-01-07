@@ -5,20 +5,31 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'client/components/bo
 
 export class SignUpModal extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+  }
+
   onLogIn(event) {
     event.preventDefault()
-
     this.props.onSignUp(
-      this.refs.emailInput.value,
-      this.refs.handleInput.value,
-      this.refs.nameInput.value,
-      this.refs.passwordInput.value
+      this.state.email,
+      this.state.handle,
+      this.state.name,
+      this.state.password
     )
   }
 
   onClose(event) {
     event.preventDefault()
     this.props.onClose()
+  }
+
+  setAttribute(key, event) {
+    let newState = {}
+    newState[key] = event.target.value
+    this.setState(newState)
   }
 
   render() {
@@ -38,22 +49,22 @@ export class SignUpModal extends React.Component {
 
               <fieldset className="form-group">
                 <label>Email</label>
-                <input ref="emailInput" className="form-control" type="email" />
+                <input onChange={this.setAttribute.bind(this, 'email')} className="form-control" type="email" />
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Handle</label>
-                <input ref="handleInput" className="form-control" type="text" />
+                <input onChange={this.setAttribute.bind(this, 'handle')} className="form-control" type="text" />
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Name</label>
-                <input ref="nameInput" className="form-control" type="text" />
+                <input onChange={this.setAttribute.bind(this, 'name')} className="form-control" type="text" />
               </fieldset>
 
               <fieldset className="form-group">
                 <label>Password</label>
-                <input ref="passwordInput" className="form-control" type="password" />
+                <input onChange={this.setAttribute.bind(this, 'password')} className="form-control" type="password" />
               </fieldset>
             </ModalBody>
             <ModalFooter>
