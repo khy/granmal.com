@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { showModal, hideModal } from 'client/actions/modal'
+import { showNamedAlert } from 'client/actions/alert'
 
-import { addMovement } from 'fran/client/actions'
+import { workoutsClient } from 'fran/client/clients'
 import { Navbar, NavMenu } from 'fran/client/components/nav'
 import NewMovement from 'fran/client/components/NewMovement'
 
@@ -19,9 +20,31 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name == 'NewMovement') {
         modal = <NewMovement
+          disabled={this.props.newMovement.isPending}
           onAdd={this.props.onAddMovement}
           onClose={this.props.onHideModal}
         />
+      }
+    }
+
+    let alert
+
+    if (this.props.alert.isVisible) {
+      switch (this.props.alert.name) {
+        case 'movementAdded':
+          const movement = this.props.alert.data.movement
+
+          alert = <AlertSuccess>
+            <Icon name="pencil-square-o" />
+            <span>New movement created</span>
+          </AlertSuccess>
+
+          break
+
+        default:
+          alert = <Alert context={this.props.alert.context}>
+            {this.props.alert.text}
+          </Alert>
       }
     }
 
@@ -44,13 +67,26 @@ class Container extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    alert: state.alert,
     modal: state.modal,
+    newMovement: state.app.newMovement,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddMovement: (newMovement) => { dispatch(addMovement(newMovement)) },
+    onAddMovement: (newMovement) => {
+      dispatch(function (dispatch, getState) {
+        console.log(newMovement)
+        dispatch({ type: 'newMovement.add.send' })
+
+        workoutsClient(getState()).post('/movements', newMovement).then((movement) => {
+          dispatch({ type: 'newMovement.add.success', movement })
+          dispatch(hideModal())
+          dispatch(showNamedAlert('movementAdded', { movement }))
+        })
+      })
+    },
     onHideModal: () => { dispatch(hideModal()) },
     onShowNavMenu: () => { dispatch(showModal('NavMenu')) },
   }
