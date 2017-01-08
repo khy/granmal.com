@@ -1,3 +1,9 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 @import "../../../node_modules/react-select/scss/default";
 @import "../../../client/css/base";
+
+i.remove-variable {
+  margin-top: 10px;
+  color: $gray-light;
+  cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import React from 'react'
 import Select from 'react-select'
 import _isEmpty from 'lodash/isEmpty'
+import _omit from 'lodash/omit'
+import _uniqueId from 'lodash/uniqueId'
 
 import { Icon } from 'client/components/fontAwesome'
 import { FormModal } from 'client/components/bootstrap/modal'
@@ -46,7 +48,12 @@ export default class NewMovement extends React.Component {
     })
 
     if (_isEmpty(errors)) {
-      this.props.onAdd(this.state)
+      this.props.onAdd({
+        name: this.state.name,
+        variables: this.state.variables.map((variable) => {
+          return _omit(variable, ['uxId'])
+        }),
+      })
     } else {
       this.setState({ errors })
     }
@@ -55,8 +62,14 @@ export default class NewMovement extends React.Component {
   addVariable() {
     const oldVariables = this.state.variables
     this.setState({
-      variables: [...oldVariables, {}]
+      variables: [...oldVariables, { uxId: _uniqueId('variable_')}]
     })
+  }
+
+  removeVariable(index) {
+    const variables = this.state.variables.slice()
+    variables.splice(index, 1)
+    this.setState({ variables })
   }
 
   setAttribute(key, event) {
@@ -88,7 +101,7 @@ export default class NewMovement extends React.Component {
       const errors = this.state.errors.variables ? this.state.errors.variables[index] || {} : {}
 
       return (
-        <div className='row' key={`variable${index}`}>
+        <div className='row' key={variable.uxId}>
           <div className='col-sm-6'>
             <FormGroup error={errors.name}>
               <TextInput
@@ -98,7 +111,7 @@ export default class NewMovement extends React.Component {
               />
             </FormGroup>
           </div>
-          <div className='col-sm-6'>
+          <div className='col-sm-5'>
             <FormGroup error={errors.dimension}>
               <Select
                 placeholder='Dimension'
@@ -107,6 +120,9 @@ export default class NewMovement extends React.Component {
                 options={this.props.dimensionOptions}
               />
             </FormGroup>
+          </div>
+          <div className='col-sm-1'>
+            <Icon name='times' className='remove-variable' onClick={this.removeVariable.bind(this, index)} />
           </div>
         </div>
       )
