@@ -10,10 +10,10 @@ export default class AppCard extends React.Component {
       date = this.props.releasedAt
     } else if (this.props.betaAt) {
       date = this.props.betaAt
-      label = <span className="tag tag-warning">{'\u03B2'}</span>
+      label = <span className="badge badge-warning">{'\u03B2'}</span>
     } else if (this.props.alphaAt) {
       date = this.props.alphaAt
-      label = <span className="tag tag-danger">{'\u03B1'}</span>
+      label = <span className="badge badge-danger">{'\u03B1'}</span>
     }
 
     const displayDate = moment(date).format('MMMM Do, YYYY')

@@ -7,7 +7,8 @@ export default class Navbar extends React.Component {
     let button
 
     if (this.props.onButtonClick) {
-      button = <button onClick={this.props.onButtonClick} className="navbar-toggler float-xs-right" type="button">
+      button = <button onClick={this.props.onButtonClick} className="navbar-toggler navbar-toggler-right" type="button">
+        <span className="navbar-toggler-icon"></span>
       </button>
     }
 

@@ -34,10 +34,10 @@ export class Modal extends React.Component {
 export function ModalHeader(props) {
   return (
     <div className="modal-header">
+      <h4 className="modal-title">{props.children}</h4>
       <button className="close" type="button" onClick={props.onClose}>
         <span>&times;</span>
       </button>
-      <h4 className="modal-title">{props.children}</h4>
     </div>
   )
 }
