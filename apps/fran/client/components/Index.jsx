@@ -10,7 +10,8 @@ class Index extends React.Component {
     return (
       <div>
         <h1>Fran</h1>
-        <a href="#" onClick={this.props.showNewMovement}>New Movement</a>
+        <div><a href="#" onClick={this.props.showNewMovement}>New Movement</a></div>
+        <div><Link to="/fran/workouts/new">New Workout</Link></div>
       </div>
     )
   }

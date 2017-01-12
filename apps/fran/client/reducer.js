@@ -13,6 +13,12 @@ const initialState = {
       records: [],
     },
   },
+  newWorkout: {
+    movementOptions: {
+      isPending: false,
+      records: []
+    }
+  }
 }
 
 function app(state = initialState, action) {
@@ -27,6 +33,19 @@ function app(state = initialState, action) {
     case 'newMovement.add.success':
       return u({
         newMovement: { isPending: false }
+      }, state)
+
+    case 'newWorkout.movementOptions.fetch.send':
+      return u({
+        newWorkout: { movementOptions: { isPending: true } }
+      }, state)
+
+    case 'newWorkout.movementOptions.fetch.success':
+      return u({
+        newWorkout: { movementOptions: {
+          isPending: true,
+          records: action.movements,
+        }}
       }, state)
 
     default:

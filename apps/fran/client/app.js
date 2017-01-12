@@ -9,6 +9,7 @@ import { connect, Provider } from 'react-redux'
 import reducer from 'fran/client/reducer'
 import Container from 'fran/client/components/Container'
 import Index from 'fran/client/components/Index'
+import NewWorkout from 'fran/client/components/NewWorkout'
 
 require('./app.scss')
 
@@ -21,6 +22,7 @@ render(
     <Router history={browserHistory}>
       <Route path='/fran' component={Container}>
         <IndexRoute component={Index} />
+        <Route path='workouts/new' component={NewWorkout} />
       </Route>
     </Router>
   </Provider>,
