@@ -5,15 +5,10 @@ import BaseNavbar from 'client/components/nav/Navbar'
 import { NavMenu as BaseNavMenu, NavMenuLink } from 'client/components/nav/navMenu'
 
 export function Navbar(props) {
-  return <BaseNavbar {...props} title="Dog Ears" titleUrl="/dogEars" />
+  return <BaseNavbar {...props} title="Fran" titleUrl="/fran" />
 }
 
 export class NavMenu extends React.Component {
-
-  onNewDogEar(event) {
-    event.preventDefault()
-    this.props.onClose()
-  }
 
   render() {
     return (
