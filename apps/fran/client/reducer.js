@@ -37,13 +37,17 @@ function app(state = initialState, action) {
 
     case 'newWorkout.movementOptions.fetch.send':
       return u({
-        newWorkout: { movementOptions: { isPending: true } }
+        newWorkout: { movementOptions: {
+          isPending: true,
+          taskIndex: action.taskIndex,
+        }}
       }, state)
 
     case 'newWorkout.movementOptions.fetch.success':
       return u({
         newWorkout: { movementOptions: {
-          isPending: true,
+          isPending: false,
+          taskIndex: action.taskIndex,
           records: action.movements,
         }}
       }, state)

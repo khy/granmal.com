@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
+import { Map, List } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -18,7 +19,9 @@ class NewWorkout extends React.Component {
 
     this.state = {
       errors: {},
-      tasks: [],
+      workout: Map({
+        tasks: List(),
+      }),
     }
   }
 
@@ -33,32 +36,62 @@ class NewWorkout extends React.Component {
   }
 
   addTask() {
-    const oldTasks = this.state.tasks
-    this.setState({
-      tasks: [...oldTasks, { uxId: _uniqueId('task_')}]
+    this.setWorkoutState((workout) => {
+      return workout.update('tasks', (tasks) => {
+        return tasks.push(Map({ uxId: _uniqueId('task_') }))
+      })
     })
   }
 
+  searchForMovement(index, query) {
+    this.setState({ movementResultsTaskIndex: index })
+    this.props.onMovementSearch(query)
+  }
+
   setAttribute(key, event) {
-    let newState = {}
-    newState[key] = event.target.value
-    this.setState(newState)
+    this.setWorkoutState((workout) => {
+      return workout.set(key, event.target.value)
+    })
+  }
+
+  setTaskMovement(index, option) {
+    this.setTaskAttribute(index, 'movementGuid', option.value)
+  }
+
+  setTaskAttribute(index, key, value) {
+    this.setWorkoutState((workout) => {
+      return workout.update('tasks', (tasks) => {
+        return tasks.update(index, task => task.set(key, value) )
+      })
+    })
+  }
+
+  setWorkoutState(fn) {
+    return this.setState(({workout}) => ({
+      workout: fn(workout)
+    }))
   }
 
   render() {
-    const taskFields = this.state.tasks.map((task, index) => {
-      const options = this.props.movementOptions.map((movementOption) => {
-        return { value: movementOption.guid, label: movementOption.name }
-      })
+    const taskFields = this.state.workout.get('tasks').map((task, index) => {
+
+      let options = []
+      if (this.state.movementResultsTaskIndex === index) {
+        options = this.props.movementOptions.map((movementOption) => {
+          return { value: movementOption.guid, label: movementOption.name }
+        })
+      }
 
       return (
-        <Card key={task.uxId}>
+        <Card key={task.get('uxId')}>
           <CardBlock>
             <Select
-              placeholder='Select Movement...'
-              options={options}
-              onInputChange={this.props.onMovementSearch}
               isLoading={this.props.movementOptionsLoading}
+              options={options}
+              onChange={this.setTaskMovement.bind(this, index)}
+              onInputChange={this.searchForMovement.bind(this, index)}
+              placeholder='Select Movement...'
+              value={task.get('movementGuid')}
             />
           </CardBlock>
         </Card>
@@ -103,12 +136,12 @@ const mapDispatchToProps = (dispatch) => {
         console.log("NEW WORKOUT", newWorkout)
       })
     },
-    onMovementSearch: (query) => {
+    onMovementSearch: (taskIndex, query) => {
       dispatch(function (dispatch, getState) {
-        dispatch({ type: 'newWorkout.movementOptions.fetch.send' })
+        dispatch({ type: 'newWorkout.movementOptions.fetch.send', taskIndex })
 
         workoutsClient(getState()).get(`/movements?name=${query}&p.order=name`).then((movements) => {
-          dispatch({ type: 'newWorkout.movementOptions.fetch.success', movements })
+          dispatch({ type: 'newWorkout.movementOptions.fetch.success', taskIndex, movements })
         })
       })
     }
