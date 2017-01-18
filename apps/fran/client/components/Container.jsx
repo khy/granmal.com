@@ -22,7 +22,7 @@ class Container extends React.Component {
         />
       } else if (this.props.modal.name == 'NewMovement') {
         modal = <NewMovement
-          disabled={this.props.newMovement.isPending}
+          disabled={this.props.newMovement.get('isPending')}
           onAdd={this.props.onAddMovement}
           onClose={this.props.onHideModal}
         />
@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
   return {
     alert: state.alert,
     modal: state.modal,
-    newMovement: state.app.newMovement,
+    newMovement: state.app.get('newMovement'),
   }
 }
 

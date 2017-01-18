@@ -122,10 +122,12 @@ class NewWorkout extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const movementOptions = state.app.getIn(['newWorkout', 'movementOptions'])
+
   return {
     disabled: false,
-    movementOptions: state.app.newWorkout.movementOptions.records,
-    movementOptionsLoading: state.app.newWorkout.movementOptions.isPending,
+    movementOptions: movementOptions.get('records'),
+    movementOptionsLoading: movementOptions.get('isPending'),
   }
 }
 

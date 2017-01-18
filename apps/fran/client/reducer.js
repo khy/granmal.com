@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import u from 'updeep'
+import Immutable from 'immutable'
 
 import alert from 'client/reducers/alert'
 import auth from 'client/reducers/auth'
 import modal from 'client/reducers/modal'
 
-const initialState = {
+const initialState = Immutable.fromJS({
   newMovement: {
     isPending: false,
     editions: {
@@ -14,43 +14,32 @@ const initialState = {
     },
   },
   newWorkout: {
-    movementOptions: {
-      isPending: false,
-      records: []
-    }
+    movementOptions: []
   }
-}
+})
 
 function app(state = initialState, action) {
 
   switch (action.type) {
 
     case 'newMovement.add.send':
-      return u({
-        newMovement: { isPending: true }
-      }, state)
+      return state.setIn(['newMovement', 'isPending'], true)
 
     case 'newMovement.add.success':
-      return u({
-        newMovement: { isPending: false }
-      }, state)
+      return state.setIn(['newMovement', 'isPending'], false)
 
     case 'newWorkout.movementOptions.fetch.send':
-      return u({
-        newWorkout: { movementOptions: {
-          isPending: true,
-          taskIndex: action.taskIndex,
-        }}
-      }, state)
+      return state.mergeIn(['newWorkout', 'movementOptions'], {
+        isPending: true,
+        taskIndex: action.taskIndex,
+      })
 
     case 'newWorkout.movementOptions.fetch.success':
-      return u({
-        newWorkout: { movementOptions: {
-          isPending: false,
-          taskIndex: action.taskIndex,
-          records: action.movements,
-        }}
-      }, state)
+      return state.mergeIn(['newWorkout', 'movementOptions'], {
+        isPending: false,
+        taskIndex: action.taskIndex,
+        records: action.movements,
+      })
 
     default:
       return state
