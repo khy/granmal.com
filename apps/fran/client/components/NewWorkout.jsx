@@ -44,8 +44,7 @@ class NewWorkout extends React.Component {
   }
 
   searchForMovement(index, query) {
-    this.setState({ movementResultsTaskIndex: index })
-    this.props.onMovementSearch(query)
+    this.props.onMovementSearch(index, query)
   }
 
   setAttribute(key, event) {
@@ -55,13 +54,14 @@ class NewWorkout extends React.Component {
   }
 
   setTaskMovement(index, option) {
-    this.setTaskAttribute(index, 'movementGuid', option.value)
+    const value = option ? option.value : undefined
+    this.setTaskAttribute(index, 'movementGuid', value)
   }
 
   setTaskAttribute(index, key, value) {
     this.setWorkoutState((workout) => {
-      return workout.update('tasks', (tasks) => {
-        return tasks.update(index, task => task.set(key, value) )
+      return workout.updateIn(['tasks', index], task => {
+        return value ? task.set(key, value) : task.delete(key)
       })
     })
   }
@@ -75,18 +75,22 @@ class NewWorkout extends React.Component {
   render() {
     const taskFields = this.state.workout.get('tasks').map((task, index) => {
 
+      let isLoading = false
       let options = []
-      if (this.state.movementResultsTaskIndex === index) {
-        options = this.props.movementOptions.map((movementOption) => {
-          return { value: movementOption.guid, label: movementOption.name }
-        })
+
+      let rawOptions = this.props.movementOptions.get(index)
+      if (rawOptions) {
+        isLoading = rawOptions.get('isPending', false)
+        options = rawOptions.get('records', List()).map((movementOption) => {
+          return { value: movementOption.get('guid'), label: movementOption.get('name') }
+        }).toJS()
       }
 
       return (
         <Card key={task.get('uxId')}>
           <CardBlock>
             <Select
-              isLoading={this.props.movementOptionsLoading}
+              isLoading={isLoading}
               options={options}
               onChange={this.setTaskMovement.bind(this, index)}
               onInputChange={this.searchForMovement.bind(this, index)}
@@ -122,12 +126,9 @@ class NewWorkout extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const movementOptions = state.app.getIn(['newWorkout', 'movementOptions'])
-
   return {
     disabled: false,
-    movementOptions: movementOptions.get('records'),
-    movementOptionsLoading: movementOptions.get('isPending'),
+    movementOptions: state.app.getIn(['newWorkout', 'movementOptions']),
   }
 }
 

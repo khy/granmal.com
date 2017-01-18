@@ -29,15 +29,13 @@ function app(state = initialState, action) {
       return state.setIn(['newMovement', 'isPending'], false)
 
     case 'newWorkout.movementOptions.fetch.send':
-      return state.mergeIn(['newWorkout', 'movementOptions'], {
+      return state.mergeIn(['newWorkout', 'movementOptions', action.taskIndex], {
         isPending: true,
-        taskIndex: action.taskIndex,
       })
 
     case 'newWorkout.movementOptions.fetch.success':
-      return state.mergeIn(['newWorkout', 'movementOptions'], {
+      return state.mergeIn(['newWorkout', 'movementOptions', action.taskIndex], {
         isPending: false,
-        taskIndex: action.taskIndex,
         records: action.movements,
       })
 
