@@ -8,13 +8,10 @@ import modal from 'client/reducers/modal'
 const initialState = Immutable.fromJS({
   newMovement: {
     isPending: false,
-    editions: {
-      isPending: false,
-      records: [],
-    },
   },
   newWorkout: {
-    movementOptions: []
+    isPending: false,
+    movementOptions: [],
   }
 })
 
@@ -38,6 +35,12 @@ function app(state = initialState, action) {
         isPending: false,
         records: action.movements,
       })
+
+    case 'newWorkout.add.send':
+      return state.setIn(['newWorkout', 'isPending'], true)
+
+    case 'newWorkout.add.success':
+      return state.setIn(['newWorkout', 'isPending'], false)
 
     default:
       return state

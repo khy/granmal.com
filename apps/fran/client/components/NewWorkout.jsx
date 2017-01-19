@@ -5,9 +5,11 @@ import { Map, List } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _uniqueId from 'lodash/uniqueId'
 
+import { showAdHocAlert } from 'client/actions/alert'
 import { Icon } from 'client/components/fontAwesome'
+import { AlertContext } from 'client/components/bootstrap/alert'
 import { FormGroup, TextInput } from 'client/components/bootstrap/form'
-import { SecondaryButton } from 'client/components/bootstrap/button'
+import { PrimaryButton, SecondaryButton } from 'client/components/bootstrap/button'
 import { Card, CardBlock } from 'client/components/bootstrap/card'
 
 import { workoutsClient } from 'fran/client/clients'
@@ -25,11 +27,13 @@ class NewWorkout extends React.Component {
     }
   }
 
-  addMovement() {
+  addMovement(event) {
+    event.preventDefault()
+
     var errors = {}
 
     if (_isEmpty(errors)) {
-      this.props.onAdd({})
+      this.props.onAdd(this.state.workout.toJS())
     } else {
       this.setState({ errors })
     }
@@ -48,8 +52,9 @@ class NewWorkout extends React.Component {
   }
 
   setAttribute(key, event) {
+    const value = event.target.value
     this.setWorkoutState((workout) => {
-      return workout.set(key, event.target.value)
+      return workout.set(key, value)
     })
   }
 
@@ -104,7 +109,7 @@ class NewWorkout extends React.Component {
 
     return (
       <div>
-        <form onSubmit={this.submit}>
+        <form onSubmit={this.addMovement.bind(this)}>
           <FormGroup error={this.state.errors.name}>
             <label htmlFor='newWorkoutName'>Name</label>
             <TextInput
@@ -113,11 +118,18 @@ class NewWorkout extends React.Component {
               disabled={this.props.disabled}
             />
           </FormGroup>
-          {taskFields}
           <SecondaryButton onClick={this.addTask.bind(this)}>
             <Icon name="plus" />
             <span> Add Task</span>
           </SecondaryButton>
+          {taskFields}
+          <PrimaryButton
+            type="submit"
+            onClick={this.addMovement.bind(this)}
+            disabled={this.props.disabled}
+          >
+            Submit
+          </PrimaryButton>
         </form>
       </div>
     )
@@ -134,11 +146,26 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+
     onAdd: (newWorkout) => {
       dispatch(function (dispatch, getState) {
-        console.log("NEW WORKOUT", newWorkout)
+        dispatch({ type: 'newWorkout.add.send' })
+
+        workoutsClient(getState()).post('/workouts', newWorkout, true).then((response) => {
+          if (response.ok) {
+            response.json().then((workout) => {
+              dispatch({ type: 'newWorkout.add.success', workout })
+              dispatch(showNamedAlert('workoutAdded', { workout }))
+            })
+          } else {
+            response.json().then((errors) => {
+              dispatch(showAdHocAlert(AlertContext.Danger, `Adding new workout failed: ${JSON.stringify(errors)}`))
+            })
+          }
+        })
       })
     },
+
     onMovementSearch: (taskIndex, query) => {
       dispatch(function (dispatch, getState) {
         dispatch({ type: 'newWorkout.movementOptions.fetch.send', taskIndex })
@@ -148,6 +175,7 @@ const mapDispatchToProps = (dispatch) => {
         })
       })
     }
+
   }
 }
 

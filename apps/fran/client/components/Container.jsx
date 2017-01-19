@@ -43,6 +43,16 @@ class Container extends React.Component {
 
           break
 
+        case 'workoutAdded':
+          const workout = this.props.alert.data.workout
+
+          alert = <AlertSuccess>
+            <Icon name="plus" />
+            <span>Created workout "{workout.name}"</span>
+          </AlertSuccess>
+
+          break
+
         default:
           alert = <Alert context={this.props.alert.context}>
             {this.props.alert.text}
