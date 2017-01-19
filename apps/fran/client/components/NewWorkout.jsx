@@ -39,7 +39,17 @@ class NewWorkout extends React.Component {
     }
   }
 
-  addTask() {
+  addScore(event) {
+    event.preventDefault()
+
+    this.setWorkoutState((workout) => {
+      return workout.set('score', null)
+    })
+  }
+
+  addTask(event) {
+    event.preventDefault()
+
     this.setWorkoutState((workout) => {
       return workout.update('tasks', (tasks) => {
         return tasks.push(Map({ uxId: _uniqueId('task_') }))
@@ -107,8 +117,27 @@ class NewWorkout extends React.Component {
       )
     })
 
+    let scoreGroup
+
+    if (this.state.workout.has('score')) {
+      scoreGroup = (
+        <FormGroup error={this.state.errors.score}>
+          <label htmlFor='newWorkoutScore'>Score</label>
+          <TextInput
+            id='newWorkoutScore'
+            onChange={this.setAttribute.bind(this, "score")}
+            disabled={this.props.disabled}
+          />
+        </FormGroup>
+      )
+    }
+
     return (
       <div>
+        <div className='task-options'>
+          <a href='#' onClick={this.addTask.bind(this)}>Add Task</a>
+          <a href='#' onClick={this.addScore.bind(this)}>Add Score</a>
+        </div>
         <form onSubmit={this.addMovement.bind(this)}>
           <FormGroup error={this.state.errors.name}>
             <label htmlFor='newWorkoutName'>Name</label>
@@ -118,10 +147,7 @@ class NewWorkout extends React.Component {
               disabled={this.props.disabled}
             />
           </FormGroup>
-          <SecondaryButton onClick={this.addTask.bind(this)}>
-            <Icon name="plus" />
-            <span> Add Task</span>
-          </SecondaryButton>
+          {scoreGroup}
           {taskFields}
           <PrimaryButton
             type="submit"

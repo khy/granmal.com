@@ -7,3 +7,9 @@ i.remove-variable {
   color: $gray-light;
   cursor: pointer;
 }
+
+.task-options {
+  a {
+    margin-right: 5px;
+  }
+}
